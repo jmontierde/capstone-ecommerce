@@ -26,7 +26,7 @@ class APIFeatures {
         const removeFields = ['keyword', 'limit', 'page']
         removeFields.forEach((field) => delete queryCopy[field]);
 
-        console.log(queryCopy);
+        // console.log(queryCopy);
         // Advance filter for price, ratings, etc
         let queryStr = JSON.stringify(queryCopy)
         queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `₱${match}`)

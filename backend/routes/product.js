@@ -5,12 +5,15 @@ const router = express.Router();
 
 const {getProducts, newProduct, getSingleProduct, updateProduct, deleteProduct} = require('../controllers/productController')
 
-const {isAuthenticatedUser} = require('../middlewares/auth')
-router.route('/products').get( getProducts) // This is the path link from POSTMAN
+const {isAuthenticatedUser, authorizeRoles} = require('../middlewares/auth')
+
+router.route('/products').get(isAuthenticatedUser, getProducts) // This is the path link from POSTMAN
 router.route('/product/:id').get(getSingleProduct)
 router.route('/admin/product/new').post(isAuthenticatedUser,newProduct);
 // router.route('/admin/product/:id').put(updateProduct)
-router.route('/admin/product/:id').put(isAuthenticatedUser,updateProduct).delete(isAuthenticatedUser,deleteProduct)
+router.route('/admin/product/:id')
+    .put(isAuthenticatedUser, authorizeRoles('admin'), updateProduct)
+    .delete(isAuthenticatedUser, authorizeRoles('admin'), deleteProduct)
 
 
 module.exports = router;
