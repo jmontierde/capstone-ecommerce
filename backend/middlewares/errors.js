@@ -28,6 +28,24 @@ module.exports = (err, req, res, next) => {
             error = new ErrorHandler(message, 400)
         }
 
+        // Handling Mongoose duplicate key errors
+        if(err.code === 11000){
+            const message = `Duplicate ${Object.keys(err.keyValue)} entered`
+            error = new ErrorHandler(message, 400)
+        }
+
+        // Handling wrong JWT error
+        if(err.name === 'JsonWebTokenError'){
+            const message = 'JSON Web Token is invalid. Try again!!!'
+            error = new ErrorHandler(message, 400)
+        }
+
+          // Handling expired JWT error
+          if(err.name === 'JsonWebExpiredError'){
+            const message = 'JSON Web Token is expired. Try again!!!'
+            error = new ErrorHandler(message, 400)
+        }
+
         res.status(err.statusCode).json({
             success: false,
             message: error.message || 'Internal Server Error'
