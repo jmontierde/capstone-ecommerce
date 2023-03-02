@@ -1,89 +1,94 @@
+const { default: mongoose } = require('mongoose')
 const moongose = require('mongoose')
 
-const orderSchema = moongose.Schema({
-    shippingInfo:{
-        address:{
+const orderSchema = mongoose.Schema({
+    shippingInfo: {
+        address: {
             type: String,
-            require: true
+            required: true
         },
-        city:{
+        city: {
             type: String,
-            require: true
+            required: true
         },
-        phoneNo:{
+        phoneNo: {
             type: String,
-            require: true
+            required: true
         },
-        country:{
+        postalCode: {
             type: String,
-            require: true
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
         }
-        
     },
     user: {
-        type: moongose.Schema.Types.ObjectId,
-        require: true,
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
         ref: 'User'
     },
     orderItems: [
         {
             name: {
                 type: String,
-                require: true
+                required: true
             },
             quantity: {
                 type: Number,
-                require: true
+                required: true
             },
             image: {
                 type: String,
-                require: true
+                required: true
             },
             price: {
                 type: Number,
-                require: true
+                required: true
             },
-            user: {
-                type: moongose.Schema.Types.ObjectId,
-                require: true,
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
                 ref: 'Product'
             }
         }
     ],
     paymentInfo: {
         id: {
-            type: String,
+            type: String
         },
         status: {
-            type: String,
-        },
+            type: String
+        }
     },
-    paidAt:{
+    paidAt: {
         type: Date
     },
-    itemPrice: {
+
+    itemsPrice: {
         type: Number,
-        require: true,
+        required: true,
         default: 0.0
     },
     taxPrice: {
         type: Number,
-        require: true,
+        required: true,
         default: 0.0
     },
     shippingPrice: {
         type: Number,
-        require: true,
+        required: true,
         default: 0.0
     },
     totalPrice: {
         type: Number,
-        require: true,
+        required: true,
         default: 0.0
     },
     orderStatus: {
         type: String,
-        require: true,
+        required: true,
         default: 'Processing'
     },
     deliveredAt: {
@@ -91,8 +96,10 @@ const orderSchema = moongose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     }
+
 })
 
-module.exports = moongose.model('Order', orderSchema)
+
+module.exports = mongoose.model('Order', orderSchema)
