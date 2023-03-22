@@ -21,6 +21,7 @@
     "mongodb": "^5.0.1",
     "mongoose": "^6.9.2",
     "nodemailer": "^6.9.1",
+    "react-icons": "^4.8.0",
     "validator": "^13.9.0"
   },
   "devDependencies": {
