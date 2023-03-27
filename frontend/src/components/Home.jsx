@@ -1,7 +1,20 @@
-import React from 'react'
+import React, { Fragment, useEffect } from 'react'
+import MetaData from './layout/MetaData'
+import {useDispatch, useSelector} from 'react-redux'
+import { getProducts } from '../actions/productActions'
+
 
 const Home = () => {
+   
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getProducts())
+    }, [dispatch])
+    
   return (
+    <Fragment>
+    <MetaData title = {'Sir Jacks'}/>
     <div className='container px-12 py-6 mx-auto '>
         <section>
             <h1 className='text-4xl mb-6'>Products</h1>
@@ -20,11 +33,9 @@ const Home = () => {
                 </div>
                 
             </div>
-
-            
-            
         </section>
     </div>
+    </Fragment>
   )
 }
 
