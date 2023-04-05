@@ -6,6 +6,7 @@ const APIFeatures = require('../utils/apiFeatures')
 const sendToken = require('../utils/jwtToken')
 const sendEmail = require('../utils/sendEmail')
 const crypto = require('crypto')
+
 // Register a user => /api/v1/register
 exports.registerUser = catchAsyncErrors(async(req,res,next) => { 
     const {name, email,password} = req.body;

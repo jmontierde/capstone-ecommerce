@@ -29,7 +29,7 @@ const Header = () => {
     <Fragment>
         <nav className='flex container py-6 px-12 m-auto justify-between font-custom cursor-pointer'>
           <ul className='flex  space-x-6 space-y-auto uppercase fo'>
-            <h2 className='mr-16 font-bold text-2xl normal-case'>AgileAvenue</h2>
+            <h2 className='mr-16 font-bold text-2xl uppercase'>Vape Hood</h2>
 
 
             <li><Link to="/">Home</Link></li>
