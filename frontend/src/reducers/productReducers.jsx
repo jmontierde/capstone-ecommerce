@@ -1,3 +1,4 @@
+import React from 'react'
 
 // First
 import {
@@ -8,41 +9,10 @@ import {
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
     PRODUCT_DETAILS_FAIL,
-
-    // PRODUCT_SORT_REQUEST,
-    // PRODUCT_SORT_SUCCESS,
-    // PRODUCT_SORT_FAIL,
     CLEAR_ERRORS
 } from '../constants/productConstants';
   
 export const productsReducer = (state = { loading: false, products: [] }, action) => {
-
-  // switch (action.type) {
-  //   case ALL_PRODUCTS_REQUEST:
-  //     return {
-  //       ...state,
-  //       loading: true
-  //     };
-  //   case ALL_PRODUCTS_SUCCESS:
-  //     return {
-  //       loading: false,
-  //       products: action.payload.products,
-  //       productsCount: action.payload.productsCount
-  //     };
-  //   case ALL_PRODUCTS_FAIL:
-  //     return {
-  //       loading: false,
-  //       error: action.payload,
-  //     };
-  //   case CLEAR_ERRORS:
-  //     return {
-  //       ...state,
-  //       error: null
-  //     };
-  //   default:
-  //     return state;
-  // }
-
 
   switch (action.type) {
     case ALL_PRODUCTS_REQUEST:
@@ -54,36 +24,24 @@ export const productsReducer = (state = { loading: false, products: [] }, action
       return {
         loading: false,
         products: action.payload.products,
-        productsCount: action.payload.productsCount,
-        resPerPage: action.payload.resPerPage
-
+        productsCount: action.payload.productsCount
       };
     case ALL_PRODUCTS_FAIL:
       return {
         loading: false,
         error: action.payload,
       };
-
-    //   case PRODUCT_SORT_REQUEST:
-    //     return { ...state, loading: true };
-    //   case PRODUCT_SORT_SUCCESS:
-    //     return { loading: false, products: action.payload.products };
-    //   case PRODUCT_SORT_FAIL:
-    //     return { ...state, loading: false, error: action.payload };
-      
     case CLEAR_ERRORS:
       return {
         ...state,
         error: null
       };
-
-
     default:
       return state;
   }
 };
 
-export const productDetailsReducer = (state = { product: {} }, action) => { 
+export const productDetailsReducer = (state = { product: {} }, action) => {
   switch (action.type) {
 
       case PRODUCT_DETAILS_REQUEST:
@@ -104,8 +62,6 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
               error: action.payload
           }
 
-
-
       case CLEAR_ERRORS:
           return {
               ...state,
@@ -116,3 +72,4 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
           return state
   }
 }
+

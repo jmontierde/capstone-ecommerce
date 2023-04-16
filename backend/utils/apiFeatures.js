@@ -29,7 +29,8 @@ class APIFeatures {
         // console.log(queryCopy);
         // Advance filter for price, ratings, etc
         let queryStr = JSON.stringify(queryCopy)
-        // queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `₱${match}`)
+        queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `₱${match}`)
+
 
   
         this.query = this.query.find(JSON.parse(queryStr));
@@ -44,21 +45,6 @@ class APIFeatures {
         this.query = this.query.limit(resPerPage).skip(skip);
         return this;
     }
-
-    // sort() {
-    //     if (this.queryString.sortBy) {
-    //       let sortBy = this.queryString.sortBy.split(',').join(' ');
-    //       if (sortBy === 'price') {
-    //         sortBy = '-price';
-    //       }
-    //       this.query = this.query.sort(sortBy);
-    //     } else {
-    //       this.query = this.query.sort('-createdAt');
-    //     }
-    //     return this;
-    // }
-    
-
 
 }
 
