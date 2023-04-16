@@ -32,23 +32,53 @@ const productSchema = new mongoose.Schema({
         },
     }],
     category: {
-        type: String,
-        required: [true, 'Please select category for this product'],
-        enum: {
+        parentCategory: {
+          type: String,
+          required: [true, 'Please select parent category for this product'],
+          enum: ['Electronics', 'RELX', 'Tanks', 'Atomizers', 'Sports', 'Food']
+        },
+        subCategory: {
+          type: String,
+          required: false,
+          enum: {
             values: [
-                'Camera', 
-                'Laptop',
-                'Headset',
-                'Computer',
-                'Monitor',
-                'Keyboard', 
-                'Mouse',
-                'Tablet',
-                'Smartphones'
+              // Electronics
+              'Camera',
+              'Laptop',
+              'Headset',
+              'Computer',
+              'Monitor',
+              'Keyboard',
+              'Mouse',
+              'Tablet',
+              'Smartphones',
+              // RELX
+              'Artisan Device',
+              'Infinity Plus Device',
+              'Essential Device',
+              'RELX Pod',
+              // Tanks
+              // Atomizers
+           
+              // Sports
+              'Fitness',
+              'Camping',
+              'Cycling',
+              'Hiking',
+              'Water Sports',
+              // Food
+              'Snacks',
+              'Beverages',
+              'Candy & Chocolate',
+              'Gourmet',
+              'Cooking & Baking'
             ],
-            message: 'Please select correct category for product'
+            default: null // or any other valid default value
+          }
         }
-    },
+      },
+      
+      
     seller: { 
         type: String,
         required: [true, 'Please enter product seller']

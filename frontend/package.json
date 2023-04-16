@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
@@ -16,6 +17,7 @@
     "react-alert-template-basic": "^1.0.2",
     "react-dom": "^16.14.0",
     "react-helmet": "^6.1.0",
+    "react-js-pagination": "^3.0.3",
     "react-redux": "^7.1.0",
     "react-router-dom": "^6.9.0",
     "redux": "^4.2.1",
@@ -32,5 +34,35 @@
     "vite": "^4.2.1"
   },
   "proxy": "http://localhost:6000"
-
+=======
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "Ecommerce website ",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server",
+    "prod": "SET NODE_ENV=PRODUCTION& nodemon backend/server",
+    "seeder": "node backend/utils/seeder"
+  },
+  "author": "Jayson Caburatan",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "^5.0.1",
+    "mongoose": "^6.9.2",
+    "nodemailer": "^6.9.1",
+    "react-icons": "^4.8.0",
+    "validator": "^13.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+>>>>>>> origin/main
 }

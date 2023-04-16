@@ -21,25 +21,60 @@ exports.newProduct = catchAsyncErrors(async(req, res, next) => {
 // Get all products => /api/v1/products?keyword
 exports.getProducts =  catchAsyncErrors(async(req, res, next) => { 
 
+    const resPerPage = 4;
+    const productsCount = await Product.countDocuments();
 
-    const resPerPage = 5;
-    const productsCount = await Product.countDocuments()
+    // const sortOrder = req.query.sortOrder ? req.query.sortOrder : "asc";
+    // const sortBy = req.query.sortBy ? req.query.sortBy : "price";
 
     // Finding keyword from API
     const apiFeatures = new APIFeatures(Product.find(), req.query)
         .search()
         .filter()
         .pagination(resPerPage)
+        // .sort()     
+    
+    // if (req.query.sortBy && req.query.sortBy === 'price') {
+    //     apiFeatures.query = apiFeatures.query.sort({ price: req.query.sortOrder });
+    // }
 
     const products = await apiFeatures.query;
+    let filteredProductsCount = products.length;
 
-    setTimeout(() => {
-        res.status(200).json({
-            success: true,
-            productsCount,
-            products
-        })
-    }, 2000)
+
+    console.log(filteredProductsCount)
+    // const filteredProductsCount = await Product.countDocuments(apiFeatures.query);
+    
+    res.status(200).json({
+        success: true,
+        productsCount,
+        filteredProductsCount,
+        resPerPage,
+        products
+    })
+
+    // const resPerPage = 8;
+    // const productsCount = await Product.countDocuments()
+
+    // // Finding keyword from API
+    // const apiFeatures = new APIFeatures(Product.find(), req.query)
+    //     .search()
+    //     .filter()
+    //     .pagination(resPerPage)
+
+    // const products = await apiFeatures.query;
+    // // let filteredProductsCount = products.length;
+    // let filteredProductsCount = await Product.countDocuments(apiFeatures.query);
+
+    
+    // res.status(200).json({
+    //     success: true,
+    //     productsCount,
+    //     filteredProductsCount,
+    //     resPerPage,
+    //     products
+    // })
+ 
    
 })
 

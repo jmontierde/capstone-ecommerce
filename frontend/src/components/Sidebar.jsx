@@ -10,7 +10,7 @@ const Sidebar = () => {
               <option value="relx-infinity">Relx Infinity</option>
               <option value="relx-infinity-plus">Relx Infinity Plus</option>
         </select>
-        <select name="mods" id="mods">
+        {/* <select name="mods" id="mods">
             <option value="volvo">Volvo</option>
             <option value="saab">Saab</option>
             <option value="mercedes">Mercedes</option>
@@ -21,7 +21,7 @@ const Sidebar = () => {
             <option value="saab">Saab</option>
             <option value="mercedes">Mercedes</option>
             <option value="audi">Audi</option>
-        </select>
+        </select> */}
       </div>
    
     </aside>
