@@ -21,10 +21,10 @@ const ProductDetails = () => {
   const { loading, error, product } = useSelector(state => state.productDetails)
 
 
+
+
   useEffect(() => {
-    // dispatch(getProductDetails(match.params.id))
     dispatch(getProductDetails(id))
-    console.log(id)
 
     if (error) {
         alert.error(error);
@@ -41,10 +41,11 @@ const ProductDetails = () => {
     //     dispatch({ type: NEW_REVIEW_RESET })
     // }
 
-}, [dispatch, alert, error, id])
+}, [dispatch, alert, error,  id])
 
 
-  console.log(product.id)
+
+
   const [quantity, setQuantity] = useState(1);
 
   const handleQuantityChange = (event) => {
@@ -61,20 +62,18 @@ const ProductDetails = () => {
     }
   };
 
-  console.log(product)
 
 
 
   return (
-    <div className='flex'>
-      <div className='w-1/2'>
-        <img className='h-2/3 mx-auto ' src={product.images[0].url} alt="" />
-      </div>
-      <div className=' w-1/2 p-12'>
-        <h2 className='font-bold text-xl'>{product.name}</h2>
-        <h3 className='py-6 text-lg'>P{product.price}</h3>
-        <p className='space-y-6'>{product.description}</p>
-        <label htmlFor="quantity">Quantity:</label>
+    <div className='flex h-screen'>
+        <div className='h-full  w-1/2 flex justify-center items-center  mx-auto'>
+          <img src={product.images[0].url} alt={product.name} className='w-2/3'/>
+        </div>
+        <div className='w-1/2 mx-auto  flex justify-center  flex-col text-left p-12'>
+            <h2 className='font-bold text-lg pb-6'>{product.name}</h2>
+            <p>{product.description}</p>
+            <label htmlFor="quantity">Quantity:</label>
         <div className="flex items-center space-x-4 my-6 w-48 p-3 rounded-sm  border border-[#171717]">
           <button
             className="px-3 py-1 "
@@ -94,24 +93,9 @@ const ProductDetails = () => {
             className="px-3 py-1 "
             onClick={handleAddQuantity}>+</button>
         </div>
-      </div>
+        </div>
     </div>
   )
 }
 
 export default ProductDetails
-
-// import React from 'react';
-// import { useParams } from 'react-router-dom';
-// const ProductDetails = ({ products }) => {
-//   const { productId } = useParams();
-//   const product = products.find((p) => p._id === productId);
-
-
-//   return (
-//     <div>
-//       <p>{product.price}</p>
-//     </div>
-//   );
-// };
-// export default ProductDetails

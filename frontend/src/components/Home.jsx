@@ -35,7 +35,7 @@ const Home = ({ product }) => {
 
   return (
     <Fragment>
-      {loading ? <Loader/> : (
+   
         <Fragment>
           <MetaData title = {'Sir Jacks'}/>
             <div className='flex container py-6 mx-auto '>
@@ -53,7 +53,6 @@ const Home = ({ product }) => {
               </div>
             </div>
         </Fragment>
-      )}
     </Fragment>
   )
 }
