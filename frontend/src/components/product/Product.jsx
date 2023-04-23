@@ -5,8 +5,9 @@ const Product = ({product}) => {
 
     return (
     <Link to={`/product/${product._id}`}>
-        <div className='w-full h-full'>
-            <img className='w-2/3 h-2/3 mx-auto' src={product.images[0].url} alt="" />
+        <>
+        <div className='w-full h-2/4'>
+            <img className='w-2/3 h-52 mx-auto' src={product.images[0].url} alt="" />
             <h2 href={product.images[0].url}>{product.name}</h2>
             {/* Need pa ayusin */}
             <div className='flex justify-center items-center gap-1 w-32 mx-auto'>
@@ -19,6 +20,7 @@ const Product = ({product}) => {
             </div>
             <h5 className='text-xl text-center mb-6'>₱{product.price}</h5>
         </div>
+        </>
     </Link>
     )
 }
