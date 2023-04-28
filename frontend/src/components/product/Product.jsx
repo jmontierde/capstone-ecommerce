@@ -11,12 +11,12 @@ const Product = ({product}) => {
             <h2 href={product.images[0].url}>{product.name}</h2>
             {/* Need pa ayusin */}
             <div className='flex justify-center items-center gap-1 w-32 mx-auto'>
-            <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
-            <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
-            <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
-            <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
-            <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
-            <span id='num-of-reviews' className='ml-3'>Review({product.numOfReviews})</span>
+                <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
+                <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
+                <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
+                <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
+                <img src="/images/empty-star.png" className='w-6 mx-auto' alt="empty star" />
+                <span id='num-of-reviews' className='ml-3'>Review({product.numOfReviews})</span>
             </div>
             <h5 className='text-xl text-center mb-6'>₱{product.price}</h5>
         </div>
