@@ -7,6 +7,7 @@ import {productsReducer, productDetailsReducer} from './reducers/productReducers
 const reducer = combineReducers({
     products: productsReducer,
     productDetails: productDetailsReducer,
+    // sort: sortProducts
 });
 
 const initialState = {};

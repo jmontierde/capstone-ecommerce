@@ -9,11 +9,15 @@ import {
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
     PRODUCT_DETAILS_FAIL,
+    // PRODUCT_SORT_REQUEST,
+    // PRODUCT_SORT_SUCCESS, 
+    // PRODUCT_SORT_FAIL,
     CLEAR_ERRORS
 } from '../constants/productConstants';
   
 export const productsReducer = (state = { loading: false, products: [] }, action) => {
 
+  // Products
   switch (action.type) {
     case ALL_PRODUCTS_REQUEST:
       return {
@@ -25,7 +29,8 @@ export const productsReducer = (state = { loading: false, products: [] }, action
         loading: false,
         products: action.payload.products,
         productsCount: action.payload.productsCount,
-        resPerPage: action.payload.resPerPage
+        resPerPage: action.payload.resPerPage,
+        // filteredProductsCount: action.payload.filteredProductsCount
 
       };
     case ALL_PRODUCTS_FAIL:
@@ -43,6 +48,7 @@ export const productsReducer = (state = { loading: false, products: [] }, action
   }
 };
 
+// Product Details
 export const productDetailsReducer = (state = { product: {} }, action) => {
   switch (action.type) {
 
@@ -73,4 +79,6 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
       default:
           return state
   }
+
 }
+

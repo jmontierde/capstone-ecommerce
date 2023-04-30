@@ -19,23 +19,6 @@ class APIFeatures {
         return this;
     }
 
-    // Filter the products through categories    
-    filter() { 
-        const queryCopy = {...this.queryStr };
-        // Removing fields from the query 
-        const removeFields = ['keyword', 'limit', 'page']
-        removeFields.forEach((field) => delete queryCopy[field]);
-
-        // console.log(queryCopy);
-        // Advance filter for price, ratings, etc
-        let queryStr = JSON.stringify(queryCopy)
-        queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `₱${match}`)
-
-
-  
-        this.query = this.query.find(JSON.parse(queryStr));
-        return this;
-    }
 
     // Pagination
     pagination(resPerPage){
@@ -45,6 +28,19 @@ class APIFeatures {
         this.query = this.query.limit(resPerPage).skip(skip);
         return this;
     }
+
+    // sort() {
+    //     if (this.queryStr.price) {
+    //       const sortByPrice = this.queryStr.price.split(',').join('');
+    //       this.query = this.query.sort({ price: sortByPrice }); 
+    //     } else if (this.queryStr.alphabet) {
+    //       const sortByAlphabet = this.queryStr.alphabet.split(',').join('');
+    //       const sortField = sortByAlphabet === '1' ? 'name-asc' : 'name-desc';
+    //       this.query = this.query.sort(sortField);
+    //     }
+    //     return this;
+    // }
+    
 
 }
 

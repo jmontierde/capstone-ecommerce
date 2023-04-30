@@ -97,8 +97,8 @@ const ProductDetails = () => {
   return (
     <div className='flex h-screen mt-12'>
       <div className='w-1/2 flex justify-center items-start bg-red p-6'>
-       {product.images && product.images.map(img => (
-        <img className='w-72' key={product.id} src={img.url} alt={product.title}/>
+       {product.images && product.images.map((img, index) => (
+         <img className='w-72' key={index} src={img.url} alt={product.title}/>
        ))} 
       </div>
       <div className='w-1/2  flex-col text-left p-6 '>
@@ -107,21 +107,20 @@ const ProductDetails = () => {
         {/* Ratings */}
 
         <div className='flex  items-center mr-auto pb-3'>
-          {[...Array(5)].map((star, index) => {
-            const ratingValue = index + 1;
-            return (
-              <FaStar
-                key={ratingValue}
-                id='star'
-                // className="star"
-                color={ratingValue <= (hover || rating) ? '#ffc107 ' : '#e4e5e9'}
-                size={20}
-                onClick={() => handleClick(ratingValue)}
-                onMouseOver={() => handleMouseOver(ratingValue)}
-                onMouseLeave={() => handleMouseLeave()}
-              />
-            );
-          })}
+        {[...Array(5)].map((star, index) => {
+          const ratingValue = index + 1;
+          return (
+            <FaStar
+              key={ratingValue}
+              color={ratingValue <= (hover || rating) ? '#ffc107 ' : '#e4e5e9'}
+              size={20}
+              onClick={() => handleClick(ratingValue)}
+              onMouseOver={() => handleMouseOver(ratingValue)}
+              onMouseLeave={() => handleMouseLeave()}
+            />
+          );
+        })}
+
           {/* <p className='mx-3'>{rating} out of 5 stars</p> */}
           <p className='pl-3'>Reviews({product.numOfReviews})</p>
           </div>

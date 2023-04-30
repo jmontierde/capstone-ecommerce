@@ -36,15 +36,14 @@ const productSchema = new mongoose.Schema({
         required: [true, 'Please select category for this product'],
         enum: {
             values: [
-                'Camera', 
-                'Laptop',
-                'Headset',
-                'Computer',
-                'Monitor',
-                'Keyboard', 
-                'Mouse',
-                'Tablet',
-                'Smartphones'
+                'Atomizers', 
+                'Mods',
+                'Coils',
+                'Tanks',
+                'Batteries',
+                'Relx', 
+                'Accessories',
+                'Disposable Vapes',
             ],
             message: 'Please select correct category for product'
         }

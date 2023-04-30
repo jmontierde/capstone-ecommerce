@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.0.1",
     "mongoose": "^6.9.2",
+    "morgan": "^1.10.0",
     "nodemailer": "^6.9.1",
     "react-icons": "^4.8.0",
     "validator": "^13.9.0"

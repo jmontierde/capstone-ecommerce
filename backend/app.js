@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+var morgan = require('morgan')
 
 var cors = require('cors')
  
@@ -11,6 +12,8 @@ const errorMiddleware = require('./middlewares/errors')
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors())
+app.use(morgan('dev'))
+
 
 
 // Import all routes

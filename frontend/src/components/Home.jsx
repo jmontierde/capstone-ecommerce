@@ -2,30 +2,69 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProducts } from '../actions/productActions'
-import Sidebar from './Sidebar'
 import Product from './product/Product'
 import MetaData from './layout/MetaData'
-import Loader from './layout/Loader'
 import Pagination from 'react-js-pagination'
-import { useAlert } from 'react-alert'
+
+// import Loader from './layout/Loader'
+// import { useAlert } from 'react-alert'
 
 const Home = () => {
-  const [currentPage, setCurrentPage] = useState(1)
+
+
+  
   const dispatch = useDispatch()
-  const { loading, products, error, productsCount, resPerPage, filteredProductsCount } = useSelector(
+  const { loading, products, error, productsCount, resPerPage, filteredProductsCount} = useSelector(
     state => state.products
   )
-  const navigate = useNavigate()
-  const alert = useAlert()
-  const { keyword } = useParams()
 
+  // State
+  const [currentPage, setCurrentPage] = useState(1)
+  const [sortOption, setSortOption] = useState('');
+
+  // const [category, setCategory] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const categories = [
+    'Atomizers', 
+    'Mods',
+    'Coils',
+    'Tanks',
+    'Batteries',
+    'Relx', 
+    'Accessories',
+    'Disposable Vapes',
+  ]
+
+  // const [checkedCategories, setCheckedCategories] = useState([]);
+
+  const { keyword } = useParams()
+  
   useEffect(() => {
-    if (keyword) {
-      dispatch(getProducts(keyword, currentPage))
+    dispatch(getProducts(keyword, currentPage, sortOption, selectedCategories)); 
+  }, [dispatch, keyword, currentPage, sortOption, selectedCategories]);
+
+
+  // Sort
+   const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+    dispatch(getProducts(keyword, 1, e.target.value));
+  };
+
+  // Category
+
+  const handleCategoryFilterChange = (category) => {
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories(selectedCategories.filter((c) => c !== category));
     } else {
-      dispatch(getProducts('', currentPage))
+      setSelectedCategories([...selectedCategories, category]);
     }
-  }, [dispatch, keyword, currentPage])
+    setCurrentPage(1);
+  };
+  
+
+
+
+ 
 
   const count = keyword ? filteredProductsCount : productsCount
 
@@ -33,21 +72,48 @@ const Home = () => {
     <Fragment>
       <MetaData title={'Sir Jacks'} />
       <div className='flex container py-6 mx-auto'>
-        <div className='w-1/5'>
-          <Sidebar />
+        <div className='w-1/5 flex flex-col container mr-auto h-full  '>
+        <div>
+            <h3 className='font-bold'>Filter by Category:</h3>
+            <ul>
+              {categories.map(category => (
+                <li key={category} className='pt-3'>
+                  <input
+                    type='checkbox'
+                    id={category}
+                    name={category}
+                    checked={selectedCategories.includes(category)}
+                    onChange={() => handleCategoryFilterChange(category)}
+                  />
+                  <label htmlFor={category} className='pl-2'>{category}</label>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div className='w-4/5'>
-          <h2 className='text-4xl mb-6'>Products</h2>
+          <h2 className='text-4xl '>Products</h2>
+          <div className='ml-auto m-6 w-64'>
+            <select value={sortOption} onChange={handleSortChange} className='p-3'>
+              <option value="">Sort By</option>
+              <option value="new-arrival">New Arrival</option>
+              <option value="asc-price">Price: Low to High</option>
+              <option value="desc-price">Price: High to Low</option>
+              <option value="asc-title">Name: A-Z</option>
+              <option value="desc-title">Name: Z-A</option>
+            </select>
+          </div>
           <div className='grid grid-cols-auto md:grid-cols-4 gap-6 text-center h-screen'>
           {products && products.map(product => (
             <Product key={product._id} product={product} />
           ))}
           </div>
+          {count > 0 && (
           <div className='flex justify-center mt-6'>
             <Pagination
               activePage={currentPage}
               itemsCountPerPage={resPerPage}
-              totalItemsCount={count}
+              totalItemsCount={filteredProductsCount}
               onChange={pageNumber => setCurrentPage(pageNumber)}
               nextPageText={'Next'}
               prevPageText={'Prev'}
@@ -59,6 +125,7 @@ const Home = () => {
               activeClass='bg-gray-300'
             />
           </div>
+        )}
         </div>
       </div>
     </Fragment>

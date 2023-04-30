@@ -10,6 +10,15 @@ const Search = () => {
 
 
 
+  function handleSearchHide(e) { 
+    if(keyword !== null){ 
+      console.log("hi")
+    }else{ 
+      console.log("Hello");
+    }
+  }
+
+
   function handleInputChange(e){
     const keyword = e.target.value.trim();
     setKeyword(keyword);
@@ -20,22 +29,8 @@ const Search = () => {
     }
   }
     
-  console.log('keyword:',keyword)
 
 
-
-  //  function handleSearch(e) { 
-  //   e.preventDefault()
-  //   if (searchHide && keyword !== '') {
-  //     console.log(keyword)
-  //     navigate(`search/${keyword}`)
-
-  //   }
-  //   else{
-  //     setSearchHide(!searchHide)
-  //   }
-
-  // }
   return (
     <div className='flex text-[#525151] space-x-6 space-y-auto  '>
         {searchHide && 
@@ -48,7 +43,7 @@ const Search = () => {
 
         <BsSearch 
         className='m-auto text-2xl'
-        // onClick={handleSearch}
+        onClick={handleSearchHide}
         />
 
         

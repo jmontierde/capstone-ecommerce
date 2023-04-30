@@ -3,7 +3,8 @@ const Product = require('../models/product')
 
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors')
-const APIFeatures = require('../utils/apiFeatures')
+const APIFeatures = require('../utils/apiFeatures');
+const { request } = require('../app');
 
 //Create new product => /api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors(async(req, res, next) => {
@@ -22,22 +23,54 @@ exports.newProduct = catchAsyncErrors(async(req, res, next) => {
 exports.getProducts =  catchAsyncErrors(async(req, res, next) => { 
 
 
-    const resPerPage = 5;
+    const resPerPage = 8;
     const productsCount = await Product.countDocuments()
+    
+    
+    let query = {};
 
-    // Finding keyword from API
-    const apiFeatures = new APIFeatures(Product.find(), req.query)
+    if (req.query.category) {
+      query.category = req.query.category;
+    }
+    
+
+    var oldQuery = {}
+    switch (req.query.sort) {
+        case 'asc-price':
+            oldQuery = {price: 1}
+            break;
+        case 'desc-price':
+            oldQuery = {price: -1}
+            break;
+        case 'asc-title':
+            oldQuery = {name: 1}
+            break;
+
+        case 'desc-title':  
+            oldQuery = {name: -1}
+            break;
+        case "new-arrival":
+            oldQuery = { createdAt: -1 };
+            break;
+        default:
+            break;
+    }
+
+    const apiFeatures = new APIFeatures(Product.find(query).sort(oldQuery).collation({ locale: 'en', strength: 2 }), req.query)
         .search()
-        .filter()
         .pagination(resPerPage)
+        let products = await apiFeatures.query;
+        // let filteredProductsCount = products.length
 
-    const products = await apiFeatures.query;
+        // apiFeatures.pagination(resPerPage)
+        // products = await apiFeatures.query;
 
 
     res.status(200).json({
         success: true,
         productsCount,
         resPerPage,
+        // filteredProductsCount,
         products
     })
 
