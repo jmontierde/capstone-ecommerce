@@ -16,20 +16,20 @@
 
         
         
-     export const getProducts = (keyword = '', currentPage = 1, sortOption = '', category) => async(dispatch) => { 
+     export const getProducts = (keyword = '', currentPage = 1, sortOption, category) => async(dispatch) => { 
             try {
                 dispatch({type: ALL_PRODUCTS_REQUEST})
                 //send the request to backend
 
-                let link =  `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}`
+                let link = `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}`
 
                 if(category){
-                    link =  `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&category=${category}`
+                  link = `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&category=${category}`
                 }
-
+            
                 const {data} =  await axios.get(link)
               
-                console.log('Category', category)
+                // console.log('Category', category)
                 dispatch({
                     type: ALL_PRODUCTS_SUCCESS,
                     payload: data

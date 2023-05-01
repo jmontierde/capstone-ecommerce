@@ -9,9 +9,7 @@ import {
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
     PRODUCT_DETAILS_FAIL,
-    // PRODUCT_SORT_REQUEST,
-    // PRODUCT_SORT_SUCCESS, 
-    // PRODUCT_SORT_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/productConstants';
   
@@ -30,7 +28,8 @@ export const productsReducer = (state = { loading: false, products: [] }, action
         products: action.payload.products,
         productsCount: action.payload.productsCount,
         resPerPage: action.payload.resPerPage,
-        // filteredProductsCount: action.payload.filteredProductsCount
+        filteredProductsCount: action.payload.filteredProductsCount
+
 
       };
     case ALL_PRODUCTS_FAIL:

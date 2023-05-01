@@ -30,9 +30,16 @@ exports.getProducts =  catchAsyncErrors(async(req, res, next) => {
     let query = {};
 
     if (req.query.category) {
-      query.category = req.query.category;
+        const categories = req.query.category.split(',')
+        query.category = { $in: categories };
     }
-    
+
+    if (req.query.keyword) {
+        query.name = {
+          $regex: req.query.keyword,
+          $options: "i",
+        };
+      }
 
     var oldQuery = {}
     switch (req.query.sort) {
@@ -57,20 +64,17 @@ exports.getProducts =  catchAsyncErrors(async(req, res, next) => {
     }
 
     const apiFeatures = new APIFeatures(Product.find(query).sort(oldQuery).collation({ locale: 'en', strength: 2 }), req.query)
-        .search()
         .pagination(resPerPage)
+     
         let products = await apiFeatures.query;
-        // let filteredProductsCount = products.length
-
-        // apiFeatures.pagination(resPerPage)
-        // products = await apiFeatures.query;
+        const filteredProductsCount = await Product.countDocuments(query, oldQuery);
 
 
     res.status(200).json({
         success: true,
         productsCount,
         resPerPage,
-        // filteredProductsCount,
+        filteredProductsCount,
         products
     })
 

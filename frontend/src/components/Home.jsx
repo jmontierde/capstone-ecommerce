@@ -14,16 +14,19 @@ const Home = () => {
 
   
   const dispatch = useDispatch()
-  const { loading, products, error, productsCount, resPerPage, filteredProductsCount} = useSelector(
+  const { loading, products, error, productsCount, resPerPage, filteredProductsCount  } = useSelector(
     state => state.products
   )
+
+
 
   // State
   const [currentPage, setCurrentPage] = useState(1)
   const [sortOption, setSortOption] = useState('');
 
-  // const [category, setCategory] = useState('')
   const [selectedCategories, setSelectedCategories] = useState([]);
+
+
   const categories = [
     'Atomizers', 
     'Mods',
@@ -35,7 +38,6 @@ const Home = () => {
     'Disposable Vapes',
   ]
 
-  // const [checkedCategories, setCheckedCategories] = useState([]);
 
   const { keyword } = useParams()
   
@@ -48,53 +50,53 @@ const Home = () => {
    const handleSortChange = (e) => {
     setSortOption(e.target.value);
     dispatch(getProducts(keyword, 1, e.target.value));
-  };
-
-  // Category
-
-  const handleCategoryFilterChange = (category) => {
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories(selectedCategories.filter((c) => c !== category));
-    } else {
-      setSelectedCategories([...selectedCategories, category]);
-    }
     setCurrentPage(1);
   };
-  
 
 
+ // Category
 
- 
+ const handleCategoryFilterChange = (category) => {
+  if (selectedCategories.includes(category)) {
+    setSelectedCategories(selectedCategories.filter((c) => c !== category));
+  } else {
+    setSelectedCategories([...selectedCategories, category]);
+  }
+  setCurrentPage(1);
+};
 
-  const count = keyword ? filteredProductsCount : productsCount
+
+let count = productsCount;
 
   return (
     <Fragment>
       <MetaData title={'Sir Jacks'} />
+   
       <div className='flex container py-6 mx-auto'>
         <div className='w-1/5 flex flex-col container mr-auto h-full  '>
-        <div>
-            <h3 className='font-bold'>Filter by Category:</h3>
-            <ul>
-              {categories.map(category => (
-                <li key={category} className='pt-3'>
-                  <input
-                    type='checkbox'
-                    id={category}
-                    name={category}
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => handleCategoryFilterChange(category)}
-                  />
-                  <label htmlFor={category} className='pl-2'>{category}</label>
-                </li>
-              ))}
-            </ul>
-          </div>
+        
+          <div>
+              <h3 className='font-bold'>Filter by Category:</h3>
+              <ul>
+                {categories.map(category => (
+                  <li key={category} className='pt-3'>
+                    <input
+                      type='checkbox'
+                      id={category}
+                      name={category}
+                      checked={selectedCategories.includes(category)}
+                      onChange={() => handleCategoryFilterChange(category)}
+                    />
+                    <label htmlFor={category} className='pl-2'>{category}</label>
+                  </li>
+                ))}
+              </ul>
+            </div>
         </div>
         <div className='w-4/5'>
           <h2 className='text-4xl '>Products</h2>
           <div className='ml-auto m-6 w-64'>
-            <select value={sortOption} onChange={handleSortChange} className='p-3'>
+            <select value={sortOption} onChange={handleSortChange} className='p-3 border border-[#000]'>
               <option value="">Sort By</option>
               <option value="new-arrival">New Arrival</option>
               <option value="asc-price">Price: Low to High</option>
@@ -103,12 +105,15 @@ const Home = () => {
               <option value="desc-title">Name: Z-A</option>
             </select>
           </div>
+          
           <div className='grid grid-cols-auto md:grid-cols-4 gap-6 text-center h-screen'>
-          {products && products.map(product => (
+
+           {products && products.map(product => (
             <Product key={product._id} product={product} />
           ))}
+   
           </div>
-          {count > 0 && (
+          {resPerPage <= count && (
           <div className='flex justify-center mt-6'>
             <Pagination
               activePage={currentPage}
