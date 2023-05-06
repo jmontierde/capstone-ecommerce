@@ -4,10 +4,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // Second
 
 import {productsReducer, productDetailsReducer} from './reducers/productReducers'
+import { authReducer } from './reducers/userReducers';
+
 const reducer = combineReducers({
     products: productsReducer,
     productDetails: productDetailsReducer,
-    // sort: sortProducts
+    auth: authReducer
 });
 
 const initialState = {};

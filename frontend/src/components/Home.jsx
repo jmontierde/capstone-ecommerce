@@ -23,8 +23,8 @@ const Home = () => {
   // State
   const [currentPage, setCurrentPage] = useState(1)
   const [sortOption, setSortOption] = useState('');
-
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [rating, setRating] = useState(0);
 
 
   const categories = [
@@ -42,8 +42,8 @@ const Home = () => {
   const { keyword } = useParams()
   
   useEffect(() => {
-    dispatch(getProducts(keyword, currentPage, sortOption, selectedCategories)); 
-  }, [dispatch, keyword, currentPage, sortOption, selectedCategories]);
+    dispatch(getProducts(keyword, currentPage, sortOption, selectedCategories, rating)); 
+  }, [dispatch, keyword, currentPage, sortOption, selectedCategories, rating]);
 
 
   // Sort

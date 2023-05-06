@@ -1,14 +1,34 @@
 import { Link } from 'react-router-dom';
 import Search from './Search';
 import {BsPerson, BsCart3} from 'react-icons/bs';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAlert } from 'react-alert';
+import { logout } from '../../actions/userActions';
+
 const Header = (keyword) => {
 
+  const alert = useAlert();
+  const dispatch = useDispatch();
+
+  const {user, loading} = useSelector(state => state.auth)
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  function toggleDropdown() {
+    setIsOpen(!isOpen);
+  }
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    alert.success('Logged out successfully.')
+    }
 
 
   return (
     <>
-        <nav className='flex container py-6 px-12 m-auto justify-between font-custom cursor-pointer'>
-          <ul className='flex  space-x-6 space-y-auto uppercase fo'>
+        <nav className='flex container py-6 px-12 m-auto justify-between items-center font-custom cursor-pointer'>
+          <ul className='flex space-x-6 items-center justify-center uppercase  '>
             <h2 className='mr-16 font-bold text-2xl uppercase'>Vape Hood</h2>
 
 
@@ -18,15 +38,53 @@ const Header = (keyword) => {
             <li><Link to="/company">Company</Link></li>
             <li><Link to="/news">News</Link></li>
             <li><Link to="/contact">Contact</Link></li>
-    
+
           </ul>
-          <div className='flex text-[#525151] space-x-6 space-y-auto  '>
-            
-            <Search  keyword={keyword}/>
+
+
+
+
+
+          <div className='flex text-[#525151] space-x-6  items-center justify-center '>
+            <Search  keyword={keyword}  />
            
-            
-            <BsCart3 className='m-auto text-2xl'/>
-            <BsPerson className='m-auto text-2xl'/>
+            <Link to={'/cart'}><BsCart3 className='my-auto text-2xl'/></Link>
+            {user ? (
+              <div className="relative flex items-center justify-center">
+                 <button id="dropdownHoverButton" onClick={toggleDropdown} data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
+                className="text-white font-medium  text-sm  text-center inline-flex items-center" type="button">
+                    <figure >
+                        <img
+                            src={user.avatar && user.avatar.url}
+                            alt={user && user.name}
+                            className='w-10 h-10  rounded-full'
+                        />
+                    </figure>
+                    <span className='text-[#000] ml-2 font-bold'>{user && user.name}</span>
+                 </button>
+                 <div id="dropdownHover" 
+                 className={`absolute -right-16  top-12 z-10 ${
+                  isOpen ? "block" : "hidden"
+                  } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}>
+                   <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
+                     <Link>
+                       <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                     </Link>
+                     <Link>
+                       <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                     </Link>
+                     <Link>
+                       <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                     </Link>
+                     <Link>
+                       <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" to="/product" onClick={logoutHandler}>Sign out</a>
+                     </Link>
+                   </ul>
+                 </div>
+               </div>
+            ): !loading &&  <Link to='/login' className='m-auto text-2xl '><BsPerson/></Link>}
+           
+      
           </div>
         </nav>
     </>

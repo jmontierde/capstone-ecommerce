@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect } from 'react'
 
 import Loader from '../layout/Loader'
 import MetaData from '../layout/MetaData'
-import Pagination from 'react-js-pagination'
 
 // import ListReviews from '../review/ListReviews'
 import { FaStar } from 'react-icons/fa';
