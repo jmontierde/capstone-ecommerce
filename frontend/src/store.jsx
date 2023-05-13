@@ -4,15 +4,18 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // Second
 
 import {productsReducer, productDetailsReducer} from './reducers/productReducers'
-import { authReducer } from './reducers/userReducers';
-
+import { authReducer, userReducer } from './reducers/userReducers';
+const token = localStorage.getItem('token');
 const reducer = combineReducers({
     products: productsReducer,
     productDetails: productDetailsReducer,
-    auth: authReducer
+    auth: authReducer,
+    user: userReducer,
 });
 
-const initialState = {};
+
+const initialState = {
+};
 
 const middlware = [thunk];
 const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middlware)))

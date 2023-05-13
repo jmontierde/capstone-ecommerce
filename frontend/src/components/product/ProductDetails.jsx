@@ -19,7 +19,7 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const [comment, setComment] = useState('');
+  // const [comment, setComment] = useState('');
 
 
 

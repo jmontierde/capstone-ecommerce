@@ -15,6 +15,7 @@
     const alert = useAlert();
 
     useEffect(() => { 
+     
         if(isAuthenticated){
             navigate('/product')
         }
@@ -22,6 +23,7 @@
             alert.error(error);
             dispatch(clearErrors());
         }
+
     }, [dispatch, alert, isAuthenticated, error])
 
     const submitHandler = (e) => {
@@ -42,7 +44,7 @@
               type="text" 
               id='email' 
               value={email} 
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}  
               className='border border-[#000] w-96 rounded py-1'
               />
               <label htmlFor="password">Password</label>
@@ -53,7 +55,7 @@
                 onChange={(e) => setPassword(e.target.value)}
                 className='border border-[#000] w-96 rounded py-1'
               />
-              <Link to='/password/forgot' className='ml-auto text-[#757777] text-sm'>Forgot Password</Link>
+              <Link  to='/password/forgot' className='ml-auto text-[#757777] text-sm'>Forgot Password</Link>
               <button type="submit" className='bg-[#6921EF] border rounded py-2 my-3 text-[#fff]'>Login</button>
               <p className='text-[#7B7E82] text-sm text-center'>You don't have an account yet? <Link to='/register' className='text-[#997BD4] font-bold'>Sign up</Link></p>
             </div>

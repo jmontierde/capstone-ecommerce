@@ -12,6 +12,28 @@ import {
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
     
+    UPDATE_PASSWORD_REQUEST,
+    UPDATE_PASSWORD_SUCCESS,
+    UPDATE_PASSWORD_RESET,
+    UPDATE_PASSWORD_FAIL,
+
+    UPDATE_PROFILE_REQUEST,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_RESET,
+    UPDATE_PROFILE_FAIL,
+
+    //Update User
+    UPDATE_USER_REQUEST,
+    UPDATE_USER_SUCCESS,
+    UPDATE_USER_RESET,
+    UPDATE_USER_FAIL,
+    //Delete User
+
+    DELETE_USER_REQUEST,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_RESET,
+    DELETE_USER_FAIL,
+
     LOGOUT_SUCCESS,
     LOGOUT_FAIL,
 
@@ -19,6 +41,7 @@ import {
     CLEAR_ERRORS
 
 } from '../constants/userConstant'
+
 
 export const authReducer = (state = {user:{}}, action) => {
     switch (action.type) {
@@ -38,14 +61,16 @@ export const authReducer = (state = {user:{}}, action) => {
                 ...state,
                 loading: false,
                 isAuthenticated: true,
-                user: action.payload
+                user: action.payload,
             }
 
         case LOGOUT_SUCCESS:
+            localStorage.removeItem('user');
             return {
                 loading: false,
                 isAuthenticated: false,
-                user: null
+                user: null,
+
             }
 
         case LOAD_USER_FAIL:
@@ -53,7 +78,7 @@ export const authReducer = (state = {user:{}}, action) => {
                 loading: false,
                 isAuthenticated: false,
                 user: null,
-                error: action.payload
+                error: action.payload,
             }
 
         case LOGOUT_FAIL:
@@ -75,10 +100,76 @@ export const authReducer = (state = {user:{}}, action) => {
         case CLEAR_ERRORS:
             return {
                 ...state,
-                error: null
+                isAuthenticated: false,
+                user: null,
+                loading: false
             }
 
         default:
             return state
+    }
+}
+
+
+
+
+
+export const userReducer = (state = {}, action) => {
+    switch (action.type) {
+
+        case UPDATE_PROFILE_REQUEST:
+        case UPDATE_PASSWORD_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+
+        case UPDATE_PROFILE_SUCCESS:
+        case UPDATE_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isUpdated: action.payload,
+                authToken: action.payload.authToken,
+
+            }
+
+        // case DELETE_USER_SUCCESS:
+        //     return {
+        //         ...state,
+        //         loading: false,
+        //         isDeleted: action.payload
+        //     }
+
+        case UPDATE_PROFILE_RESET:
+        case UPDATE_PASSWORD_RESET:
+            return {
+                ...state,
+                isUpdated: false
+            }
+
+        // case DELETE_USER_RESET:
+        //     return {
+        //         ...state,
+        //         isDeleted: false
+        //     }
+
+        case UPDATE_PROFILE_FAIL:
+        case UPDATE_PASSWORD_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
     }
 }

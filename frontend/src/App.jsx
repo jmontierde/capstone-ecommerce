@@ -1,32 +1,75 @@
-import {Routes, Route} from 'react-router-dom'
+import { Routes, Route, Navigate} from 'react-router-dom'
 import Footer from "./components/layout/Footer"
 import Header from "./components/layout/Header"
 import Home from './components/Home'
 import ProductDetails from './components/product/ProductDetails'
 import Login from './components/user/Login'
 import Register from './components/user/Register'
-
+import Profile from './components/user/Profile'
+import UpdateProfile from './components/user/UpdateProfile'
+import axios from 'axios'
 import { loadUser } from './actions/userActions'
 import store from './store'
 import { useEffect } from 'react'
+import ProtectedRoute from './components/route/ProtectedRoute'
+
+
+import { useDispatch } from 'react-redux'
 function App() {
+  // const dispatch = useDispatch()
   
   useEffect(() => {
     store.dispatch(loadUser())
-  },[])
+    // authenticate()
+
+    console.log('Test')
+  }, [])
+
+
+    
+    // const authenticate = () => { 
+    //   const config = { 
+    //     headers : {
+    //         'Content-Type': 'application/json',
+    //         'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //     }
+    //   }
+    //   axios.get('http://localhost:7000/api/v1/me', config).then(result => {
+
+    //   if(result.data.success === true){
+    //     dispatch({
+    //       type: LOGIN_SUCCESS,
+    //       payload: result.data.user
+    //     })
+    //   }else{
+    //     dispatch({
+    //       type: LOGOUT_SUCCESS,
+    //       payload: error.response.data.message
+    //     })
+    //   }
+    //     console.log(result)
+    //   }).catch(err => {
+    //     console.log('Error',err)
+    //   })
+    // }
+
+  
 
   return (
     <>
       <div className="App">
         <Header/>
-        <Routes>
-          <Route path="/product" element={<Home/>} />
-          <Route path="/search/:keyword" element={<Home/>} />
-          <Route path="/product/:id" element={<ProductDetails/>} />
-          <Route path="/login" element={<Login/>} />  
-          <Route path="/register" element={<Register/>} />  
+          <Routes>
+            <Route path="/product" element={<Home/>} />
+            <Route path="/search/:keyword" element={<Home/>} />
+            <Route path="/product/:id" element={<ProductDetails/>} />
+            <Route path="/login" element={<Login/>} />  
+            <Route path="/register" element={<Register/>} />  
 
-        </Routes>
+
+            <Route exact path='/me' element={<ProtectedRoute component={Profile}/>} />
+            <Route exact path='/me/update' element={<ProtectedRoute component={UpdateProfile}  />} /> 
+          </Routes>
         <Footer/>
       </div>
     </>

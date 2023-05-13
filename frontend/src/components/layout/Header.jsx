@@ -5,13 +5,13 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
 import { logout } from '../../actions/userActions';
-
 const Header = (keyword) => {
 
   const alert = useAlert();
   const dispatch = useDispatch();
 
   const {user, loading} = useSelector(state => state.auth)
+
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,7 +51,7 @@ const Header = (keyword) => {
             <Link to={'/cart'}><BsCart3 className='my-auto text-2xl'/></Link>
             {user ? (
               <div className="relative flex items-center justify-center">
-                 <button id="dropdownHoverButton" onClick={toggleDropdown} data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
+                 <button id="dropdownHoverButton"  onClick={toggleDropdown} data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
                 className="text-white font-medium  text-sm  text-center inline-flex items-center" type="button">
                     <figure >
                         <img
@@ -67,18 +67,21 @@ const Header = (keyword) => {
                   isOpen ? "block" : "hidden"
                   } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}>
                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
-                     <Link>
-                       <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                     </Link>
-                     <Link>
-                       <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                     </Link>
-                     <Link>
-                       <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
-                     </Link>
-                     <Link>
-                       <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" to="/product" onClick={logoutHandler}>Sign out</a>
-                     </Link>
+                    {user && user.role !== 'admin' ? (
+                      <Link to='orders/me' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        Orders
+                      </Link>
+                    ): (
+                      <Link to='/dashboard' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                          Dashboard
+                      </Link>
+                    )}
+                      <Link to='/me' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        Profile
+                      </Link>
+                      <Link className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" to="/product" onClick={logoutHandler}>
+                       Sign out
+                      </Link>
                    </ul>
                  </div>
                </div>
