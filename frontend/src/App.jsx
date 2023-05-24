@@ -20,40 +20,10 @@ function App() {
   
   useEffect(() => {
     store.dispatch(loadUser())
-    // authenticate()
 
-    console.log('Test')
   }, [])
 
 
-    
-    // const authenticate = () => { 
-    //   const config = { 
-    //     headers : {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //     }
-    //   }
-    //   axios.get('http://localhost:7000/api/v1/me', config).then(result => {
-
-    //   if(result.data.success === true){
-    //     dispatch({
-    //       type: LOGIN_SUCCESS,
-    //       payload: result.data.user
-    //     })
-    //   }else{
-    //     dispatch({
-    //       type: LOGOUT_SUCCESS,
-    //       payload: error.response.data.message
-    //     })
-    //   }
-    //     console.log(result)
-    //   }).catch(err => {
-    //     console.log('Error',err)
-    //   })
-    // }
-
-  
 
   return (
     <>

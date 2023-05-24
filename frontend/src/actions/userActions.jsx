@@ -44,27 +44,6 @@ import {
 } from '../constants/userConstant'
 
 
-// function setCookie(name, value, days) {
-//     var expires = "";
-//     if (days) {
-//         var date = new Date();
-//         date.setTime(date.getTime() + (days*24*60*60*1000));
-//         expires = "; expires=" + date.toUTCString();
-//     }
-//     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-// }
-
-// function getCookie(name) {
-//     var nameEQ = name + "=";
-//     var ca = document.cookie.split(';');
-//     for(var i=0; i < ca.length; i++) {
-//         var c = ca[i];
-//         while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-//         if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-//     }
-//     return null;
-// }
-
 //Login
 
 
@@ -85,14 +64,12 @@ export const login = (email, password) => async (dispatch) => {
         
 
         console.log(data)
-        
-        if(data.success){
-            localStorage.setItem('token', data.token);
-            dispatch({
-                type: LOGIN_SUCCESS,
-                payload: data.user
-            })
-        }
+    
+        localStorage.setItem('token', data.token);
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: data.user
+        })
    
     }catch(error){
         dispatch({
@@ -132,33 +109,33 @@ export const register = (userData) => async (dispatch) => {
 
 //Load User 
 export const loadUser = () => async (dispatch) => {
-   
     try {
-        const config = { 
-            headers : {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            dispatch({ type: LOGOUT_SUCCESS });
+            return;
+        }
+
+        const config = {
+            headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${token}`
             }
-          }
-          axios.get('http://localhost:7000/api/v1/me', config).then(result => {
-    
-          if(result.data.success){
-            dispatch({
-              type: LOGIN_SUCCESS,
-              payload: result.data.user
-            })
-          console.log(result.data)
+        };
 
-          }
-        })
+        const { data } = await axios.get('http://localhost:7000/api/v1/me', config);
 
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: data.user
+        });
     } catch (error) {
         dispatch({
             type: LOAD_USER_FAIL,
             payload: error.response.data.message
-        })
+        });
     }
-}
+};
 
 
 // Update profile
@@ -221,13 +198,11 @@ export const logout = () => async (dispatch) => {
     try {
         localStorage.removeItem('token');
         await axios.get('http://localhost:7000/api/v1/logout')
-        dispatch({
-            type: LOGOUT_SUCCESS
-        })
+        dispatch({ type: LOGOUT_SUCCESS });
 
     } catch (error) {
         dispatch({
-            type: LOGIN_FAIL,
+            type: LOGOUT_SUCCESS,
             payload: error.response.data.message
         })
     }
