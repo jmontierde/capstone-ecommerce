@@ -1,11 +1,11 @@
-import React from 'react'
-import {Helmet} from 'react-helmet'
-const MetaData = ({title}) => {
+import React from "react";
+import { Helmet } from "react-helmet";
+const MetaData = ({ title }) => {
   return (
     <Helmet>
-        <title>{`${title} VapeShop`}</title>
+      <title>{`${title} VapeShop`}</title>
     </Helmet>
-  )
-}
+  );
+};
 
-export default MetaData
+export default MetaData;
