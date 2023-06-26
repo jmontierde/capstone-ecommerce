@@ -11,7 +11,9 @@ import store from "./store";
 import { useEffect } from "react";
 import ProtectedRoute from "./components/route/ProtectedRoute";
 import Password from "./components/user/Password";
-
+import Payment from "./components/product/Payment";
+import ForgotPassword from "./components/user/ForgotPassword";
+import ResetPassword from "./components/user/ResetPassword";
 function App() {
   // const dispatch = useDispatch()
 
@@ -35,6 +37,9 @@ function App() {
             element={<ProtectedRoute component={Profile} />}
           />
           <Route path="/password" element={<Password />} />
+          <Route path="/password/forgot" element={<ForgotPassword />} />
+          <Route path="/password/reset/:token" element={<ResetPassword />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
         <Footer />
       </div>
