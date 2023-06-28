@@ -9,7 +9,7 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductDetails } from "../../actions/productActions";
 import { useParams } from "react-router-dom";
-
+import { addItemToCart } from "../../actions/cartActions";
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -80,6 +80,11 @@ const ProductDetails = () => {
 
   const handleMouseLeave = () => {
     setHover(0);
+  };
+
+  const handleCart = () => {
+    dispatch(addItemToCart(id, quantity));
+    alert.success("Item Added to Cart");
   };
 
   return (
@@ -155,7 +160,11 @@ const ProductDetails = () => {
             +
           </button>
         </div>
-        <button className="bg-[#000] w-48 p-6 text-[#fff] hover:bg-[#222222]">
+        <button
+          className="bg-[#000] w-48 p-6 text-[#fff] hover:bg-[#222222]"
+          onClick={handleCart}
+          disabled={product.stock === 0}
+        >
           Add to Cart
         </button>
         <Link

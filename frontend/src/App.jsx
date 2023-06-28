@@ -14,6 +14,7 @@ import Password from "./components/user/Password";
 import Payment from "./components/product/Payment";
 import ForgotPassword from "./components/user/ForgotPassword";
 import ResetPassword from "./components/user/ResetPassword";
+import Cart from "./components/cart/Cart";
 function App() {
   // const dispatch = useDispatch()
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/cart" element={<Cart />} />
           <Route
             exact
             path="/me"
