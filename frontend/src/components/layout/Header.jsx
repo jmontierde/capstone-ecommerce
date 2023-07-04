@@ -10,6 +10,9 @@ const Header = (keyword) => {
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
+
+  console.log("Cart Count", cartItems);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,11 +53,19 @@ const Header = (keyword) => {
           </li>
         </ul>
 
-        <div className="flex text-[#525151] space-x-6  items-center justify-center ">
+        <div className="flex text-[#525151] space-x-6 py-3  items-center justify-center ">
           <Search keyword={keyword} />
 
-          <Link to={"/cart"}>
-            <BsCart3 className="my-auto text-2xl" />
+          <Link to={"/cart"} className=" mb-4">
+            {cartItems.length > 0 ? (
+              <span className="text-[#b42828] font-semibold ml-5">
+                {cartItems.length}
+              </span>
+            ) : (
+              <span></span>
+            )}
+
+            <BsCart3 className="text-2xl" />
           </Link>
           {user ? (
             <div className="relative flex items-center justify-center">
@@ -107,6 +118,12 @@ const Header = (keyword) => {
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
                     Profile
+                  </Link>
+                  <Link
+                    to="/shipping"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    Address
                   </Link>
                   <Link
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
