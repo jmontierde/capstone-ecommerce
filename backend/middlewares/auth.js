@@ -7,7 +7,6 @@ const catchAsyncErrors = require("./catchAsyncErrors");
 // Checks if user is authenticated or not
 exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   // const { token } = req.cookies
-  // console.log('Req Header', req)
 
   // if (!token) {
   //     return next(new ErrorHandler('Login first to access this resource.', 401))
@@ -19,7 +18,6 @@ exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
 
   const token = req.header("Authorization").replace("Bearer ", "");
 
-  console.log("TOKEN", token);
   // Verify the token
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 

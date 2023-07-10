@@ -16,12 +16,10 @@ const ForgotPassword = () => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
-      console.log("Error");
     }
 
     if (message) {
       alert.success(message);
-      console.log("Success");
     }
   }, [dispatch, alert, error, message]);
 

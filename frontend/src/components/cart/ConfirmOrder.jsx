@@ -18,7 +18,6 @@ const ConfirmOrder = () => {
   // const taxPrice = Number((0.05 * itemsPrice).toFixed(2));
   // const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);0
   const totalPrice = (itemsPrice + shippingPrice).toFixed(2);
-  console.log("Confirm", shippingInfo);
   const processToPayment = () => {
     const data = {
       itemsPrice: itemsPrice.toFixed(2),
@@ -30,15 +29,14 @@ const ConfirmOrder = () => {
     sessionStorage.setItem("orderInfo", JSON.stringify(data));
     navigate("/payment");
   };
-  console.log(cartItems);
 
   return (
     <>
       <div className="container flex flex-col mx-auto px-12">
         <CheckoutSteps />
         {cartItems.map((cart) => (
-          <div className="flex justify-between items-center">
-            <div className="flex items-center w-1/2" key={cart.name}>
+          <div className="flex justify-between items-center" key={cart.name}>
+            <div className="flex items-center w-1/2">
               <img src={cart.image} alt={cart.name} className="w-1/4" />
               <p className="font-semibold text-lg">{cart.name}</p>
             </div>

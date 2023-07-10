@@ -49,7 +49,7 @@ const Shipping = () => {
               placeholder="First Name"
               className="border w-full py-3 pl-3 text-lg  border-[#5c5858]"
               // value={user.name}
-              disabled
+              disable="true"
             />
             <input
               type="text"

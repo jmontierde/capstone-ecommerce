@@ -71,13 +71,12 @@ const Cart = () => {
                   {/* For Product */}
                   {cartItems.map((cart) => (
                     <>
-                      <div className="flex items-center justify-between text-center w-full p-6 gap-1">
+                      <div
+                        className="flex items-center justify-between text-center w-full p-6 gap-1"
+                        key={cart.name}
+                      >
                         <div className="w-full">
-                          <img
-                            src={cart.image}
-                            key={cart.product}
-                            className="w-32 mx-auto"
-                          />
+                          <img src={cart.image} className="w-32 mx-auto" />
                           <p>{cart.name}</p>
                         </div>
                         <div className="w-full">

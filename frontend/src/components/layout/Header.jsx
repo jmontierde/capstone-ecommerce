@@ -12,8 +12,6 @@ const Header = (keyword) => {
   const { user, loading } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
 
-  console.log("Cart Count", cartItems);
-
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleDropdown() {
@@ -118,6 +116,12 @@ const Header = (keyword) => {
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
                     Profile
+                  </Link>
+                  <Link
+                    to="/orders/me"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    Orders
                   </Link>
                   <Link
                     to="/shipping"

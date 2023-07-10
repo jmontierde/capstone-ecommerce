@@ -101,7 +101,6 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   // Hash URL token
 
-  console.log("Reset Token", req.params.token);
   const resetPasswordToken = crypto
     .createHash("sha256")
     .update(req.params.token)
@@ -223,7 +222,6 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
 
 exports.allUsers = catchAsyncErrors(async (req, res, next) => {
   const users = await User.find().catch((error) => {
-    console.log(error);
     throw error;
   });
 

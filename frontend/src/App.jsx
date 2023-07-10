@@ -27,6 +27,11 @@ import axios from "axios";
 // Payment
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import ListOrders from "./components/order/ListOrders";
+import OrderDetails from "./components/order/OrderDetails";
+import OrderSuccess from "./components/cart/OrderSuccess";
+import Dashboard from "./components/admin/Dashboard";
+import ProductsList from "./components/admin/ProductsList";
 
 function App() {
   // const dispatch = useDispatch()
@@ -49,7 +54,6 @@ function App() {
           config
         );
 
-        console.log("Stripe data", data);
         setStripeApiKey(data.stripeApiKey);
       } catch (error) {
         console.log("Error:", error.message);
@@ -76,6 +80,10 @@ function App() {
           <Route
             path="/order/confirm"
             element={<ProtectedRoute component={ConfirmOrder} exact />}
+          />
+          <Route
+            path="/success"
+            element={<ProtectedRoute component={OrderSuccess} exact />}
           />
           {stripeApiKey && (
             <Route
@@ -105,6 +113,25 @@ function App() {
           <Route path="/password/forgot" element={<ForgotPassword />} />
           <Route path="/password/reset/:token" element={<ResetPassword />} />
           <Route path="/payment" element={<Payment />} />
+
+          <Route
+            path="/orders/me"
+            element={<ProtectedRoute component={ListOrders} exact />}
+          />
+          <Route
+            path="/order/:id"
+            element={<ProtectedRoute component={OrderDetails} exact />}
+          />
+
+          {/* Admin */}
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoute component={Dashboard} isAdmin={true} />}
+          />
+          <Route
+            path="/admin/products"
+            element={<ProtectedRoute component={ProductsList} isAdmin={true} />}
+          />
         </Routes>
         <Footer />
       </div>

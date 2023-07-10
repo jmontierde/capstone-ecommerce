@@ -31,7 +31,7 @@ const CheckoutSteps = ({ shipping, confirmOrder, payment }) => {
           Shipping Info
         </Link>
       ) : (
-        <Link to="#!" disable>
+        <Link to="#!" disable="true">
           Shipping
         </Link>
       )}
@@ -47,7 +47,7 @@ const CheckoutSteps = ({ shipping, confirmOrder, payment }) => {
           Confirm Order
         </Link>
       ) : (
-        <Link to="#!" disable>
+        <Link to="#!" disable="true">
           Confirm Order
         </Link>
       )}

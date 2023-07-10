@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
+import { createOrder, clearErrors } from "../../actions/orderActions";
 import {
-  useStripe,
   Elements,
+  useStripe,
   useElements,
   CardNumberElement,
   CardExpiryElement,
@@ -22,8 +22,32 @@ const PaymentForm = ({ stripePromise }) => {
   const stripe = useStripe();
   const { user } = useSelector((state) => state.auth);
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
+  const { error } = useSelector((state) => state.newOrder);
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+  }, [dispatch, alert, error]);
+
+  const order = {
+    orderItems: cartItems,
+    shippingInfo,
+  };
 
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
+  if (orderInfo) {
+    order.itemsPrice = orderInfo.itemsPrice;
+    order.shippingPrice = orderInfo.shippingPrice;
+    order.taxPrice = orderInfo.taxPrice;
+    order.totalPrice = orderInfo.totalPrice;
+  }
+
+  const paymentData = {
+    amount: Math.round(orderInfo.totalPrice * 100),
+  };
+
   const options = {
     style: {
       base: {
@@ -34,17 +58,11 @@ const PaymentForm = ({ stripePromise }) => {
       },
     },
   };
-  const paymentData = {
-    amount: Math.round(orderInfo.totalPrice * 100),
-  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    let res;
     try {
       const token = localStorage.getItem("token");
-
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -52,13 +70,13 @@ const PaymentForm = ({ stripePromise }) => {
         },
       };
 
-      res = await axios.post(
+      const response = await axios.post(
         "http://localhost:7000/api/v1/payment/process",
         paymentData,
         config
       );
 
-      const clientSecret = res.data.client_secret;
+      const clientSecret = response.data.client_secret;
 
       if (!stripe || !elements) {
         return;
@@ -78,21 +96,26 @@ const PaymentForm = ({ stripePromise }) => {
         alert.error(result.error.message);
       } else {
         if (result.paymentIntent.status === "succeeded") {
-          // Handle success
-          alert.success("Payment succeeded");
-          // ... additional logic ...
+          const order = {
+            orderItems: cartItems,
+            shippingInfo,
+            paymentInfo: {
+              id: result.paymentIntent.id,
+              status: result.paymentIntent.status,
+            },
+            totalPrice: orderInfo.totalPrice,
+          };
+          dispatch(createOrder(order));
           navigate("/success");
         } else {
-          alert.error("There was an issue with payment processing");
+          alert.error("There was an issue with the payment processing.");
         }
       }
     } catch (error) {
       if (error.response) {
-        // Error with response
         alert.error(error.response.data.message);
       } else {
-        // Other error
-        alert.error("An error occurred during payment processing");
+        alert.error("An error occurred during payment processing.");
       }
     }
   };
@@ -100,7 +123,7 @@ const PaymentForm = ({ stripePromise }) => {
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-slate-600">
       <form onSubmit={submitHandler} className="bg-[#fff] w-1/3 p-6">
-        <h1 className="mb-4 font-bold  text-2xl">Card Info</h1>
+        <h1 className="mb-4 font-bold text-2xl">Card Info</h1>
         <div className="w-full space-y-3">
           <label htmlFor="card_num_field">Card Number</label>
           <CardNumberElement

@@ -73,8 +73,6 @@ const Register = () => {
   //     setHideProfile(false);
   //   };
 
-  //   console.log(hideProfile)
-
   return (
     <>
       <div className="container mx-auto ">

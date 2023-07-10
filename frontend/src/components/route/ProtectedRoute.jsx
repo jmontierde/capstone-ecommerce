@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ProtectedRoute = ({ isAdmin, component: Component, ...rest }) => {
-  const { isAuthenticated, loading, user } = useSelector(state => state.auth);
+  const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   if (loading) {
@@ -11,16 +11,12 @@ const ProtectedRoute = ({ isAdmin, component: Component, ...rest }) => {
   }
 
   if (!isAuthenticated) {
-    navigate('/login');
-    console.log('Hello World')
+    navigate("/login");
     return null;
   }
 
-  if (isAdmin && user.role !== 'admin') {
-    navigate('/product');
-    console.log('Hello Main')
-
-    return null;
+  if (isAdmin === true && user.role !== "admin") {
+    navigate("/product");
   }
 
   return <Component {...rest} />;
