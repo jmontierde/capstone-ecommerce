@@ -132,7 +132,7 @@ export const updateProduct = (id, productData) => async (dispatch) => {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
     const { data } = await axios.put(
-      `/api/v1/admin/product/${id}`,
+      `http://localhost:7000/api/v1/admin/product/${id}`,
       productData,
       config
     );
@@ -214,7 +214,6 @@ export const getAdminProducts = () => async (dispatch) => {
       `http://localhost:7000/api/v1/admin/products`,
       config
     );
-    console.log("A", data.products);
 
     dispatch({
       type: ADMIN_PRODUCTS_SUCCESS,

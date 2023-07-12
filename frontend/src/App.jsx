@@ -33,6 +33,7 @@ import OrderSuccess from "./components/cart/OrderSuccess";
 import Dashboard from "./components/admin/Dashboard";
 import ProductsList from "./components/admin/ProductsList";
 import NewProduct from "./components/admin/NewProduct";
+import UpdateProduct from "./components/admin/UpdateProduct";
 
 function App() {
   // const dispatch = useDispatch()
@@ -136,6 +137,12 @@ function App() {
           <Route
             path="/admin/product"
             element={<ProtectedRoute component={NewProduct} isAdmin={true} />}
+          />
+          <Route
+            path="/admin/product/:id"
+            element={
+              <ProtectedRoute component={UpdateProduct} isAdmin={true} />
+            }
           />
         </Routes>
         {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />}

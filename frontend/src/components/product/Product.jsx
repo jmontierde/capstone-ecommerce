@@ -6,17 +6,19 @@ const Product = ({ product }) => {
   const [rating, setRating] = useState(product.ratings || 0);
   const [hover, setHover] = useState(0);
 
-  const handleClick = (newRating) => {
-    setRating(newRating);
-  };
+  console.log("Ratings", rating);
 
-  const handleMouseOver = (newHover) => {
-    setHover(newHover);
-  };
+  // const handleClick = (newRating) => {
+  //   setRating(newRating);
+  // };
 
-  const handleMouseLeave = () => {
-    setHover(0);
-  };
+  // const handleMouseOver = (newHover) => {
+  //   setHover(newHover);
+  // };
+
+  // const handleMouseLeave = () => {
+  //   setHover(0);
+  // };
 
   return (
     <Link to={`/product/${product._id}`}>
@@ -40,9 +42,6 @@ const Product = ({ product }) => {
                     ratingValue <= (hover || rating) ? "#ffc107 " : "#e4e5e9"
                   }
                   size={20}
-                  onClick={() => handleClick(ratingValue)}
-                  onMouseOver={() => handleMouseOver(ratingValue)}
-                  onMouseLeave={handleMouseLeave}
                 />
               );
             })}
