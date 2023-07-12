@@ -55,7 +55,6 @@ export const getProducts =
       console.log(error);
       dispatch({
         type: ALL_PRODUCTS_FAIL,
-        payload: error.response.data.message,
       });
     }
   };

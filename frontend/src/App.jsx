@@ -8,7 +8,6 @@ import ProductDetails from "./components/product/ProductDetails";
 import Login from "./components/user/Login";
 import Register from "./components/user/Register";
 import Profile from "./components/user/Profile";
-import { loadUser } from "./actions/userActions";
 import store from "./store";
 import { useEffect, useState } from "react";
 import ProtectedRoute from "./components/route/ProtectedRoute";
@@ -23,7 +22,8 @@ import ConfirmOrder from "./components/cart/ConfirmOrder";
 import Payment from "./components/cart/Payment";
 
 import axios from "axios";
-
+import { loadUser } from "./actions/userActions";
+import { useSelector } from "react-redux";
 // Payment
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -32,11 +32,12 @@ import OrderDetails from "./components/order/OrderDetails";
 import OrderSuccess from "./components/cart/OrderSuccess";
 import Dashboard from "./components/admin/Dashboard";
 import ProductsList from "./components/admin/ProductsList";
+import NewProduct from "./components/admin/NewProduct";
 
 function App() {
   // const dispatch = useDispatch()
   const [stripeApiKey, setStripeApiKey] = useState("");
-
+  const { user, isAuthenticated, loading } = useSelector((state) => state.auth);
   useEffect(() => {
     store.dispatch(loadUser());
 
@@ -132,8 +133,12 @@ function App() {
             path="/admin/products"
             element={<ProtectedRoute component={ProductsList} isAdmin={true} />}
           />
+          <Route
+            path="/admin/product"
+            element={<ProtectedRoute component={NewProduct} isAdmin={true} />}
+          />
         </Routes>
-        <Footer />
+        {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />}
       </div>
     </>
   );

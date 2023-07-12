@@ -10,7 +10,7 @@ const ProtectedRoute = ({ isAdmin, component: Component, ...rest }) => {
     return null; // a loading spinner,
   }
 
-  if (!isAuthenticated) {
+  if (isAuthenticated === false) {
     navigate("/login");
     return null;
   }

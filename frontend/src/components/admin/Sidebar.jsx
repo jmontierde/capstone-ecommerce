@@ -4,8 +4,8 @@ const Sidebar = () => {
   const [dropdown, setDropdown] = useState(true);
 
   return (
-    <div className="w-1/4 container">
-      <nav className="bg-[#82838533] pl-6 py-6">
+    <div className="w-2/12 container ">
+      <nav className="bg-[#82838533] pl-6 py-6 h-screen">
         <ul>
           <li>
             <Link to="/dashboard">Dashboard</Link>
