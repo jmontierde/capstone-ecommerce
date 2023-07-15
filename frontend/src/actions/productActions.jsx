@@ -267,8 +267,6 @@ export const deleteReview = (id, productId) => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     };
-
-    console.log("DELETE", token);
     const { data } = await axios.delete(
       `http://localhost:7000/api/v1/reviews?id=${id}&productId=${productId}`,
       config
@@ -279,11 +277,11 @@ export const deleteReview = (id, productId) => async (dispatch) => {
       payload: data.success,
     });
   } catch (error) {
-    console.log(error.response);
+    console.log(error);
 
     dispatch({
       type: DELETE_REVIEW_FAIL,
-      payload: error.response.data.message,
+      payload: error.message, // Use error.message instead of error.response.data.message
     });
   }
 };

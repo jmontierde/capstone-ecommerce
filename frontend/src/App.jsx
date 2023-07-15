@@ -34,6 +34,11 @@ import Dashboard from "./components/admin/Dashboard";
 import ProductsList from "./components/admin/ProductsList";
 import NewProduct from "./components/admin/NewProduct";
 import UpdateProduct from "./components/admin/UpdateProduct";
+import OrderList from "./components/admin/OrderList";
+import ProcessOrder from "./components/admin/ProcessOrder";
+import UsersList from "./components/admin/UsersList";
+import UpdateUser from "./components/admin/UpdateUser";
+import ProductReviews from "./components/admin/ProductReviews";
 
 function App() {
   // const dispatch = useDispatch()
@@ -142,6 +147,28 @@ function App() {
             path="/admin/product/:id"
             element={
               <ProtectedRoute component={UpdateProduct} isAdmin={true} />
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={<ProtectedRoute component={OrderList} isAdmin={true} />}
+          />
+          <Route
+            path="/admin/order/:id"
+            element={<ProtectedRoute component={ProcessOrder} isAdmin={true} />}
+          />
+          <Route
+            path="/admin/users"
+            element={<ProtectedRoute component={UsersList} isAdmin={true} />}
+          />
+          <Route
+            path="/admin/user/:id"
+            element={<ProtectedRoute component={UpdateUser} isAdmin={true} />}
+          />
+          <Route
+            path="/admin/reviews"
+            element={
+              <ProtectedRoute component={ProductReviews} isAdmin={true} />
             }
           />
         </Routes>

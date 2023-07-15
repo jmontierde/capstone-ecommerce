@@ -115,9 +115,15 @@ export const getOrderDetails = (id) => async (dispatch) => {
 export const allOrders = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_ORDERS_REQUEST });
-
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
     const { data } = await axios.get(
-      `http://localhost:7000/api/v1/admin/orders`
+      `http://localhost:7000/api/v1/admin/orders`,
+      config
     );
 
     dispatch({
@@ -167,9 +173,15 @@ export const updateOrder = (id, orderData) => async (dispatch) => {
 export const deleteOrder = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_ORDER_REQUEST });
-
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
     const { data } = await axios.delete(
-      `http://localhost:7000/api/v1/admin/order/${id}`
+      `http://localhost:7000/api/v1/admin/order/${id}`,
+      config
     );
 
     dispatch({
