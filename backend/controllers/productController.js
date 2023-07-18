@@ -6,21 +6,18 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const APIFeatures = require("../utils/apiFeatures");
 const { request } = require("../app");
 const cloudinary = require("cloudinary");
+const multer = require("multer");
 
-//Create new product => /api/v1/admin/product/new
+// // Multer configuration
+
+// Create new product   =>   /api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors(async (req, res, next) => {
-  let images = [];
-  if (typeof req.body.images === "string") {
-    images.push(req.body.images);
-  } else {
-    images = req.body.images;
-  }
-
-  let imagesLinks = [];
+  const images = req.body.images;
+  const imagesLinks = [];
 
   for (let i = 0; i < images.length; i++) {
-    const result = await cloudinary.v2.uploader.upload(images[i], {
-      folder: "ecommerce-image",
+    const result = await cloudinary.v2.uploader.upload(images[i].url, {
+      folder: "products",
     });
 
     imagesLinks.push({
@@ -33,8 +30,6 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
   req.body.user = req.user.id;
 
   const product = await Product.create(req.body);
-
-  console.log(product);
 
   res.status(201).json({
     success: true,
