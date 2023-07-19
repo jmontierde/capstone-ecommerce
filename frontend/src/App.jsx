@@ -135,40 +135,85 @@ function App() {
             path="/dashboard"
             element={<ProtectedRoute component={Dashboard} isAdmin={true} />}
           />
+
           <Route
             path="/admin/products"
-            element={<ProtectedRoute component={ProductsList} isAdmin={true} />}
+            element={
+              <ProtectedRoute
+                component={ProductsList}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
           />
           <Route
             path="/admin/product"
-            element={<ProtectedRoute component={NewProduct} isAdmin={true} />}
+            element={
+              <ProtectedRoute
+                component={NewProduct}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
           />
           <Route
             path="/admin/product/:id"
             element={
-              <ProtectedRoute component={UpdateProduct} isAdmin={true} />
+              <ProtectedRoute
+                component={UpdateProduct}
+                isAdmin={true}
+                isStaff={true}
+              />
             }
           />
           <Route
             path="/admin/orders"
-            element={<ProtectedRoute component={OrderList} isAdmin={true} />}
+            element={
+              <ProtectedRoute
+                component={OrderList}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
           />
           <Route
             path="/admin/order/:id"
-            element={<ProtectedRoute component={ProcessOrder} isAdmin={true} />}
+            element={
+              <ProtectedRoute
+                component={ProcessOrder}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
           />
           <Route
             path="/admin/users"
-            element={<ProtectedRoute component={UsersList} isAdmin={true} />}
+            element={
+              <ProtectedRoute
+                component={UsersList}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
           />
           <Route
             path="/admin/user/:id"
-            element={<ProtectedRoute component={UpdateUser} isAdmin={true} />}
+            element={
+              <ProtectedRoute
+                component={UpdateUser}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
           />
           <Route
             path="/admin/reviews"
             element={
-              <ProtectedRoute component={ProductReviews} isAdmin={true} />
+              <ProtectedRoute
+                component={ProductReviews}
+                isAdmin={true}
+                isStaff={true}
+              />
             }
           />
         </Routes>

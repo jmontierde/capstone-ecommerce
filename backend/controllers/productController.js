@@ -12,7 +12,13 @@ const multer = require("multer");
 
 // Create new product   =>   /api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors(async (req, res, next) => {
-  const images = req.body.images;
+  let images = [];
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
   const imagesLinks = [];
 
   for (let i = 0; i < images.length; i++) {

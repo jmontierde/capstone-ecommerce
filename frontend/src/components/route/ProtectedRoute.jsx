@@ -1,22 +1,28 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ isAdmin, component: Component, ...rest }) => {
+const ProtectedRoute = ({
+  component: Component,
+  isAdmin,
+  isStaff,
+  ...rest
+}) => {
   const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
 
   if (loading) {
-    return null; // a loading spinner,
+    return null; // Display a loading spinner or component here
   }
 
-  if (isAuthenticated === false) {
-    navigate("/login");
-    return null;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
   }
-
-  if (isAdmin === true && user.role !== "admin") {
-    navigate("/product");
+  if (
+    (isAdmin || isStaff) &&
+    user?.role !== "admin" &&
+    user?.role !== "staff"
+  ) {
+    return <Navigate to="/product" />;
   }
 
   return <Component {...rest} />;

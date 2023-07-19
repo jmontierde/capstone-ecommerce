@@ -96,7 +96,10 @@ const Header = (keyword) => {
                   className="py-2 text-sm text-gray-700 dark:text-gray-200"
                   aria-labelledby="dropdownHoverButton"
                 >
-                  {user && user.role !== "admin" ? (
+                  {user &&
+                  user.role !== "admin" &&
+                  user &&
+                  user.role !== "staff" ? (
                     <Link
                       to="orders/me"
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"

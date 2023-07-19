@@ -48,7 +48,7 @@ const UpdateUser = () => {
         type: UPDATE_USER_RESET,
       });
     }
-  }, [dispatch, alert, error, history, isUpdated, userId, user]);
+  }, [dispatch, alert, error, navigate, isUpdated, userId, user]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -97,6 +97,7 @@ const UpdateUser = () => {
                     onChange={(e) => setRole(e.target.value)}
                   >
                     <option value="user">user</option>
+                    <option value="staff">staff</option>
                     <option value="admin">admin</option>
                   </select>
                 </div>
