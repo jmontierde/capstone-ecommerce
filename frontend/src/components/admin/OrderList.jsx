@@ -23,6 +23,8 @@ const OrderList = () => {
   const { loading, error, orders } = useSelector((state) => state.allOrders);
   const { isDeleted } = useSelector((state) => state.order);
 
+  console.log("ORDER DATE", orders);
+
   useEffect(() => {
     dispatch(allOrders());
 

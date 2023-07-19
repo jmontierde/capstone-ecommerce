@@ -158,7 +158,7 @@ const PaymentForm = ({ stripePromise }) => {
           type="submit"
           className="w-full bg-[#1b6d3d] py-3 my-3 text-white text-xl"
         >
-          Pay {` - ${orderInfo && orderInfo.totalPrice}`}
+          Pay {` - ₱${orderInfo && orderInfo.totalPrice}`}
         </button>
       </form>
     </div>

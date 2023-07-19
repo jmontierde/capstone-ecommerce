@@ -39,6 +39,7 @@ import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
+import Report from "./components/admin/Report";
 
 function App() {
   // const dispatch = useDispatch()
@@ -211,6 +212,16 @@ function App() {
             element={
               <ProtectedRoute
                 component={ProductReviews}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
+          />
+          <Route
+            path="/admin/report"
+            element={
+              <ProtectedRoute
+                component={Report}
                 isAdmin={true}
                 isStaff={true}
               />

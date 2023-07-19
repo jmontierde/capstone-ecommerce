@@ -22,9 +22,11 @@ const ListOrders = () => {
     }
   }, [dispatch, alert, error]);
 
+  console.log("ORDER DATE", orders);
+
   return (
     <div>
-      <h1 className="text-2xl font-bold text-center mb-4">My Orders</h1>
+      <h1 className="text-2xl font-bold text-center mb-4">My Orderss</h1>
 
       {loading ? (
         <Loader />
