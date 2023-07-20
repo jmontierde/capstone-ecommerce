@@ -77,6 +77,9 @@ export const newProduct = (productData) => async (dispatch) => {
       config
     );
 
+    console.log("Product Data", productData);
+    console.log(" Data", data);
+
     dispatch({
       type: NEW_PRODUCT_SUCCESS,
       payload: data,

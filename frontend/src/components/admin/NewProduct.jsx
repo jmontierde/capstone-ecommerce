@@ -45,59 +45,28 @@ const NewProduct = () => {
     }
   }, [dispatch, alert, error, success, navigate]);
 
-  // const submitHandler = (e) => {
-  //   e.preventDefault();
-
-  //   if (images.length === 0) {
-  //     // Handle the case where no images are selected
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.set("name", name);
-  //   formData.set("price", price);
-  //   formData.set("description", description);
-  //   formData.set("category", category);
-  //   formData.set("stock", stock);
-  //   formData.set("seller", seller);
-
-  //   images.forEach((image, index) => {
-  //     formData.append("images", image.file, image.name);
-  //   });
-
-  //   console.log(formData);
-
-  //   dispatch(newProduct(formData));
-  // };
-
   const onChange = (e) => {
     const files = Array.from(e.target.files);
 
-    const updatedImages = files.map((file) => ({
-      file: file,
-      url: URL.createObjectURL(file),
-      public_id: "",
-    }));
+    setImagesPreview([]);
+    setImages([]);
 
-    setImages((prevImages) => [...prevImages, ...updatedImages]);
+    files.forEach((file) => {
+      const reader = new FileReader();
 
-    const allPreviews = [...imagesPreview];
-    updatedImages.forEach((image) => {
-      allPreviews.push(image.url);
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImagesPreview((oldArray) => [...oldArray, reader.result]);
+          setImages((oldArray) => [...oldArray, file]); // Store the selected file objects in the state
+        }
+      };
+
+      reader.readAsDataURL(file);
     });
-
-    setImagesPreview(allPreviews);
   };
-  console.log("Image Preview", imagesPreview);
-  console.log("Imagexx", images);
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    if (images.length === 0) {
-      // Handle the case where no images are selected
-      return;
-    }
 
     const formData = new FormData();
     formData.append("name", name);
@@ -108,16 +77,14 @@ const NewProduct = () => {
     formData.append("seller", seller);
 
     images.forEach((image) => {
-      formData.append("images", image.file);
+      formData.append("images", image); // Append each image file to the FormData
     });
 
+    console.log("FORM DATA HANDLER", formData);
+
+    console.log("IMAGE", images);
     dispatch(newProduct(formData));
-
-    console.log("FORM DATA", formData);
-
-    console.log("IMAGES", images);
   };
-
   // const onChange = (e) => {
   //   const files = Array.from(e.target.files);
   //   const updatedImages = files.map((file) => ({
@@ -255,11 +222,12 @@ const NewProduct = () => {
                         </span>
                       </label>
                       <input
-                        id="fileInput"
                         type="file"
-                        className="hidden"
+                        name="product_images"
+                        className="custom-file-input"
+                        id="fileInput"
                         onChange={onChange}
-                        multiple
+                        multiple // This attribute allows selecting multiple images
                       />
                     </div>
                   </div>

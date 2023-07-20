@@ -51,6 +51,9 @@ const Sidebar = () => {
           <li>
             <Link to="/admin/report">Report</Link>
           </li>
+          <li>
+            <Link to="/admin/create">Create Product</Link>
+          </li>
         </ul>
       </nav>
     </div>
