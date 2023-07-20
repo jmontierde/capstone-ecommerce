@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import jsPDF from "jspdf";
 import Sidebar from "./Sidebar";
 import { useSelector } from "react-redux";
 import Loader from "../layout/Loader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import html2canvas from "html2canvas";
 
 const Report = () => {
   const { loading, error, orders } = useSelector((state) => state.allOrders);
@@ -12,7 +14,20 @@ const Report = () => {
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [showDayPicker, setShowDayPicker] = useState(false);
 
-  console.log("ORDERSS", orders);
+  const pdfTableRef = useRef();
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+
+    const tableRef = pdfTableRef.current; // Get the DOM element of the table
+    const imagePromise = html2canvas(tableRef); // Convert the table to an image
+
+    imagePromise.then((canvas) => {
+      const imageData = canvas.toDataURL("image/png");
+      doc.addImage(imageData, "PNG", 15, 15, 180, 0);
+      doc.save("report.pdf");
+    });
+  };
 
   const filterOrdersByMonth = () => {
     return orders.filter((order) => {
@@ -82,46 +97,54 @@ const Report = () => {
     <div className="flex container mx-auto px-12">
       <Sidebar />
       <div className="w-10/12 bg-slate-500">
-        <div className="flex justify-center items-center my-6">
-          <select
-            value={showDayPicker ? "day" : selectedWeek ? "week" : "month"}
-            onChange={handleSelectChange}
-            className="border rounded px-4 py-2"
+        <div className="flex justify-between px-12 items-center my-6 ">
+          <div className="space-x-3">
+            <select
+              value={showDayPicker ? "day" : selectedWeek ? "week" : "month"}
+              onChange={handleSelectChange}
+              className="border rounded px-4 py-2"
+            >
+              <option value="month">Month</option>
+              <option value="week">Week</option>
+              <option value="day">Day</option>
+            </select>
+            {showDayPicker ? (
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                className="border rounded px-4 py-2"
+              />
+            ) : selectedWeek ? (
+              <DatePicker
+                selected={selectedWeek}
+                onChange={(date) => setSelectedWeek(date)}
+                showWeekNumbers
+                className="border rounded px-4 py-2"
+              />
+            ) : (
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                showMonthYearPicker
+                dateFormat="MMMM yyyy"
+                className="border rounded px-4 py-2 mr-4"
+              />
+            )}
+          </div>
+
+          <button
+            className="px-4 py-2 ml-4 rounded bg-blue-500 text-white"
+            onClick={downloadPDF}
           >
-            <option value="month">Month</option>
-            <option value="week">Week</option>
-            <option value="day">Day</option>
-          </select>
-          {showDayPicker ? (
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              className="border rounded px-4 py-2"
-            />
-          ) : selectedWeek ? (
-            <DatePicker
-              selected={selectedWeek}
-              onChange={(date) => setSelectedWeek(date)}
-              showWeekNumbers
-              className="border rounded px-4 py-2"
-            />
-          ) : (
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              showMonthYearPicker
-              dateFormat="MMMM yyyy"
-              className="border rounded px-4 py-2 mr-4"
-            />
-          )}
+            Download PDF
+          </button>
         </div>
         {loading ? (
           <Loader />
         ) : (
           <div className="flex container mx-auto px-12">
-            <Sidebar />
-            <div className="flex w-10/12 justify-center ">
-              <table className="table-fixed  w-full h-32">
+            <div className="flex w-full justify-center ">
+              <table ref={pdfTableRef} className="table-fixed  w-full h-32">
                 <thead className="bg-[#ECEFF1]">
                   <tr>
                     <th className="px-4 py-2">ORDER ID</th>
