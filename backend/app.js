@@ -16,7 +16,13 @@ dotenv.config({ path: "backend/config/config.env" });
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyparser.urlencoded({ extended: true }));
-app.use(fileUpload());
+// app.use(fileUpload());
+app.use(
+  fileUpload({
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  })
+);
+
 app.use(
   cors({
     origin: "http://127.0.0.1:5173", // Replace with your frontend domain
