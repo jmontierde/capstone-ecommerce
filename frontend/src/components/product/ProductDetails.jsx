@@ -113,18 +113,37 @@ const ProductDetails = () => {
 
   return (
     <>
-      <div className="flex mt-12">
-        <div className="w-1/2 flex justify-center items-start bg-red p-6">
-          {product.images &&
-            product.images.map((img, index) => (
-              <img
-                className="w-72"
-                key={index}
-                src={img.url}
-                alt={product.title}
-              />
-            ))}
+      <div className="flex container mx-auto px-12 mt-12">
+        <div className="flex w-1/2 ">
+          <div className="flex flex-row-reverse  justify-end px-8   w-full">
+            {/* Right side image */}
+            <div className=" w-3/4">
+              {product.images && product.images.length > 0 && (
+                <img
+                  className="3/4 border border-[#000] p-3 mx-8"
+                  src={product.images[0].url}
+                  alt={product.title}
+                />
+              )}
+            </div>
+
+            {/* Left side images */}
+            <div className="flex flex-col items-start gap-6 ">
+              {product.images &&
+                product.images
+                  .slice(1)
+                  .map((img, index) => (
+                    <img
+                      className="w-36 border border-[#000]"
+                      key={index}
+                      src={img.url}
+                      alt={product.title}
+                    />
+                  ))}
+            </div>
+          </div>
         </div>
+
         <div className="w-1/2 text-left p-6 ">
           <h2 className="font-bold text-lg">{product.name}</h2>
 

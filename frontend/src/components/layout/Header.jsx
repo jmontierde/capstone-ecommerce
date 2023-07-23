@@ -38,7 +38,7 @@ const Header = (keyword) => {
             <Link to="/product">Product</Link>
           </li>
           <li>
-            <Link to="/service">Service</Link>
+            <Link to="/customization">Customization</Link>
           </li>
           <li>
             <Link to="/company">Company</Link>

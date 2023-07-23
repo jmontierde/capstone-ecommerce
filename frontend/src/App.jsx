@@ -40,6 +40,7 @@ import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
 import Report from "./components/admin/Report";
+import Customization from "./components/customization/Customization";
 
 function App() {
   // const dispatch = useDispatch()
@@ -79,7 +80,7 @@ function App() {
           <Route path="/product" element={<Home />} />
           <Route path="/search/:keyword" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetails />} />
-
+          <Route exact path="/customization" element={<Customization />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route
             path="/shipping"
