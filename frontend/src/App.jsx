@@ -41,6 +41,8 @@ import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
 import Report from "./components/admin/Report";
 import Customization from "./components/customization/Customization";
+import Three from "./components/Three";
+import Customizer from "./components/pages/Customizer";
 
 function App() {
   // const dispatch = useDispatch()
@@ -82,6 +84,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route exact path="/customization" element={<Customization />} />
           <Route exact path="/cart" element={<Cart />} />
+          <Route exact path="/three" element={<Three />} />
           <Route
             path="/shipping"
             element={<ProtectedRoute component={Shipping} />}
@@ -229,6 +232,7 @@ function App() {
             }
           />
         </Routes>
+        <Customizer />
         {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />}
       </div>
     </>
