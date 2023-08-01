@@ -232,7 +232,7 @@ function App() {
             }
           />
         </Routes>
-        <Customizer />
+        {/* <Customizer /> */}
         {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />}
       </div>
     </>

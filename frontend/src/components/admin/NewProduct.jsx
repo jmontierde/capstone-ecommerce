@@ -23,6 +23,7 @@ const NewProduct = () => {
     "Tanks",
     "Batteries",
     "Relx",
+    "Skin",
     "Accessories",
     "Disposable Vapes",
   ];

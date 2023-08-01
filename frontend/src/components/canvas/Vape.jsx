@@ -62,7 +62,8 @@ export function Model(props) {
                   <mesh
                     name="Cartridge_CartridgeMat_0"
                     geometry={nodes.Cartridge_CartridgeMat_0.geometry}
-                    material={logoMaterial}
+                    material={materials.PodMat}
+                    material-color={snap.color}
                   />
                 </group>
                 <group
@@ -79,7 +80,7 @@ export function Model(props) {
                   <mesh
                     name="Case_PodMat_0"
                     geometry={nodes.Case_PodMat_0.geometry}
-                    material={logoMaterial}
+                    material={materials.PodMat}
                     material-color={snap.color}
                   />
                   <mesh

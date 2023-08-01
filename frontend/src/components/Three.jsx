@@ -14,6 +14,7 @@ const Three = () => {
           <Environment preset="sunset" />
         </Suspense>
       </Canvas>
+      <Customizer />
     </div>
   );
 };

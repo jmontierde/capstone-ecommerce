@@ -44,6 +44,7 @@ const productSchema = new mongoose.Schema({
         "Tanks",
         "Batteries",
         "Relx",
+        "Skin",
         "Accessories",
         "Disposable Vapes",
       ],

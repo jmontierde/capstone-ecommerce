@@ -33,6 +33,7 @@ const Home = () => {
     "Tanks",
     "Batteries",
     "Relx",
+    "Skin",
     "Accessories",
     "Disposable Vapes",
   ];
