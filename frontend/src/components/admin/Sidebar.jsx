@@ -12,7 +12,7 @@ const Sidebar = () => {
           </li>
           <li>
             <a
-              className="dropdown-toggle"
+              className="dropdown-toggle cursor-pointer"
               onClick={() => setDropdown(!dropdown)}
             >
               Products
@@ -52,7 +52,7 @@ const Sidebar = () => {
             <Link to="/admin/report">Report</Link>
           </li>
           <li>
-            <Link to="/admin/create">Create Product</Link>
+            <Link to="/admin/maintenance">Maintenance</Link>
           </li>
         </ul>
       </nav>

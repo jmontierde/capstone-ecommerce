@@ -9,12 +9,11 @@ import { fadeAnimation, slideAnimation } from "../config/motion";
 import { ColorPicker, CustomButton, FilePicker, Tab } from "../customizer";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../actions/productActions";
+import Three from "../Three";
 
-const Customizer = () => {
+const Customizer = ({ setSelectedTexture, selectedTexture }) => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
-
-  console.log("CUSTOMIZER", products);
 
   const snap = useSnapshot(state);
 
@@ -29,13 +28,25 @@ const Customizer = () => {
     stylishShirt: false,
   });
 
+  const handleTexture = (texture) => {
+    setSelectedTexture(texture);
+  };
+
   // show tab content depending on the activeTab
   const generateTabContent = () => {
     switch (activeEditorTab) {
       case "colorpicker":
         return <ColorPicker />;
       case "filepicker":
-        return <FilePicker file={file} setFile={setFile} readFile={readFile} />;
+        return (
+          <FilePicker
+            file={file}
+            setFile={setFile}
+            readFile={readFile}
+            selectedTexture={selectedTexture}
+            setSelectedTexture={setSelectedTexture}
+          />
+        );
       case "aipicker":
         return (
           <AIPicker
@@ -143,15 +154,31 @@ const Customizer = () => {
           </motion.div>
 
           <motion.div
-            className="absolute z-10 bottom-16 right-5"
+            className="absolute z-10 inset-y-1/2 right-12"
             {...fadeAnimation}
           >
-            <CustomButton
+            <div className="flex flex-col items-center gap-3  ">
+              <h3 className="font-bold">Textures</h3>
+
+              {products
+                .filter((category) => category.category === "Skin")
+                .map((product) => (
+                  <img
+                    key={product._id}
+                    src={product.images[0].url}
+                    alt={product.name}
+                    className="w-12 h-12 cursor-pointer rounded-full" // Add cursor-pointer class to make it clear it's clickable
+                    onClick={() => handleTexture(product.images[0].url)} // Call the handleProductClick function on click
+                  />
+                ))}
+            </div>
+
+            {/* <CustomButton
               type="filled"
               title="Go Back"
               handleClick={() => (state.intro = true)}
               customStyles="w-fit px-4 py-2.5 mt-24 mr-12 font-bold text-sm"
-            />
+            /> */}
           </motion.div>
 
           <motion.div

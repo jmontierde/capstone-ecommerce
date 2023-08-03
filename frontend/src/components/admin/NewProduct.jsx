@@ -46,8 +46,33 @@ const NewProduct = () => {
     }
   }, [dispatch, alert, error, success, history]);
 
+  const isRequiredFieldEmpty =
+    !name || !price || !description || !category || !stock || !seller;
   const submitHandler = (e) => {
     e.preventDefault();
+
+    if (isRequiredFieldEmpty) {
+      alert.error("Please fill in all required fields.");
+      return;
+    }
+
+    if (!images || images.length === 0) {
+      alert.error("Please select at least one image for the product.");
+      return;
+    }
+
+    // Validate 'price' field
+    const parsedPrice = parseFloat(price);
+    if (
+      isNaN(parsedPrice) ||
+      !/^\d+(\.\d{1,2})?$/.test(price) ||
+      parsedPrice <= 0
+    ) {
+      alert.error(
+        "Please enter a valid positive numeric price for the product."
+      );
+      return;
+    }
 
     const formData = new FormData();
     formData.set("name", name);

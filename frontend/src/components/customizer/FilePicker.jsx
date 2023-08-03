@@ -1,8 +1,27 @@
-import React from "react";
-
 import CustomButton from "./CustomButton";
 
-const FilePicker = ({ file, setFile, readFile }) => {
+const FilePicker = ({
+  file,
+  setFile,
+  readFile,
+  selectedTexture,
+  setSelectedTexture,
+}) => {
+  const handleChange = (event) => {
+    const selectedFile = event.target.files[0];
+
+    setFile(selectedFile);
+  };
+  const handleLogoClick = () => {
+    const texture = file;
+    readFile("logo", texture);
+  };
+
+  const handleFullClick = () => {
+    const texture = file;
+    readFile("full", texture);
+  };
+
   return (
     <div className="filepicker-container">
       <div className="flex-1 flex flex-col">
@@ -10,7 +29,7 @@ const FilePicker = ({ file, setFile, readFile }) => {
           id="file-upload"
           type="file"
           accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
+          onChange={handleChange}
         />
         <label htmlFor="file-upload" className="filepicker-label">
           Upload File
@@ -25,13 +44,13 @@ const FilePicker = ({ file, setFile, readFile }) => {
         <CustomButton
           type="outline"
           title="Logo"
-          handleClick={() => readFile("logo")}
+          handleClick={handleLogoClick}
           customStyles="text-xs"
         />
         <CustomButton
           type="filled"
           title="Full"
-          handleClick={() => readFile("full")}
+          handleClick={handleFullClick}
           customStyles="text-xs"
         />
       </div>
