@@ -43,6 +43,7 @@ import Report from "./components/admin/Report";
 import Customization from "./components/customization/Customization";
 import Three from "./components/Three";
 import Customizer from "./components/pages/Customizer";
+import NewCategory from "./components/admin/NewCategory";
 
 function App() {
   // const dispatch = useDispatch()
@@ -226,6 +227,17 @@ function App() {
             element={
               <ProtectedRoute
                 component={Report}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
+          />
+
+          <Route
+            path="/admin/maintenance/category"
+            element={
+              <ProtectedRoute
+                component={NewCategory}
                 isAdmin={true}
                 isStaff={true}
               />

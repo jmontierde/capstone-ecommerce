@@ -1,16 +1,17 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../actions/productActions";
+import { getProducts, getCategories } from "../actions/productActions";
 import Product from "./product/Product";
 import MetaData from "./layout/MetaData";
 import Pagination from "react-js-pagination";
 
-// import Loader from './layout/Loader'
+import Loader from "./layout/Loader";
 // import { useAlert } from 'react-alert'
 
 const Home = () => {
   const dispatch = useDispatch();
+
   const {
     loading,
     products,
@@ -20,27 +21,30 @@ const Home = () => {
     filteredProductsCount,
   } = useSelector((state) => state.products);
 
+  const { categories } = useSelector((state) => state.categories);
+
   // State
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [rating, setRating] = useState(0);
 
-  const categories = [
-    "Atomizers",
-    "Mods",
-    "Coils",
-    "Tanks",
-    "Batteries",
-    "Relx",
-    "Skin",
-    "Accessories",
-    "Disposable Vapes",
-  ];
+  // const categoriess = [
+  //   "Atomizers",
+  //   "Mods",
+  //   "Coils",
+  //   "Tanks",
+  //   "Batteries",
+  //   "Relx",
+  //   "Skin",
+  //   "Accessories",
+  //   "Disposable Vapes",
+  // ];
 
   const { keyword } = useParams();
 
   useEffect(() => {
+    dispatch(getCategories());
     dispatch(
       getProducts(keyword, currentPage, sortOption, selectedCategories, rating)
     );
@@ -52,8 +56,6 @@ const Home = () => {
     dispatch(getProducts(keyword, 1, e.target.value));
     setCurrentPage(1);
   };
-
-  // Category
 
   const handleCategoryFilterChange = (category) => {
     if (selectedCategories.includes(category)) {
@@ -79,13 +81,13 @@ const Home = () => {
                 <li key={category} className="pt-3">
                   <input
                     type="checkbox"
-                    id={category}
-                    name={category}
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => handleCategoryFilterChange(category)}
+                    id={category.name}
+                    name={category.name}
+                    checked={selectedCategories.includes(category.name).name}
+                    onChange={() => handleCategoryFilterChange(category.name)}
                   />
-                  <label htmlFor={category} className="pl-2">
-                    {category}
+                  <label htmlFor={category.name} className="pl-2">
+                    {category.name}
                   </label>
                 </li>
               ))}

@@ -13,11 +13,13 @@ const {
   getProductReviews,
   deleteReview,
   getAdminProducts,
+  getAllCategories,
 } = require("../controllers/productController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
 router.route("/products").get(getProducts); // This is the path link from POSTMAN
+router.route("/categories").get(getAllCategories);
 router.route("/admin/products").get(getAdminProducts);
 router.route("/product/:id").get(getSingleProduct);
 router.route("/admin/product/new").post(isAuthenticatedUser, newProduct);

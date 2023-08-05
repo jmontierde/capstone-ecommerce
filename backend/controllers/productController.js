@@ -6,9 +6,94 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const APIFeatures = require("../utils/apiFeatures");
 const { request } = require("../app");
 const cloudinary = require("cloudinary");
-const multer = require("multer");
+const Category = require("../models/category");
 
-// // Multer configuration
+//Create a category
+exports.newCategory = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    const category = await Category.create({ name });
+    res.status(201).json({
+      success: true,
+      category,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Category creation failed",
+    });
+  }
+});
+
+//Get Categories
+exports.getAllCategories = catchAsyncErrors(async (req, res, next) => {
+  const categories = await Category.find();
+  res.status(200).json({
+    success: true,
+    categories,
+  });
+});
+
+// Delete a category
+exports.deleteCategory = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const categoryId = req.params.id; // Assuming the category ID is passed as a URL parameter
+
+    // Check if the category with the given ID exists
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    // Delete the category
+    await category.remove();
+
+    res.status(200).json({
+      success: true,
+      message: "Category deleted successfully",
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Category deletion failed",
+    });
+  }
+});
+
+// Update a category
+exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const categoryId = req.params.id; // Assuming the category ID is passed as a URL parameter
+    const { name } = req.body;
+
+    // Check if the category with the given ID exists
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    // Update the category's name
+    category.name = name;
+    await category.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Category updated successfully",
+      category,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Category update failed",
+    });
+  }
+});
 
 //Create new product => /api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors(async (req, res, next) => {

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { newProduct, clearErrors } from "../../actions/productActions";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
 import { useNavigate } from "react-router-dom";
+import { getCategories } from "../../actions/productActions";
 
 const NewProduct = () => {
   const [name, setName] = useState("");
@@ -16,17 +17,19 @@ const NewProduct = () => {
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
-  const categories = [
-    "Atomizers",
-    "Mods",
-    "Coils",
-    "Tanks",
-    "Batteries",
-    "Relx",
-    "Skin",
-    "Accessories",
-    "Disposable Vapes",
-  ];
+  const { categories } = useSelector((state) => state.category);
+
+  // const categories = [
+  //   "Atomizers",
+  //   "Mods",
+  //   "Coils",
+  //   "Tanks",
+  //   "Batteries",
+  //   "Relx",
+  //   "Skin",
+  //   "Accessories",
+  //   "Disposable Vapes",
+  // ];
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -137,8 +140,8 @@ const NewProduct = () => {
                     >
                       <option value="">Select Category</option>
                       {categories.map((category) => (
-                        <option key={category} value={category}>
-                          {category}
+                        <option key={category.name} value={category.name}>
+                          {category.name}
                         </option>
                       ))}
                     </select>

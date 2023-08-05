@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 const Sidebar = () => {
   const [dropdown, setDropdown] = useState(true);
+  const [dropdownMaintenance, setDropdownMaintenance] = useState(true);
 
   return (
     <div className="w-2/12 container ">
@@ -52,7 +53,18 @@ const Sidebar = () => {
             <Link to="/admin/report">Report</Link>
           </li>
           <li>
-            <Link to="/admin/maintenance">Maintenance</Link>
+            <Link onClick={() => setDropdownMaintenance(!dropdownMaintenance)}>
+              Maintenance
+              {dropdownMaintenance ? (
+                <ul className="text-[#000] pl-6">
+                  <li>
+                    <Link to="/admin/maintenance/category">Category</Link>
+                  </li>
+                </ul>
+              ) : (
+                <span></span>
+              )}
+            </Link>
           </li>
         </ul>
       </nav>
