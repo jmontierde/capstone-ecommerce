@@ -36,8 +36,12 @@ const auth = require("./routes/auth");
 const order = require("./routes/order");
 const payment = require("./routes/payment");
 const category = require("./routes/category");
-app.use("/api/v1", payment);
+const chat = require("./routes/chat");
+const messages = require("./routes/messages");
 
+app.use("/api/v1", messages);
+app.use("/api/v1", chat);
+app.use("/api/v1", payment);
 app.use("/api/v1", products);
 app.use("/api/v1", auth);
 app.use("/api/v1", order);
