@@ -44,10 +44,10 @@ const Header = (keyword) => {
             <Link to="/three">Three</Link>
           </li>
           <li>
-            <Link to="/news">News</Link>
+            <Link to="/chat">Chat</Link>
           </li>
           <li>
-            <Link to="/contact">Contact</Link>
+            <Link to="/find/chat">Fimnd</Link>
           </li>
         </ul>
 

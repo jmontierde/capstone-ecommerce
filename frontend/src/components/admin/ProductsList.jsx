@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   getAdminProducts,
   deleteProduct,
@@ -25,21 +27,21 @@ const ProductsList = () => {
     dispatch(getAdminProducts());
 
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
 
     if (deleteError) {
-      alert.error(deleteError);
+      toast.error(deleteError);
       dispatch(clearErrors());
     }
 
     if (isDeleted) {
-      alert.success("Product deleted successfully");
+      toast.success("Product deleted successfully");
       navigate("/admin/products");
       dispatch({ type: DELETE_PRODUCT_RESET });
     }
-  }, [dispatch, alert, error, deleteError, isDeleted]);
+  }, [dispatch, toast, error, deleteError, isDeleted]);
 
   const deleteProductHandler = (id) => {
     dispatch(deleteProduct(id));
@@ -47,6 +49,7 @@ const ProductsList = () => {
 
   return (
     <>
+      <ToastContainer />
       {loading ? (
         <Loader />
       ) : (

@@ -1,6 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Loader from "../layout/Loader";
 import Sidebar from "./Sidebar";
 import { useAlert } from "react-alert";
@@ -38,18 +40,18 @@ const NewCategory = () => {
     dispatch(getCategories());
 
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
 
     if (isDeleted) {
-      alert.success("User deleted successfully");
+      toast.success("User deleted successfully");
       navigate("/admin/maintenance/category");
       dispatch({ type: DELETE_CATEGORY_RESET });
     }
 
     if (isUpdated) {
-      alert.success("Category updated successfully");
+      toast.success("Category updated successfully");
       navigate("/admin/maintenance/category");
       dispatch({ type: UPDATE_CATEGORY_RESET });
     }
@@ -94,7 +96,8 @@ const NewCategory = () => {
   };
 
   return (
-    <div className="">
+    <>
+      <ToastContainer />
       <div className="container px-16 my-auto mb-6 ml-auto w-10/12 flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-4 ">Categories</h1>
         <div className="space-x-3">
@@ -176,7 +179,7 @@ const NewCategory = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

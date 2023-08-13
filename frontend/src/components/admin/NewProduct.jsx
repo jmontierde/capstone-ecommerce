@@ -17,7 +17,9 @@ const NewProduct = () => {
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
-  const { categories } = useSelector((state) => state.category);
+  const { categories } = useSelector((state) => state.categories);
+
+  console.log(categories);
 
   // const categories = [
   //   "Atomizers",

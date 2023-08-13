@@ -1,21 +1,72 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getMessagesAction } from "../../actions/chatAction";
+import { createChat } from "../../actions/chatActions";
 
+import { getUserChats, getChat } from "../../actions/chatActions";
 const GetChat = () => {
-  const { user } = useSelector((state) => state.auth);
-  const { loading, message, error } = useSelector((state) => state.messenger);
-
-  console.log("USER", user._id);
-  console.log("message", message);
-
   const dispatch = useDispatch();
 
+  const { newChat } = useSelector((state) => state.createChat);
+  const { chat } = useSelector((state) => state.chat);
+  const { chats, loading, error } = useSelector((state) => state.userChats);
+
+  const [firstId, setFirstId] = useState("");
+  const [secondId, setSecondId] = useState("");
+
+  const handleCreateChat = () => {
+    console.log("First ID:", firstId);
+    console.log("Second ID:", secondId);
+    dispatch(createChat(firstId, secondId));
+  };
+
   useEffect(() => {
-    dispatch(getMessagesAction(user._id));
+    dispatch(getUserChats("64ac4948876c6f8284770b60"));
+    dispatch(getChat("64ac4948876c6f8284770b60", "64d5d52de9ed0db508b1f859"));
   }, [dispatch]);
 
-  return <div>{message.text}</div>;
+  return (
+    <div>
+      <h1>Chat Creation</h1>
+      <div>
+        <input
+          type="text"
+          placeholder="First ID"
+          value={firstId}
+          onChange={(e) => setFirstId(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Second ID"
+          value={secondId}
+          onChange={(e) => setSecondId(e.target.value)}
+        />
+        <button onClick={handleCreateChat}>Create newChat</button>
+      </div>
+      <div>
+        <h1>User Chats</h1>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error: {error}</p>
+        ) : (
+          <div>
+            <h2>Chats List</h2>
+            <ul>
+              {chats.map((chat) => (
+                <li key={chat._id}>{chat._id}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      {/* {newChat && (
+        <div>
+          <h2>Chat Info</h2>
+          <p>Chat ID: {newChat._id}</p>
+        </div>
+      )} */}
+    </div>
+  );
 };
 
 export default GetChat;

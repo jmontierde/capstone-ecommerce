@@ -1,6 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import { useAlert } from "react-alert";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateUser,
@@ -35,20 +37,21 @@ const UpdateUser = () => {
     }
 
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
 
-    if (isUpdated) {
-      alert.success("User updated successfully");
+    console.log("ISUPDATED ", isUpdated);
 
+    if (isUpdated) {
+      toast.success("User updated successfully");
       navigate("/admin/users");
 
       dispatch({
         type: UPDATE_USER_RESET,
       });
     }
-  }, [dispatch, alert, error, navigate, isUpdated, userId, user]);
+  }, [dispatch, toast, error, navigate, isUpdated, userId, user]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -63,6 +66,7 @@ const UpdateUser = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="flex container mx-auto px-12">
         <Sidebar />
         <div className="w-10/12 container p-6">

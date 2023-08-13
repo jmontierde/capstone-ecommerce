@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import Sidebar from "./Sidebar";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,34 +17,28 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const UpdateProduct = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [stock, setStock] = useState(0);
-  const [seller, setSeller] = useState("");
+  const { error, product } = useSelector((state) => state.productDetails);
+
+  const [name, setName] = useState(product?.name || "");
+  const [price, setPrice] = useState(product?.price || "");
+  const [description, setDescription] = useState(product?.description || "");
+  const [category, setCategory] = useState(product?.category || "");
+  const [stock, setStock] = useState(product?.stock || "");
+  const [seller, setSeller] = useState(product?.seller || "");
   const [images, setImages] = useState([]);
 
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
-  const categories = [
-    "Atomizers",
-    "Mods",
-    "Coils",
-    "Tanks",
-    "Batteries",
-    "Relx",
-    "Accessories",
-    "Disposable Vapes",
-  ];
+  const { categories } = useSelector((state) => state.categories);
+
+  console.log("NAME", name);
 
   const alert = useAlert();
   const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { error, product } = useSelector((state) => state.productDetails);
   const {
     loading,
     error: updateError,
@@ -50,11 +46,11 @@ const UpdateProduct = () => {
   } = useSelector((state) => state.product);
 
   const productId = id;
-
   useEffect(() => {
-    if (product && product._id !== productId) {
-      dispatch(getProductDetails(productId));
-    } else {
+    dispatch(getProductDetails(productId));
+  }, [dispatch, productId]);
+  useEffect(() => {
+    if (product) {
       setName(product.name);
       setPrice(product.price);
       setDescription(product.description);
@@ -65,21 +61,22 @@ const UpdateProduct = () => {
     }
 
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
 
     if (updateError) {
-      alert.error(updateError);
+      toast(updateError);
       dispatch(clearErrors());
     }
 
     if (isUpdated) {
-      navigate("/admin/products");
-      alert.success("Product updated successfully");
-      dispatch({ type: UPDATE_PRODUCT_RESET });
+      toast.success("Product updated successfully");
+      setTimeout(() => {
+        dispatch({ type: UPDATE_PRODUCT_RESET });
+      }, 2000);
     }
-  }, [dispatch, alert, error, isUpdated, updateError, product, productId]);
+  }, [dispatch, error, isUpdated, updateError, product]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -120,8 +117,10 @@ const UpdateProduct = () => {
     });
   };
 
+  console.log("Name", name);
   return (
     <>
+      <ToastContainer />
       <div className="flex container mx-auto px-12">
         <Sidebar />
         <div className="w-10/12 container p-6">
@@ -148,8 +147,8 @@ const UpdateProduct = () => {
                     >
                       <option value="">Select Category</option>
                       {categories.map((category) => (
-                        <option key={category} value={category}>
-                          {category}
+                        <option key={category.name} value={category.name}>
+                          {category.name}
                         </option>
                       ))}
                     </select>
@@ -223,22 +222,46 @@ const UpdateProduct = () => {
                     ))}
 
                     <div className="flex justify-center items-center text-center border-2 py-12 rounded border-dotted border-[#000] w-44">
-                      <label
-                        htmlFor="fileInput"
-                        className="cursor-pointer text-[#413f3f] text-sm font-thin"
-                      >
-                        Drop your image here, or select
-                        <span className="text-[#0c2176] font-normal pl-1">
-                          click to browse.
-                        </span>
-                      </label>
-                      <input
-                        id="fileInput"
-                        type="file"
-                        className="hidden"
-                        onChange={onChange}
-                        multiple
-                      />
+                      <div>
+                        <label
+                          htmlFor="fileInput"
+                          className="cursor-pointer text-[#413f3f] text-sm font-thin"
+                        >
+                          Drop your image here, or select
+                          <span className="text-[#0c2176] font-normal pl-1">
+                            click to browse.
+                          </span>
+                        </label>
+                        <input
+                          id="fileInput"
+                          type="file"
+                          className="hidden"
+                          onChange={onChange}
+                          multiple
+                        />
+                      </div>
+                      {/* {oldImages &&
+                        oldImages.map((img) => (
+                          <img
+                            key={img}
+                            src={img.url}
+                            alt={img.url}
+                            className="mt-3 mr-2"
+                            width="55"
+                            height="52"
+                          />
+                        ))} */}
+
+                      {imagesPreview.map((img) => (
+                        <img
+                          src={img}
+                          key={img}
+                          alt="Images Preview"
+                          className="mt-3 mr-2"
+                          width="55"
+                          height="52"
+                        />
+                      ))}
                     </div>
                   </div>
 

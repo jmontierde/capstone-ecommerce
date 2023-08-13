@@ -32,7 +32,16 @@ import {
   orderReducer,
 } from "./reducers/orderReducers";
 
+import {
+  chatReducer,
+  createChatReducer,
+  userChatsReducer,
+} from "./reducers/chatReducers";
+
 const reducer = combineReducers({
+  chat: chatReducer,
+  userChats: userChatsReducer,
+  createChat: createChatReducer,
   products: productsReducer,
   productDetails: productDetailsReducer,
   newProduct: newProductReducer,

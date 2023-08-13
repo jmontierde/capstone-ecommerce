@@ -29,18 +29,6 @@ const Home = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [rating, setRating] = useState(0);
 
-  // const categoriess = [
-  //   "Atomizers",
-  //   "Mods",
-  //   "Coils",
-  //   "Tanks",
-  //   "Batteries",
-  //   "Relx",
-  //   "Skin",
-  //   "Accessories",
-  //   "Disposable Vapes",
-  // ];
-
   const { keyword } = useParams();
 
   useEffect(() => {
@@ -68,6 +56,8 @@ const Home = () => {
 
   let count = productsCount;
 
+  console.log("PRODUCT", products);
+
   return (
     <Fragment>
       <MetaData title={"Sir Jacks"} />
@@ -78,15 +68,19 @@ const Home = () => {
             <h3 className="font-bold">Filter by Category:</h3>
             <ul>
               {categories.map((category) => (
-                <li key={category} className="pt-3">
+                <li key={category.id} className="pt-3 ">
                   <input
                     type="checkbox"
+                    className="cursor-pointer"
                     id={category.name}
                     name={category.name}
-                    checked={selectedCategories.includes(category.name).name}
+                    checked={selectedCategories.includes(category.name)}
                     onChange={() => handleCategoryFilterChange(category.name)}
                   />
-                  <label htmlFor={category.name} className="pl-2">
+                  <label
+                    htmlFor={category.name}
+                    className="pl-2 cursor-pointer"
+                  >
                     {category.name}
                   </label>
                 </li>
@@ -113,8 +107,8 @@ const Home = () => {
 
           <div className="grid grid-cols-auto md:grid-cols-4 gap-6 text-center h-screen">
             {products &&
-              products.map((product) => (
-                <Product key={product._id} product={product} />
+              products.map((product, index) => (
+                <Product key={`${product._id}-${index}`} product={product} />
               ))}
           </div>
           {resPerPage <= count && (

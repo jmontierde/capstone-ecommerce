@@ -44,6 +44,7 @@ import Customization from "./components/customization/Customization";
 import Three from "./components/Three";
 import Customizer from "./components/pages/Customizer";
 import NewCategory from "./components/admin/NewCategory";
+import GetChat from "./components/chat/GetChat";
 
 function App() {
   // const dispatch = useDispatch()
@@ -86,6 +87,8 @@ function App() {
           <Route exact path="/customization" element={<Customization />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/three" element={<Three />} />
+          <Route exact path="/chat" element={<GetChat />} />
+
           <Route
             path="/shipping"
             element={<ProtectedRoute component={Shipping} />}

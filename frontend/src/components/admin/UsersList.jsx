@@ -5,6 +5,8 @@ import Loader from "../layout/Loader";
 import Sidebar from "./Sidebar";
 
 import { useAlert } from "react-alert";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers, deleteUser, clearErrors } from "../../actions/userActions";
 import { DELETE_USER_RESET } from "../../constants/userConstant";
@@ -20,12 +22,12 @@ const UsersList = () => {
     dispatch(allUsers());
 
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
 
     if (isDeleted) {
-      alert.success("User deleted successfully");
+      toast.success("User deleted successfully");
       navigate("/admin/users");
       dispatch({ type: DELETE_USER_RESET });
     }
@@ -44,6 +46,8 @@ const UsersList = () => {
         <div className="flex container mx-auto px-12">
           <Sidebar />
           <div className="flex w-10/12 justify-center ">
+            <ToastContainer />
+
             <table className="table-fixed w-full h-32">
               <thead className="bg-[#ECEFF1]">
                 <tr>
