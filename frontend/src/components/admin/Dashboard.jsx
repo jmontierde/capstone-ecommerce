@@ -17,8 +17,6 @@ const Dashboard = () => {
   );
   const { user } = useSelector((state) => state.auth);
 
-  console.log("ORDERS", orders);
-
   //   let outOfStock = 0;
   //   products.forEach((product) => {
   //     if (product.stock === 0) {

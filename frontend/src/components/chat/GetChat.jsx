@@ -4,12 +4,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { createChat, getUserChats, getChat } from "../../actions/chatActions";
 
 import { createMessages, getMessages } from "../../actions/messagesActions";
+import { allUsers } from "../../actions/userActions";
+import UserChat from "./UserChat";
+import Chatbox from "./Chatbox";
+
 const GetChat = () => {
   const dispatch = useDispatch();
 
   const { newChat } = useSelector((state) => state.createChat);
   const { chat } = useSelector((state) => state.chat);
   const { chats, loading, error } = useSelector((state) => state.userChats);
+
+  const { user } = useSelector((state) => state.auth);
+  const { users } = useSelector((state) => state.allUsers);
 
   // const { createMessages } = useSelector((state) => state.createMessages);
 
@@ -21,25 +28,27 @@ const GetChat = () => {
   const [text, setText] = useState("");
 
   const handleMessages = () => {
-    console.log("Before dispatching createMessages");
     dispatch(createMessages(chatId, senderId, text));
-    console.log("After dispatching createMessages");
   };
   const handleCreateChat = () => {
-    console.log("First ID:", firstId);
-    console.log("Second ID:", secondId);
     dispatch(createChat(firstId, secondId));
   };
 
   useEffect(() => {
-    dispatch(getUserChats("64ac4948876c6f8284770b60"));
+    dispatch(allUsers());
+    dispatch(getUserChats(user._id));
     dispatch(getChat("64ac4948876c6f8284770b60", "64d5d52de9ed0db508b1f859"));
     dispatch(getMessages("64ac4948876c6f8284770b60"));
   }, [dispatch]);
 
   return (
     <div>
-      <h1>Chat Creation</h1>
+      <div className="flex">
+        <UserChat user={user} />
+      </div>
+
+      {/* <h1>Chat Creation</h1>
+
       <div>
         <input
           type="text"
@@ -71,11 +80,9 @@ const GetChat = () => {
             </ul>
           </div>
         )}
-      </div>
+      </div> */}
 
-      {/* MESSAGES */}
-
-      <div>
+      {/* <div>
         <input
           type="text"
           placeholder="Chat Id"
@@ -96,7 +103,7 @@ const GetChat = () => {
         />
 
         <button onClick={handleMessages}>Messages</button>
-      </div>
+      </div> */}
     </div>
   );
 };
