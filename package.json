@@ -17,6 +17,7 @@
     "api": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "caniuse-lite": "^1.0.30001520",
     "cloudinary": "^1.36.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

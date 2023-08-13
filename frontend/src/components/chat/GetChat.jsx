@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createChat } from "../../actions/chatActions";
 
-import { getUserChats, getChat } from "../../actions/chatActions";
+import { createChat, getUserChats, getChat } from "../../actions/chatActions";
+
+import { createMessages, getMessages } from "../../actions/messagesActions";
 const GetChat = () => {
   const dispatch = useDispatch();
 
@@ -10,9 +11,20 @@ const GetChat = () => {
   const { chat } = useSelector((state) => state.chat);
   const { chats, loading, error } = useSelector((state) => state.userChats);
 
+  // const { createMessages } = useSelector((state) => state.createMessages);
+
   const [firstId, setFirstId] = useState("");
   const [secondId, setSecondId] = useState("");
 
+  const [chatId, setChatId] = useState("");
+  const [senderId, setSenderId] = useState("");
+  const [text, setText] = useState("");
+
+  const handleMessages = () => {
+    console.log("Before dispatching createMessages");
+    dispatch(createMessages(chatId, senderId, text));
+    console.log("After dispatching createMessages");
+  };
   const handleCreateChat = () => {
     console.log("First ID:", firstId);
     console.log("Second ID:", secondId);
@@ -22,6 +34,7 @@ const GetChat = () => {
   useEffect(() => {
     dispatch(getUserChats("64ac4948876c6f8284770b60"));
     dispatch(getChat("64ac4948876c6f8284770b60", "64d5d52de9ed0db508b1f859"));
+    dispatch(getMessages("64ac4948876c6f8284770b60"));
   }, [dispatch]);
 
   return (
@@ -59,12 +72,31 @@ const GetChat = () => {
           </div>
         )}
       </div>
-      {/* {newChat && (
-        <div>
-          <h2>Chat Info</h2>
-          <p>Chat ID: {newChat._id}</p>
-        </div>
-      )} */}
+
+      {/* MESSAGES */}
+
+      <div>
+        <input
+          type="text"
+          placeholder="Chat Id"
+          value={chatId}
+          onChange={(e) => setChatId(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Sender Id"
+          value={senderId}
+          onChange={(e) => setSenderId(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+
+        <button onClick={handleMessages}>Messages</button>
+      </div>
     </div>
   );
 };

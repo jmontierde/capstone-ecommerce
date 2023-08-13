@@ -37,8 +37,14 @@ import {
   createChatReducer,
   userChatsReducer,
 } from "./reducers/chatReducers";
+import {
+  createMessagesReducer,
+  getMessagesReducer,
+} from "./reducers/messageReducers";
 
 const reducer = combineReducers({
+  messages: getMessagesReducer,
+  createMessages: createMessagesReducer,
   chat: chatReducer,
   userChats: userChatsReducer,
   createChat: createChatReducer,
