@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getUserChats } from "../../actions/chatActions";
+import { getUserChats, createChat } from "../../actions/chatActions";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../../actions/userActions";
-import { createChat } from "../../actions/chatActions";
-import { getMessages } from "../../actions/messagesActions";
+import { getMessages, createMessages } from "../../actions/messagesActions";
+
 import moment from "moment";
+import InputEmoji from "react-input-emoji";
 import Chatbox from "./Chatbox";
 const UserChat = (props) => {
   const { chats, error } = useSelector((state) => state.userChats);
@@ -12,32 +13,33 @@ const UserChat = (props) => {
   const user = useSelector((state) => state.auth);
   const { messages, loading } = useSelector((state) => state.messages);
 
-  const { newChat } = useSelector((state) => state.createChat);
+  // const { newChat } = useSelector((state) => state.createChat);
 
   const dispatch = useDispatch();
 
-  if (user.user.role === "user") {
-    const chatAdmin = users
-      .filter(
-        (userFilt) => userFilt.role === "admin" || userFilt.role === "staff"
-      )
-      .map((adminUser) => adminUser);
-  } else {
-    const chatUser = users
-      .filter((userFilt) => userFilt.role === "user")
-      .map((user) => user);
-  }
-
   const firstId = user.user._id;
+  const [getName, setGetName] = useState("");
+
+  console.log("CHATS", chats);
+
   const [secondId, setSecondId] = useState(null);
 
-  const getId = (secondId) => {
+  //Create Message
+  // const [chatId, setChatId] = useState(secondId);
+  const [senderId, setSenderId] = useState("");
+  const [text, setText] = useState("");
+
+  const getId = (secondId, getName) => {
     setSecondId(secondId);
+    setGetName(getName);
     dispatch(createChat(firstId, secondId));
     dispatch(getMessages(secondId));
   };
 
-  console.log("MY MESSAGES", messages);
+  function handleMessage(secondId, firstId, text) {
+    dispatch(createMessages(secondId, firstId, text));
+    setText(""); // Clear the message input
+  }
 
   //Create Chat
 
@@ -61,7 +63,7 @@ const UserChat = (props) => {
                   .map((user) => (
                     <div
                       className="flex items-center space-x-3 px-6 py-3 bg-[#9b8989] my-3"
-                      onClick={() => getId(user._id)}
+                      onClick={() => getId(user._id, user.name)}
                     >
                       <img
                         src={user.avatar.url}
@@ -107,19 +109,44 @@ const UserChat = (props) => {
 
       {/* CHAT BOX */}
       <div className="bg-[#c7a6a6] w-1/2">
-        <h1>HELLO WORLD</h1>
-        {loading ? (
-          <p>Loading messages...</p>
-        ) : messages.length === 0 ? (
-          <p>No messages available</p>
-        ) : (
-          messages.map((message, index) => (
-            <div key={index}>
-              <span>{message.text}</span>
-              <span>{moment(message.createdAt).calendar()}</span>
-            </div>
-          ))
-        )}
+        <h1 className="bg-[#dfc9c9] py-3">{getName}</h1>
+        <div className="p-6 space-y-3">
+          {loading ? (
+            <p>Loading messages...</p>
+          ) : messages.length === 0 ? (
+            <p>No messages available</p>
+          ) : (
+            // className="bg-[#b76363] flex flex-col p-3"
+            messages.map((message, index) => (
+              <div
+                key={index}
+                className={`${
+                  firstId === user.user._id
+                    ? "flex items-end justify-end flex-grow-0 bg-[#af9393]"
+                    : "flex items-start justify-start text-start flex-grow-0 bg-slate-500"
+                }`}
+              >
+                <span>{message.text}</span>
+                <span className="text-[#1c1c1c]">
+                  {moment(message.createdAt).format("llll")}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
+        <div className="p-6 space-x-3 flex-grow-0">
+          <InputEmoji
+            value={text}
+            onChange={setText}
+            placeholder="Type a message"
+          />
+          <button
+            className="bg-[#aaa6a6] rounded px-6 py-1 text-sm"
+            onClick={() => handleMessage(secondId, firstId, text)}
+          >
+            SEND
+          </button>
+        </div>
       </div>
     </div>
   );

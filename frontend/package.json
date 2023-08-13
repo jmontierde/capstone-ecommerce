@@ -30,6 +30,7 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.10.1",
+    "react-input-emoji": "^5.1.1",
     "react-js-pagination": "^3.0.3",
     "react-redux": "^7.1.0",
     "react-router-dom": "^6.9.0",
