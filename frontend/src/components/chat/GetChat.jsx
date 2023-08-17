@@ -7,6 +7,7 @@ import { createMessages, getMessages } from "../../actions/messagesActions";
 import { allUsers } from "../../actions/userActions";
 import UserChat from "./UserChat";
 import Chatbox from "./Chatbox";
+import Chat from "./Chat";
 
 const GetChat = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,8 @@ const GetChat = () => {
   return (
     <div>
       <div className="flex">
-        <UserChat user={user} />
+        {/* <UserChat user={user} /> */}
+        <Chat />
       </div>
 
       {/* <h1>Chat Creation</h1>
