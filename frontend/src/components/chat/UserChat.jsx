@@ -185,6 +185,8 @@ const UserChat = (props) => {
     dispatch(getChat(firstId, secondId));
     dispatch(getUserChats(firstId));
     dispatch(getMessages(secondId));
+
+    dispatch(getMessages(firstId, secondId));
   };
 
   function handleMessage(secondId, firstId, text) {
@@ -193,13 +195,14 @@ const UserChat = (props) => {
     setText(""); // Clear the message input
   }
 
+  console.log("FIRST ", firstId);
   console.log("SECOND ", secondId);
   console.log("MESSAGES", messages);
 
   //Create Chat
   useEffect(() => {
     dispatch(allUsers());
-  }, [dispatch]);
+  }, [dispatch, secondId]);
 
   return (
     <div className="flex w-screen">
