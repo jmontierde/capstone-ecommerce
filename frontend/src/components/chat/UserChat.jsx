@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUserChats, createChat } from "../../actions/chatActions";
+import { getUserChats, createChat, getChat } from "../../actions/chatActions";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../../actions/userActions";
 import { getMessages, createMessages } from "../../actions/messagesActions";
@@ -9,43 +9,54 @@ import InputEmoji from "react-input-emoji";
 import Chatbox from "./Chatbox";
 const UserChat = (props) => {
   const { chats, error } = useSelector((state) => state.userChats);
+  const { chat } = useSelector((state) => state.chat);
+  const { newChat } = useSelector((state) => state.createChat);
+
   const { users } = useSelector((state) => state.allUsers);
   const user = useSelector((state) => state.auth);
   const { messages, loading } = useSelector((state) => state.messages);
 
+  console.log("MEWSSAGE", messages);
+
   // const { newChat } = useSelector((state) => state.createChat);
 
   const dispatch = useDispatch();
+  const [currentChat, setCurrentChat] = useState(null);
 
-  const firstId = user.user._id;
+  const senderId = user.user._id;
   const [getName, setGetName] = useState("");
 
-  console.log("CHATS", chats);
-
-  const [secondId, setSecondId] = useState(null);
-
-  //Create Message
-  // const [chatId, setChatId] = useState(secondId);
-  const [senderId, setSenderId] = useState("");
+  const [chatId, setChatId] = useState(null);
   const [text, setText] = useState("");
 
-  const getId = (secondId, getName) => {
-    setSecondId(secondId);
+  // CHAT
+
+  console.log("CHATA", chat);
+
+  // MESSAGE
+
+  //Create Message
+
+  const getId = (chatId, getName) => {
+    setChatId(chatId);
     setGetName(getName);
-    dispatch(createChat(firstId, secondId));
-    dispatch(getMessages(secondId));
+    dispatch(createChat(senderId, chatId));
+    dispatch(getChat(senderId, chatId));
+    dispatch(getUserChats(senderId));
   };
 
-  function handleMessage(secondId, firstId, text) {
-    dispatch(createMessages(secondId, firstId, text));
+  console.log("Chat", chat);
+
+  function handleMessage(chatId, senderId, text) {
+    dispatch(createMessages(chatId, senderId, text));
+
     setText(""); // Clear the message input
   }
 
   //Create Chat
-
   useEffect(() => {
     dispatch(allUsers());
-    dispatch(getUserChats(props.user._id));
+    dispatch(getMessages(chatId));
   }, [dispatch]);
 
   return (
@@ -121,9 +132,9 @@ const UserChat = (props) => {
               <div
                 key={index}
                 className={`${
-                  firstId === user.user._id
-                    ? "flex items-end justify-end flex-grow-0 bg-[#af9393]"
-                    : "flex items-start justify-start text-start flex-grow-0 bg-slate-500"
+                  message.senderId === user.user._id
+                    ? "flex items-end justify-end flex-grow-0 bg-[#1e3f65]"
+                    : "flex items-start justify-start text-start flex-grow-0 bg-[#a33296]"
                 }`}
               >
                 <span>{message.text}</span>
@@ -142,7 +153,7 @@ const UserChat = (props) => {
           />
           <button
             className="bg-[#aaa6a6] rounded px-6 py-1 text-sm"
-            onClick={() => handleMessage(secondId, firstId, text)}
+            onClick={() => handleMessage(chatId, senderId, text)}
           >
             SEND
           </button>

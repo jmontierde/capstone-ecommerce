@@ -20,6 +20,8 @@ const GetChat = () => {
 
   // const { createMessages } = useSelector((state) => state.createMessages);
 
+  console.log("CHAT", chat);
+
   const [firstId, setFirstId] = useState("");
   const [secondId, setSecondId] = useState("");
 

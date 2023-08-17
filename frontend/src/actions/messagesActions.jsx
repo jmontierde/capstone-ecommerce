@@ -60,8 +60,6 @@ export const getMessages = (chatId) => async (dispatch) => {
       config
     );
 
-    console.log("GET MESSAGES", data);
-
     dispatch({
       type: GET_MESSAGES_SUCCESS,
       payload: data.messages,
