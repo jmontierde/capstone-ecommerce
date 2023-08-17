@@ -23,6 +23,41 @@ app.use(
   })
 );
 
+const { Server } = require("socket.io");
+
+const io = new Server({ cors: "http://127.0.0.1:5173" });
+io.listen(3000);
+
+let onlineUsers = [];
+
+io.on("connection", (socket) => {
+  console.log("NEW CONNECTION", socket.id);
+
+  socket.on("addNewUser", (userId) => {
+    !onlineUsers.some((user) => user.userId === userId) &&
+      onlineUsers.push({ userId, socketId: socket.id });
+
+    console.log("onlineUsers", onlineUsers);
+
+    io.emit("getOnlineUsers", onlineUsers);
+  });
+
+  //add message
+  socket.on("sendMessage", (message) => {
+    const user = onlineUsers.find((user) => user.userId === v.secondId);
+
+    console.log("APP", message);
+    if (user) {
+      io.to(user.socketId).emit("getMessage", message);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
+    io.emit("getOnlineUsers", onlineUsers);
+  });
+});
+
 app.use(
   cors({
     origin: "http://127.0.0.1:5173", // Replace with your frontend domain
@@ -38,6 +73,7 @@ const payment = require("./routes/payment");
 const category = require("./routes/category");
 const chat = require("./routes/chat");
 const messages = require("./routes/messages");
+const { disconnect } = require("mongoose");
 
 app.use("/api/v1", messages);
 app.use("/api/v1", chat);
