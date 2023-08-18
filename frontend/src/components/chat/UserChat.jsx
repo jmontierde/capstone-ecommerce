@@ -9,13 +9,26 @@ import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import Chatbox from "./Chatbox";
 const UserChat = (props) => {
+  const [recipientUser, setRecipientUser] = useState(null);
+
+  const recipId = props.chat?.members.find((id) => id !== props.user?._id);
+
+  console.log("PROPS CHAT", props.chat);
+  console.log("PROPS USERS", props.users);
+
+  console.log("RECIP", recipId);
+
   // const { users, error } = useSelector((state) => state.userChats);
   const { chat } = useSelector((state) => state.chat);
   const { chats } = useSelector((state) => state.userChats);
   const { messages, loading } = useSelector((state) => state.messages);
 
+  console.log("Chats", chats);
+
   const { users } = useSelector((state) => state.allUsers);
   const user = useSelector((state) => state.auth);
+
+  console.log("MY PROPS", props);
 
   const dispatch = useDispatch();
   const [currentChat, setCurrentChat] = useState(null);
