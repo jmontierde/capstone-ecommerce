@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { createMessages, getMessages } from "../../actions/messagesActions";
+import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import { useSelector, useDispatch } from "react-redux";
+import { createMessages, getMessages } from "../../actions/messagesActions";
 
 const Chatbox = ({ users, currentChat, user }) => {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.messages.messages);
-
   const [textMessage, setTextMessage] = useState("");
-
-  console.log("CURRENT CHAT", currentChat);
 
   useEffect(() => {
     if (currentChat && currentChat.members.length >= 2) {
-      const chatId = currentChat.members[1]; // Assuming chat ID is in the second position
+      const chatId = currentChat.members[1];
       dispatch(getMessages(chatId));
     }
   }, [currentChat]);
@@ -22,9 +20,19 @@ const Chatbox = ({ users, currentChat, user }) => {
     <div>
       Chatbox
       <div>
-        {messages.map((message, index) => (
-          <div key={index}>
+        {messages.map((message) => (
+          <div
+            key={message._id} // Use a unique ID from your messages data
+            className={`${
+              message.senderId === user._id
+                ? "flex items-end justify-end flex-grow-0 bg-[#1e3f65]"
+                : "flex items-start justify-start text-start flex-grow-0 bg-[#a33296]"
+            }`}
+          >
             <span>{message.text}</span>
+            <span className="text-[#1c1c1c]">
+              {moment(message.createdAt).format("llll")}
+            </span>
           </div>
         ))}
       </div>
@@ -34,7 +42,17 @@ const Chatbox = ({ users, currentChat, user }) => {
           onChange={setTextMessage}
           placeholder="Type a message"
         />
-        <button className="bg-[#aaa6a6] rounded px-6 py-1 text-sm">SEND</button>
+        <button
+          className="bg-[#aaa6a6] rounded px-6 py-1 text-sm"
+          onClick={
+            () =>
+              dispatch(
+                createMessages(currentChat.members[1], user._id, textMessage)
+              ) // Use the correct chatId here
+          }
+        >
+          SEND
+        </button>
       </div>
     </div>
   );

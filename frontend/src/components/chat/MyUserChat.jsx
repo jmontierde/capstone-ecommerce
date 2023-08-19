@@ -8,8 +8,6 @@ const MyUserChat = ({ users, chat, user }) => {
   // Find the recipient user object using the ID
   const recipientUser = users.find((u) => u._id === recipientId);
 
-  //   console.log("REC USER",recipientUser)
-
   return (
     <>
       <div className="flex flex-col my-3">

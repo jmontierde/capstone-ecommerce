@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
-import UserChat from "./UserChat";
-import Chatbox from "./Chatbox";
 import { allUsers } from "../../actions/userActions";
 import MyUserChat from "./MyUserChat";
+import Chatbox from "./Chatbox";
 import PotentialChat from "./PotentialChat";
 
 const Chat = () => {
-  // Redux store
   const { chats, loading } = useSelector((state) => state.userChats);
   const { users } = useSelector((state) => state.allUsers);
   const { user } = useSelector((state) => state.auth);
-  // const { chat } = useSelector((state) => state.chat);
-
   const dispatch = useDispatch();
 
-  // Use State
   const [currentChat, setCurrentChat] = useState(null);
 
-  const updateCurrentChat = (currentChat) => {
-    setCurrentChat(currentChat);
-  };
+  // const filteredChats = chats.filter(
+  //   (chat) => chat.members[0] === user._id || chat.members[1] === user._id
+  // );
 
-  console.log("CURRENT CHAT CURRENT", currentChat);
+  // const filterUser = users.filter(u => u.id === filteredChats)
+
+  // console.log("filteredChats", filteredChats);
+
+  const updateCurrentChat = (chat) => {
+    setCurrentChat(chat); // Store the chat ID
+  };
 
   useEffect(() => {
     dispatch(allUsers());
-  }, dispatch);
+  }, [dispatch]);
 
   return (
     <div className="flex">
@@ -38,25 +38,16 @@ const Chat = () => {
           <section className="px-12 flex justify-between w-screen">
             <div>
               {loading && <p>Loading chats...</p>}
-              {chats?.map((chat, index) => (
-                <div key={index} onClick={() => updateCurrentChat(chat)}>
-                  {/* <UserChat chat={chat} users={users} /> */}
+              {chats?.map((chat) => (
+                <div key={chat._id} onClick={() => updateCurrentChat(chat)}>
                   <MyUserChat chat={chat} users={users} user={user} />
                 </div>
               ))}
-
-              {/* <UserChat chats={chats} /> */}
-
-              {/* {chats.map((chat, index) => (
-                <div key={index}>
-                  <UserChat chats={chat} />
-                </div>
-              ))} */}
             </div>
           </section>
         )}
       </div>
-      <div className="flex flex-col  w-1/2">
+      <div className="flex flex-col w-1/2">
         <Chatbox users={users} currentChat={currentChat} user={user} />
       </div>
     </div>

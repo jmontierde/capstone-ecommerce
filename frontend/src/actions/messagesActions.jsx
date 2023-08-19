@@ -42,7 +42,7 @@ export const createMessages = (chatId, senderId, text) => async (dispatch) => {
 };
 
 //Get Messages
-export const getMessages = (chatId) => async (dispatch) => {
+export const getMessages = (currentChat) => async (dispatch) => {
   try {
     dispatch({ type: GET_MESSAGES_REQUEST });
 
@@ -56,7 +56,7 @@ export const getMessages = (chatId) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `http://localhost:7000/api/v1/messages/${chatId}`,
+      `http://localhost:7000/api/v1/messages/${currentChat}`,
       config
     );
 
