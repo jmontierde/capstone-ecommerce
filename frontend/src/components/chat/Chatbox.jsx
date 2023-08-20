@@ -16,13 +16,18 @@ const Chatbox = ({ users, currentChat, user }) => {
     }
   }, [currentChat]);
 
+  const handleMessage = () => {
+    dispatch(createMessages(currentChat.members[1], user._id, textMessage));
+    setTextMessage(""); // Clear the input field after sending
+  };
+
   return (
     <div>
       Chatbox
       <div>
         {messages.map((message) => (
           <div
-            key={message._id} // Use a unique ID from your messages data
+            key={message._id}
             className={`${
               message.senderId === user._id
                 ? "flex items-end justify-end flex-grow-0 bg-[#1e3f65]"
@@ -44,12 +49,7 @@ const Chatbox = ({ users, currentChat, user }) => {
         />
         <button
           className="bg-[#aaa6a6] rounded px-6 py-1 text-sm"
-          onClick={
-            () =>
-              dispatch(
-                createMessages(currentChat.members[1], user._id, textMessage)
-              ) // Use the correct chatId here
-          }
+          onClick={handleMessage}
         >
           SEND
         </button>

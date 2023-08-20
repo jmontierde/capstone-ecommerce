@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { createChat } from "../../actions/chatActions";
 import { useDispatch, useSelector } from "react-redux";
 
-const PotentialChat = ({ users, chats, user }) => {
+const PotentialChat = ({ users, chats, user, onlineUsers }) => {
+  const dispatch = useDispatch();
+
+  console.log("POTENTIAL", onlineUsers);
   //   const pChats = users.filter((u) => {
   //     let isChatCreated = false;
 
@@ -14,7 +17,6 @@ const PotentialChat = ({ users, chats, user }) => {
   //     }
   //   });
 
-  const dispatch = useDispatch();
   //   useEffect(() => {
 
   //   }, [dispatch])
@@ -32,7 +34,15 @@ const PotentialChat = ({ users, chats, user }) => {
                 onClick={() => dispatch(createChat(user._id, u._id))}
               >
                 {u.name}
-                <span>Online</span>
+                <span
+                  className={
+                    onlineUsers?.some((user) => user?.userId === u?._id)
+                      ? "bg-[#249320] rounded-full"
+                      : ""
+                  }
+                >
+                  Online
+                </span>
               </div>
             ))}
       </div>
