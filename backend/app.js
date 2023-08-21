@@ -44,9 +44,10 @@ io.on("connection", (socket) => {
 
   //add message
   socket.on("sendMessage", (message) => {
-    const user = onlineUsers.find((user) => user.userId === v.secondId);
-
-    console.log("APP", message);
+    const user = onlineUsers.find(
+      (user) => user.userId === message.recipientId
+    );
+    console.log("sendMessage event received:", message);
     if (user) {
       io.to(user.socketId).emit("getMessage", message);
     }
@@ -73,7 +74,6 @@ const payment = require("./routes/payment");
 const category = require("./routes/category");
 const chat = require("./routes/chat");
 const messages = require("./routes/messages");
-const { disconnect } = require("mongoose");
 
 app.use("/api/v1", messages);
 app.use("/api/v1", chat);

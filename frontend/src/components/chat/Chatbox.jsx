@@ -1,24 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import { useSelector, useDispatch } from "react-redux";
 import { createMessages, getMessages } from "../../actions/messagesActions";
+import { GET_MESSAGES_SUCCESS } from "../../constants/messageConstants";
 
-const Chatbox = ({ users, currentChat, user }) => {
+const Chatbox = ({ users, currentChat, user, socket }) => {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.messages.messages);
   const [textMessage, setTextMessage] = useState("");
-
+  // Create a ref to hold the last message element
+  const lastMessageRef = useRef(null);
   useEffect(() => {
     if (currentChat && currentChat.members.length >= 2) {
       const chatId = currentChat.members[1];
       dispatch(getMessages(chatId));
     }
-  }, [currentChat]);
+  }, [dispatch, currentChat]);
 
-  const handleMessage = () => {
-    dispatch(createMessages(currentChat.members[1], user._id, textMessage));
-    setTextMessage(""); // Clear the input field after sending
+  const handleMessage = async () => {
+    // Optimistically update the UI with the new message
+    const newMessage = {
+      _id: new Date().getTime(), // Temporary ID for optimistic update
+      senderId: user._id,
+      text: textMessage,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Update the UI optimistically
+    const updatedMessages = [...messages, newMessage];
+    dispatch({
+      type: GET_MESSAGES_SUCCESS,
+      payload: updatedMessages,
+    });
+
+    socket.emit("sendMessage", {
+      ...newMessage,
+      chatId: currentChat.members[1],
+    });
+    // Send the message to the server
+    try {
+      await dispatch(
+        createMessages(currentChat.members[1], user._id, textMessage)
+      );
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+
+    setTextMessage("");
   };
 
   return (
@@ -27,7 +56,7 @@ const Chatbox = ({ users, currentChat, user }) => {
       <div>
         {messages.map((message) => (
           <div
-            key={message._id}
+            key={message._id} // Add a unique key prop here
             className={`${
               message.senderId === user._id
                 ? "flex items-end justify-end flex-grow-0 bg-[#1e3f65]"

@@ -1,13 +1,18 @@
+// messagesActions.js
+
+import axios from "axios";
+import { combineReducers } from "redux";
 import {
+  CREATE_MESSAGES_FAIL,
   CREATE_MESSAGES_REQUEST,
   CREATE_MESSAGES_SUCCESS,
-  CREATE_MESSAGES_FAIL,
   CREATE_MESSAGES_RESET,
   GET_MESSAGES_REQUEST,
   GET_MESSAGES_SUCCESS,
   GET_MESSAGES_FAIL,
 } from "../constants/messageConstants";
-import axios from "axios";
+
+// Remove createMessagesReducer and getMessagesReducer
 
 export const createMessages = (chatId, senderId, text) => async (dispatch) => {
   try {
@@ -41,7 +46,6 @@ export const createMessages = (chatId, senderId, text) => async (dispatch) => {
   }
 };
 
-//Get Messages
 export const getMessages = (currentChat) => async (dispatch) => {
   try {
     dispatch({ type: GET_MESSAGES_REQUEST });

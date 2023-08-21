@@ -1,133 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { allUsers, login } from "../../actions/userActions";
-// import MyUserChat from "./MyUserChat";
-// import Chatbox from "./Chatbox";
-// import PotentialChat from "./PotentialChat";
-
-// const Chat = () => {
-//   const { chats, loading } = useSelector((state) => state.userChats);
-//   const { users } = useSelector((state) => state.allUsers);
-//   const { user } = useSelector((state) => state.auth);
-//   const dispatch = useDispatch();
-
-//   const [currentChat, setCurrentChat] = useState(null);
-
-//   // Filter out chats that have no user IDs
-//   const filteredChats = chats.filter(
-//     (chat) => chat.members && chat.members.length >= 2
-//   );
-
-//   const augmentedUsers = users
-//     .filter((uFilt) => uFilt._id !== user._id)
-//     .map((u) => ({
-//       ...u,
-//       chats: filteredChats.filter(
-//         (chat) =>
-//           chat.members.includes(u._id) || chat.members.includes(user._id)
-//       ),
-//     }));
-
-//   const updateCurrentChat = (chat) => {
-//     setCurrentChat(chat); // Store the chat ID
-//   };
-
-//   useEffect(() => {
-//     dispatch(allUsers());
-//   }, [dispatch]);
-
-//   return (
-//     <div className="flex">
-//       <div className="flex flex-col container py-6 mx-auto bg-[#4bbf64] w-1/2">
-//         <PotentialChat users={users} chats={chats} user={user} />
-
-//         {filteredChats.length < 1 ? null : (
-//           <section className="px-12 flex justify-between w-screen">
-//             <div>
-//               {loading && <p>Loading users...</p>}
-
-//               {augmentedUsers.map((user) => (
-//                 <div key={user._id}>
-//                   <div>{user.name}</div>
-//                   <div>
-//                     {user.chats.map((userChat) => (
-//                       <MyUserChat
-//                         key={userChat._id}
-//                         chat={userChat} // Pass the chat object
-//                         users={users}
-//                         user={user}
-//                         onClick={() => updateCurrentChat(userChat)}
-//                       />
-//                     ))}
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           </section>
-//         )}
-//       </div>
-//       <div className="flex flex-col w-1/2">
-//         <Chatbox users={users} currentChat={currentChat} user={user} />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Chat;
-
-// import React, { useEffect, useState } from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { allUsers } from "../../actions/userActions";
-// import MyUserChat from "./MyUserChat";
-// import Chatbox from "./Chatbox";
-// import PotentialChat from "./PotentialChat";
-
-// const Chat = () => {
-//   const { chats, loading } = useSelector((state) => state.userChats);
-//   const { users } = useSelector((state) => state.allUsers);
-//   const { user } = useSelector((state) => state.auth);
-//   const dispatch = useDispatch();
-
-//   const [selectedUser, setSelectedUser] = useState(null);
-
-//   const updateSelectedUser = (user) => {
-//     setSelectedUser(user); // Store the selected user
-//   };
-
-//   useEffect(() => {
-//     dispatch(allUsers());
-//   }, [dispatch]);
-
-//   const selectedUserChats = selectedUser
-//   ? chats.filter((chat) => chat.members.includes(selectedUser._id))
-//   : [];
-
-//   return (
-//     <div className="flex">
-//       <div className="flex flex-col container py-6 mx-auto bg-[#4bbf64] w-1/2">
-//         <PotentialChat users={users} chats={chats} user={user} />
-
-//         <section className="px-12 flex justify-between w-screen">
-//           <div>
-//             {loading && <p>Loading users...</p>}
-//             {users.map((user) => (
-//               <div key={user._id} onClick={() => updateSelectedUser(user)}>
-//                 <MyUserChat user={user} />
-//               </div>
-//             ))}
-//           </div>
-//         </section>
-//       </div>
-//       <div className="flex flex-col w-1/2">
-//         <Chatbox users={users} chats={selectedUserChats} user={user} />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Chat;
-
-///////////
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { allUsers } from "../../actions/userActions";
@@ -179,23 +49,26 @@ const Chat = () => {
     if (socket === null) return;
 
     const recipientId = currentChat?.members.find((id) => id !== user._id);
+    console.log("SOCKET", recipientId);
+
     socket.emit("sendMessage", { ...newMessage, recipientId });
   }, [newMessage]);
 
+  console.log("CURREN", currentChat);
   // Receive Message
   useEffect(() => {
     if (socket === null) return;
 
     socket.on("getMessage", (res) => {
-      if (currentChat?.id !== res.chatId) return;
+      if (currentChat.members[1] !== res.chatId) return;
 
-      setNewMessage((prev) => [...prev, res]);
+      setNewMessage((prevMessages) => [...prevMessages, res]);
     });
 
     return () => {
       socket.off("getMessage");
     };
-  }, [socket, currentChat]);
+  }, [socket, currentChat, user]);
 
   return (
     <div className="flex">
@@ -226,7 +99,12 @@ const Chat = () => {
         )}
       </div>
       <div className="flex flex-col w-1/2">
-        <Chatbox users={users} currentChat={currentChat} user={user} />
+        <Chatbox
+          users={users}
+          currentChat={currentChat}
+          user={user}
+          socket={socket}
+        />
       </div>
     </div>
   );
