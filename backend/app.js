@@ -49,10 +49,12 @@ io.on("connection", (socket) => {
     );
     console.log("sendMessage event received:", message);
     if (user) {
-      io.to(user.socketId).emit("getMessage", message);
+      io.to(user.socketId).emit("getMessage", {
+        chatId: message.chatId,
+        message: message, // Emit the full message object here
+      });
     }
   });
-
   socket.on("disconnect", () => {
     onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
     io.emit("getOnlineUsers", onlineUsers);

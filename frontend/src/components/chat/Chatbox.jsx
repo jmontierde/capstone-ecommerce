@@ -10,24 +10,43 @@ const Chatbox = ({ users, currentChat, user, socket }) => {
   const messages = useSelector((state) => state.messages.messages);
   const [textMessage, setTextMessage] = useState("");
   // Create a ref to hold the last message element
-  const lastMessageRef = useRef(null);
+  // Inside the useEffect block in your Chatbox component
+  // Inside the useEffect block in your Chatbox component
   useEffect(() => {
     if (currentChat && currentChat.members.length >= 2) {
       const chatId = currentChat.members[1];
+
+      if (socket === null) return;
+
+      socket.on("getMessage", (res) => {
+        if (chatId !== res.chatId) return;
+
+        const receivedMessage = {
+          _id: res.message._id,
+          senderId: res.message.senderId,
+          text: res.message.text,
+          createdAt: res.message.createdAt,
+        };
+
+        dispatch({
+          type: GET_MESSAGES_SUCCESS,
+          payload: [...messages, receivedMessage],
+        });
+      });
+
       dispatch(getMessages(chatId));
     }
-  }, [dispatch, currentChat]);
+  }, [dispatch, currentChat, socket, messages]);
 
+  //Send message for real time
   const handleMessage = async () => {
-    // Optimistically update the UI with the new message
     const newMessage = {
-      _id: new Date().getTime(), // Temporary ID for optimistic update
+      _id: new Date().getTime(),
       senderId: user._id,
       text: textMessage,
       createdAt: new Date().toISOString(),
     };
 
-    // Update the UI optimistically
     const updatedMessages = [...messages, newMessage];
     dispatch({
       type: GET_MESSAGES_SUCCESS,
@@ -38,6 +57,7 @@ const Chatbox = ({ users, currentChat, user, socket }) => {
       ...newMessage,
       chatId: currentChat.members[1],
     });
+
     // Send the message to the server
     try {
       await dispatch(

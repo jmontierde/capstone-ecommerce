@@ -26,6 +26,15 @@ const Chat = () => {
   }, [dispatch]);
 
   // Sokcet
+  // useEffect(() => {
+  //   const newSocket = io("http://localhost:3000");
+  //   setSocket(newSocket);
+
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, [user]);
+
   useEffect(() => {
     const newSocket = io("http://localhost:3000");
     setSocket(newSocket);
@@ -33,7 +42,7 @@ const Chat = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     if (socket) {
@@ -43,32 +52,6 @@ const Chat = () => {
       });
     }
   }, [socket]);
-
-  // Send Message
-  useEffect(() => {
-    if (socket === null) return;
-
-    const recipientId = currentChat?.members.find((id) => id !== user._id);
-    console.log("SOCKET", recipientId);
-
-    socket.emit("sendMessage", { ...newMessage, recipientId });
-  }, [newMessage]);
-
-  console.log("CURREN", currentChat);
-  // Receive Message
-  useEffect(() => {
-    if (socket === null) return;
-
-    socket.on("getMessage", (res) => {
-      if (currentChat.members[1] !== res.chatId) return;
-
-      setNewMessage((prevMessages) => [...prevMessages, res]);
-    });
-
-    return () => {
-      socket.off("getMessage");
-    };
-  }, [socket, currentChat, user]);
 
   return (
     <div className="flex">
