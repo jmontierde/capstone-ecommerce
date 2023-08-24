@@ -9,10 +9,7 @@ import {
   CLEAR_ERRORS,
 } from "../constants/messageConstants";
 
-export const createMessagesReducer = (
-  state = { createMessages: {} },
-  action
-) => {
+export const createMessagesReducer = (state = { newMessages: {} }, action) => {
   switch (action.type) {
     case CREATE_MESSAGES_REQUEST:
       return {
@@ -24,7 +21,7 @@ export const createMessagesReducer = (
       return {
         loading: false,
         success: action.payload.success,
-        createMessages: action.payload.createMessages,
+        newMessages: action.payload.newMessages,
       };
 
     case CREATE_MESSAGES_FAIL:

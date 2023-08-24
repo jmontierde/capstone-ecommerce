@@ -34,7 +34,7 @@ const Chatbox = ({ users, currentChat, user, socket }) => {
         });
       });
 
-      dispatch(getMessages(chatId));
+      // dispatch(getMessages(chatId));
     }
   }, [dispatch, currentChat, socket, messages]);
 

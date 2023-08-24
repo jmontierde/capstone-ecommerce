@@ -147,6 +147,7 @@ const Report = () => {
               <table ref={pdfTableRef} className="table-fixed  w-full h-32">
                 <thead className="bg-[#ECEFF1]">
                   <tr>
+                    <th className="px-4 py-2">No</th>
                     <th className="px-4 py-2">ORDER ID</th>
                     <th className="px-4 py-2">Item Name</th>
                     <th className="px-4 py-2">Num of Items</th>
@@ -156,8 +157,9 @@ const Report = () => {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {filteredOrders.map((order) => (
+                  {filteredOrders.map((order, index) => (
                     <tr key={order._id}>
+                      <td className="border px-4 py-2">{index + 1}</td>
                       <td className="border px-4 py-2 break-all">
                         {order._id}
                       </td>

@@ -1,25 +1,9 @@
-import React, { useEffect, useState } from "react";
-
+import React from "react";
+import { useDispatch } from "react-redux";
 import { createChat } from "../../actions/chatActions";
-import { useDispatch, useSelector } from "react-redux";
 
-const PotentialChat = ({ users, chats, user, onlineUsers }) => {
+const PotentialChat = ({ users, user, onlineUsers }) => {
   const dispatch = useDispatch();
-
-  console.log("POTENTIAL", onlineUsers);
-  //   const pChats = users.filter((u) => {
-  //     let isChatCreated = false;
-
-  //     if (chats) {
-  //       isChatCreated = chats?.some((chat) => {
-  //         chat.members[0] === u._id || chat.members[1] === u._id;
-  //       });
-  //     }
-  //   });
-
-  //   useEffect(() => {
-
-  //   }, [dispatch])
 
   return (
     <div>
@@ -41,7 +25,9 @@ const PotentialChat = ({ users, chats, user, onlineUsers }) => {
                       : ""
                   }
                 >
-                  Online
+                  {onlineUsers?.some((user) => user?.userId === u?._id)
+                    ? "Online"
+                    : "Offline"}
                 </span>
               </div>
             ))}

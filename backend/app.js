@@ -53,6 +53,7 @@ io.on("connection", (socket) => {
         chatId: message.chatId,
         message: message, // Emit the full message object here
       });
+      console.log("sendMessage event received:", message);
     }
   });
   socket.on("disconnect", () => {

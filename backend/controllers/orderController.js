@@ -82,6 +82,12 @@ exports.allOrders = catchAsyncErrors(async (req, res, next) => {
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
+  console.log("UPDATE ORDER", order);
+
+  if (!order) {
+    return next(new ErrorHandler("Order not found with this ID", 404));
+  }
+
   if (order.orderStatus === "Delivered") {
     return next(new ErrorHandler("You have already delivered this order", 400));
   }
@@ -90,7 +96,8 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
     await updateStock(item.product, item.quantity);
   });
 
-  (order.orderStatus = req.body.status), (order.deliveredAt = Date.now());
+  order.orderStatus = req.body.status;
+  order.deliveredAt = Date.now();
 
   await order.save();
 

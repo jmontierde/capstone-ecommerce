@@ -60,7 +60,7 @@ const Home = () => {
 
   return (
     <Fragment>
-      <MetaData title={"Sir Jacks"} />
+      <MetaData title={"Vapers Sidewalk"} />
 
       <div className="flex container py-6 mx-auto">
         <div className="w-1/5 flex flex-col container mr-auto h-full  ">

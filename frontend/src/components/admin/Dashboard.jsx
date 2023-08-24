@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
-
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader";
 import { Link } from "react-router-dom";
 import { getAdminProducts } from "../../actions/productActions";
 import { allOrders } from "../../actions/orderActions";
 import { allUsers } from "../../actions/userActions";
+import { Chart as ChartJS, registerables } from "chart.js";
+import { Chart } from "react-chartjs-2";
+ChartJS.register(...registerables);
+import { Bar } from "react-chartjs-2";
 const Dashboard = () => {
   const dispatch = useDispatch();
 
@@ -17,18 +20,34 @@ const Dashboard = () => {
   );
   const { user } = useSelector((state) => state.auth);
 
-  //   let outOfStock = 0;
-  //   products.forEach((product) => {
-  //     if (product.stock === 0) {
-  //       outOfStock += 1;
-  //     }
-  //   });
+  let outOfStock = 0;
+  products.forEach((product) => {
+    if (product.stock === 0) {
+      outOfStock += 1;
+    }
+  });
 
   useEffect(() => {
     dispatch(getAdminProducts());
     dispatch(allOrders());
     dispatch(allUsers());
   }, [dispatch]);
+
+  const chartData = {
+    labels: ["Products", "Orders", "Users", "Out of Stock"],
+    datasets: [
+      {
+        label: "Data Count",
+        backgroundColor: ["#373737", "#373737", "#373737", "#373737"],
+        data: [
+          products ? products.length : 0,
+          orders ? orders.length : 0,
+          users ? users.length : 0,
+          outOfStock,
+        ],
+      },
+    ],
+  };
   return (
     <>
       {loading ? (
@@ -86,6 +105,10 @@ const Dashboard = () => {
                   </div>
                 </div>
               </section>
+            </div>
+            <div className="mt-6">
+              <h4 className="text-lg">Orders Over Time</h4>
+              <Bar data={chartData} />
             </div>
           </div>
         </div>
