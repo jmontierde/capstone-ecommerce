@@ -40,8 +40,28 @@ import {
   DELETE_USER_FAIL,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
+  REMOVE_USER,
   CLEAR_ERRORS,
 } from "../constants/userConstant";
+
+export const removeUserReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case REMOVE_USER:
+      return {
+        ...state,
+        users: state.users.filter((user) => user._id !== action.payload),
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
 
 export const authReducer = (state = { user: {} }, action) => {
   switch (action.type) {

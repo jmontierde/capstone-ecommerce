@@ -45,6 +45,7 @@ import {
   DELETE_USER_FAIL,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
+  REMOVE_USER,
   CLEAR_ERRORS,
 } from "../constants/userConstant";
 
@@ -399,6 +400,13 @@ export const deleteUser = (id) => async (dispatch) => {
       payload: error.response.data.message,
     });
   }
+};
+
+export const removeUser = (userId) => {
+  return {
+    type: REMOVE_USER,
+    payload: userId,
+  };
 };
 
 export const clearErrors = () => async (dispatch) => {

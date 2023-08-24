@@ -8,6 +8,8 @@ const MyUserChat = ({ users, chat, user, onlineUsers }) => {
   // Find the recipient user object using the ID
   const recipientUser = users.find((u) => u._id === recipientId);
 
+  console.log("RECIP", recipientUser);
+
   const isOnline = onlineUsers?.some(
     (user) => user?.userId === recipientUser?._id
   );

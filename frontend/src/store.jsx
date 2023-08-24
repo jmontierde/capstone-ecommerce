@@ -21,7 +21,9 @@ import {
   forgotPasswordReducer,
   allUsersReducer,
   userDetailsReducer,
+  removeUserReducer,
 } from "./reducers/userReducers";
+
 import { cartReducer } from "./reducers/cartReducers";
 
 import {
@@ -43,6 +45,7 @@ import {
 } from "./reducers/messageReducers";
 
 const reducer = combineReducers({
+  removeUser: removeUserReducer,
   messages: getMessagesReducer,
   createMessages: createMessagesReducer,
   chat: chatReducer,

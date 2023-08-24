@@ -5,6 +5,7 @@ import MyUserChat from "./MyUserChat";
 import Chatbox from "./Chatbox";
 import PotentialChat from "./PotentialChat";
 import { io } from "socket.io-client";
+import { removeUser } from "../../actions/userActions";
 
 const Chat = () => {
   const { chats, loading } = useSelector((state) => state.userChats);
@@ -17,6 +18,11 @@ const Chat = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [newMessage, setNewMessage] = useState(null);
 
+  const handleUserRemoval = (userId) => {
+    dispatch(removeUser(userId));
+    // Additional logic to update chats or handle associated data
+  };
+
   const updateCurrentChat = (chat) => {
     setCurrentChat(chat); // Store the chat ID
   };
@@ -25,18 +31,13 @@ const Chat = () => {
     dispatch(allUsers());
   }, [dispatch]);
 
-  // Sokcet
-  // useEffect(() => {
-  //   const newSocket = io("http://localhost:3000");
-  //   setSocket(newSocket);
-
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, [user]);
-
   useEffect(() => {
     const newSocket = io("http://localhost:3000");
+
+    newSocket.on("connect_error", (error) => {
+      console.error("Socket connection error:", error);
+      // Handle the error, e.g., display a message to the user
+    });
     setSocket(newSocket);
 
     return () => {
@@ -67,16 +68,26 @@ const Chat = () => {
           <section className="px-12 flex justify-between w-screen">
             <div>
               {loading && <p>Loading chats...</p>}
-              {chats?.map((chat) => (
-                <div key={chat._id} onClick={() => updateCurrentChat(chat)}>
-                  <MyUserChat
-                    chat={chat}
-                    users={users}
-                    user={user}
-                    onlineUsers={onlineUsers}
-                  />
-                </div>
-              ))}
+              {chats?.map((chat) => {
+                const recipientId = chat?.members.find((id) => id !== user._id);
+                const recipientUser = users.find((u) => u._id === recipientId);
+
+                if (!recipientUser) {
+                  // User doesn't exist, skip rendering this chat
+                  return null;
+                }
+
+                return (
+                  <div key={chat._id} onClick={() => updateCurrentChat(chat)}>
+                    <MyUserChat
+                      chat={chat}
+                      users={users}
+                      user={user}
+                      onlineUsers={onlineUsers}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}
