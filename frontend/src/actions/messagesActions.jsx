@@ -8,9 +8,11 @@ import {
   GET_MESSAGES_REQUEST,
   GET_MESSAGES_SUCCESS,
   GET_MESSAGES_FAIL,
+  RECEIVE_MESSAGE,
 } from "../constants/messageConstants";
 import { io } from "socket.io-client";
 
+const socket = io("http://localhost:3000");
 export const createMessages = (chatId, senderId, text) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_MESSAGES_REQUEST });
@@ -29,6 +31,8 @@ export const createMessages = (chatId, senderId, text) => async (dispatch) => {
       config
     );
 
+    socket.emit("sendMessage", { chatId, senderId, text });
+
     console.log("CREATE MESSAGES Response", data); // Add this line
     dispatch({
       type: CREATE_MESSAGES_SUCCESS,
@@ -43,43 +47,14 @@ export const createMessages = (chatId, senderId, text) => async (dispatch) => {
   }
 };
 
-// export const getMessages = (currentChat, socket) => async (dispatch) => {
-//   try {
-//     dispatch({ type: GET_MESSAGES_REQUEST });
-
-//     const token = localStorage.getItem("token");
-
-//     const config = {
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`,
-//       },
-//     };
-
-//     const { data } = await axios.get(
-//       `http://localhost:7000/api/v1/messages/${currentChat}`,
-//       config
-//     );
-
+// export const initRealTimeMessages = () => (dispatch) => {
+//   // Initialize Socket.IO connection
+//   socket.on("getMessage", (data) => {
 //     dispatch({
 //       type: GET_MESSAGES_SUCCESS,
-//       payload: data.messages,
+//       payload: [data.message, ...messages],
 //     });
-
-//     if (socket) {
-//       socket.on("getMessage", (newMessage) => {
-//         dispatch({
-//           type: GET_MESSAGES_SUCCESS,
-//           payload: [...data.messages, newMessage],
-//         });
-//       });
-//     }
-//   } catch (error) {
-//     dispatch({
-//       type: GET_MESSAGES_FAIL,
-//       payload: error.response.data.message,
-//     });
-//   }
+//   });
 // };
 
 export const getMessages = (currentChat) => async (dispatch) => {
@@ -99,7 +74,7 @@ export const getMessages = (currentChat) => async (dispatch) => {
       `http://localhost:7000/api/v1/messages/${currentChat}`,
       config
     );
-
+    dispatch(getMessagesSuccess(data.messages));
     console.log("GET MESSAGES FROM ACTION", data);
 
     dispatch({
@@ -112,4 +87,21 @@ export const getMessages = (currentChat) => async (dispatch) => {
       payload: error.response.data.message,
     });
   }
+};
+
+export const receiveMessage = (message) => ({
+  type: RECEIVE_MESSAGE,
+  payload: message,
+});
+
+export const getMessagesSuccess = (messages) => ({
+  type: GET_MESSAGES_SUCCESS,
+  payload: messages,
+});
+
+export const initRealTimeMessages = () => (dispatch) => {
+  socket.on("getMessage", (data) => {
+    dispatch(receiveMessage(data.message));
+    console.log("RECEIVE DATA", data);
+  });
 };

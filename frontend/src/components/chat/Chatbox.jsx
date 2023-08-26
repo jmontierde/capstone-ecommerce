@@ -2,72 +2,71 @@ import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import { useSelector, useDispatch } from "react-redux";
-import { createMessages, getMessages } from "../../actions/messagesActions";
+import {
+  createMessages,
+  getMessages,
+  initRealTimeMessages,
+} from "../../actions/messagesActions";
 import { GET_MESSAGES_SUCCESS } from "../../constants/messageConstants";
+import { receiveMessage } from "../../actions/messagesActions";
+// import { addMessage } from "../../actions/messagesActions";
+import { io } from "socket.io-client";
 
-const Chatbox = ({ users, currentChat, user, socket }) => {
+const Chatbox = ({ users, currentChat, user }) => {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.messages.messages);
   const [textMessage, setTextMessage] = useState("");
-  // Create a ref to hold the last message element
-  // Inside the useEffect block in your Chatbox component
-  // Inside the useEffect block in your Chatbox component
+
+  const [socket, setSocket] = useState(null);
+
   useEffect(() => {
-    if (currentChat && currentChat.members.length >= 2) {
-      const chatId = currentChat.members[1];
+    const newSocket = io("http://localhost:3000");
 
-      if (socket === null) return;
+    newSocket.on("connect_error", (error) => {
+      console.error("Socket connection error:", error);
+      // Handle the error, e.g., display a message to the user
+    });
 
-      socket.on("getMessage", (res) => {
-        if (chatId !== res.chatId) return;
+    newSocket.on("connect", () => {
+      setSocket(newSocket);
+    });
 
-        const receivedMessage = {
-          _id: res.message._id,
-          senderId: res.message.senderId,
-          text: res.message.text,
-          createdAt: res.message.createdAt,
-        };
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, []);
 
+  useEffect(() => {
+    dispatch(initRealTimeMessages());
+    dispatch(getMessages(currentChat?._id));
+  }, [dispatch, currentChat?._id]);
+
+  useEffect(() => {
+    if (socket) {
+      const messageListener = (data) => {
         dispatch({
           type: GET_MESSAGES_SUCCESS,
-          payload: [...messages, receivedMessage],
+          payload: [data.message, ...messages],
         });
-      });
+      };
 
-      // dispatch(getMessages(chatId));
+      socket.on("getMessage", messageListener);
+      dispatch(getMessages(currentChat?._id));
+
+      return () => {
+        console.log("Unsubscribing from getMessage event");
+        socket.off("getMessage", messageListener);
+      };
     }
-  }, [dispatch, currentChat, socket, messages]);
+  }, [socket, messages, dispatch]);
 
-  //Send message for real time
-  const handleMessage = async () => {
-    const newMessage = {
-      _id: new Date().getTime(),
-      senderId: user._id,
-      text: textMessage,
-      createdAt: new Date().toISOString(),
-    };
-
-    const updatedMessages = [...messages, newMessage];
-    dispatch({
-      type: GET_MESSAGES_SUCCESS,
-      payload: updatedMessages,
-    });
-
-    socket.emit("sendMessage", {
-      ...newMessage,
-      chatId: currentChat.members[1],
-    });
-
-    // Send the message to the server
-    try {
-      await dispatch(
-        createMessages(currentChat.members[1], user._id, textMessage)
-      );
-    } catch (error) {
-      console.error("Error sending message:", error);
+  const handleSendMessage = () => {
+    if (textMessage.trim() !== "") {
+      dispatch(createMessages(currentChat?._id, user._id, textMessage));
+      setTextMessage("");
     }
-
-    setTextMessage("");
   };
 
   return (
@@ -98,7 +97,7 @@ const Chatbox = ({ users, currentChat, user, socket }) => {
         />
         <button
           className="bg-[#aaa6a6] rounded px-6 py-1 text-sm"
-          onClick={handleMessage}
+          onClick={handleSendMessage}
         >
           SEND
         </button>

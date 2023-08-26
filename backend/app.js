@@ -24,11 +24,10 @@ app.use(
 );
 
 const { Server } = require("socket.io");
+let onlineUsers = [];
 
 const io = new Server({ cors: "http://127.0.0.1:5173" });
 io.listen(3000);
-
-let onlineUsers = [];
 
 io.on("connection", (socket) => {
   console.log("NEW CONNECTION", socket.id);
@@ -36,7 +35,6 @@ io.on("connection", (socket) => {
   socket.on("addNewUser", (userId) => {
     !onlineUsers.some((user) => user.userId === userId) &&
       onlineUsers.push({ userId, socketId: socket.id });
-
     console.log("onlineUsers", onlineUsers);
 
     io.emit("getOnlineUsers", onlineUsers);
@@ -48,12 +46,14 @@ io.on("connection", (socket) => {
       (user) => user.userId === message.recipientId
     );
     console.log("sendMessage event received:", message);
+    console.log("USER APP", onlineUsers);
+
     if (user) {
       io.to(user.socketId).emit("getMessage", {
         chatId: message.chatId,
         message: message, // Emit the full message object here
       });
-      console.log("sendMessage event received:", message);
+      console.log("get Message event received:", message);
     }
   });
   socket.on("disconnect", () => {

@@ -16,16 +16,12 @@ const Chat = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [newMessage, setNewMessage] = useState(null);
-
-  const handleUserRemoval = (userId) => {
-    dispatch(removeUser(userId));
-    // Additional logic to update chats or handle associated data
-  };
 
   const updateCurrentChat = (chat) => {
     setCurrentChat(chat); // Store the chat ID
   };
+
+  console.log("ONLINE USERS", onlineUsers);
 
   useEffect(() => {
     dispatch(allUsers());
@@ -43,7 +39,7 @@ const Chat = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [users]);
 
   useEffect(() => {
     if (socket) {
