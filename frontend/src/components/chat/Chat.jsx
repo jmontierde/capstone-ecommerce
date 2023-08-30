@@ -5,7 +5,6 @@ import MyUserChat from "./MyUserChat";
 import Chatbox from "./Chatbox";
 import PotentialChat from "./PotentialChat";
 import { io } from "socket.io-client";
-import { removeUser } from "../../actions/userActions";
 
 const Chat = () => {
   const { chats, loading } = useSelector((state) => state.userChats);
@@ -21,8 +20,6 @@ const Chat = () => {
     setCurrentChat(chat); // Store the chat ID
   };
 
-  console.log("ONLINE USERS", onlineUsers);
-
   useEffect(() => {
     dispatch(allUsers());
   }, [dispatch]);
@@ -32,14 +29,19 @@ const Chat = () => {
 
     newSocket.on("connect_error", (error) => {
       console.error("Socket connection error:", error);
-      // Handle the error, e.g., display a message to the user
     });
-    setSocket(newSocket);
+
+    newSocket.on("connect", () => {
+      setSocket(newSocket);
+      newSocket.emit("addNewUser", user._id);
+    });
 
     return () => {
-      newSocket.disconnect();
+      if (newSocket) {
+        newSocket.disconnect();
+      }
     };
-  }, [users]);
+  }, [user._id]);
 
   useEffect(() => {
     if (socket) {

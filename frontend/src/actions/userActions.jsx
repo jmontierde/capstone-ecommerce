@@ -47,6 +47,10 @@ import {
   LOGOUT_FAIL,
   REMOVE_USER,
   CLEAR_ERRORS,
+  VERIFY_USER_REQUEST,
+  VERIFY_USER_SUCCESS,
+  VERIFY_USER_FAIL,
+  REGISTER_USER_SUCCESS_PENDING_VERIFICATION,
 } from "../constants/userConstant";
 
 //Login
@@ -99,6 +103,8 @@ export const register = (userData) => async (dispatch) => {
       config
     );
 
+    console.log("DATA", data);
+
     dispatch({
       type: REGISTER_USER_SUCCESS,
       payload: data.user,
@@ -106,6 +112,35 @@ export const register = (userData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: REGISTER_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Verify User
+export const verifyUser = (userId, verificationStatus) => async (dispatch) => {
+  try {
+    dispatch({ type: VERIFY_USER_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await axios.put(
+      `http://localhost:7000/api/v1/admin/verify/${userId}`,
+      verificationStatus,
+      config
+    );
+
+    dispatch({
+      type: VERIFY_USER_SUCCESS,
+      payload: data.user,
+    });
+  } catch (error) {
+    dispatch({
+      type: VERIFY_USER_FAIL,
       payload: error.response.data.message,
     });
   }

@@ -33,7 +33,7 @@ export const createMessages = (chatId, senderId, text) => async (dispatch) => {
 
     socket.emit("sendMessage", { chatId, senderId, text });
 
-    console.log("CREATE MESSAGES Response", data); // Add this line
+    console.log("CREATE MESSAGES Response", data);
     dispatch({
       type: CREATE_MESSAGES_SUCCESS,
       payload: data,
@@ -46,16 +46,6 @@ export const createMessages = (chatId, senderId, text) => async (dispatch) => {
     });
   }
 };
-
-// export const initRealTimeMessages = () => (dispatch) => {
-//   // Initialize Socket.IO connection
-//   socket.on("getMessage", (data) => {
-//     dispatch({
-//       type: GET_MESSAGES_SUCCESS,
-//       payload: [data.message, ...messages],
-//     });
-//   });
-// };
 
 export const getMessages = (currentChat) => async (dispatch) => {
   try {
@@ -74,7 +64,6 @@ export const getMessages = (currentChat) => async (dispatch) => {
       `http://localhost:7000/api/v1/messages/${currentChat}`,
       config
     );
-    dispatch(getMessagesSuccess(data.messages));
     console.log("GET MESSAGES FROM ACTION", data);
 
     dispatch({
@@ -100,8 +89,19 @@ export const getMessagesSuccess = (messages) => ({
 });
 
 export const initRealTimeMessages = () => (dispatch) => {
+  console.log("Initializing real-time messages...");
   socket.on("getMessage", (data) => {
-    dispatch(receiveMessage(data.message));
-    console.log("RECEIVE DATA", data);
+    console.log("Received real-time message:", data.message);
+    dispatch(receiveMessage(data.messages));
   });
 };
+
+// export const initRealTimeMessages = () => (dispatch) => {
+//   // Initialize Socket.IO connection
+//   socket.on("getMessage", (data) => {
+//     dispatch({
+//       type: GET_MESSAGES_SUCCESS,
+//       payload: [data.message, ...messages],
+//     });
+//   });
+// };

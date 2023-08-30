@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema({
     minlength: [6, "Your password must be longer than 6 characters"],
     select: false, // For Show and Hidden Password
   },
+  // phoneNumber: {
+  //   type: String,
+  //   required: [true, "Please enter your phone number"],
+  //   minlength: [11, "Your password must be longer than 11 characters"],
+  //   select: false,
+  // },
   avatar: {
     public_id: {
       type: String,
@@ -32,10 +38,35 @@ const userSchema = new mongoose.Schema({
       required: true,
     },
   },
+  // withBirthdayId: {
+  //   public_id: {
+  //     type: String,
+  //     // required: true,
+  //   },
+  //   url: {
+  //     type: String,
+  //     // required: true,
+  //   },
+  // },
+  // validId: {
+  //   public_id: {
+  //     type: String,
+  //     // required: true,
+  //   },
+  //   url: {
+  //     type: String,
+  //     // required: true,
+  //   },
+  // },
   role: {
     type: String,
     default: "user",
   },
+  // verificationStatus: {
+  //   type: String,
+  //   enum: ["Pending", "Verified", "Rejected"],
+  //   default: "Pending",
+  // },
   createdAt: {
     type: Date,
     default: Date.now,

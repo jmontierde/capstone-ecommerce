@@ -13,11 +13,6 @@ const UserChat = (props) => {
 
   const recipId = props.chat?.members.find((id) => id !== props.user?._id);
 
-  console.log("PROPS CHAT", props.chat);
-  console.log("PROPS USERS", props.users);
-
-  console.log("RECIP", recipId);
-
   // const { users, error } = useSelector((state) => state.userChats);
   const { chat } = useSelector((state) => state.chat);
   const { chats } = useSelector((state) => state.userChats);

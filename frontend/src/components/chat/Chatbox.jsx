@@ -7,36 +7,13 @@ import {
   getMessages,
   initRealTimeMessages,
 } from "../../actions/messagesActions";
-import { GET_MESSAGES_SUCCESS } from "../../constants/messageConstants";
 import { receiveMessage } from "../../actions/messagesActions";
-// import { addMessage } from "../../actions/messagesActions";
-import { io } from "socket.io-client";
+import { RECEIVE_MESSAGE } from "../../constants/messageConstants";
 
-const Chatbox = ({ users, currentChat, user }) => {
+const Chatbox = ({ users, currentChat, user, socket }) => {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.messages.messages);
   const [textMessage, setTextMessage] = useState("");
-
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    const newSocket = io("http://localhost:3000");
-
-    newSocket.on("connect_error", (error) => {
-      console.error("Socket connection error:", error);
-      // Handle the error, e.g., display a message to the user
-    });
-
-    newSocket.on("connect", () => {
-      setSocket(newSocket);
-    });
-
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, []);
 
   useEffect(() => {
     dispatch(initRealTimeMessages());
@@ -45,26 +22,24 @@ const Chatbox = ({ users, currentChat, user }) => {
 
   useEffect(() => {
     if (socket) {
-      const messageListener = (data) => {
-        dispatch({
-          type: GET_MESSAGES_SUCCESS,
-          payload: [data.message, ...messages],
-        });
-      };
-
-      socket.on("getMessage", messageListener);
-      dispatch(getMessages(currentChat?._id));
+      socket.on("getMessage", (res) => {
+        if (currentChat?._id !== res.chatId) return;
+        console.log("Received real-time message via socket:", res.message);
+        // dispatch(receiveMessage(res.message, ...messages));
+        dispatch(receiveMessage(res.message));
+        dispatch(getMessages(currentChat?._id));
+      });
 
       return () => {
-        console.log("Unsubscribing from getMessage event");
-        socket.off("getMessage", messageListener);
+        socket.off("getMessage");
       };
     }
-  }, [socket, messages, dispatch]);
+  }, [socket, currentChat?._id, dispatch, messages]);
 
   const handleSendMessage = () => {
     if (textMessage.trim() !== "") {
       dispatch(createMessages(currentChat?._id, user._id, textMessage));
+
       setTextMessage("");
     }
   };
@@ -73,9 +48,9 @@ const Chatbox = ({ users, currentChat, user }) => {
     <div>
       Chatbox
       <div>
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <div
-            key={message._id} // Add a unique key prop here
+            key={index} // Use index as a key
             className={`${
               message.senderId === user._id
                 ? "flex items-end justify-end flex-grow-0 bg-[#1e3f65]"

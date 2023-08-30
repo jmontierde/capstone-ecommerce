@@ -8,7 +8,6 @@ const crypto = require("crypto");
 const cloudinary = require("cloudinary");
 
 // Register a user   => /api/v1/register
-// Register a user => /api/v1/register
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
     folder: "avatars",
@@ -34,6 +33,64 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     next(new ErrorHandler(error.message, 400));
   }
 });
+
+// Register a user => /api/v1/register
+// exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+//   const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+//     folder: "avatars",
+//     width: 150,
+//     crop: "scale",
+//   });
+
+//   const validId = await cloudinary.v2.uploader.upload(req.body.validId, {
+//     folder: "validId",
+//     width: 150,
+//     crop: "scale",
+//   });
+
+//   const withBirthdayId = await cloudinary.v2.uploader.upload(
+//     req.body.withBirthdayId,
+//     {
+//       folder: "validId",
+//       width: 150,
+//       crop: "scale",
+//     }
+//   );
+
+//   const { name, email, password, phoneNumber } = req.body;
+
+//   try {
+//     const user = await User.create({
+//       name,
+//       email,
+//       password,
+//       avatar: {
+//         public_id: result.public_id,
+//         url: result.secure_url,
+//       },
+//       phoneNumber,
+//       verificationStatus: "Pending",
+//       avatar: {
+//         public_id: result.public_id,
+//         url: result.secure_url,
+//       },
+//       withBirthdayId: {
+//         public_id: withBirthdayId.public_id,
+//         url: withBirthdayId.secure_url,
+//       },
+//       validId: {
+//         public_id: validId.public_id,
+//         url: validId.secure_url,
+//       },
+//     });
+
+//     sendToken(user, 200, res);
+//   } catch (error) {
+//     next(new ErrorHandler(error.message, 400));
+//   }
+
+// });
+
 // Login user => /api/v1/login
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
@@ -46,6 +103,12 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   if (!user) {
     return next(new ErrorHandler("Invalid Email or Password", 401));
   }
+
+  // Check if user is verified
+  // if (user.verificationStatus !== "Verified") {
+  //   return next(new ErrorHandler("Your account is pending verification.", 403));
+  // }
+
   //Checks if password is correct or not
   const isPasswordMatched = await user.comparePassword(password);
 
@@ -219,7 +282,6 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
 
 // Admin Routes
 // Get all users => /api/v1/admin/userrs
-
 exports.allUsers = catchAsyncErrors(async (req, res, next) => {
   const users = await User.find().catch((error) => {
     throw error;
@@ -264,6 +326,26 @@ exports.updateUser = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
   });
+});
+
+// Verify or reject a user's registration => approve/:userId
+exports.verifyUser = catchAsyncErrors(async (req, res, next) => {
+  const userId = req.params.userId;
+  const verificationStatus = req.body.verificationStatus; // "Verified" or "Rejected"
+
+  try {
+    const user = await User.findByIdAndUpdate(userId, { verificationStatus });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "User verification status updated successfully." });
+  } catch (error) {
+    next(new ErrorHandler(error.message, 400));
+  }
 });
 
 // Delete user => /api/v1/admin/user/:id

@@ -41,6 +41,11 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
   REMOVE_USER,
+  VERIFY_USER_REQUEST,
+  VERIFY_USER_SUCCESS,
+  VERIFY_USER_FAIL,
+  VERIFY_USER_RESET,
+  REGISTER_USER_SUCCESS_PENDING_VERIFICATION,
   CLEAR_ERRORS,
 } from "../constants/userConstant";
 
@@ -82,6 +87,14 @@ export const authReducer = (state = { user: {} }, action) => {
         isAuthenticated: true,
         user: action.payload,
       };
+
+    // case REGISTER_USER_SUCCESS_PENDING_VERIFICATION:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     isAuthenticated: false, // Set isAuthenticated to false until the user is verified
+    //     user: action.payload,
+    //   };
 
     case LOGOUT_SUCCESS:
       return {
@@ -251,6 +264,19 @@ export const allUsersReducer = (state = { users: [] }, action) => {
         ...state,
         loading: false,
         error: action.payload,
+      };
+
+    case VERIFY_USER_REQUEST:
+      return {
+        ...state,
+        verifyingUserId: action.payload,
+      };
+
+    case VERIFY_USER_SUCCESS:
+    case VERIFY_USER_FAIL:
+      return {
+        ...state,
+        verifyingUserId: null,
       };
 
     case CLEAR_ERRORS:

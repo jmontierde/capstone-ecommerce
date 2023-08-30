@@ -10,9 +10,11 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
-  const { isAuthenticated, error } = useSelector((state) => state.auth);
+  const { isAuthenticated, error, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const alert = useAlert();
+
+  console.log("USER", user);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -23,6 +25,12 @@ const Login = () => {
       dispatch(clearErrors());
     }
   }, [dispatch, alert, isAuthenticated, error]);
+
+  useEffect(() => {
+    if (user && user.verificationStatus === "Pending") {
+      alert.error("Your account is pending verification by the admin.");
+    }
+  }, [user, alert]);
 
   const submitHandler = (e) => {
     e.preventDefault();

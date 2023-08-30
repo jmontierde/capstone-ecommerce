@@ -6,7 +6,6 @@ import {
   GET_MESSAGES_REQUEST,
   GET_MESSAGES_SUCCESS,
   GET_MESSAGES_FAIL,
-  ADD_MESSAGE,
   RECEIVE_MESSAGE,
   CLEAR_ERRORS,
 } from "../constants/messageConstants";
@@ -55,12 +54,6 @@ export const getMessagesReducer = (state = { messages: [] }, action) => {
         ...state,
         loading: false,
         messages: action.payload,
-      };
-
-    case ADD_MESSAGE:
-      return {
-        ...state,
-        messages: [...state.messages, action.payload],
       };
 
     case RECEIVE_MESSAGE:

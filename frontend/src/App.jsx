@@ -45,6 +45,7 @@ import Three from "./components/Three";
 import Customizer from "./components/pages/Customizer";
 import NewCategory from "./components/admin/NewCategory";
 import GetChat from "./components/chat/GetChat";
+import VerifyUser from "./components/admin/VerifyUser";
 
 function App() {
   // const dispatch = useDispatch()
@@ -117,6 +118,7 @@ function App() {
           )}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
           <Route
             exact
             path="/me"
@@ -143,6 +145,11 @@ function App() {
           <Route
             path="/dashboard"
             element={<ProtectedRoute component={Dashboard} isAdmin={true} />}
+          />
+
+          <Route
+            path="/admin/verify/:userId"
+            element={<ProtectedRoute component={VerifyUser} exact />}
           />
 
           <Route
@@ -248,7 +255,7 @@ function App() {
           />
         </Routes>
         {/* <Customizer /> */}
-        {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />}
+        {/* {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />} */}
       </div>
     </>
   );

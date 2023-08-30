@@ -42,11 +42,9 @@ io.on("connection", (socket) => {
 
   //add message
   socket.on("sendMessage", (message) => {
-    const user = onlineUsers.find(
-      (user) => user.userId === message.recipientId
-    );
+    const user = onlineUsers.find((user) => user.userId === message.senderId);
     console.log("sendMessage event received:", message);
-    console.log("USER APP", onlineUsers);
+    console.log("USER APP", user);
 
     if (user) {
       io.to(user.socketId).emit("getMessage", {

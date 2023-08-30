@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 const Sidebar = () => {
-  const [dropdown, setDropdown] = useState(true);
-  const [dropdownMaintenance, setDropdownMaintenance] = useState(true);
+  const [dropdown, setDropdown] = useState(false);
+  const [dropdownMaintenance, setDropdownMaintenance] = useState(false);
+
+  const [dropdownUsers, setDropdownUsers] = useState(false);
 
   return (
     <div className="w-2/12 container ">
@@ -38,10 +40,22 @@ const Sidebar = () => {
             </Link>
           </li>
 
-          <li>
-            <Link to="/admin/users">
-              <i className="fa fa-users"></i> Users
-            </Link>
+          <li
+            onClick={() => setDropdownUsers(!dropdownUsers)}
+            className="flex flex-col "
+          >
+            Users
+            {dropdownUsers && (
+              <>
+                <Link to="/admin/users" className="pl-6">
+                  <i className="fa fa-users"></i> All
+                </Link>
+
+                <Link to="/admin/verify/:userId" className="pl-6">
+                  <i className="fa fa-users"></i> Verify User
+                </Link>
+              </>
+            )}
           </li>
 
           <li>

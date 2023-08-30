@@ -42,12 +42,12 @@ const UsersList = () => {
 
   const deleteSelectedUsers = () => {
     if (selectedUsers.length > 0) {
-      selectedUsers.forEach((userId) => {
-        deleteUser(userId);
+      selectedUsers.forEach((orderId) => {
+        deleteUserHandler(orderId);
       });
       setSelectedUsers([]);
     } else {
-      toast("Please select orders to delete.");
+      alert("Please select orders to delete.");
     }
   };
 
