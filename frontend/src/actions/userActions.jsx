@@ -103,13 +103,17 @@ export const register = (userData) => async (dispatch) => {
       config
     );
 
-    console.log("DATA", data);
-
+    console.log("REGISTER DATA", data);
     dispatch({
-      type: REGISTER_USER_SUCCESS,
+      type: REGISTER_USER_SUCCESS_PENDING_VERIFICATION,
       payload: data.user,
     });
+    // dispatch({
+    //   type: REGISTER_USER_SUCCESS,
+    //   payload: data.user,
+    // });
   } catch (error) {
+    console.log("ERROR", error);
     dispatch({
       type: REGISTER_USER_FAIL,
       payload: error.response.data.message,
@@ -121,18 +125,20 @@ export const register = (userData) => async (dispatch) => {
 export const verifyUser = (userId, verificationStatus) => async (dispatch) => {
   try {
     dispatch({ type: VERIFY_USER_REQUEST });
-
+    const token = localStorage.getItem("token");
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
       },
     };
 
     const { data } = await axios.put(
       `http://localhost:7000/api/v1/admin/verify/${userId}`,
-      verificationStatus,
+      { verificationStatus },
       config
     );
+    console.log("VERIFCATION STATUS", verificationStatus);
 
     dispatch({
       type: VERIFY_USER_SUCCESS,
@@ -335,6 +341,8 @@ export const allUsers = () => async (dispatch) => {
       "http://localhost:7000/api/v1/admin/users",
       config
     );
+
+    console.log("ALL USERS ACTION", data);
 
     dispatch({
       type: ALL_USERS_SUCCESS,

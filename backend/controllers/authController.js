@@ -7,7 +7,7 @@ const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
 
-// Register a user   => /api/v1/register
+// Register a user => /api/v1/register
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
     folder: "avatars",
@@ -15,16 +15,47 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     crop: "scale",
   });
 
-  const { name, email, password } = req.body;
+  const validId = await cloudinary.v2.uploader.upload(req.body.validId, {
+    folder: "validId",
+    width: 150,
+    crop: "scale",
+  });
+
+  const withBirthdayId = await cloudinary.v2.uploader.upload(
+    req.body.withBirthdayId,
+    {
+      folder: "validId",
+      width: 150,
+      crop: "scale",
+    }
+  );
+
+  const { name, email, password, phoneNumber } = req.body;
+
+  console.log("PHONE NUMBER", phoneNumber);
 
   try {
     const user = await User.create({
       name,
       email,
       password,
+      phoneNumber,
       avatar: {
         public_id: result.public_id,
         url: result.secure_url,
+      },
+      verificationStatus: "Pending",
+      avatar: {
+        public_id: result.public_id,
+        url: result.secure_url,
+      },
+      withBirthdayId: {
+        public_id: withBirthdayId.public_id,
+        url: withBirthdayId.secure_url,
+      },
+      validId: {
+        public_id: validId.public_id,
+        url: validId.secure_url,
       },
     });
 
@@ -33,63 +64,6 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     next(new ErrorHandler(error.message, 400));
   }
 });
-
-// Register a user => /api/v1/register
-// exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-//   const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
-//     folder: "avatars",
-//     width: 150,
-//     crop: "scale",
-//   });
-
-//   const validId = await cloudinary.v2.uploader.upload(req.body.validId, {
-//     folder: "validId",
-//     width: 150,
-//     crop: "scale",
-//   });
-
-//   const withBirthdayId = await cloudinary.v2.uploader.upload(
-//     req.body.withBirthdayId,
-//     {
-//       folder: "validId",
-//       width: 150,
-//       crop: "scale",
-//     }
-//   );
-
-//   const { name, email, password, phoneNumber } = req.body;
-
-//   try {
-//     const user = await User.create({
-//       name,
-//       email,
-//       password,
-//       avatar: {
-//         public_id: result.public_id,
-//         url: result.secure_url,
-//       },
-//       phoneNumber,
-//       verificationStatus: "Pending",
-//       avatar: {
-//         public_id: result.public_id,
-//         url: result.secure_url,
-//       },
-//       withBirthdayId: {
-//         public_id: withBirthdayId.public_id,
-//         url: withBirthdayId.secure_url,
-//       },
-//       validId: {
-//         public_id: validId.public_id,
-//         url: validId.secure_url,
-//       },
-//     });
-
-//     sendToken(user, 200, res);
-//   } catch (error) {
-//     next(new ErrorHandler(error.message, 400));
-//   }
-
-// });
 
 // Login user => /api/v1/login
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
@@ -105,9 +79,9 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   }
 
   // Check if user is verified
-  // if (user.verificationStatus !== "Verified") {
-  //   return next(new ErrorHandler("Your account is pending verification.", 403));
-  // }
+  if (user.verificationStatus !== "Verified") {
+    return next(new ErrorHandler("Your account is pending verification.", 403));
+  }
 
   //Checks if password is correct or not
   const isPasswordMatched = await user.comparePassword(password);
@@ -133,18 +107,48 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // Create reset password url
-  const resetUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/password/reset/${resetToken}`;
+  // const resetUrl = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/password/reset/${resetToken}`;
 
-  const message = `Your password reset token is as follow:\n\n${resetUrl}\n\nIf you have not requested this email, then ignore it.`;
+  // Frontend Url
+  const resetUrl = `http://127.0.0.1:5173/password/reset/${resetToken}`;
+
+  // const message = `Your password reset token is as follow:\n\n${resetUrl}\n\nIf you have not requested this email, then ignore it.`;
+
+  const message = `
+  Subject: Password Reset Request
+  
+  Dear [Your Name],
+  
+  We have received a request to reset the password for your email account associated with ${user.email}. If you have not initiated this request, please ignore this email.
+  
+  To reset your password, please follow the link below:
+  
+  ${resetUrl}
+  
+  If you did not request this password reset or believe your account may be compromised, please contact our support team immediately by replying to this email. Your security is our priority, and we're here to assist you.
+  
+  Thank you for choosing Vaping Sidewalk for your email needs.
+  
+  Best regards,
+  ${process.env.SMTP_FROM_EMAIL}
+  Vaping Sidewalk
+  `;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: "Ecommerce Password Recovery",
-      message,
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: "Password Recovery",
+    //   message,
+    // });
+
+    // res.status(200).json({
+    //   success: true,
+    //   message: `Email sent to: ${user.email}`,
+    // });
+
+    await sendEmail(user.email, "Password Recovery Notification", message);
 
     res.status(200).json({
       success: true,
@@ -287,6 +291,8 @@ exports.allUsers = catchAsyncErrors(async (req, res, next) => {
     throw error;
   });
 
+  console.log("USERS ALL", users);
+
   res.status(200).json({
     success: true,
     users,
@@ -334,11 +340,21 @@ exports.verifyUser = catchAsyncErrors(async (req, res, next) => {
   const verificationStatus = req.body.verificationStatus; // "Verified" or "Rejected"
 
   try {
+    if (verificationStatus === "Rejected") {
+      // If the verificationStatus is "Rejected," delete the user
+      const deletedUser = await User.findByIdAndDelete(userId);
+      if (!deletedUser) {
+        return res.status(404).json({ message: "User not found." });
+      }
+      return res.status(200).json({ message: "User rejected and deleted." });
+    }
     const user = await User.findByIdAndUpdate(userId, { verificationStatus });
 
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
+
+    console.log("USER VERIFY", user);
 
     res
       .status(200)
@@ -347,6 +363,72 @@ exports.verifyUser = catchAsyncErrors(async (req, res, next) => {
     next(new ErrorHandler(error.message, 400));
   }
 });
+
+// Delete user => /api/v1/admin/user/:id
+// exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
+//   const user = await User.findById(req.params.id);
+
+//   const message = `Subject: Account Deletion Notification\n\nDear ${user.name},\n\nWe regret to inform you that your account with Vaping Sidewalk has been deleted.\n\nReason for Deletion: You've violate our rules and regulation. \n\nIf you believe this action was taken in error or if you have any questions, please contact our support team at ${process.env.SMTP_FROM_EMAIL}.\n\nThank you for your understanding.\n\nSincerely,\nThe Vapers Sidewalk Team`;
+
+//   try {
+//     await sendEmail({
+//       email: user.email,
+//       subject: "Account Deletion Notification",
+//       message,
+//     });
+//     await user.remove();
+
+//     res.status(200).json({
+//       success: true,
+//       message: `Email sent to: ${user.email}`,
+//     });
+
+//     if (!user) {
+//       return next(
+//         new ErrorHandler(`User does not found with id: ${req.params.id}`)
+//       );
+//     }
+//   } catch (error) {
+//     return next(new ErrorHandler(error.message, 500));
+//   }
+
+//   // Remove avatar from cloudinary - TODO
+
+//   // res.status(200).json({
+//   //   success: true,
+//   // });
+// });
+// Delete user => /api/v1/admin/user/:id
+// exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
+//   const user = await User.findById(req.params.id);
+
+//   if (!user) {
+//     return next(
+//       new ErrorHandler(`User does not found with id: ${req.params.id}`)
+//     );
+//   }
+
+//   // const message = `Subject: Account Deletion Notification\n\nDear ${user.name},\n\nWe regret to inform you that your account with Vaping Sidewalk has been deleted.\n\nReason for Deletion: You've violated our rules and regulations.\n\nIf you believe this action was taken in error or if you have any questions, please contact our support team at ${process.env.SMTP_FROM_EMAIL}.\n\nThank you for your understanding.\n\nSincerely,\nThe Vapers Sidewalk Team`;
+
+//   // try {
+//   //   await sendEmail(user.email, "Account Deletion Notification", message);
+//   //   await user.remove();
+
+//   //   res.status(200).json({
+//   //     success: true,
+//   //     message: `Email sent to: ${user.email}`,
+//   //   });
+//   // } catch (error) {
+//   //   return next(new ErrorHandler(error.message, 500));
+//   // }
+
+//   await user.remove();
+
+//   res.status(200).json({
+//     success: true,
+//     // message: `Email sent to: ${user.email}`,
+//   });
+// });
 
 // Delete user => /api/v1/admin/user/:id
 exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
@@ -358,10 +440,17 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  // Remove avatar from cloudinary - TODO
-  await user.remove();
+  const message = `Subject: Account Deletion Notification\n\nDear ${user.name},\n\nWe regret to inform you that your account with Vaping Sidewalk has been deleted.\n\nReason for Deletion: You've violated our rules and regulations.\n\nIf you believe this action was taken in error or if you have any questions, please contact our support team at ${process.env.SMTP_FROM_EMAIL}.\n\nThank you for your understanding.\n\nSincerely,\nThe Vapers Sidewalk Team`;
 
-  res.status(200).json({
-    success: true,
-  });
+  try {
+    await sendEmail(user.email, "Account Deletion Notification", message);
+    await user.remove();
+
+    res.status(200).json({
+      success: true,
+      message: `Email sent to: ${user.email}`,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 });

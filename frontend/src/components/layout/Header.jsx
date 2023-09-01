@@ -23,6 +23,8 @@ const Header = (keyword) => {
     alert.success("Logged out successfully.");
   };
 
+  console.log("USER HEADER", user);
+
   return (
     <>
       <nav className="flex container py-6 px-12 m-auto justify-between items-center font-custom cursor-pointer">
@@ -47,7 +49,7 @@ const Header = (keyword) => {
             <Link to="/chat">Chat</Link>
           </li>
           <li>
-            <Link to="/find/chat">Fimnd</Link>
+            <Link to="/find/chat">Find</Link>
           </li>
         </ul>
 
@@ -65,7 +67,8 @@ const Header = (keyword) => {
 
             <BsCart3 className="text-2xl" />
           </Link>
-          {user ? (
+
+          {!loading && user && user.verificationStatus === "Verified" ? (
             <div className="relative flex items-center justify-center">
               <button
                 id="dropdownHoverButton"
@@ -141,6 +144,12 @@ const Header = (keyword) => {
                   </Link>
                 </ul>
               </div>
+            </div>
+          ) : !loading && user && user.verificationStatus === "Pending" ? (
+            <div className="flex items-center justify-center">
+              <Link to="/login" className="m-auto text-2xl ">
+                <BsPerson />
+              </Link>
             </div>
           ) : (
             !loading && (

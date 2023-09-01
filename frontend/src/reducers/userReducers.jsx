@@ -88,13 +88,13 @@ export const authReducer = (state = { user: {} }, action) => {
         user: action.payload,
       };
 
-    // case REGISTER_USER_SUCCESS_PENDING_VERIFICATION:
-    //   return {
-    //     ...state,
-    //     loading: false,
-    //     isAuthenticated: false, // Set isAuthenticated to false until the user is verified
-    //     user: action.payload,
-    //   };
+    case REGISTER_USER_SUCCESS_PENDING_VERIFICATION:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: false, // Set isAuthenticated to false until the user is verified
+        user: action.payload,
+      };
 
     case LOGOUT_SUCCESS:
       return {
@@ -277,6 +277,12 @@ export const allUsersReducer = (state = { users: [] }, action) => {
       return {
         ...state,
         verifyingUserId: null,
+      };
+
+    case VERIFY_USER_RESET:
+      return {
+        ...state,
+        isUpdated: false,
       };
 
     case CLEAR_ERRORS:

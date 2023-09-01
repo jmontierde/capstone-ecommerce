@@ -24,13 +24,11 @@ const Login = () => {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, isAuthenticated, error]);
 
-  useEffect(() => {
-    if (user && user.verificationStatus === "Pending") {
-      alert.error("Your account is pending verification by the admin.");
-    }
-  }, [user, alert]);
+    // if (user && user.verificationStatus === "Pending") {
+    //   alert.error("Your account is pending verification by the admin.");
+    // }
+  }, [dispatch, alert, user, isAuthenticated, error]);
 
   const submitHandler = (e) => {
     e.preventDefault();
