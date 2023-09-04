@@ -68,7 +68,7 @@ const Home = () => {
             <h3 className="font-bold">Filter by Category:</h3>
             <ul>
               {categories.map((category) => (
-                <li key={category.id} className="pt-3 ">
+                <li className="pt-3 ">
                   <input
                     type="checkbox"
                     className="cursor-pointer"
@@ -108,7 +108,7 @@ const Home = () => {
           <div className="grid grid-cols-auto md:grid-cols-4 gap-6 text-center h-screen">
             {products &&
               products.map((product, index) => (
-                <Product key={`${product._id}-${index}`} product={product} />
+                <Product key={product._id} product={product} />
               ))}
           </div>
           {resPerPage <= count && (

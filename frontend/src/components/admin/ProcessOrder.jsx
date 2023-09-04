@@ -160,8 +160,10 @@ const ProcessOrder = () => {
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
-                <option value="Processing">Processing</option>
-                <option value="Shipped">Shipped</option>
+                <option value="Order Placed">Order Placed</option>
+                <option value="Order Ready">Order Ready</option>
+                <option value="In Transit">In Transit</option>
+                <option value="Out of Delivery">Out of Delivery</option>
                 <option value="Delivered">Delivered</option>
               </select>
             </div>

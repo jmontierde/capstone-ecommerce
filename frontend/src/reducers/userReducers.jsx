@@ -46,8 +46,42 @@ import {
   VERIFY_USER_FAIL,
   VERIFY_USER_RESET,
   REGISTER_USER_SUCCESS_PENDING_VERIFICATION,
+  // GET_TERMS_REQUEST,
+  // GET_TERMS_SUCCESS,
+  // GET_TERMS_FAIL,
   CLEAR_ERRORS,
 } from "../constants/userConstant";
+
+// export const termsReducer = (state = { content: [] }, action) => {
+//   switch (action.type) {
+//     case GET_TERMS_REQUEST:
+//       return {
+//         ...state,
+//         loading: true,
+//       };
+//     case GET_TERMS_SUCCESS:
+//       return {
+//         ...state,
+//         content: action.payload,
+//       };
+
+//     case GET_TERMS_FAIL:
+//       return {
+//         ...state,
+//         loading: false,
+//         error: action.payload,
+//       };
+
+//     case CLEAR_ERRORS:
+//       return {
+//         ...state,
+//         error: null,
+//       };
+
+//     default:
+//       return state;
+//   }
+// };
 
 export const removeUserReducer = (state = { users: [] }, action) => {
   switch (action.type) {

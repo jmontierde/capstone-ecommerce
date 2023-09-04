@@ -8,6 +8,7 @@ const ConfirmOrder = () => {
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+
   // Calculate Order Prices
   const itemsPrice = cartItems.reduce(
     (acc, cart) => acc + cart.price * cart.quantity,

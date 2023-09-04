@@ -51,6 +51,9 @@ import {
   VERIFY_USER_SUCCESS,
   VERIFY_USER_FAIL,
   REGISTER_USER_SUCCESS_PENDING_VERIFICATION,
+  // GET_TERMS_REQUEST,
+  // GET_TERMS_SUCCESS,
+  // GET_TERMS_FAIL,
 } from "../constants/userConstant";
 
 //Login
@@ -451,6 +454,37 @@ export const removeUser = (userId) => {
     payload: userId,
   };
 };
+
+// export const termsAndContions = () => async (dispatch) => {
+//   try {
+//     dispatch({ type: GET_TERMS_REQUEST });
+
+//     const token = localStorage.getItem("token");
+
+//     const config = {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     };
+
+//     const { data } = await axios.get(
+//       "http://localhost:7000/api/v1/terms",
+//       config
+//     );
+
+//     console.log("TERMS", data);
+
+//     dispatch({
+//       type: GET_TERMS_SUCCESS,
+//       payload: data.content,
+//     });
+//   } catch (error) {
+//     dispatch({
+//       type: GET_TERMS_FAIL,
+//       payload: error.response.data.message,
+//     });
+//   }
+// };
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({

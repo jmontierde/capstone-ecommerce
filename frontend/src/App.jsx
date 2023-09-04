@@ -46,11 +46,31 @@ import Customizer from "./components/pages/Customizer";
 import NewCategory from "./components/admin/NewCategory";
 import GetChat from "./components/chat/GetChat";
 import VerifyUser from "./components/admin/VerifyUser";
-
+import TermsAndConditionsComponent from "./components/user/TermsAndConditions";
+import CreateTerm from "./components/admin/CreateTerm";
+import UpdateTerms from "./components/admin/UpdateTerms";
+import { useNavigate } from "react-router-dom";
 function App() {
   // const dispatch = useDispatch()
   const [stripeApiKey, setStripeApiKey] = useState("");
   const { user, isAuthenticated, loading } = useSelector((state) => state.auth);
+  const [termsAccepted, setTermsAccepted] = useState(
+    localStorage.getItem("termsAccepted") === "true"
+  );
+
+  useEffect(() => {
+    // Check if the user has already accepted the terms
+    setTermsAccepted(localStorage.getItem("termsAccepted") === "true");
+  }, []);
+
+  const navigate = useNavigate();
+
+  // Check if the user has accepted the terms
+  if (!termsAccepted) {
+    // If not, navigate them to the Terms and Conditions page
+    navigate("/terms");
+  }
+
   useEffect(() => {
     store.dispatch(loadUser());
 
@@ -82,6 +102,11 @@ function App() {
       <div className="App">
         <Header />
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/terms" element={<TermsAndConditionsComponent />} />
+          {/* {termsAccepted ? (
+            <> */}
           <Route path="/product" element={<Home />} />
           <Route path="/search/:keyword" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetails />} />
@@ -116,8 +141,6 @@ function App() {
               }
             />
           )}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
 
           <Route
             exact
@@ -253,7 +276,29 @@ function App() {
               />
             }
           />
+          <Route
+            path="admin/maintenance/newTerm"
+            element={
+              <ProtectedRoute
+                component={CreateTerm}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
+          />
+          <Route
+            path="admin/maintenance/update/term"
+            element={
+              <ProtectedRoute
+                component={UpdateTerms}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
+          />
         </Routes>
+        <TermsAndConditionsComponent />
+
         {/* <Customizer /> */}
         {/* {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />} */}
       </div>

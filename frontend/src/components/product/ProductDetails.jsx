@@ -212,7 +212,7 @@ const ProductDetails = () => {
               Add to Cart
             </button>
             <Link
-              to="/payment"
+              to={"/shipping"}
               className="bg-[#953030] w-48 py-6 px-16 ml-3 text-[#ffffff] hover:bg-[#d26262]"
             >
               Checkout

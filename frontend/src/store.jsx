@@ -22,6 +22,7 @@ import {
   allUsersReducer,
   userDetailsReducer,
   removeUserReducer,
+  // termsReducer,
 } from "./reducers/userReducers";
 
 import { cartReducer } from "./reducers/cartReducers";
@@ -43,8 +44,16 @@ import {
   createMessagesReducer,
   getMessagesReducer,
 } from "./reducers/messageReducers";
+import {
+  newTermReducer,
+  termReducer,
+  termsReducer,
+} from "./reducers/termsReducers";
 
 const reducer = combineReducers({
+  terms: termsReducer,
+  term: termReducer,
+  newTerm: newTermReducer,
   removeUser: removeUserReducer,
   messages: getMessagesReducer,
   createMessages: createMessagesReducer,

@@ -133,8 +133,6 @@ const Register = () => {
     }
   };
 
-  console.log("PHONEN NUMBER", phoneNumber);
-
   // Need to add hide default image
   // const handleRemoveImage = () => {
   //     setAvatar(null);

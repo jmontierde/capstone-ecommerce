@@ -74,6 +74,17 @@ const Sidebar = () => {
                   <li>
                     <Link to="/admin/maintenance/category">Category</Link>
                   </li>
+                  <li>
+                    <Link to="/admin/maintenance/newTerm">
+                      Create Terms and Conditions
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link to="/admin/maintenance/update/term">
+                      Update Terms
+                    </Link>
+                  </li>
                 </ul>
               ) : (
                 <span></span>
