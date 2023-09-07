@@ -17,6 +17,30 @@ exports.processPayment = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+// Refund
+// Send stripe API Key   =>   /api/v1/stripeapi
+exports.refundPayment = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { paymentId, amount, orderItems } = req.body;
+
+    // Create a refund using the Stripe API
+    const refund = await stripe.refunds.create({
+      payment_intent: paymentId,
+      amount: Math.round(amount * 100), // Amount in cents
+      orderid: orderId,
+    });
+
+    // You can save refund details to your database here if needed
+
+    res
+      .status(200)
+      .json({ success: true, message: "Refund request successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Refund request failed" });
+  }
+});
+
 // Send stripe API Key   =>   /api/v1/stripeapi
 exports.sendStripApi = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({

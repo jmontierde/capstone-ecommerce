@@ -20,6 +20,20 @@ import {
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
   CLEAR_ERRORS,
+  REFUND_ORDER_REQUEST,
+  REFUND_ORDER_SUCCESS,
+  REFUND_ORDER_FAIL,
+  REFUND_ORDER_RESET,
+  ALL_REFUND_REQUEST,
+  ALL_REFUND_SUCCESS,
+  ALL_REFUND_FAIL,
+  UPDATE_REFUND_REQUEST,
+  DELETE_REFUND_SUCCESS,
+  UPDATE_REFUND_FAIL,
+  DELETE_REFUND_FAIL,
+  UPDATE_REFUND_RESET,
+  DELETE_REFUND_RESET,
+  UPDATE_REFUND_SUCCESS,
 } from "../constants/orderConstants";
 
 export const newOrderReducer = (state = {}, action) => {
@@ -178,6 +192,128 @@ export const orderReducer = (state = {}, action) => {
       };
 
     case DELETE_ORDER_RESET:
+      return {
+        ...state,
+        isDeleted: false,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+// Refund
+export const createRefundOrderReducer = (state = { refund: {} }, action) => {
+  switch (action.type) {
+    case REFUND_ORDER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case REFUND_ORDER_SUCCESS:
+      return {
+        loading: false,
+        success: action.payload.success,
+        refund: action.payload.refund,
+      };
+
+    case REFUND_ORDER_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case REFUND_ORDER_RESET:
+      return {
+        ...state,
+        success: false,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const allRefundReducer = (state = { refunds: [] }, action) => {
+  switch (action.type) {
+    case ALL_REFUND_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_REFUND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        refunds: action.payload.refunds,
+      };
+
+    case ALL_REFUND_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const refundReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_REFUND_REQUEST:
+    case DELETE_ORDER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case UPDATE_REFUND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isUpdated: action.payload,
+      };
+
+    case DELETE_REFUND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeleted: action.payload,
+      };
+
+    case UPDATE_REFUND_FAIL:
+    case DELETE_REFUND_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case UPDATE_REFUND_RESET:
+      return {
+        ...state,
+        isUpdated: false,
+      };
+
+    case DELETE_REFUND_RESET:
       return {
         ...state,
         isDeleted: false,

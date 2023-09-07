@@ -23,8 +23,6 @@ const Header = (keyword) => {
     alert.success("Logged out successfully.");
   };
 
-  console.log("USER HEADER", user);
-
   return (
     <>
       <nav className="flex container py-6 px-12 m-auto justify-between items-center font-custom cursor-pointer">
@@ -47,9 +45,6 @@ const Header = (keyword) => {
           </li>
           <li>
             <Link to="/chat">Chat</Link>
-          </li>
-          <li>
-            <Link to="/find/chat">Find</Link>
           </li>
         </ul>
 
@@ -128,6 +123,12 @@ const Header = (keyword) => {
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
                     Orders
+                  </Link>
+                  <Link
+                    to="/refund"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    Refund
                   </Link>
                   <Link
                     to="/shipping"

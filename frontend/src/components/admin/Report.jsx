@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
 import Sidebar from "./Sidebar";
 import { useSelector } from "react-redux";
@@ -13,21 +13,6 @@ const Report = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [showDayPicker, setShowDayPicker] = useState(false);
-
-  const pdfTableRef = useRef();
-
-  const downloadPDF = () => {
-    const doc = new jsPDF();
-
-    const tableRef = pdfTableRef.current; // Get the DOM element of the table
-    const imagePromise = html2canvas(tableRef); // Convert the table to an image
-
-    imagePromise.then((canvas) => {
-      const imageData = canvas.toDataURL("image/png");
-      doc.addImage(imageData, "PNG", 15, 15, 180, 0);
-      doc.save("report.pdf");
-    });
-  };
 
   const filterOrdersByMonth = () => {
     return orders.filter((order) => {
@@ -93,6 +78,41 @@ const Report = () => {
     }
   };
 
+  const [totalTotalPrice, setTotalTotalPrice] = useState(0);
+
+  useEffect(() => {
+    // Calculate the total of totalPrice column whenever filteredOrders changes
+    const newTotalTotalPrice = filteredOrders.reduce(
+      (total, order) => total + order.totalPrice,
+      0
+    );
+    setTotalTotalPrice(newTotalTotalPrice);
+  }, [filteredOrders]);
+
+  const pdfTableRef = useRef();
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+
+    // Add title
+    const title = "Vaping Sidewalk";
+    doc.setFontSize(18);
+    doc.text(title, 105, 10, { align: "center" });
+
+    // Add date
+    const dateString = selectedDate.toDateString(); // Format the selected date as a string
+    doc.setFontSize(12);
+    doc.text(dateString, 105, 20, { align: "center" });
+
+    const tableRef = pdfTableRef.current; // Get the DOM element of the table
+    const imagePromise = html2canvas(tableRef); // Convert the table to an image
+
+    imagePromise.then((canvas) => {
+      const imageData = canvas.toDataURL("image/png");
+      doc.addImage(imageData, "PNG", 15, 30, 180, 0);
+      doc.save("report.pdf");
+    });
+  };
+
   return (
     <div className="flex container mx-auto px-12">
       <Sidebar />
@@ -143,8 +163,8 @@ const Report = () => {
           <Loader />
         ) : (
           <div className="flex container mx-auto px-12">
-            <div className="flex w-full justify-center ">
-              <table ref={pdfTableRef} className="table-fixed  w-full h-32">
+            <div className="flex flex-col w-full justify-center ">
+              <table ref={pdfTableRef} className="table-fixed   w-full h-auto">
                 <thead className="bg-[#ECEFF1]">
                   <tr>
                     <th className="px-4 py-2">No</th>
@@ -174,10 +194,20 @@ const Report = () => {
                       <td className="border px-4 py-2">
                         {order.orderItems[0].quantity}
                       </td>
-                      <td className="border px-4 py-2">₱{order.totalPrice}</td>
-                      <td className="border px-4 py-2">₱{order.totalPrice}</td>
+                      <td className="border px-4 py-2">
+                        ₱{order.totalPrice.toLocaleString()}
+                      </td>
+                      <td className="border px-4 py-2">
+                        ₱{order.totalPrice.toLocaleString()}
+                      </td>
                     </tr>
                   ))}
+                  <tr>
+                    <td className="border px-4 py-2" colSpan="6"></td>
+                    <td className="border px-4 py-2">
+                      Total Price: ₱{totalTotalPrice.toLocaleString()}
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>

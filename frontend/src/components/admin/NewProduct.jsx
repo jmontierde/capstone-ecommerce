@@ -19,20 +19,6 @@ const NewProduct = () => {
 
   const { categories } = useSelector((state) => state.categories);
 
-  console.log(categories);
-
-  // const categories = [
-  //   "Atomizers",
-  //   "Mods",
-  //   "Coils",
-  //   "Tanks",
-  //   "Batteries",
-  //   "Relx",
-  //   "Skin",
-  //   "Accessories",
-  //   "Disposable Vapes",
-  // ];
-
   const alert = useAlert();
   const dispatch = useDispatch();
   const navigate = useNavigate();

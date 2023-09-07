@@ -13,7 +13,7 @@ import {
   clearErrors,
 } from "../../actions/productActions";
 import { useParams } from "react-router-dom";
-import { addItemToCart } from "../../actions/cartActions";
+import { addItemToCart, getCheckout } from "../../actions/cartActions";
 import ListReviews from "../review/ListReviews";
 const ProductDetails = () => {
   const { id } = useParams();
@@ -99,6 +99,10 @@ const ProductDetails = () => {
   const handleCart = () => {
     dispatch(addItemToCart(id, quantity));
     alert.success("Item Added to Cart");
+  };
+
+  const handleCheckout = () => {
+    dispatch(getCheckout(id, quantity));
   };
 
   const reviewHandler = () => {
@@ -214,6 +218,8 @@ const ProductDetails = () => {
             <Link
               to={"/shipping"}
               className="bg-[#953030] w-48 py-6 px-16 ml-3 text-[#ffffff] hover:bg-[#d26262]"
+              onClick={handleCheckout}
+              disabled={product.stock === 0}
             >
               Checkout
             </Link>

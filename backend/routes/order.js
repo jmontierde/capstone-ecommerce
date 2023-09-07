@@ -8,14 +8,30 @@ const {
   allOrders,
   updateOrder,
   deleteOrder,
+  refundOrder,
+  getSingleRefund,
+  allRefunds,
+  deleteRefund,
+  updateRefund,
 } = require("../controllers/orderController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
 router.route("/order/new").post(isAuthenticatedUser, newOrder);
+router.route("/order/refund").post(isAuthenticatedUser, refundOrder);
+router.route("/order/refund/:id").get(isAuthenticatedUser, getSingleRefund);
 
 router.route("/order/:id").get(isAuthenticatedUser, getSingleOrder);
 router.route("/orders/me").get(isAuthenticatedUser, myOrders);
+
+router
+  .route("/admin/order/refunds")
+  .get(isAuthenticatedUser, authorizeRoles("admin", "staff"), allRefunds);
+
+router
+  .route("/admin/refund/:id")
+  .put(isAuthenticatedUser, authorizeRoles("admin", "staff"), updateRefund)
+  .delete(isAuthenticatedUser, authorizeRoles("admin", "staff"), deleteRefund);
 
 router
   .route("/admin/orders")

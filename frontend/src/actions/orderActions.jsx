@@ -20,7 +20,20 @@ import {
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
   CLEAR_ERRORS,
+  REFUND_ORDER_REQUEST,
+  REFUND_ORDER_SUCCESS,
+  REFUND_ORDER_FAIL,
+  ALL_REFUND_REQUEST,
+  ALL_REFUND_SUCCESS,
+  ALL_REFUND_FAIL,
+  DELETE_REFUND_REQUEST,
+  DELETE_REFUND_SUCCESS,
+  DELETE_REFUND_FAIL,
+  UPDATE_REFUND_REQUEST,
+  UPDATE_REFUND_SUCCESS,
+  UPDATE_REFUND_FAIL,
 } from "../constants/orderConstants";
+import { DELETE_REVIEW_FAIL } from "../constants/productConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -139,7 +152,7 @@ export const allOrders = () => async (dispatch) => {
 };
 
 // update order
-export const updateOrder = (id, orderData) => async (dispatch) => {
+export const updateOrder = (id, refundData) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
     dispatch({ type: UPDATE_ORDER_REQUEST });
@@ -153,7 +166,7 @@ export const updateOrder = (id, orderData) => async (dispatch) => {
 
     const { data } = await axios.put(
       `http://localhost:7000/api/v1/admin/order/${id}`,
-      orderData,
+      refundData,
       config
     );
 
@@ -191,6 +204,125 @@ export const deleteOrder = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_ORDER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const createRefund = (refundData) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    dispatch({ type: REFUND_ORDER_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      "http://localhost:7000/api/v1/order/refund",
+      refundData,
+      config
+    );
+
+    console.log("REFUND DATA", data);
+
+    dispatch({
+      type: REFUND_ORDER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REFUND_ORDER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Get all refunds - ADMIN
+export const allRefund = () => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_REFUND_REQUEST });
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.get(
+      `http://localhost:7000/api/v1/admin/order/refunds`,
+      config
+    );
+
+    console.log("A", data);
+
+    dispatch({
+      type: ALL_REFUND_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_REFUND_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const deleteRefund = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_REFUND_REQUEST });
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.delete(
+      `http://localhost:7000/api/v1/admin/refund/${id}`,
+      config
+    );
+
+    dispatch({
+      type: DELETE_REFUND_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_REFUND_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const updateRefund = (id, refundData) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    dispatch({ type: UPDATE_REFUND_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `http://localhost:7000/api/v1/admin/refund/${id}`,
+      refundData,
+      config
+    );
+
+    console.log("UPDATE REFUND", data);
+
+    dispatch({
+      type: UPDATE_REFUND_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_REFUND_FAIL,
       payload: error.response.data.message,
     });
   }

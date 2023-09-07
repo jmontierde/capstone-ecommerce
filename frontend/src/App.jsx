@@ -50,6 +50,9 @@ import TermsAndConditionsComponent from "./components/user/TermsAndConditions";
 import CreateTerm from "./components/admin/CreateTerm";
 import UpdateTerms from "./components/admin/UpdateTerms";
 import { useNavigate } from "react-router-dom";
+import Refund from "./components/order/Refund";
+import AllRefunds from "./components/admin/AllRefunds";
+import Messenger from "./Messenger";
 function App() {
   // const dispatch = useDispatch()
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -163,11 +166,20 @@ function App() {
             path="/order/:id"
             element={<ProtectedRoute component={OrderDetails} exact />}
           />
+          <Route
+            path="/refund"
+            element={<ProtectedRoute component={Refund} exact />}
+          />
 
           {/* Admin */}
           <Route
             path="/dashboard"
             element={<ProtectedRoute component={Dashboard} isAdmin={true} />}
+          />
+
+          <Route
+            path="/admin/refunds"
+            element={<ProtectedRoute component={AllRefunds} isAdmin={true} />}
           />
 
           <Route
@@ -298,7 +310,7 @@ function App() {
           />
         </Routes>
         <TermsAndConditionsComponent />
-
+        <Messenger />
         {/* <Customizer /> */}
         {/* {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />} */}
       </div>

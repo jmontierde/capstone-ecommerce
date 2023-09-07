@@ -110,6 +110,8 @@ export const PaymentForm = ({ stripePromise }) => {
               },
               totalPrice: orderInfo.totalPrice,
             };
+
+            console.log("PAYMENT INFO", order);
             dispatch(createOrder(order));
 
             dispatch(clearCart());

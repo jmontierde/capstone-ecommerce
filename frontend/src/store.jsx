@@ -25,7 +25,7 @@ import {
   // termsReducer,
 } from "./reducers/userReducers";
 
-import { cartReducer } from "./reducers/cartReducers";
+import { cartReducer, checkoutReducer } from "./reducers/cartReducers";
 
 import {
   newOrderReducer,
@@ -33,6 +33,9 @@ import {
   orderDetailsReducer,
   allOrdersReducer,
   orderReducer,
+  createRefundOrderReducer,
+  allRefundReducer,
+  refundReducer,
 } from "./reducers/orderReducers";
 
 import {
@@ -51,6 +54,7 @@ import {
 } from "./reducers/termsReducers";
 
 const reducer = combineReducers({
+  checkout: checkoutReducer,
   terms: termsReducer,
   term: termReducer,
   newTerm: newTermReducer,
@@ -81,6 +85,9 @@ const reducer = combineReducers({
   allOrders: allOrdersReducer,
   orderDetails: orderDetailsReducer,
   order: orderReducer,
+  createRefund: createRefundOrderReducer,
+  allRefund: allRefundReducer,
+  refund: refundReducer,
 });
 
 const initialState = {

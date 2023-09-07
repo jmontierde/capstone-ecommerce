@@ -19,6 +19,8 @@ const Cart = () => {
     dispatch(removeItemFromCart(id));
   };
 
+  console.log("CART ITEM", cartItems);
+
   const handleAddQuantity = (id, quantity, stock) => {
     const newQuantity = quantity + 1;
 
