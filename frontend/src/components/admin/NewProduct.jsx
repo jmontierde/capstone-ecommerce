@@ -183,14 +183,15 @@ const NewProduct = () => {
 
                 <div className="flex flex-col my-6">
                   <div className="flex space-x-12   ">
-                    {imagesPreview.map((img, index) => (
-                      <img
-                        src={img}
-                        key={index}
-                        alt="Images Preview"
-                        className="w-44 h-44 bg-[#FCFBFC]"
-                      />
-                    ))}
+                    {imagesPreview.length > 0 &&
+                      imagesPreview.map((img, index) => (
+                        <img
+                          src={img}
+                          key={index}
+                          alt="Images Preview"
+                          className="w-44 h-44 bg-[#FCFBFC]"
+                        />
+                      ))}
 
                     <div className="flex justify-center items-center text-center border-2 py-12 rounded border-dotted border-[#000] w-44">
                       <label
