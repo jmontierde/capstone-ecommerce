@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { logout } from "../../actions/userActions";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Header = (keyword) => {
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -20,11 +22,12 @@ const Header = (keyword) => {
 
   const logoutHandler = () => {
     dispatch(logout());
-    alert.success("Logged out successfully.");
+    toast.success("Logged out successfully.");
   };
 
   return (
     <>
+      <ToastContainer />
       <nav className="flex container py-6 px-12 m-auto justify-between items-center font-custom cursor-pointer">
         <ul className="flex space-x-6 items-center justify-center uppercase  ">
           <h2 className="mr-16 font-bold text-2xl uppercase">

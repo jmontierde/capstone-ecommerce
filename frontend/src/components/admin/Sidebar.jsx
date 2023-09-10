@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../../actions/userActions";
 const Sidebar = () => {
   const [dropdown, setDropdown] = useState(false);
   const [dropdownMaintenance, setDropdownMaintenance] = useState(false);
   const [dropdownUsers, setDropdownUsers] = useState(false);
-  const [dropdownRefund, setDropdownRefund] = useState(false);
 
-  const { loading, error, users } = useSelector((state) => state.allUsers);
   const { user } = useSelector((state) => state.auth);
 
   console.log("Auth", user.role);
 
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(allUsers());
-  // }, [dispatch]);
-
-  const a = users.filter((uFilt) => uFilt.role === "staff").map((u) => u);
+  useEffect(() => {
+    // Close all dropdowns when the location changes
+    setDropdown(false);
+    setDropdownMaintenance(false);
+    setDropdownUsers(false);
+  }, [location]);
 
   return (
     <div className="w-2/12 container ">
@@ -27,13 +25,16 @@ const Sidebar = () => {
           <li>
             <Link to="/dashboard">Dashboard</Link>
           </li>
-          <li>
-            <a
-              className="dropdown-toggle cursor-pointer"
-              onClick={() => setDropdown(!dropdown)}
-            >
-              Products
-            </a>
+          <li onClick={() => setDropdown(!dropdown)}>
+            <div className="flex cursor-pointer">
+              <a className="dropdown-toggle cursor-pointer">Products</a>
+              <img
+                src="./images/dropdown.png"
+                className="w-3 object-contain mx-auto"
+                alt=""
+              />
+            </div>
+
             {dropdown ? (
               <ul className="text-[#000] pl-6">
                 <li>
@@ -94,21 +95,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link onClick={() => setDropdownRefund(!dropdownRefund)}>
-              Refund
-              {dropdownRefund ? (
-                <ul className="text-[#000] pl-6">
-                  <li>
-                    <Link to="/admin/refunds">All</Link>
-                  </li>
-                  <li>
-                    <Link to="/admin/update/refund">Update Refund</Link>
-                  </li>
-                </ul>
-              ) : (
-                <span></span>
-              )}
-            </Link>
+            <Link to="/admin/refunds">Refund</Link>
           </li>
 
           <li>

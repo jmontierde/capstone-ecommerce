@@ -13,6 +13,7 @@ const ProductReviews = () => {
   const [productId, setProductId] = useState("");
   const alert = useAlert();
   const dispatch = useDispatch();
+  const [typingTimeout, setTypingTimeout] = useState(null);
 
   const { error, reviews } = useSelector((state) => state.productReviews);
   const { isDeleted, error: deleteError } = useSelector(
@@ -30,23 +31,43 @@ const ProductReviews = () => {
       dispatch(clearErrors());
     }
 
-    if (productId !== "") {
-      dispatch(getProductReviews(productId));
-    }
-
     if (isDeleted) {
       alert.success("Review deleted successfully");
       dispatch({ type: DELETE_REVIEW_RESET });
     }
-  }, [dispatch, alert, error, productId, isDeleted, deleteError]);
+  }, [dispatch, alert, error, isDeleted, deleteError]);
 
   const deleteReviewHandler = (id) => {
     dispatch(deleteReview(id, productId));
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(getProductReviews(productId));
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value.trim();
+
+    if (/^[a-zA-Z0-9]*$/.test(inputValue)) {
+      // If the input consists of only letters and numbers
+      setProductId(inputValue);
+
+      // Clear any previous timeout
+      if (typingTimeout) {
+        clearTimeout(typingTimeout);
+      }
+
+      // Set a timeout to trigger the API call after 500 milliseconds of inactivity
+      setTypingTimeout(
+        setTimeout(() => {
+          if (inputValue !== "") {
+            alert.removeAll();
+            dispatch(getProductReviews(inputValue));
+          }
+        }, 500)
+      );
+    } else {
+      // If the input contains invalid characters, show an error
+      alert.error(
+        "Invalid characters entered. Please use letters and numbers only."
+      );
+    }
   };
 
   return (
@@ -54,7 +75,7 @@ const ProductReviews = () => {
       <h1 className="text-2xl font-bold text-center mb-4">Reviews</h1>
       <div className="flex justify-center items-center mt-5">
         <div className="col-5">
-          <form onSubmit={submitHandler}>
+          <form>
             <div className="form-group">
               <label htmlFor="productId_field">Enter Product ID</label>
               <input
@@ -62,17 +83,9 @@ const ProductReviews = () => {
                 id="productId_field"
                 className="border border-[#000]"
                 value={productId}
-                onChange={(e) => setProductId(e.target.value)}
+                onChange={handleInputChange}
               />
             </div>
-
-            <button
-              id="search_button"
-              type="submit"
-              className="bg-[#2e69a8] rounded py-2 my-3 text-white px-8"
-            >
-              SEARCH
-            </button>
           </form>
         </div>
       </div>

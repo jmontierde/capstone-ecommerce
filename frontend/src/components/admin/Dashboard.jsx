@@ -27,6 +27,8 @@ const Dashboard = () => {
     }
   });
 
+  console.log("OUT", outOfStock);
+
   useEffect(() => {
     dispatch(getAdminProducts());
     dispatch(allOrders());
@@ -55,11 +57,11 @@ const Dashboard = () => {
       ) : (
         <div className="flex">
           <Sidebar />
-          <div className="w-3/4 container p-6 space-y-6">
+          <div className="w-full container p-6 space-y-6">
             <h1 className="font-semibold text-4xl">Welcome back!</h1>
 
             <div className="flex gap-6">
-              <section className="flex flex-col w-80 ">
+              <section className="flex flex-col w-4/12 ">
                 <div className="text-center  h-full flex flex-col ">
                   <div className="bg-[#1D1D1D] flex justify-center items-center rounded-t-lg  h-36 w-full space-x-1 ">
                     <img
@@ -77,14 +79,14 @@ const Dashboard = () => {
                   <div className="bg-[#E9F167] h-36 text-left rounded-b-lg  p-6">
                     <h5 className="text-lg">Total Amount</h5>
                     <p className="font-bold text-4xl">
-                      ₱{totalAmount && totalAmount.toFixed(2)}
+                      ₱{totalAmount && totalAmount.toLocaleString()}
                       {/* ₱57,142.23 */}
                     </p>
                   </div>
                 </div>
               </section>
               {/* Other Info */}
-              <section className="w-4/6">
+              <section className="w-8/12 ">
                 <div className="flex justify-around items-center gap-6 text-white">
                   <div className="bg-[#373737] w-full rounded-lg h-36 flex flex-col justify-center items-center">
                     <h4 className="text-lg">Products</h4>
@@ -101,7 +103,7 @@ const Dashboard = () => {
                   </div>
                   <div className="bg-[#373737] w-full rounded-lg h-36 flex flex-col justify-center items-center">
                     <h4 className="text-lg">Out of Stock</h4>
-                    <p>4</p>
+                    <p>{outOfStock}</p>
                   </div>
                 </div>
               </section>

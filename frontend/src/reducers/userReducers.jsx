@@ -102,7 +102,10 @@ export const removeUserReducer = (state = { users: [] }, action) => {
   }
 };
 
-export const authReducer = (state = { user: {} }, action) => {
+export const authReducer = (
+  state = { user: {}, loading: false, isAuthenticated: false, error: null },
+  action
+) => {
   switch (action.type) {
     case LOGIN_REQUEST:
     case REGISTER_USER_REQUEST:
@@ -158,7 +161,7 @@ export const authReducer = (state = { user: {} }, action) => {
         loading: false,
         isAuthenticated: false,
         user: null,
-        error: action.payload,
+        error: action.payload, // Set the error message in the state
       };
 
     case CLEAR_ERRORS:

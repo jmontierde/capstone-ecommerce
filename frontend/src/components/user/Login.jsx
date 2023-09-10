@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, clearErrors } from "../../actions/userActions";
 import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,20 +15,15 @@ const Login = () => {
   const navigate = useNavigate();
   const alert = useAlert();
 
-  console.log("USER", user);
-
   useEffect(() => {
+    console.log("Error from Redux:", error);
     if (isAuthenticated) {
       navigate("/product");
     }
     if (error) {
-      alert.error(error);
       dispatch(clearErrors());
+      toast.error(error);
     }
-
-    // if (user && user.verificationStatus === "Pending") {
-    //   alert.error("Your account is pending verification by the admin.");
-    // }
   }, [dispatch, alert, user, isAuthenticated, error]);
 
   const submitHandler = (e) => {
@@ -38,15 +34,13 @@ const Login = () => {
 
   return (
     <div className="container mx-auto ">
+      <ToastContainer />
       <div
         className="flex justify-center items-center flex-col py-6 border-dotted border-[#d05e5e] border-4 "
         style={{ height: "calc(100vh - 9.5rem)" }}
       >
         <h1 className="font-bold text-xl">Login</h1>
-        <p className="w-96 text-center py-3">
-          In order to log in, please enter the email address you used to sign
-          up.
-        </p>
+        {/* {error && <div className="text-red-500 text-center mt-2">{error}</div>} */}
         <form onSubmit={submitHandler}>
           <div className="flex flex-col gap-2 px-16 py-6">
             <label htmlFor="email">Email Address</label>
@@ -81,6 +75,11 @@ const Login = () => {
               You don't have an account yet?{" "}
               <Link to="/register" className="text-[#997BD4] font-bold">
                 Sign up
+              </Link>
+            </p>
+            <p className="text-[#7B7E82] text-sm text-center">
+              <Link to="/terms" className="text-[#997BD4] font-bold">
+                Terms and Conditions
               </Link>
             </p>
           </div>

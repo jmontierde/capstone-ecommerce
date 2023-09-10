@@ -13,7 +13,8 @@ import { UPDATE_USER_RESET } from "../../constants/userConstant";
 
 import { useNavigate, useParams } from "react-router-dom";
 const UpdateUser = () => {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
 
@@ -24,6 +25,8 @@ const UpdateUser = () => {
   const { error, isUpdated } = useSelector((state) => state.user);
   const { user } = useSelector((state) => state.userDetails);
 
+  console.log("USERSAS", user);
+
   const userId = useParams().id;
 
   useEffect(() => {
@@ -31,7 +34,8 @@ const UpdateUser = () => {
     if (user && user._id !== userId) {
       dispatch(getUserDetails(userId));
     } else {
-      setName(user.name);
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
       setEmail(user.email);
       setRole(user.role);
     }
@@ -57,7 +61,8 @@ const UpdateUser = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.set("name", name);
+    formData.set("firstName", firstName);
+    formData.set("lastName", lastName);
     formData.set("email", email);
     formData.set("role", role);
 
@@ -73,12 +78,20 @@ const UpdateUser = () => {
           <form onSubmit={submitHandler} encType="multipart/form-data">
             <div className="flex space-x-12 ">
               <section className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="productName">Name</label>
+                <label htmlFor="firstName">First Name</label>
                 <input
                   type="text"
-                  id="productName"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="border border-[#000] py-2 my-1 px-3"
+                />
+                <label htmlFor="lastName">Last Name</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                   className="border border-[#000] py-2 my-1 px-3"
                 />
                 <div className="flex flex-col py-2 my-1 space-y-1">

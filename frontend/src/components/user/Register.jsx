@@ -6,16 +6,18 @@ import { useAlert } from "react-alert";
 import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Register = () => {
   const [user, setUser] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     phoneNumber: "",
   });
 
-  const { name, email, password, phoneNumber } = user;
+  const { firstName, lastName, email, password, phoneNumber } = user;
 
   const [avatar, setAvatar] = useState(null);
   // const [avatarPreview, setAvatarPreview] = useState(
@@ -41,42 +43,45 @@ const Register = () => {
         navigate("/login");
       } else if (user.verificationStatus === "Pending") {
         navigate("/login");
-        alert.error("Your account is pending verification by the admin.");
+        toast.error("Your account is pending verification by the admin.");
       }
     }
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, isAuthenticated, error]);
+  }, [dispatch, toast, isAuthenticated, error]);
 
-  const isRequiredFieldEmpty = !name || !email || !password || !phoneNumber;
+  const isRequiredFieldEmpty =
+    !firstName || !lastName || !email || !password || !phoneNumber;
 
   const submitHandler = (e) => {
     e.preventDefault();
+    console.log("ERROR", error);
 
     if (isRequiredFieldEmpty) {
-      alert.error("Please fill in all required fields.");
+      toast.error("Please fill in all required fields.");
       return;
     }
 
     if (!avatar || avatar.length === 0) {
-      alert.error("Please select one image for the avatar.");
+      toast.error("Please select one image for the avatar.");
       return;
     }
 
     if (!validId || validId.length === 0) {
-      alert.error("Please select one image for the valid id.");
+      toast.error("Please select one image for the valid id.");
       return;
     }
 
     if (!withBirthdayId || withBirthdayId.length === 0) {
-      alert.error("Please select one image for the valid id with birthday id.");
+      toast.error("Please select one image for the valid id with birthday id.");
       return;
     }
 
     const formData = new FormData();
-    formData.set("name", name);
+    formData.set("firstName", firstName);
+    formData.set("lastName", lastName);
     formData.set("email", email);
     formData.set("password", password);
     formData.set("phoneNumber", phoneNumber);
@@ -89,8 +94,8 @@ const Register = () => {
     const success = dispatch(register(formData));
 
     if (success) {
-      alert.success("You've succefully create an account");
-      alert.error("Your account is pending verification by the admin.");
+      toast.success("You've succefully create an account");
+      toast.error("Your account is pending verification by the admin.");
       // Registration was successful, navigate to login page
       navigate("/login");
     }
@@ -143,6 +148,7 @@ const Register = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="container mx-auto ">
         <div
           className="flex justify-center items-center flex-col py-6  "
@@ -151,12 +157,21 @@ const Register = () => {
           <h1 className="font-bold text-xl">Register</h1>
           <form onSubmit={submitHandler} encType="multipart/form-data">
             <div className="flex flex-col gap-2 px-16 py-6">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="firstName">First Name</label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={name}
+                id="firstName"
+                name="firstName"
+                value={firstName}
+                onChange={onChange}
+                className="border border-[#000] w-96 rounded py-1"
+              />
+              <label htmlFor="lastName">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={lastName}
                 onChange={onChange}
                 className="border border-[#000] w-96 rounded py-1"
               />

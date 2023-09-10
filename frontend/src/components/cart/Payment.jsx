@@ -155,12 +155,12 @@ export const PaymentForm = ({ stripePromise }) => {
   //
 
   return (
-    <div className="container flex flex-col mx-auto px-12 pb-8 bg-slate-600">
+    <div className="container flex flex-col  mx-auto px-12 pb-8">
       <CheckoutSteps />
-      <>
+      <div className="flex flex-col justify-center items-center">
         Payment Method
-        <div className="flex  flex-col">
-          <label className="border  border-[#000] w-1/3 py-3 space-x-2 px-3 table-fixed cursor-pointer">
+        <div className="flex flex-col w-1/3">
+          <label className="border  border-[#000]  py-3 space-x-2 px-3 table-fixed cursor-pointer">
             <input
               type="radio"
               value="card"
@@ -169,7 +169,7 @@ export const PaymentForm = ({ stripePromise }) => {
             />
             Credit/Debit Card
           </label>
-          <label className="border border-t-0 border-[#000] w-1/3 py-3 space-x-2 px-3 table-fixed cursor-pointer">
+          <label className="border border-t-0 border-[#000]   py-3 space-x-2 px-3 table-fixed cursor-pointer">
             <input
               type="radio"
               value="cash"
@@ -225,7 +225,7 @@ export const PaymentForm = ({ stripePromise }) => {
             <button onClick={submitHandler}>Order </button>
           </span>
         )}
-      </>
+      </div>
     </div>
   );
 };

@@ -5,6 +5,7 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const Product = require("../models/product");
 const Refund = require("../models/refund");
 const cloudinary = require("cloudinary");
+const sendSMS = require("../utils/sendSMS");
 
 // Create a new order => /api/v1/order/new
 
@@ -30,18 +31,27 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     paidAt: Date.now(),
     user: req.user._id,
   });
+  const smsMessage = `Thank you for placing an order with us. Your order ID is ${order._id}. We will process your order and keep you updated on its status.`;
+  try {
+    // Use the sendSMS function to send the SMS message
+    await sendSMS(req.user.phoneNumber, smsMessage);
 
-  res.status(200).json({
-    success: true,
-    order,
-  });
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    return next(
+      new ErrorHandler("Order created, but SMS notification failed.", 200)
+    ); // Handle SMS sending failure gracefully
+  }
 });
 
 // Get single order => /api/v1/order/:id
 exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate(
     "user",
-    "name email"
+    "fistName lastName email"
   );
 
   if (!order) {
@@ -153,6 +163,7 @@ exports.deleteOrder = catchAsyncErrors(async (req, res, next) => {
 exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
   const { orderId, reasons, otherReason } = req.body; // Change "reason" to "reasons"
 
+  const order = await Order.findById(orderId);
   const result = await cloudinary.v2.uploader.upload(req.body.imageReason, {
     folder: "reason-refund",
     width: 150,
@@ -169,7 +180,8 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
         url: result.secure_url,
       },
     });
-
+    const smsMessage = `Hello, we have received your refund request for order ID ${order._id}. We will review your request and keep you updated on its status. Thank you for your patience.`;
+    await sendSMS(order.user.phoneNumber, smsMessage);
     res.status(200).json({
       success: true,
       refund,
@@ -237,53 +249,3 @@ exports.deleteRefund = catchAsyncErrors(async (req, res, next) => {
     success: true,
   });
 });
-
-// Refund Order
-// Update the Refund Order endpoint
-// exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
-//   try {
-//     const { orderId, amount, reason, imageReason } = req.body;
-
-//     // Upload the image to Cloudinary
-//     const result = await cloudinary.v2.uploader.upload(imageReason, {
-//       folder: "reason-refund",
-//       width: 150,
-//       crop: "scale",
-//     });
-
-//     console.log("IMAGE", imageReason);
-
-//     // Check if the order with the provided orderId exists
-//     const order = await Order.findById(orderId);
-
-//     if (!order) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "Order not found" });
-//     }
-
-//     // Create a refund record
-//     const refund = new Refund({
-//       user: req.user._id,
-//       order: orderId,
-//       imageReason: {
-//         public_id: result.public_id,
-//         url: result.secure_url,
-//       },
-//       amount,
-//       reason,
-//     });
-
-//     // Save the refund record to the database
-//     await refund.save();
-
-//     // Update the order to reflect a refund request
-//     order.refundStatus = "pending"; // You may need to adjust this status based on your business logic
-//     await order.save();
-
-//     res.status(201).json({ success: true, data: refund });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: "Internal Server Error" });
-//   }
-// });

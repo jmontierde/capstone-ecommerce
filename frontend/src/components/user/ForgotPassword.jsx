@@ -1,11 +1,13 @@
 import { React, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
+// import { useAlert } from "react-toast";
 import { useNavigate } from "react-router-dom";
 import { forgotPassword, clearErrors } from "../../actions/userActions";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const ForgotPassword = () => {
   const dispatch = useDispatch();
-  const alert = useAlert();
+  // const toast = useAlert();
   const { error, loading, message } = useSelector(
     (state) => state.forgotPassword
   );
@@ -14,14 +16,14 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
 
     if (message) {
-      alert.success(message);
+      toast.success(message);
     }
-  }, [dispatch, alert, error, message]);
+  }, [dispatch, toast, error, message]);
 
   const resetHandler = (e) => {
     e.preventDefault();

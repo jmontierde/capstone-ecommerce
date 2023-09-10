@@ -118,7 +118,9 @@ const UsersList = () => {
                     </td>
                     <td className="border px-4 py-2">{index + 1}</td>
                     <td className="border px-4 py-3">{user._id}</td>
-                    <td className="border px-4 py-3">{user.name}</td>
+                    <td className="border px-4 py-3">
+                      {user.firstName} {user.lastName}
+                    </td>
                     <td className="border px-4 py-3">{user.email}</td>
                     <td className="border px-4 py-3">{user.role}</td>
                     <td className="border px-4 py-3">

@@ -82,6 +82,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data.user,
     });
   } catch (error) {
+    console.log("Error message from API:", error.response.data.message);
     dispatch({
       type: LOGIN_FAIL,
       payload: error.response.data.message,

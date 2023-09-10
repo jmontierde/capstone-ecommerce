@@ -33,36 +33,50 @@ const TermsAndConditions = () => {
   }, []);
 
   return (
-    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#5d3f3f] w-screen container mx-auto">
-      {!showTerms ? (
-        <div
-          style={{
-            maxHeight: "400px",
-            overflowY: "auto",
-          }}
-        >
-          <h1>Terms and Conditions</h1>
+    // <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#5d3f3f] w-screen container mx-auto">
+    //   {!showTerms ? (
+    //     <div
+    //       style={{
+    //         maxHeight: "400px",
+    //         overflowY: "auto",
+    //       }}
+    //     >
+    //       <h1>Terms and Conditions</h1>
 
-          {termsAndConditions.map((term, index) => (
-            <div className="bg-green-300" key={index}>
-              <h1>{term.title}</h1>
-              <p>{term.content}</p>
-            </div>
-          ))}
+    //       {termsAndConditions.map((term, index) => (
+    //         <div className="bg-green-300" key={index}>
+    //           <h1>{term.title}</h1>
+    //           <p>{term.content}</p>
+    //         </div>
+    //       ))}
 
-          <>
-            <input
-              type="checkbox"
-              checked={isChecked}
-              onChange={() => setIsChecked(!isChecked)}
-            />
-            <p>Terms and Conditions have been accepted.</p>
-            <button onClick={handleRemoveTerms}>Continue</button>
-          </>
+    //       <>
+    //         <input
+    //           type="checkbox"
+    //           checked={isChecked}
+    //           onChange={() => setIsChecked(!isChecked)}
+    //         />
+    //         <p>Terms and Conditions have been accepted.</p>
+    //         <button onClick={handleRemoveTerms}>Continue</button>
+    //       </>
+    //     </div>
+    //   ) : null}
+    // </div>
+    <>
+      <h1>Terms and Conditions</h1>
+
+      {termsAndConditions.map((term, index) => (
+        <div className="bg-green-300" key={index}>
+          <h1>
+            {index + 1}
+            {". "}
+            {term.title}
+          </h1>
+          <p>{term.content}</p>
         </div>
-      ) : null}
-    </div>
+      ))}
+    </>
   );
 };
 
-export default TermsAndConditions;
+export default React.memo(TermsAndConditions);

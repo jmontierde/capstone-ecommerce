@@ -4,13 +4,22 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
+const sendSMS = require("../utils/sendSMS");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
-const TermsandConditions = require("../models/TermsAndConditions");
+const isEmailValid = require("../utils/emailValidator");
 const TermsAndConditions = require("../models/TermsAndConditions");
-
 // Register a user => /api/v1/register
+// Email validator function
+function isGmailEmail(email) {
+  // Regular expression to match Gmail email addresses
+  const gmailRegex = /^[a-zA-Z0-9._-]+@gmail.com$/;
+
+  return gmailRegex.test(email);
+}
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+  const { firstName, lastName, email, password, phoneNumber } = req.body;
+
   const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
     folder: "avatars",
     width: 150,
@@ -32,13 +41,15 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     }
   );
 
-  const { name, email, password, phoneNumber } = req.body;
-
-  console.log("PHONE NUMBER", phoneNumber);
-
   try {
+    // const isEmailValid = validateEmail(email);
+
+    // if (!isEmailValid) {
+    //   throw new Error("Invalid email address");
+    // }
     const user = await User.create({
-      name,
+      firstName,
+      lastName,
       email,
       password,
       phoneNumber,
@@ -61,11 +72,25 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
       },
     });
 
+    // const smsMessage = "Thank you for signing up!";
+    // await sendSMS(user.phoneNumber, smsMessage);
+
     sendToken(user, 200, res);
   } catch (error) {
     next(new ErrorHandler(error.message, 400));
   }
 });
+
+const validateEmail = (email) => {
+  // Check if the email address is valid according to the RFC 5322 standard.
+  if (!emailValidator.validate(email)) {
+    return false;
+  }
+
+  // Check if the email address is a Gmail address.
+  const domain = email.split("@")[1];
+  return domain === "gmail.com";
+};
 
 // Login user => /api/v1/login
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
@@ -97,7 +122,10 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
 
 // Forgot Password => /api/v1/password/forgot
 exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({
+    email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
+  });
 
   if (!user) {
     return next(new ErrorHandler("User not found with this email", 404));
@@ -119,39 +147,28 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   // const message = `Your password reset token is as follow:\n\n${resetUrl}\n\nIf you have not requested this email, then ignore it.`;
 
   const message = `
-  Subject: Password Reset Request
-  
-  Dear [Your Name],
-  
-  We have received a request to reset the password for your email account associated with ${user.email}. If you have not initiated this request, please ignore this email.
-  
-  To reset your password, please follow the link below:
-  
-  ${resetUrl}
-  
-  If you did not request this password reset or believe your account may be compromised, please contact our support team immediately by replying to this email. Your security is our priority, and we're here to assist you.
-  
-  Thank you for choosing Vaping Sidewalk for your email needs.
-  
-  Best regards,
-  ${process.env.SMTP_FROM_EMAIL}
-  Vaping Sidewalk
+      Subject: Password Reset Request
+      
+      Dear [Your Name],
+      
+      We have received a request to reset the password for your email account associated with ${user.email}. If you have not initiated this request, please ignore this email.
+      
+      To reset your password, please follow the link below:
+      
+      ${resetUrl}
+      
+      If you did not request this password reset or believe your account may be compromised, please contact our support team immediately by replying to this email. Your security is our priority, and we're here to assist you.
+      
+      Thank you for choosing Vaping Sidewalk for your email needs.
+      
+      Best regards,
+      ${process.env.SMTP_FROM_EMAIL}
+      Vaping Sidewalk
   `;
 
   try {
-    // await sendEmail({
-    //   email: user.email,
-    //   subject: "Password Recovery",
-    //   message,
-    // });
-
-    // res.status(200).json({
-    //   success: true,
-    //   message: `Email sent to: ${user.email}`,
-    // });
-
     await sendEmail(user.email, "Password Recovery Notification", message);
-
+    await sendSMS(user.phoneNumber, message);
     res.status(200).json({
       success: true,
       message: `Email sent to: ${user.email}`,
@@ -237,7 +254,8 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 //Update user profile => /api/v1/me/update
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
   const newUserData = {
-    name: req.body.name,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     email: req.body.email,
   };
 
@@ -320,7 +338,8 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
 //Update user profile => /api/v1/admin/user/:id
 exports.updateUser = catchAsyncErrors(async (req, res, next) => {
   const newUserData = {
-    name: req.body.name,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     email: req.body.email,
     role: req.body.role,
   };
@@ -376,12 +395,13 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  const message = `Subject: Account Deletion Notification\n\nDear ${user.name},\n\nWe regret to inform you that your account with Vaping Sidewalk has been deleted.\n\nReason for Deletion: You've violated our rules and regulations.\n\nIf you believe this action was taken in error or if you have any questions, please contact our support team at ${process.env.SMTP_FROM_EMAIL}.\n\nThank you for your understanding.\n\nSincerely,\nThe Vapers Sidewalk Team`;
+  const message = `Subject: Account Deletion Notification\n\nDear ${user.firstName} ${user.lastName},\n\nWe regret to inform you that your account with Vaping Sidewalk has been deleted.\n\nReason for Deletion: You've violated our rules and regulations.\n\nIf you believe this action was taken in error or if you have any questions, please contact our support team at ${process.env.SMTP_FROM_EMAIL}.\n\nThank you for your understanding.\n\nSincerely,\nThe Vapers Sidewalk Team`;
 
   try {
     await sendEmail(user.email, "Account Deletion Notification", message);
     await user.remove();
 
+    await sendSMS(user.phoneNumber, message);
     res.status(200).json({
       success: true,
       message: `Email sent to: ${user.email}`,

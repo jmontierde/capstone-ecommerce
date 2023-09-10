@@ -12,6 +12,8 @@ const Shipping = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  console.log(user);
   console.log("SHIPPING", shippingInfo);
 
   const countriesList = Object.values(countries);
@@ -20,8 +22,6 @@ const Shipping = () => {
   const [postalCode, setPostalCode] = useState(shippingInfo.postalCode);
   const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
   const [country, setCountry] = useState(shippingInfo.country);
-
-  console.log("USER", user);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -48,13 +48,15 @@ const Shipping = () => {
               type="text"
               placeholder="First Name"
               className="border w-full py-3 pl-3 text-lg  border-[#5c5858]"
-              // value={user.name}
+              value={user.firstName}
               disable="true"
             />
             <input
               type="text"
               placeholder="Last Name"
               className="border w-full py-3 pl-3 text-lg border-[#5c5858]"
+              value={user.lastName}
+              disable="true"
             />
           </div>
 

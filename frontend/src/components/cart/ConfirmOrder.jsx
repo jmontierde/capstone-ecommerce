@@ -53,7 +53,11 @@ const ConfirmOrder = () => {
             <h4 className="font-bold text-xl">Shipping Information</h4>
             <div className="flex flex-col">
               <p className="font-bold">
-                Name: <span className="font-semibold">{user.name}</span>
+                Name:{" "}
+                <span className="font-semibold">
+                  {user.firstName}
+                  {""} {user.lastName}
+                </span>
               </p>
               <p className="font-bold">
                 Phone:{" "}
