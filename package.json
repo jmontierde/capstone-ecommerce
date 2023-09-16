@@ -18,7 +18,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "caniuse-lite": "^1.0.30001520",
-    "cloudinary": "^1.36.4",
+    "cloudinary": "^1.23.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "countries-list": "^2.6.1",

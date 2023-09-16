@@ -12,19 +12,20 @@ const errorMiddleware = require("./middlewares/errors");
 const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config({ path: "backend/config/config.env" });
-
+// if (process.env.NODE_ENV !== "PRODUCTION")
+//   require("dotenv").config({ path: "backend/config/config.env" });
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyparser.urlencoded({ extended: true }));
-app.use(fileUpload());
-// app.use(
-//   fileUpload({
-//     limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
-//   })
-// );
+app.use(
+  fileUpload({
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB limit
+    useTempFiles: true,
+  })
+);
 
 app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "500mb", extended: true }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 const { Server } = require("socket.io");
 let onlineUsers = [];

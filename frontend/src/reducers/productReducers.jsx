@@ -50,6 +50,9 @@ import {
   DELETE_REVIEW_RESET,
   DELETE_REVIEW_FAIL,
   CLEAR_ERRORS,
+  GET_RELATED_PRODUCTS_REQUEST,
+  GET_RELATED_PRODUCTS_SUCCESS,
+  GET_RELATED_PRODUCTS_FAIL,
 } from "../constants/productConstants";
 
 export const productsReducer = (state = { products: [] }, action) => {
@@ -68,6 +71,8 @@ export const productsReducer = (state = { products: [] }, action) => {
         productsCount: action.payload.productsCount,
         resPerPage: action.payload.resPerPage,
         filteredProductsCount: action.payload.filteredProductsCount,
+        minPrice: action.payload.minPrice, // Update minPrice
+        maxPrice: action.payload.maxPrice, // Update maxPrice
       };
 
     case ADMIN_PRODUCTS_SUCCESS:
@@ -237,6 +242,43 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
     case PRODUCT_DETAILS_FAIL:
       return {
         ...state,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const relatedProductsReducer = (
+  state = { relatedProducts: [], loading: false, error: null },
+  action
+) => {
+  switch (action.type) {
+    case GET_RELATED_PRODUCTS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case GET_RELATED_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        relatedProducts: action.payload,
+        error: null,
+      };
+
+    case GET_RELATED_PRODUCTS_FAIL:
+      return {
+        ...state,
+        loading: false,
         error: action.payload,
       };
 

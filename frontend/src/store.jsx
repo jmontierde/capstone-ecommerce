@@ -14,6 +14,7 @@ import {
   categoriesReducer,
   categoryReducer,
   newCategoryReducer,
+  relatedProductsReducer,
 } from "./reducers/productReducers";
 import {
   authReducer,
@@ -48,16 +49,17 @@ import {
   getMessagesReducer,
 } from "./reducers/messageReducers";
 import {
-  newTermReducer,
+  createTermReducer,
   termReducer,
   termsReducer,
 } from "./reducers/termsReducers";
 
 const reducer = combineReducers({
+  relatedProducts: relatedProductsReducer,
   checkout: checkoutReducer,
   terms: termsReducer,
   term: termReducer,
-  newTerm: newTermReducer,
+  newTerm: createTermReducer,
   removeUser: removeUserReducer,
   messages: getMessagesReducer,
   createMessages: createMessagesReducer,

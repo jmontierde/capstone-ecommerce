@@ -76,7 +76,7 @@ const NewProduct = () => {
     images.forEach((image) => {
       formData.append("images", image);
     });
-
+    console.log("FormData:", formData);
     dispatch(newProduct(formData));
   };
 
@@ -102,12 +102,12 @@ const NewProduct = () => {
 
   return (
     <>
-      <div className="flex container mx-auto px-12">
+      <div className="flex ">
         <Sidebar />
-        <div className="w-10/12 container p-6">
+        <div className="  container p-6">
           <form onSubmit={submitHandler} encType="multipart/form-data">
-            <div className="flex  space-x-12 ">
-              <section className="w-1/2 flex flex-col ">
+            <div className="flex  mx-auto space-x-12 ">
+              <section className=" flex flex-col w-full ">
                 <label htmlFor="productName">Product Name</label>
                 <input
                   type="text"
@@ -207,6 +207,7 @@ const NewProduct = () => {
                         id="fileInput"
                         type="file"
                         className="hidden"
+                        accept=".jpg, .jpeg, .png, .gif"
                         onChange={onChange}
                         multiple
                       />
@@ -216,7 +217,7 @@ const NewProduct = () => {
                   <button
                     id="login_button"
                     type="submit"
-                    className="bg-[#003171] w-1/4 py-3 text-white rounded my-6"
+                    className="bg-[#003171] w-1/3 py-3  text-white rounded my-6"
                     disabled={loading}
                   >
                     {loading ? "Adding Product..." : "Add Product"}

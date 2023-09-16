@@ -43,19 +43,60 @@ import {
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
   UPDATE_CATEGORY_FAIL,
+  GET_RELATED_PRODUCTS_SUCCESS,
+  GET_RELATED_PRODUCTS_REQUEST,
+  GET_RELATED_PRODUCTS_FAIL,
 } from "../constants/productConstants";
 
+//Related Product
+export const getRelatedProducts = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_RELATED_PRODUCTS_REQUEST });
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `http://localhost:7000/api/v1/products/related?id=${id}`,
+      config
+    );
+    console.log("Categories from Action", data);
+    dispatch({
+      type: GET_RELATED_PRODUCTS_SUCCESS, // Correct action type
+      payload: data.relatedProducts,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_RELATED_PRODUCTS_FAIL, // Correct action type
+      payload: error.response.data.message,
+    });
+  }
+};
+
 export const getProducts =
-  (keyword = "", currentPage = 1, sortOption, category, rating = 0) =>
+  (
+    keyword = "",
+    currentPage = 1,
+    sortOption,
+    category,
+    rating = 0,
+    minPrice = 0,
+    maxPrice = Infinity
+  ) =>
   async (dispatch) => {
     try {
       dispatch({ type: ALL_PRODUCTS_REQUEST });
       //send the request to backend
 
-      let link = `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&ratings=${rating}`;
+      let link = `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&ratings=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
 
       if (category) {
-        link = `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&category=${category}&ratings=${rating}`;
+        link = `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&category=${category}&ratings=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
       }
 
       const { data } = await axios.get(link);
@@ -259,6 +300,8 @@ export const getProductReviews = (id) => async (dispatch) => {
       `http://localhost:7000/api/v1/reviews?id=${id}`,
       config
     );
+
+    console.log("DATA REVIEWS", data);
 
     dispatch({
       type: GET_REVIEWS_SUCCESS,

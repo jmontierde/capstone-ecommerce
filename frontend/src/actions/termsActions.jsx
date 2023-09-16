@@ -54,20 +54,20 @@ export const getTerms = () => async (dispatch) => {
   try {
     dispatch({ type: GET_TERMS_REQUEST });
 
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
 
     const { data } = await axios.get(
-      "http://localhost:7000/api/v1/terms",
-      config
+      "http://localhost:7000/api/v1/terms"
+      // config
     );
 
-    console.log("TERMS", data);
+    // console.log("TERMS", data);
 
     dispatch({
       type: GET_TERMS_SUCCESS,
@@ -109,7 +109,7 @@ export const deleteTerm = (id) => async (dispatch) => {
 };
 
 // Update Product (ADMIN)
-export const updateTerm = (id) => async (dispatch) => {
+export const updateTerm = (id, updatedFields) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
 
@@ -124,12 +124,13 @@ export const updateTerm = (id) => async (dispatch) => {
 
     const { data } = await axios.put(
       `http://localhost:7000/api/v1/admin/term/${id}`, // Properly construct the URL
+      updatedFields, // Include the updated fields in the request body
       config
     );
 
     dispatch({
       type: UPDATE_TERMS_SUCCESS,
-      payload: data.termsAndConditions,
+      payload: data.updatedTermsAndConditions, // Assuming 'updatedTermsAndConditions' is the response field
     });
   } catch (error) {
     dispatch({

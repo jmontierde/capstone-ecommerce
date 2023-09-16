@@ -32,6 +32,8 @@ const TermsAndConditions = () => {
     }
   }, []);
 
+  console.log("Terms", termsAndConditions);
+
   return (
     // <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#5d3f3f] w-screen container mx-auto">
     //   {!showTerms ? (

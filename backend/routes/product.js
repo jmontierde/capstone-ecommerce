@@ -14,6 +14,7 @@ const {
   deleteReview,
   getAdminProducts,
   getAllCategories,
+  relatedProduct,
 } = require("../controllers/productController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
@@ -22,7 +23,9 @@ router.route("/products").get(getProducts); // This is the path link from POSTMA
 router.route("/categories").get(getAllCategories);
 router.route("/admin/products").get(getAdminProducts);
 router.route("/product/:id").get(getSingleProduct);
-router.route("/admin/product/new").post(isAuthenticatedUser, newProduct);
+router.route("/product/:id").get(getSingleProduct);
+
+router.route("/products/related").get(isAuthenticatedUser, relatedProduct);
 // router.route('/admin/product/:id').put(updateProduct)
 router
   .route("/admin/product/:id")

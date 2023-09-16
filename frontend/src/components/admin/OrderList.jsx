@@ -15,6 +15,28 @@ import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
 
 import { useNavigate } from "react-router-dom";
 
+import {
+  MagnifyingGlassIcon,
+  ChevronUpDownIcon,
+} from "@heroicons/react/24/outline";
+import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import {
+  Card,
+  CardHeader,
+  Input,
+  Typography,
+  Button,
+  CardBody,
+  Chip,
+  CardFooter,
+  Tabs,
+  TabsHeader,
+  Tab,
+  Avatar,
+  IconButton,
+  Tooltip,
+} from "@material-tailwind/react";
+
 const OrderList = () => {
   const navigate = useNavigate();
   const alert = useAlert();
@@ -24,6 +46,14 @@ const OrderList = () => {
   const { isDeleted } = useSelector((state) => state.order);
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [masterCheckboxChecked, setMasterCheckboxChecked] = useState(false);
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Number of items to display per page
+
+  // Search
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     dispatch(allOrders());
 
@@ -54,109 +84,241 @@ const OrderList = () => {
     }
   };
 
+  const TABLE_HEAD = [
+    "No.",
+    "Order Id",
+    "Num of Items",
+    "Amount",
+    "Status",
+    "Actions",
+  ];
+
+  // Filter orders based on searchQuery
+  const filteredOrders = orders
+    ? orders.filter((order) =>
+        order._id.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
+  // Calculate pagination values
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <div>
-      <h1 className="text-2xl font-bold text-center mb-4">My Orders</h1>
-
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex container mx-auto px-12">
+        <div className="flex">
           <Sidebar />
-          <div className="flex flex-col w-10/12 h-full justify-center  ">
-            <div className="flex justify-start mt-4">
-              <button
-                className="bg-red-500 text-white px-3 py-2"
-                onClick={deleteSelectedOrders}
-              >
-                Delete Selected Orders
-              </button>
-            </div>
-            <table className="table w-full h-32">
-              <thead className="bg-[#ECEFF1]">
-                <tr>
-                  <th className="px-4 py-2">
-                    <input
-                      type="checkbox"
-                      checked={masterCheckboxChecked}
-                      onChange={() => {
-                        if (masterCheckboxChecked) {
-                          setSelectedOrders([]);
-                        } else {
-                          setSelectedOrders(orders.map((order) => order._id));
-                        }
-                        setMasterCheckboxChecked(!masterCheckboxChecked);
-                      }}
-                    />
-                  </th>
-                  <th>No</th>
-                  <th className="px-4 py-2">Order ID</th>
-                  <th className="px-4 py-2">Num of Items</th>
-                  <th className="px-4 py-2">Amount</th>
-                  <th className="px-4 py-2">Status</th>
-                  <th className="px-4 py-2">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="text-center">
-                {orders.map((order, index) => (
-                  <tr key={order._id}>
-                    <td className="border px-4 py-2">
+          <Card className="h-full w-full">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+              <div className="mb-8 flex items-center justify-between gap-8">
+                <div>
+                  <Typography variant="h5" color="blue-gray">
+                    Orders List
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    See information about all orders
+                  </Typography>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <button
+                  className="bg-red-500 text-white px-3 py-2"
+                  onClick={deleteSelectedOrders}
+                >
+                  Delete Selected orders
+                </button>
+                <div className="relative w-full md:w-72 mr-6">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <MagnifyingGlassIcon className="h-5 w-5 absolute top-3 left-3 text-gray-400" />
+                </div>
+              </div>
+            </CardHeader>
+
+            <CardBody className="overflow-scroll px-0">
+              <table className="mt-4 w-full min-w-max table-auto text-left">
+                <thead>
+                  <tr>
+                    <th className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 ">
                       <input
                         type="checkbox"
-                        checked={
-                          masterCheckboxChecked ||
-                          selectedOrders.includes(order._id)
-                        }
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedOrders([...selectedOrders, order._id]);
+                        checked={selectedOrders.length === orders.length}
+                        onChange={() => {
+                          if (selectedOrders.length === orders.length) {
+                            setSelectedOrders([]);
                           } else {
-                            setSelectedOrders(
-                              selectedOrders.filter((id) => id !== order._id)
-                            );
+                            setSelectedOrders(orders.map((order) => order._id));
                           }
                         }}
                       />
-                    </td>
-                    <td className="border px-4 py-2">{index + 1}</td>
-                    <td className="border px-4 py-2">{order._id}</td>
-                    <td className="border px-4 py-2">
-                      {order.orderItems.length}
-                    </td>
-                    <td className="border px-4 py-2">{order.totalPrice}</td>
-                    <td className="border px-4 py-2">
-                      <span
-                        className={`${
-                          order.orderStatus === "Delivered"
-                            ? "text-green-500"
-                            : "text-red-500"
-                        }`}
+                    </th>
+                    {TABLE_HEAD.map((head, index) => (
+                      <th
+                        key={head}
+                        className="cursor-pointer  border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 "
                       >
-                        {order.orderStatus}
-                      </span>
-                    </td>
-                    <td className="border px-4 py-2">
-                      <div className="flex justify-center items-center space-x-3">
-                        <Link to={`/admin/order/${order._id}`}>
-                          <img
-                            src="/images/eye-solid.svg"
-                            alt="View Order"
-                            className="w-6 h-6 mx-auto"
-                          />
-                        </Link>
-                        <img
-                          src="/images/deleteHover.png"
-                          alt="View product"
-                          className="w-6 h-6 cursor-pointer"
-                          onClick={() => deleteOrderHandler(order._id)}
-                        />
-                      </div>
-                    </td>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="flex items-center  justify-between gap-2 font-normal leading-none opacity-70"
+                        >
+                          {head}{" "}
+                        </Typography>
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {currentItems.map((order, index) => {
+                    const isLast = index === orders.length - 1;
+                    const classes = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
+
+                    return (
+                      <tr key={order.name}>
+                        <td className={classes}>
+                          <input
+                            type="checkbox"
+                            checked={
+                              masterCheckboxChecked ||
+                              selectedOrders.includes(order._id)
+                            }
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedOrders([
+                                  ...selectedOrders,
+                                  order._id,
+                                ]);
+                              } else {
+                                setSelectedOrders(
+                                  selectedOrders.filter(
+                                    (id) => id !== order._id
+                                  )
+                                );
+                              }
+                            }}
+                          />
+                        </td>
+                        <td className={classes}>
+                          <div className="flex items-center gap-3">
+                            <div className="flex flex-col">
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {index + 1}
+                              </Typography>
+                            </div>
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {order._id}
+                            </Typography>
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {order.orderItems.length}
+                          </Typography>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {order.totalPrice}
+                          </Typography>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            <span
+                              className={`${
+                                order.orderStatus === "Delivered"
+                                  ? "text-green-500"
+                                  : "text-red-500"
+                              }`}
+                            >
+                              {order.orderStatus}
+                            </span>
+                          </Typography>
+                        </td>
+                        <td
+                          className={`${classes} flex items-center space-x-6`}
+                        >
+                          <Link to={`/admin/order/${order._id}`}>
+                            <Tooltip content="Edit order" className="bg-[#000]">
+                              <PencilIcon className="h-4 w-4" />
+                            </Tooltip>
+                          </Link>
+
+                          <img
+                            src="/images/deleteHover.png"
+                            alt="View order"
+                            className="w-6 h-6 cursor-pointer"
+                            onClick={() => deleteOrderHandler(order._id)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </CardBody>
+            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="font-normal"
+              >
+                Page {currentPage} of {totalPages === 1 ? 1 : totalPages}
+              </Typography>
+              <div className="flex gap-2">
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </Button>
+              </div>
+            </CardFooter>
+          </Card>
         </div>
       )}
     </div>

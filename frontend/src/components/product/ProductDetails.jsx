@@ -13,13 +13,16 @@ import {
   clearErrors,
 } from "../../actions/productActions";
 import { useParams } from "react-router-dom";
+import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import { addItemToCart, getCheckout } from "../../actions/cartActions";
 import ListReviews from "../review/ListReviews";
+import { useNavigate } from "react-router-dom";
+import RelatedProducts from "./RelatedProduct";
+
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const alert = useAlert();
-
   const [comment, setComment] = useState("");
   const [modal, setModal] = useState(false);
 
@@ -27,10 +30,12 @@ const ProductDetails = () => {
     (state) => state.productDetails
   );
 
+  const navigate = useNavigate();
+
   const { user } = useSelector((state) => state.auth);
   const { reviewError, success } = useSelector((state) => state.newReview);
 
-  console.log("PRODUCT DETAIOLS", product);
+  console.log("User in ProductDetails:", user);
 
   useEffect(() => {
     dispatch(getProductDetails(id));
@@ -39,24 +44,21 @@ const ProductDetails = () => {
       alert.error(error);
     }
 
-    // if (reviewError) {
-    //     alert.error(reviewError);
-    //     dispatch(clearErrors())
-    // }
-
-    // if (success) {
-    //     alert.success('Reivew posted successfully')
-    //     dispatch({ type: NEW_REVIEW_RESET })
-    // }
-  }, [dispatch, alert, error, id]);
+    if (reviewError) {
+      alert.error(reviewError);
+      dispatch(clearErrors());
+    }
+    if (success) {
+      alert.success("Reivew posted successfully");
+      dispatch({ type: NEW_REVIEW_RESET });
+    }
+  }, [dispatch, alert, error, reviewError, id, success]);
 
   //Review
 
   const handleModal = () => {
     setModal(!modal);
   };
-
-  // Ratings
 
   const [quantity, setQuantity] = useState(1);
 
@@ -328,10 +330,13 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
+      <>
+        <RelatedProducts productId={id} />
 
-      {product.reviews && product.reviews.length > 0 && (
-        <ListReviews reviews={product.reviews} />
-      )}
+        {product.reviews && product.reviews.length > 0 && (
+          <ListReviews reviews={product.reviews} />
+        )}
+      </>
     </>
   );
 };

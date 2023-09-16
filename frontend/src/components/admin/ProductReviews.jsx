@@ -8,6 +8,7 @@ import {
 } from "../../actions/productActions";
 
 import { DELETE_REVIEW_RESET } from "../../constants/productConstants";
+import Sidebar from "./Sidebar";
 
 const ProductReviews = () => {
   const [productId, setProductId] = useState("");
@@ -71,8 +72,10 @@ const ProductReviews = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-center mb-4">Reviews</h1>
+    <div className="flex">
+      <Sidebar />
+      <div></div>
+      {/* <h1 className="text-2xl font-bold text-center mb-4">Reviews</h1>
       <div className="flex justify-center items-center mt-5">
         <div className="col-5">
           <form>
@@ -130,7 +133,7 @@ const ProductReviews = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -3,10 +3,7 @@ import { FaStar } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 const ListReviews = ({ reviews }) => {
-  console.log(reviews);
-
-  // Need to add profile pic in back end
-  const { user } = useSelector((state) => state.auth);
+  console.log("Reviews in ListReviews:", reviews[0].avatar.url);
 
   return (
     <div className="container mx-auto px-6 w-75">
@@ -14,10 +11,23 @@ const ListReviews = ({ reviews }) => {
       <hr />
       {reviews &&
         reviews.map((review) => {
+          console.log("rev", review);
           const rating = review.rating || 0;
 
           return (
             <div key={review._id}>
+              <div className="flex items-center my-3">
+                {review.avatar.url && review.avatar.url.length > 0 && (
+                  <img
+                    src={review.avatar.url}
+                    alt={reviews.avatar}
+                    className="rounded-full w-12 h-12 mr-3"
+                  />
+                )}
+                <p>
+                  {review.firstName} {""} {review.lastName}
+                </p>
+              </div>
               <div className="flex">
                 {[...Array(5)].map((_, index) => {
                   const ratingValue = index + 1;
@@ -30,14 +40,6 @@ const ListReviews = ({ reviews }) => {
                     />
                   );
                 })}
-              </div>
-              <div className="flex items-center my-3">
-                <img
-                  src={user.avatar.url}
-                  className="rounded-full w-12 h-12 mr-3"
-                  alt="avatar"
-                />
-                <p>{review.name}</p>
               </div>
 
               <p>{review.comment}</p>

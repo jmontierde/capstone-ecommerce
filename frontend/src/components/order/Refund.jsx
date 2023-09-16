@@ -5,6 +5,14 @@ import { clearErrors } from "../../actions/orderActions";
 import { REFUND_ORDER_RESET } from "../../constants/orderConstants";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
+import {
+  Checkbox,
+  Card,
+  List,
+  ListItem,
+  ListItemPrefix,
+  Typography,
+} from "@material-tailwind/react";
 
 const Refund = () => {
   const dispatch = useDispatch();
@@ -15,8 +23,7 @@ const Refund = () => {
 
   const [orderId, setOrderId] = useState("");
   const [otherReason, setOtherReason] = useState("");
-
-  const [selectedReasons, setSelectedReasons] = useState([]); // Updated to store an array
+  const [selectedReasons, setSelectedReasons] = useState([]);
   const [imageReason, setImageReason] = useState(null);
 
   const alert = useAlert();
@@ -36,7 +43,7 @@ const Refund = () => {
   }, [dispatch, alert, error, success]);
 
   const isRequiredFieldEmpty =
-    !orderId || selectedReasons.length === 0 || !otherReason; // Updated to check for selectedReasons
+    !orderId || selectedReasons.length === 0 || !otherReason;
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -74,7 +81,6 @@ const Refund = () => {
     }
   };
 
-  // List of possible refund reasons
   const refundReasons = [
     "Incorrect Item Received",
     "Defective Product",
@@ -138,22 +144,34 @@ const Refund = () => {
               </div>
 
               <label>Reasons for Refund:</label>
-              <ul>
-                {refundReasons.map((reasonOption) => (
-                  <li key={reasonOption}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="reasons"
-                        value={reasonOption}
-                        checked={selectedReasons.includes(reasonOption)}
-                        onChange={(e) => handleReasonChange(e, reasonOption)}
-                      />
-                      {reasonOption}
-                    </label>
-                  </li>
-                ))}
-              </ul>
+
+              <Card>
+                <List>
+                  {refundReasons.map((reasonOption) => (
+                    <ListItem key={reasonOption} className="p-0">
+                      <label
+                        htmlFor={`vertical-list-${reasonOption}`}
+                        className="flex w-full cursor-pointer items-center px-3 py-2"
+                      >
+                        <ListItemPrefix className="mr-3">
+                          <Checkbox
+                            id={`vertical-list-${reasonOption}`}
+                            ripple={false}
+                            value={reasonOption}
+                            checked={selectedReasons.includes(reasonOption)}
+                            onChange={(e) =>
+                              handleReasonChange(e, reasonOption)
+                            }
+                          />
+                        </ListItemPrefix>
+                        <Typography color="blue-gray" className="font-medium">
+                          {reasonOption}
+                        </Typography>
+                      </label>
+                    </ListItem>
+                  ))}
+                </List>
+              </Card>
 
               <label htmlFor="otherReason">Other Reason:</label>
               <textarea

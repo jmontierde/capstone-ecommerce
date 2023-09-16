@@ -40,19 +40,18 @@ import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
 import Report from "./components/admin/Report";
-import Customization from "./components/customization/Customization";
 import Three from "./components/Three";
 import Customizer from "./components/pages/Customizer";
 import NewCategory from "./components/admin/NewCategory";
 import GetChat from "./components/chat/GetChat";
 import VerifyUser from "./components/admin/VerifyUser";
 import TermsAndConditionsComponent from "./components/user/TermsAndConditions";
-import CreateTerm from "./components/admin/CreateTerm";
 import UpdateTerms from "./components/admin/UpdateTerms";
 import { useNavigate } from "react-router-dom";
 import Refund from "./components/order/Refund";
 import AllRefunds from "./components/admin/AllRefunds";
 import Messenger from "./Messenger";
+import Material from "./components/pages/Material";
 function App() {
   // const dispatch = useDispatch()
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -113,10 +112,10 @@ function App() {
           <Route path="/product" element={<Home />} />
           <Route path="/search/:keyword" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetails />} />
-          <Route exact path="/customization" element={<Customization />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/three" element={<Three />} />
           <Route exact path="/chat" element={<GetChat />} />
+          <Route exact path="/material" element={<Material />} />
 
           <Route
             path="/shipping"
@@ -288,16 +287,7 @@ function App() {
               />
             }
           />
-          <Route
-            path="admin/maintenance/newTerm"
-            element={
-              <ProtectedRoute
-                component={CreateTerm}
-                isAdmin={true}
-                isStaff={true}
-              />
-            }
-          />
+
           <Route
             path="admin/maintenance/update/term"
             element={
@@ -309,7 +299,6 @@ function App() {
             }
           />
         </Routes>
-        <TermsAndConditionsComponent />
         <Messenger />
         {/* <Customizer /> */}
         {/* {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />} */}

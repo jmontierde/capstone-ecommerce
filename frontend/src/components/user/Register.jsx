@@ -7,7 +7,15 @@ import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
+import {
+  Card,
+  Input,
+  Checkbox,
+  Button,
+  Typography,
+} from "@material-tailwind/react";
 const Register = () => {
   const [user, setUser] = useState({
     firstName: "",
@@ -26,6 +34,8 @@ const Register = () => {
 
   const [validId, setValidId] = useState(null);
   const [withBirthdayId, setWithBirthdayId] = useState(null);
+
+  const [checkTerms, setCheckTerms] = useState(false);
 
   // const [hideProfile, setHideProfile] = useState(true);
 
@@ -101,6 +111,8 @@ const Register = () => {
     }
   };
 
+  console.log("check", checkTerms);
+
   const onChange = (e) => {
     if (e.target.name === "avatar") {
       const reader = new FileReader();
@@ -154,149 +166,236 @@ const Register = () => {
           className="flex justify-center items-center flex-col py-6  "
           // style={{ height: "calc(100vh - 9.5rem)" }}
         >
-          <h1 className="font-bold text-xl">Register</h1>
-          <form onSubmit={submitHandler} encType="multipart/form-data">
-            <div className="flex flex-col gap-2 px-16 py-6">
-              <label htmlFor="firstName">First Name</label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={firstName}
-                onChange={onChange}
-                className="border border-[#000] w-96 rounded py-1"
-              />
-              <label htmlFor="lastName">Last Name</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={lastName}
-                onChange={onChange}
-                className="border border-[#000] w-96 rounded py-1"
-              />
-              <label htmlFor="email">Email Address</label>
-              <input
-                type="text"
-                id="email"
-                name="email"
-                value={email}
-                onChange={onChange}
-                className="border border-[#000] w-96 rounded py-1"
-              />
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={onChange}
-                className="border border-[#000] w-96 rounded py-1"
-              />
-              <label htmlFor="phoneNumber">Cellphone Number</label>
-              <PhoneInput
-                id="phoneNumber"
-                name="phoneNumber"
-                placeholder="Enter phone number"
-                value={phoneNumber}
-                onChange={(value) => setUser({ ...user, phoneNumber: value })}
-                defaultCountry="PH"
-                className="border border-[#000] w-96 rounded py-1"
-              />
+          <Card color="transparent" shadow={false}>
+            <Typography variant="h4" color="blue-gray">
+              Sign Up
+            </Typography>
+            <Typography color="gray" className="mt-1 font-normal">
+              Enter your details to register.
+            </Typography>
+            <form
+              className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+              onSubmit={submitHandler}
+              encType="multipart/form-data"
+            >
+              <div className="mb-4 flex flex-col gap-6">
+                <Input
+                  label="Username"
+                  id="firstName"
+                  name="firstName"
+                  value={firstName}
+                  onChange={onChange}
+                  className="border border-[#000]"
+                />
+                <Input
+                  label="Last Name"
+                  id="lastName"
+                  name="lastName"
+                  value={lastName}
+                  onChange={onChange}
+                  className="border border-[#000]"
+                />
 
-              <div className="flex flex-col">
-                <div>
-                  <label htmlFor="customFile">Profile Picture</label>
-                  <br />
-                  {/* <figure className="relative mt-3">
-                    <img
-                      src={avatarPreview}
-                      className="rounded-circle w-32 h-32"
-                      alt="Avatar Preview"
-                    />
-                  </figure> */}
-                  {avatar && (
-                    <img
-                      src={avatar}
-                      className="rounded-circle w-32 h-32"
-                      alt="Valid ID"
-                    />
-                  )}
-                  <div>
-                    <input
-                      type="file"
-                      name="avatar"
-                      className="py-3"
-                      id="customFile"
-                      accept="images/*"
-                      onChange={onChange}
-                    />
+                <Input
+                  label="Email"
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChange={onChange}
+                  className="border border-[#000]"
+                />
+                <Input
+                  type="password"
+                  label="Password"
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={onChange}
+                  className="border border-[#000]"
+                />
+                <PhoneInput
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  placeholder="Enter phone number"
+                  value={phoneNumber}
+                  onChange={(value) => setUser({ ...user, phoneNumber: value })}
+                  defaultCountry="PH"
+                  className="border border-[#000] w-96 h-12 rounded"
+                />
+                <>
+                  <div className="flex flex-col ">
+                    <div>
+                      <div className="relative space-y-3">
+                        <label
+                          className="block mb-2 text-sm font-medium text-gray-900 cursor-pointer"
+                          htmlFor="avatarUpload"
+                        >
+                          Upload Avatar
+                        </label>
+                        <input
+                          type="file"
+                          id="avatarUpload"
+                          name="avatar"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={onChange}
+                        />
+                        <div className="flex items-center  border border-black rounded">
+                          <span
+                            className="text-gray-600  text-center border border-black cursor-pointer w-1/3 py-2"
+                            onClick={() =>
+                              document.getElementById("avatarUpload").click()
+                            }
+                          >
+                            No file chosen
+                          </span>
+                          <span
+                            className="text-blue-500 w-2/3 py-2 border pl-3 border-black cursor-pointer "
+                            onClick={() =>
+                              document.getElementById("avatarUpload").click()
+                            }
+                          >
+                            Choose File
+                          </span>
+                        </div>
+                        {avatar && (
+                          <img
+                            src={avatar}
+                            className="rounded-circle w-32 h-32"
+                            alt="Valid ID"
+                          />
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </>
+                <>
+                  <div className="flex flex-col ">
+                    <div>
+                      <div className="relative space-y-3">
+                        <label
+                          className="block mb-2 text-sm font-medium text-gray-900  cursor-pointer"
+                          htmlFor="validId"
+                        >
+                          Submit (1) valid id (include birthdate)
+                        </label>
+                        <input
+                          type="file"
+                          id="validId"
+                          name="validId"
+                          onChange={onChange}
+                          accept="image/png, image/jpeg"
+                        />
+                        <div className="flex items-center  border border-black rounded">
+                          <span
+                            className="text-gray-600  text-center border  border-black cursor-pointer w-1/3 py-2"
+                            onClick={() =>
+                              document.getElementById("validId").click()
+                            }
+                          >
+                            No file chosen
+                          </span>
+                          <span
+                            className="text-blue-500 w-2/3 py-2 border pl-3 border-black cursor-pointer "
+                            onClick={() =>
+                              document.getElementById("validId").click()
+                            }
+                          >
+                            Choose File
+                          </span>
+                        </div>
+                        {validId && (
+                          <img
+                            src={validId}
+                            className="rounded-circle w-32 h-32"
+                            alt="Valid ID"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </>
+
+                <>
+                  <div className="flex flex-col ">
+                    <div>
+                      <div className="relative space-y-3">
+                        <label
+                          className="block mb-2 text-sm font-medium text-gray-900  cursor-pointer"
+                          htmlFor="withBirthdayId"
+                        >
+                          Submit (1) valid id (include birthdate)
+                        </label>
+                        <input
+                          type="file"
+                          id="withBirthdayId"
+                          name="withBirthdayId"
+                          onChange={onChange}
+                          accept="image/png, image/jpeg"
+                        />
+                        <div className="flex items-center  border border-black rounded">
+                          <span
+                            className="text-gray-600 border text-center border-black cursor-pointer w-1/3 py-2"
+                            onClick={() =>
+                              document.getElementById("withBirthdayId").click()
+                            }
+                          >
+                            No file chosen
+                          </span>
+                          <span
+                            className="text-blue-500 w-2/3 py-2 border pl-3 border-black cursor-pointer "
+                            onClick={() =>
+                              document.getElementById("withBirthdayId").click()
+                            }
+                          >
+                            Choose File
+                          </span>
+                        </div>
+                        {validId && (
+                          <img
+                            src={withBirthdayId}
+                            className="rounded-circle w-32 h-32"
+                            alt="withBirthdayId"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </>
               </div>
+              <Checkbox
+                label={
+                  <Typography
+                    variant="small"
+                    color="gray"
+                    className="flex items-center font-normal"
+                  >
+                    I agree the
+                    <a
+                      href="#"
+                      className="font-medium transition-colors hover:text-gray-900 text-black"
+                    >
+                      &nbsp;Terms and Conditions
+                    </a>
+                  </Typography>
+                }
+                className=" text-black"
+                containerProps={{ className: "-ml-2.5" }}
+                checked={checkTerms}
+                onChange={(e) => setCheckTerms(e.target.checked)}
+              />
 
-              {/* ID */}
-              <div className="flex flex-col space-y-6 my-6">
-                <label>Submit (1) valid id (include birthdate)</label>
-
-                <label
-                  htmlFor="validId"
-                  className="bg-[#a49c9c] p-3 rounded w-fit"
-                >
-                  Choose a File:
-                </label>
-
-                <input
-                  type="file"
-                  id="validId"
-                  name="validId"
-                  onChange={onChange}
-                  accept="image/png, image/jpeg"
-                />
-                {validId && (
-                  <img
-                    src={validId}
-                    className="rounded-circle w-32 h-32"
-                    alt="Valid ID"
-                  />
-                )}
-              </div>
-
-              {/* Valid ID */}
-              <div className="flex flex-col space-y-6 my-6">
-                <label>Upload Selfie with valid id</label>
-
-                <label
-                  htmlFor="withBirthdayId"
-                  className="bg-[#a49c9c] p-3 rounded w-fit"
-                >
-                  Choose a File:
-                </label>
-                <input
-                  type="file"
-                  id="withBirthdayId"
-                  name="withBirthdayId"
-                  onChange={onChange}
-                  accept="image/png, image/jpeg"
-                />
-                {withBirthdayId && (
-                  <img
-                    src={withBirthdayId}
-                    className="rounded-circle w-32 h-32"
-                    alt="With Birthday ID"
-                  />
-                )}
-              </div>
-
-              <button
-                className="bg-[#6921EF] border rounded py-2 my-3 text-[#fff]"
-                type="submit"
-                disabled={loading ? true : false}
-              >
+              <Button className="mt-6 bg-[#000]" type="submit" fullWidth>
                 Register
-              </button>
-            </div>
-          </form>
+              </Button>
+              <Typography color="gray" className="mt-4 text-center font-normal">
+                Already have an account?{" "}
+                <Link to="/login" className="font-medium text-gray-900">
+                  Sign In
+                </Link>
+              </Typography>
+            </form>
+          </Card>
         </div>
       </div>
     </>

@@ -7,6 +7,7 @@ const APIFeatures = require("../utils/apiFeatures");
 const { request } = require("../app");
 const cloudinary = require("cloudinary");
 const Category = require("../models/category");
+const User = require("../models/user");
 
 //Create a category
 exports.newCategory = catchAsyncErrors(async (req, res, next) => {
@@ -97,37 +98,43 @@ exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
 
 //Create new product => /api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors(async (req, res, next) => {
-  let images = [];
-  if (typeof req.body.images === "string") {
-    images.push(req.body.images);
-  } else {
-    images = req.body.images;
-  }
+  try {
+    let images = [];
+    if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+    } else {
+      images = req.body.images;
+    }
 
-  let imagesLinks = [];
+    let imagesLinks = [];
 
-  for (let i = 0; i < images.length; i++) {
-    const result = await cloudinary.v2.uploader.upload(images[i], {
-      folder: "ecommerce-image",
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.v2.uploader.upload_large(images[i], {
+        folder: "ecommerce-image",
+        chunk_size: 10000000,
+      });
+
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+
+    req.body.images = imagesLinks;
+    req.body.user = req.user.id;
+
+    const product = await Product.create(req.body);
+
+    console.log(product);
+
+    res.status(201).json({
+      success: true,
+      product,
     });
-
-    imagesLinks.push({
-      public_id: result.public_id,
-      url: result.secure_url,
-    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Image upload failed" });
   }
-
-  req.body.images = imagesLinks;
-  req.body.user = req.user.id;
-
-  const product = await Product.create(req.body);
-
-  console.log(product);
-
-  res.status(201).json({
-    success: true,
-    product,
-  });
 });
 
 // Get all products => /api/v1/products?keyword
@@ -263,6 +270,29 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     product,
   });
 });
+//Delete Product => /api/v1/admin/product/:id
+exports.relatedProduct = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const productId = req.query.id; // ID of the current product
+    const currentProduct = await Product.findById(productId);
+
+    if (!currentProduct) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const relatedProducts = await Product.find({
+      category: currentProduct.category, // Fetch products with the same category
+      _id: { $ne: productId }, // Exclude the current product
+    })
+      .sort({ ratings: -1 }) // Sort by ratings in descending order (highest ratings first)
+      .limit(4); // Limit the number of related products
+
+    res.json({ relatedProducts });
+  } catch (error) {
+    console.error("Error fetching related products:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 //Delete Product => /api/v1/admin/product/:id
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
@@ -292,13 +322,30 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   const { rating, comment, productId } = req.body;
 
+  // Check if the user has an order for the product with a "Delivered" status
+  // const hasDeliveredOrder = await Order.findOne({
+  //   user: req.user._id,
+  //   product: productId,
+  //   deliveryStatus: "Delivered",
+  // });
+
+  // if (!hasDeliveredOrder) {
+  //   return res.status(403).json({
+  //     success: false,
+  //     message: "You can only review products from delivered orders.",
+  //   });
+  // }
+  const user = await User.findById(req.user._id);
+
   const review = {
     user: req.user._id,
-    name: req.user.name,
+    firstName: req.user.firstName,
+    lastName: req.user.lastName,
+    avatar: req.user.avatar,
+
     rating: Number(rating),
     comment,
   };
-  console.log("TEST USER", req.body);
 
   const product = await Product.findById(productId);
   const isReviewed = product.reviews.find(
@@ -306,10 +353,10 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   );
 
   if (isReviewed) {
-    product.reviews.forEach((review) => {
-      if (review.user.toString() === req.user._id.toString()) {
-        review.comment = comment;
-        review.rating = rating;
+    product.reviews.forEach((existingReview) => {
+      if (existingReview.user.toString() === req.user._id.toString()) {
+        existingReview.comment = comment;
+        existingReview.rating = rating;
       }
     });
   } else {
@@ -327,10 +374,15 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Get Product Reviews => /api/v1/reviews
 exports.getProductReviews = catchAsyncErrors(async (req, res, next) => {
-  const product = await Product.findById(req.query.id);
-
+  const product = await Product.findById(req.query.id).populate({
+    path: "reviews",
+    populate: {
+      path: "user",
+      select: "firstName lastName avatar", // Select the necessary fields, including avatar
+    },
+  });
+  console.log("Product Reviews:", product.reviews);
   res.status(200).json({
     success: true,
     reviews: product.reviews,

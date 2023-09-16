@@ -5,6 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  Card,
+  Input,
+  Checkbox,
+  Button,
+  Typography,
+} from "@material-tailwind/react";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,58 +40,52 @@ const Login = () => {
   };
 
   return (
-    <div className="container mx-auto ">
+    <div className="container mx-auto flex item-center justify-center w-screen">
       <ToastContainer />
-      <div
-        className="flex justify-center items-center flex-col py-6 border-dotted border-[#d05e5e] border-4 "
+      <Card
+        color="transparent"
+        shadow={false}
+        className="flex item-center justify-center  "
         style={{ height: "calc(100vh - 9.5rem)" }}
       >
-        <h1 className="font-bold text-xl">Login</h1>
-        {/* {error && <div className="text-red-500 text-center mt-2">{error}</div>} */}
-        <form onSubmit={submitHandler}>
-          <div className="flex flex-col gap-2 px-16 py-6">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="text"
+        <Typography variant="h4" color="blue-gray">
+          Login
+        </Typography>
+        <form
+          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+          onSubmit={submitHandler}
+        >
+          <div className="mb-4 flex flex-col gap-6">
+            <Input
+              label="Email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border border-[#000] w-96 rounded py-1"
+              outline={true} // Add this line to enable the input border
             />
-            <label htmlFor="password">Password</label>
-            <input
+
+            <Input
               type="password"
+              label="Password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="border border-[#000] w-96 rounded py-1"
+              outline={true} // Add this line to enable the input border
             />
-            <Link
-              to="/password/forgot"
-              className="ml-auto text-[#757777] text-sm"
-            >
-              Forgot Password
-            </Link>
-            <button
-              type="submit"
-              className="bg-[#6921EF] border rounded py-2 my-3 text-[#fff]"
-            >
-              Login
-            </button>
-            <p className="text-[#7B7E82] text-sm text-center">
-              You don't have an account yet?{" "}
-              <Link to="/register" className="text-[#997BD4] font-bold">
-                Sign up
-              </Link>
-            </p>
-            <p className="text-[#7B7E82] text-sm text-center">
-              <Link to="/terms" className="text-[#997BD4] font-bold">
-                Terms and Conditions
-              </Link>
-            </p>
           </div>
+
+          <Button className="mt-6 bg-[#212121]" fullWidth type="submit">
+            Register
+          </Button>
+
+          <Typography color="gray" className="mt-4 text-center font-normal">
+            Already have an account?{" "}
+            <Link to="/register" className="font-medium text-gray-900">
+              Sign up
+            </Link>
+          </Typography>
         </form>
-      </div>
+      </Card>
     </div>
   );
 };

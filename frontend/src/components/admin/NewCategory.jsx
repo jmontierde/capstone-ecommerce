@@ -15,6 +15,27 @@ import {
   clearErrors,
   updateCategory,
 } from "../../actions/productActions";
+import {
+  MagnifyingGlassIcon,
+  ChevronUpDownIcon,
+} from "@heroicons/react/24/outline";
+import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import {
+  Card,
+  CardHeader,
+  Input,
+  Typography,
+  Button,
+  CardBody,
+  Chip,
+  CardFooter,
+  Tabs,
+  TabsHeader,
+  Tab,
+  Avatar,
+  IconButton,
+  Tooltip,
+} from "@material-tailwind/react";
 
 import {
   DELETE_CATEGORY_RESET,
@@ -58,11 +79,25 @@ const NewCategory = () => {
 
     if (success) {
       dispatch({ type: NEW_CATEGORY_RESET });
+      navigate("/admin/maintenance/category");
+      toast.success("Added new category");
     }
-  }, [dispatch, alert, error, isDeleted, success, isUpdated]);
+  }, [dispatch, alert, error, isDeleted, success, isUpdated, toast]);
 
   const deleteCategoryHandler = (id) => {
     dispatch(deleteCategory(id));
+  };
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [masterCheckboxChecked, setMasterCheckboxChecked] = useState(false);
+  const deleteSelectedRefunds = () => {
+    if (selectedCategories.length > 0) {
+      selectedCategories.forEach((refundId) => {
+        deleteCategoryHandler(refundId);
+      });
+      setSelectedCategories([]);
+    } else {
+      alert("Please select refunds to delete.");
+    }
   };
 
   const [categoryName, setCategoryName] = useState("");
@@ -92,91 +127,254 @@ const NewCategory = () => {
 
   const handleUpdate = (index, categoryId) => {
     dispatch(updateCategory(categoryId, { name: updatedCategoryName }));
-    setUpdatedCategoryName(""); // Fix the typo here
+    setUpdatedCategoryName("");
   };
+  const TABLE_HEAD = ["No.", "Category", "Action"];
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Filter categories based on searchQuery
+  const filteredOrders = categories
+    ? categories.filter((category) =>
+        category.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
+  // Calculate pagination values
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <>
       <ToastContainer />
-      <div className="container px-16 my-auto mb-6 ml-auto w-10/12 flex justify-between items-center">
-        <h1 className="text-2xl font-bold mb-4 ">Categories</h1>
-        <div className="space-x-3">
-          <input
-            type="text"
-            id="category"
-            className="border py-2 rounded w-72  border-[#000]"
-            onChange={(e) => setCategoryName(e.target.value)}
-          />
-          <button
-            className=" bg-[#8F7930] rounded px-3 py-2"
-            onClick={addCategoryHandler}
-          >
-            Add Category
-          </button>
-        </div>
-      </div>
 
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex  container mx-auto px-6">
+        <div className="flex">
           <Sidebar />
+          <Card className="h-full w-full">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+              <div className="mb-8 flex items-center justify-between gap-8">
+                <div>
+                  <Typography variant="h5" color="blue-gray">
+                    Category list
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    See information about all categories
+                  </Typography>
+                </div>
+              </div>
+              <div className="flex flex-col space-y-6 items-start justify-between">
+                <div className="space-x-3 ">
+                  <input
+                    type="text"
+                    placeholder="Add Category"
+                    className="pl-3 pr-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500"
+                    onChange={(e) => setCategoryName(e.target.value)}
+                  />
+                  <Button className="bg-[#000]" onClick={addCategoryHandler}>
+                    Button
+                  </Button>
+                </div>
+                <div className="flex justify-between w-full">
+                  <button
+                    className="bg-red-500 text-white px-3 py-2"
+                    onClick={deleteSelectedRefunds}
+                  >
+                    Delete Selected Products
+                  </button>
+                  <div className="relative w-full md:w-72 mr-6">
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <MagnifyingGlassIcon className="h-5 w-5 absolute top-3 left-3 text-gray-400" />
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
 
-          <div className="flex w-10/12 justify-center ">
-            <table className="table-fixed w-full h-32">
-              <thead className="bg-[#ECEFF1]">
-                <tr>
-                  <th className="px-4 py-2">Category Name</th>
-                  <th className="px-4 py-2">Action</th>
-                </tr>
-              </thead>
-              <tbody className="text-center">
-                {categories.map((category, index) => (
-                  <tr key={category._id}>
-                    <td className="border px-4 py-3">{category.name}</td>
+            <CardBody className="overflow-scroll px-0">
+              <table className="mt-4 w-full min-w-max table-auto text-left">
+                <thead>
+                  <tr>
+                    <th className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 ">
+                      <input
+                        type="checkbox"
+                        checked={
+                          selectedCategories.length === categories.length
+                        }
+                        onChange={() => {
+                          if (selectedCategories.length === categories.length) {
+                            setSelectedCategories([]);
+                          } else {
+                            setSelectedCategories(
+                              categories.map((category) => category._id)
+                            );
+                          }
+                        }}
+                      />
+                    </th>
+                    {TABLE_HEAD.map((head, index) => (
+                      <th
+                        key={head}
+                        className="cursor-pointer  border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 "
+                      >
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="flex items-center  justify-between gap-2 font-normal leading-none opacity-70"
+                        >
+                          {head}{" "}
+                        </Typography>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.map((category, index) => {
+                    const isLast = index === categories.length - 1;
+                    const classes = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
 
-                    <td className="border px-4 py-3">
-                      <div className="flex justify-center items-center space-x-3">
-                        {editStates[index] ? (
-                          <>
-                            <input
-                              type="text"
-                              id="editCategory"
-                              className="border border-[#000]"
-                              value={updatedCategoryName} // Bind input value to state
-                              onChange={(e) =>
-                                setUpdatedCategoryName(e.target.value)
+                    return (
+                      <tr key={category.name}>
+                        <td className={classes}>
+                          <input
+                            type="checkbox"
+                            checked={
+                              masterCheckboxChecked ||
+                              selectedCategories.includes(category._id)
+                            }
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedCategories([
+                                  ...selectedCategories,
+                                  category._id,
+                                ]);
+                              } else {
+                                setSelectedCategories(
+                                  selectedCategories.filter(
+                                    (id) => id !== category._id
+                                  )
+                                );
+                              }
+                            }}
+                          />
+                        </td>
+                        <td className={classes}>
+                          <div className="flex items-center gap-3">
+                            <div className="flex flex-col">
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {index + 1}
+                              </Typography>
+                            </div>
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {category.name}
+                            </Typography>
+                          </div>
+                        </td>
+
+                        <td className={`${classes} flex space-x-3`}>
+                          {editStates[index] ? (
+                            <>
+                              <input
+                                type="text"
+                                id="editCategory"
+                                className="border border-[#000]"
+                                value={updatedCategoryName} // Bind input value to state
+                                onChange={(e) =>
+                                  setUpdatedCategoryName(e.target.value)
+                                }
+                              />
+                              <button
+                                className="bg-[#359d56] text-white px-6 rounded"
+                                onClick={() =>
+                                  handleUpdate(index, category._id)
+                                }
+                              >
+                                Add
+                              </button>
+                            </>
+                          ) : (
+                            <h1></h1>
+                          )}
+                          <Tooltip content="Edit user" className="bg-[#000]">
+                            <PencilIcon
+                              className="h-4 w-4"
+                              onClick={() => toggleEditState(index)}
+                            />
+                          </Tooltip>
+                          <div className="flex items-center space-x-2">
+                            <img
+                              src="/images/deleteHover.png"
+                              alt="View category"
+                              className="w-6 h-6 cursor-pointer"
+                              onClick={() =>
+                                deleteCategoryHandler(category._id)
                               }
                             />
-                            <button
-                              className="bg-[#359d56] text-white px-6 rounded"
-                              onClick={() => handleUpdate(index, category._id)}
-                            >
-                              Add
-                            </button>
-                          </>
-                        ) : (
-                          <h1></h1>
-                        )}
-                        <img
-                          src="/images/edit.png"
-                          alt="View product"
-                          className="w-6 h-6 cursor-pointer"
-                          onClick={() => toggleEditState(index)}
-                        />
-                        <img
-                          src="/images/deleteHover.png"
-                          alt="View product"
-                          className="w-6 h-6 cursor-pointer"
-                          onClick={() => deleteCategoryHandler(category._id)}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </CardBody>
+            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="font-normal"
+              >
+                Page {currentPage} of{" "}
+                {Math.ceil(filteredOrders.length / itemsPerPage)}
+              </Typography>
+              <div className="flex gap-2">
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={
+                    currentPage ===
+                    Math.ceil(filteredOrders.length / itemsPerPage)
+                  }
+                >
+                  Next
+                </Button>
+              </div>
+            </CardFooter>
+          </Card>
         </div>
       )}
     </>

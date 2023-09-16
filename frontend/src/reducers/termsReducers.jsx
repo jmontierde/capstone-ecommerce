@@ -2,6 +2,7 @@ import {
   CREATE_TERMS_REQUEST,
   CREATE_TERMS_SUCCESS,
   CREATE_TERMS_FAIL,
+  CREATE_TERMS_RESET,
   GET_TERMS_REQUEST,
   GET_TERMS_SUCCESS,
   GET_TERMS_FAIL,
@@ -16,56 +17,37 @@ import {
   CLEAR_ERRORS,
 } from "../constants/termsConstant";
 
-//Added Category.
-
-// export const newTermReducer = (state = { term: [] }, action) => {
-//   switch (action.type) {
-//     case CREATE_TERMS_REQUEST:
-//       return {
-//         ...state,
-//         loading: true,
-//       };
-
-//     case CREATE_TERMS_SUCCESS:
-//       return {
-//         loading: false,
-//         success: action.payload.success,
-//         term: [...state.term, action.payload],
-//       };
-
-//     case CREATE_TERMS_FAIL:
-//       return {
-//         ...state,
-//         error: action.payload,
-//       };
-
-//     case CLEAR_ERRORS:
-//       return {
-//         ...state,
-//         error: null,
-//       };
-
-//     default:
-//       return state;
-//   }
-// };
-
-export const newTermReducer = (state = {}, action) => {
+const initialState = {
+  loading: false,
+  success: false,
+  error: null,
+  term: null,
+};
+export const createTermReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_TERMS_REQUEST:
       return {
+        ...state,
         loading: true,
+        success: false,
       };
     case CREATE_TERMS_SUCCESS:
       return {
+        ...state,
         loading: false,
-        success: action.payload.success,
+        success: true,
         term: action.payload.termsAndConditions,
       };
     case CREATE_TERMS_FAIL:
       return {
+        ...state,
         loading: false,
         error: action.payload,
+      };
+    case CREATE_TERMS_RESET:
+      return {
+        ...state,
+        success: false,
       };
     case CLEAR_ERRORS:
       return {
@@ -76,7 +58,6 @@ export const newTermReducer = (state = {}, action) => {
       return state;
   }
 };
-
 export const termsReducer = (state = { termsAndConditions: [] }, action) => {
   switch (action.type) {
     case GET_TERMS_REQUEST:

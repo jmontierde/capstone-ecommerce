@@ -114,10 +114,10 @@ const Report = () => {
   };
 
   return (
-    <div className="flex container mx-auto px-12">
+    <div className="flex font-helvetica">
       <Sidebar />
-      <div className="w-10/12 bg-slate-500">
-        <div className="flex justify-between px-12 items-center my-6 ">
+      <div className="w-full ">
+        <div className="flex justify-between px-6 items-center my-6 ">
           <div className="space-x-3">
             <select
               value={showDayPicker ? "day" : selectedWeek ? "week" : "month"}
@@ -162,7 +162,7 @@ const Report = () => {
         {loading ? (
           <Loader />
         ) : (
-          <div className="flex container mx-auto px-12">
+          <div className="flex container mx-auto ">
             <div className="flex flex-col w-full justify-center ">
               <table ref={pdfTableRef} className="table-fixed   w-full h-auto">
                 <thead className="bg-[#ECEFF1]">
