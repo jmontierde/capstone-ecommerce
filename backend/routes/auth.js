@@ -21,6 +21,10 @@ const {
   deleteTerms,
   updateTerms,
   allTerms,
+  newAddress,
+  updateAddress,
+  deleteAddress,
+  allAddresses,
 } = require("../controllers/authController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
@@ -28,6 +32,13 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/logout").get(logout);
+router.route("/address").post(newAddress);
+router
+  .route("/address/:id")
+  .put(isAuthenticatedUser, updateAddress)
+  .delete(isAuthenticatedUser, deleteAddress);
+
+router.route("/admin/users").get(isAuthenticatedUser, allUsers);
 // router.route("/terms").get(termsandcondition);
 
 router.route("/password/forgot").post(forgotPassword);
@@ -56,7 +67,9 @@ router
   .put(isAuthenticatedUser, authorizeRoles("admin", "staff"), updateTerms)
   .delete(isAuthenticatedUser, authorizeRoles("admin", "staff"), deleteTerms);
 
-router.route("/admin/users").get(isAuthenticatedUser, allUsers);
+router
+  .route("/admin/address")
+  .get(isAuthenticatedUser, authorizeRoles("admin", "staff"), allAddresses);
 router
   .route("/admin/user/:id")
   .get(isAuthenticatedUser, authorizeRoles("admin", "staff"), getUserDetails)

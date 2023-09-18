@@ -323,7 +323,7 @@ const ProductDetails = () => {
                 )}
               </>
             ) : (
-              <h5 className="bg-[#d07070] font-semibold text-2xl py-3 px-6 w-1/2 rounded text-center">
+              <h5 className=" font-semibold text-2xl py-3 px-6 w-1/2 rounded text-center">
                 Login to post your review.
               </h5>
             )}

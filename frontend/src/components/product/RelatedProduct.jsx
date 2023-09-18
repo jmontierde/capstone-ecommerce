@@ -41,12 +41,12 @@ const RelatedProducts = ({ productId }) => {
   }
 
   return (
-    <div className="related-products-container">
-      <h2 className="text-center">Related Products</h2>
+    <div className="container mx-auto  related-products-container">
+      <h2 className="text-left">Related Products</h2>
 
-      <div className="flex items-center justify-center gap-6 bg-[#c3afaf] py-3">
+      <div className="flex items-center justify-center gap-6 mt-6 mb-12 ">
         {relatedProducts.map((product) => (
-          <div key={product._id} className="bg-[#a57878] w-full text-center">
+          <div key={product._id} className=" w-full text-center ">
             <Link to={`/product/${product._id}`}>
               <img
                 src={product.images[0].url}

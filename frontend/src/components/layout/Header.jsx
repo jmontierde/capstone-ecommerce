@@ -83,6 +83,14 @@ const Header = (keyword) => {
                 Customization
               </Link>
             </li>
+            <li className="flex-none">
+              <Link
+                to="/material"
+                className="block py-2 px-4 rounded-lg hover:bg-[#6d5e5e] hover:text-white"
+              >
+                Test Payment
+              </Link>
+            </li>
             {/* <li className="flex-none">
               <Link
                 to="/chat"
@@ -185,7 +193,7 @@ const Header = (keyword) => {
                     Refund
                   </Link>
                   <Link
-                    to="/shipping"
+                    to="/address"
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
                     Address

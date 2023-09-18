@@ -22,7 +22,11 @@ html {
 .menu-open {
   /* overflow: hidden; */
 }
-
+@layer utilities {
+  .max-xl\:gap-7 {
+    max-width: 28rem; /* Example custom style */
+  }
+}
 .menu-list {
   position: fixed;
   top: 0;
@@ -38,7 +42,7 @@ html {
   overflow: hidden; /* Prevent scrolling */
 }
 
-.app {
+/* .app {
   @apply relative w-full h-screen overflow-hidden;
 }
 
@@ -48,7 +52,7 @@ html {
 
 .home-content {
   @apply flex-1 xl:justify-center justify-start flex flex-col gap-10;
-}
+} */
 
 .head-text {
   @apply xl:text-[10rem] text-[6rem] xl:leading-[11rem] leading-[7rem] font-black text-black;
@@ -84,6 +88,20 @@ html {
 
 .tab-btn {
   @apply w-14 h-14 flex justify-center items-center cursor-pointer select-none;
+}
+
+.stepper-connector {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  transform: translateY(-50%);
+}
+
+.stepper-connector-completed {
+  background-color: #000;
 }
 
 .glassmorphism {

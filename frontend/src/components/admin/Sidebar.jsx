@@ -31,16 +31,15 @@ const Sidebar = () => {
 
   return (
     <Card className="min-h-screen w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
-      {/* <div className="mb-2 p-4">
-        <Typography variant="h5" color="blue-gray">
-          Sidebar
-        </Typography>
-      </div> */}
       <List>
         <Link to="/dashboard">
           <ListItem>
             <ListItemPrefix>
-              <PresentationChartBarIcon className="h-5 w-5" />
+              <img
+                src="/images/business.png"
+                alt="Business"
+                className="h-5 w-5"
+              />
             </ListItemPrefix>
             Dashboard
           </ListItem>
@@ -63,7 +62,12 @@ const Sidebar = () => {
               className="border-b-0 p-3"
             >
               <ListItemPrefix>
-                <PresentationChartBarIcon className="h-5 w-5" />
+                {/* <PresentationChartBarIcon className="h-5 w-5" /> */}
+                <img
+                  src="/images/product-icon.png"
+                  className="h-5 w-5"
+                  alt=""
+                />
               </ListItemPrefix>
               <Typography
                 color="blue-gray"
@@ -114,7 +118,20 @@ const Sidebar = () => {
               className="border-b-0 p-3"
             >
               <ListItemPrefix>
-                <ShoppingBagIcon className="h-5 w-5" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                  />
+                </svg>
               </ListItemPrefix>
               <Typography
                 color="blue-gray"
@@ -150,7 +167,7 @@ const Sidebar = () => {
         <Link to="/admin/orders">
           <ListItem>
             <ListItemPrefix>
-              <InboxIcon className="h-5 w-5" />
+              <img src="/images/order.png" alt="Order" className="h-5 w-5" />
             </ListItemPrefix>
             Orders
             <ListItemSuffix>
@@ -168,7 +185,8 @@ const Sidebar = () => {
         <Link to="/admin/reviews">
           <ListItem>
             <ListItemPrefix>
-              <InboxIcon className="h-5 w-5" />
+              {/* <InboxIcon className="h-5 w-5" /> */}
+              <img src="/images/review.png" className="h-5 w-5" alt="review" />
             </ListItemPrefix>
             Reviews
             <ListItemSuffix>
@@ -186,7 +204,20 @@ const Sidebar = () => {
         <Link to="/admin/refunds">
           <ListItem>
             <ListItemPrefix>
-              <InboxIcon className="h-5 w-5" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-5 w-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8.25 9.75h4.875a2.625 2.625 0 010 5.25H12M8.25 9.75L10.5 7.5M8.25 9.75L10.5 12m9-7.243V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185z"
+                />
+              </svg>
             </ListItemPrefix>
             Refunds
             <ListItemSuffix>
@@ -204,7 +235,7 @@ const Sidebar = () => {
         <Link to="/admin/report">
           <ListItem>
             <ListItemPrefix>
-              <InboxIcon className="h-5 w-5" />
+              <img src="/images/report.png" alt="Report" className="h-5 w-5" />
             </ListItemPrefix>
             Report
             <ListItemSuffix>
@@ -220,7 +251,7 @@ const Sidebar = () => {
         </Link>
 
         <Accordion
-          open={open === 2}
+          open={open === 3}
           icon={
             <ChevronDownIcon
               strokeWidth={2.5}
@@ -236,7 +267,12 @@ const Sidebar = () => {
               className="border-b-0 p-3"
             >
               <ListItemPrefix>
-                <ShoppingBagIcon className="h-5 w-5" />
+                {/* <ShoppingBagIcon className="h-5 w-5" /> */}
+                <img
+                  src="/images/maintenance.png"
+                  alt="Maintenance"
+                  className="h-5 w-5"
+                />
               </ListItemPrefix>
               <Typography
                 color="blue-gray"

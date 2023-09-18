@@ -111,7 +111,6 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
     for (let i = 0; i < images.length; i++) {
       const result = await cloudinary.v2.uploader.upload_large(images[i], {
         folder: "ecommerce-image",
-        chunk_size: 10000000,
       });
 
       imagesLinks.push({
@@ -382,6 +381,16 @@ exports.getProductReviews = catchAsyncErrors(async (req, res, next) => {
       select: "firstName lastName avatar", // Select the necessary fields, including avatar
     },
   });
+  if (!product) {
+    console.log("PRODUCT NOT FOUND");
+
+    return res.status(404).json({
+      success: false,
+      message: "Product not found.",
+    });
+  }
+
+  console.log("Product Reviews:", product.reviews);
   console.log("Product Reviews:", product.reviews);
   res.status(200).json({
     success: true,

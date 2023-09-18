@@ -285,6 +285,7 @@ export const getAdminProducts = () => async (dispatch) => {
 };
 
 // Get product reviews
+
 export const getProductReviews = (id) => async (dispatch) => {
   try {
     dispatch({ type: GET_REVIEWS_REQUEST });
@@ -296,21 +297,33 @@ export const getProductReviews = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(
+    const response = await axios.get(
       `http://localhost:7000/api/v1/reviews?id=${id}`,
       config
     );
 
-    console.log("DATA REVIEWS", data);
-
-    dispatch({
-      type: GET_REVIEWS_SUCCESS,
-      payload: data.reviews,
-    });
+    if (response.data.success) {
+      if (response.data.reviews.length === 0) {
+        dispatch({
+          type: GET_REVIEWS_FAIL,
+          payload: "No reviews found for this product.",
+        });
+      } else {
+        dispatch({
+          type: GET_REVIEWS_SUCCESS,
+          payload: response.data.reviews,
+        });
+      }
+    } else {
+      dispatch({
+        type: GET_REVIEWS_FAIL,
+        payload: "Failed to fetch reviews for this product.",
+      });
+    }
   } catch (error) {
     dispatch({
       type: GET_REVIEWS_FAIL,
-      payload: error.response.data.message,
+      payload: error.response ? error.response.data.message : "Network error",
     });
   }
 };

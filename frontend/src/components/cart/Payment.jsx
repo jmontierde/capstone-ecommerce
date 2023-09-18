@@ -15,6 +15,15 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate, Link } from "react-router-dom";
 import CheckoutSteps from "./CheckoutSteps";
 import { clearCart } from "../../actions/cartActions";
+import {
+  Radio,
+  Card,
+  List,
+  ListItem,
+  ListItemPrefix,
+  Typography,
+  Button,
+} from "@material-tailwind/react";
 
 export const PaymentForm = ({ stripePromise }) => {
   const alert = useAlert();
@@ -159,7 +168,7 @@ export const PaymentForm = ({ stripePromise }) => {
       <CheckoutSteps />
       <div className="flex flex-col justify-center items-center">
         Payment Method
-        <div className="flex flex-col w-1/3">
+        {/* <div className="flex flex-col w-1/3">
           <label className="border  border-[#000]  py-3 space-x-2 px-3 table-fixed cursor-pointer">
             <input
               type="radio"
@@ -178,7 +187,59 @@ export const PaymentForm = ({ stripePromise }) => {
             />
             Cash on Delivery
           </label>
-        </div>
+        </div> */}
+        <Card className="w-full max-w-[24rem]">
+          <List className="flex-row">
+            <ListItem className="p-0">
+              <label
+                htmlFor="horizontal-list-react"
+                className="flex w-full cursor-pointer items-center px-3 py-2"
+              >
+                <ListItemPrefix className="mr-3">
+                  <Radio
+                    name="horizontal-list"
+                    id="horizontal-list-react"
+                    ripple={false}
+                    className="hover:before:opacity-0"
+                    value="card"
+                    checked={paymentMethod === "card"}
+                    onChange={() => setPaymentMethod("card")}
+                    containerProps={{
+                      className: "p-0",
+                    }}
+                  />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="font-medium">
+                  Credit/Debit Card
+                </Typography>
+              </label>
+            </ListItem>
+            <ListItem className="p-0">
+              <label
+                htmlFor="horizontal-list-vue"
+                className="flex w-full cursor-pointer items-center px-3 py-2"
+              >
+                <ListItemPrefix className="mr-3">
+                  <Radio
+                    name="horizontal-list"
+                    id="horizontal-list-vue"
+                    ripple={false}
+                    value="cash"
+                    checked={paymentMethod === "cash"}
+                    onChange={() => setPaymentMethod("cash")}
+                    className="hover:before:opacity-0"
+                    containerProps={{
+                      className: "p-0",
+                    }}
+                  />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="font-medium">
+                  Cash on Delivery
+                </Typography>
+              </label>
+            </ListItem>
+          </List>
+        </Card>
         {/* ONLINE PAYMENT */}
         {paymentMethod === "card" ? (
           <form onSubmit={submitHandler} className="bg-[#fff] w-1/3 p-6 my-6">
@@ -221,8 +282,15 @@ export const PaymentForm = ({ stripePromise }) => {
             </button>
           </form>
         ) : (
-          <span>
-            <button onClick={submitHandler}>Order </button>
+          <span className="my-6">
+            <Button
+              ripple={true}
+              // size="lg"
+              className="px-12 py-3"
+              onClick={submitHandler}
+            >
+              Order
+            </Button>
           </span>
         )}
       </div>

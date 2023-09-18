@@ -1,4 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import { MDBDataTable } from "mdbreact";
+
+import MetaData from "../layout/MetaData";
+import Loader from "../layout/Loader";
+import Sidebar from "./Sidebar";
+
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,15 +12,13 @@ import {
   deleteReview,
   clearErrors,
 } from "../../actions/productActions";
-
 import { DELETE_REVIEW_RESET } from "../../constants/productConstants";
-import Sidebar from "./Sidebar";
 
 const ProductReviews = () => {
   const [productId, setProductId] = useState("");
+
   const alert = useAlert();
   const dispatch = useDispatch();
-  const [typingTimeout, setTypingTimeout] = useState(null);
 
   const { error, reviews } = useSelector((state) => state.productReviews);
   const { isDeleted, error: deleteError } = useSelector(
@@ -32,109 +36,127 @@ const ProductReviews = () => {
       dispatch(clearErrors());
     }
 
+    if (productId !== "") {
+      dispatch(getProductReviews(productId));
+    }
+
     if (isDeleted) {
       alert.success("Review deleted successfully");
       dispatch({ type: DELETE_REVIEW_RESET });
     }
-  }, [dispatch, alert, error, isDeleted, deleteError]);
+  }, [dispatch, alert, error, productId, isDeleted, deleteError]);
 
   const deleteReviewHandler = (id) => {
     dispatch(deleteReview(id, productId));
   };
 
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value.trim();
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(getProductReviews(productId));
+  };
 
-    if (/^[a-zA-Z0-9]*$/.test(inputValue)) {
-      // If the input consists of only letters and numbers
-      setProductId(inputValue);
+  const setReviews = () => {
+    const data = {
+      columns: [
+        {
+          label: "Review ID",
+          field: "id",
+          sort: "asc",
+        },
+        {
+          label: "Rating",
+          field: "rating",
+          sort: "asc",
+        },
+        {
+          label: "Comment",
+          field: "comment",
+          sort: "asc",
+        },
+        {
+          label: "User",
+          field: "user",
+          sort: "asc",
+        },
+        {
+          label: "Actions",
+          field: "actions",
+        },
+      ],
+      rows: [],
+    };
 
-      // Clear any previous timeout
-      if (typingTimeout) {
-        clearTimeout(typingTimeout);
-      }
+    reviews.forEach((review) => {
+      data.rows.push({
+        id: review._id,
+        rating: review.rating,
+        comment: review.comment,
+        user: review.name,
 
-      // Set a timeout to trigger the API call after 500 milliseconds of inactivity
-      setTypingTimeout(
-        setTimeout(() => {
-          if (inputValue !== "") {
-            alert.removeAll();
-            dispatch(getProductReviews(inputValue));
-          }
-        }, 500)
-      );
-    } else {
-      // If the input contains invalid characters, show an error
-      alert.error(
-        "Invalid characters entered. Please use letters and numbers only."
-      );
-    }
+        actions: (
+          <button
+            className="btn btn-danger py-1 px-2 ml-2"
+            onClick={() => deleteReviewHandler(review._id)}
+          >
+            <i className="fa fa-trash"></i>
+          </button>
+        ),
+      });
+    });
+
+    return data;
   };
 
   return (
-    <div className="flex">
-      <Sidebar />
-      <div></div>
-      {/* <h1 className="text-2xl font-bold text-center mb-4">Reviews</h1>
-      <div className="flex justify-center items-center mt-5">
-        <div className="col-5">
-          <form>
-            <div className="form-group">
-              <label htmlFor="productId_field">Enter Product ID</label>
-              <input
-                type="text"
-                id="productId_field"
-                className="border border-[#000]"
-                value={productId}
-                onChange={handleInputChange}
-              />
+    <Fragment>
+      <MetaData title={"Product Reviews"} />
+      <div className="row">
+        <div className="col-12 col-md-2">
+          <Sidebar />
+        </div>
+
+        <div className="col-12 col-md-10">
+          <Fragment>
+            <div className="row justify-content-center mt-5">
+              <div className="col-5">
+                <form onSubmit={submitHandler}>
+                  <div className="form-group">
+                    <label htmlFor="productId_field">Enter Product ID</label>
+                    <input
+                      type="text"
+                      id="productId_field"
+                      className="form-control"
+                      value={productId}
+                      onChange={(e) => setProductId(e.target.value)}
+                    />
+                  </div>
+
+                  <button
+                    id="search_button"
+                    type="submit"
+                    className="btn btn-primary btn-block py-2"
+                  >
+                    SEARCH
+                  </button>
+                </form>
+              </div>
             </div>
-          </form>
+
+            {reviews && reviews.length > 0 ? (
+              <MDBDataTable
+                data={setReviews()}
+                className="px-3"
+                bordered
+                striped
+                hover
+              />
+            ) : (
+              <p className="mt-5 text-center">No Reviews.</p>
+            )}
+          </Fragment>
         </div>
       </div>
-
-      <div className="flex container mx-auto px-12">
-        <div className="flex w-10/12 justify-center ">
-          <table className="table-fixed w-full h-32">
-            <thead className="bg-[#ECEFF1]">
-              <tr>
-                <th className="px-4 py-2">Review ID</th>
-                <th className="px-4 py-2">Rating</th>
-                <th className="px-4 py-2">Comment</th>
-                <th className="px-4 py-2">User</th>
-                <th className="px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              {reviews && reviews.length > 0 ? (
-                reviews.map((review) => (
-                  <tr key={review._id}>
-                    <td className="border px-4 py-3">{review._id}</td>
-                    <td className="border px-4 py-3">{review.rating}</td>
-                    <td className="border px-4 py-3">{review.comment}</td>
-                    <td className="border px-4 py-3">{review.name}</td>
-                    <td className="border px-4 py-3">
-                      <div className="flex justify-center items-center space-x-3">
-                        <img
-                          src="/images/deleteHover.png"
-                          alt="View product"
-                          className="w-6 h-6 cursor-pointer"
-                          onClick={() => deleteReviewHandler(review._id)}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5">No reviews found</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div> */}
-    </div>
+    </Fragment>
   );
 };
 

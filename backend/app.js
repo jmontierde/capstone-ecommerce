@@ -19,14 +19,9 @@ app.use(cookieParser());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(
   fileUpload({
-    limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB limit
-    useTempFiles: true,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
   })
 );
-
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
-
 const { Server } = require("socket.io");
 let onlineUsers = [];
 

@@ -9,6 +9,7 @@ const crypto = require("crypto");
 const cloudinary = require("cloudinary");
 const isEmailValid = require("../utils/emailValidator");
 const TermsAndConditions = require("../models/TermsAndConditions");
+const Address = require("../models/address");
 // Register a user => /api/v1/register
 // Email validator function
 function isGmailEmail(email) {
@@ -487,6 +488,96 @@ exports.deleteTerms = catchAsyncErrors(async (req, res, next) => {
     res.status(400).json({
       success: false,
       message: "Update Terms and Conditions section failed",
+    });
+  }
+});
+
+// Address
+// Address
+exports.newAddress = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { street, apartment, city, zipCode } = req.body;
+
+    const address = new Address({
+      street,
+      apartment,
+      city,
+      zipCode,
+    });
+
+    await address.save();
+    res.status(201).json({
+      success: true,
+      address,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Address creation failed",
+    });
+  }
+});
+
+// Retrieve all addresses
+exports.allAddresses = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const addresses = await Address.find();
+    res.status(200).json({
+      success: true,
+      addresses,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
+
+// Update an address
+exports.updateAddress = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { name, street, city, zipCode } = req.body;
+    const updatedAddress = await Address.findByIdAndUpdate(
+      req.params.id,
+      { name, street, city, zipCode },
+      { new: true }
+    );
+
+    if (!updatedAddress) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Address not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      updatedAddress,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Update address failed",
+    });
+  }
+});
+
+// Delete an address
+exports.deleteAddress = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const deletedAddress = await Address.findByIdAndDelete(req.params.id);
+
+    if (!deletedAddress) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Address not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Address deleted successfully",
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Delete address failed",
     });
   }
 });

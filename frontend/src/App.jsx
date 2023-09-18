@@ -52,6 +52,7 @@ import Refund from "./components/order/Refund";
 import AllRefunds from "./components/admin/AllRefunds";
 import Messenger from "./Messenger";
 import Material from "./components/pages/Material";
+import TestPayment from "./components/cart/TestPayment";
 function App() {
   // const dispatch = useDispatch()
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -115,7 +116,7 @@ function App() {
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/three" element={<Three />} />
           <Route exact path="/chat" element={<GetChat />} />
-          <Route exact path="/material" element={<Material />} />
+          <Route exact path="/material" element={<TestPayment />} />
 
           <Route
             path="/shipping"

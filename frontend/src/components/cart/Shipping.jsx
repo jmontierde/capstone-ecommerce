@@ -13,7 +13,7 @@ const Shipping = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(user);
+  console.log("A", user);
   console.log("SHIPPING", shippingInfo);
 
   const countriesList = Object.values(countries);

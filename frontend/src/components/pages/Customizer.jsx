@@ -182,7 +182,7 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
           </motion.div>
 
           <motion.div
-            className="filtertabs-container"
+            className="absolute z-10 bottom-5 right-0 left-0 w-full flex justify-center items-center flex-wrap gap-4"
             {...slideAnimation("up")}
           >
             {FilterTabs.map((tab) => (

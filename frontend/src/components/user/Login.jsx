@@ -75,7 +75,7 @@ const Login = () => {
           </div>
 
           <Button className="mt-6 bg-[#212121]" fullWidth type="submit">
-            Register
+            Login
           </Button>
 
           <Typography color="gray" className="mt-4 text-center font-normal">
