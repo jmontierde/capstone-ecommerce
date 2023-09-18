@@ -157,9 +157,9 @@ const ProductsList = () => {
                         checked={selectedProducts.length === products.length}
                         onChange={() => {
                           if (selectedProducts.length === products.length) {
-                            setSelectedUsers([]);
+                            setSelectedProducts([]);
                           } else {
-                            setSelectedUsers(
+                            setSelectedProducts(
                               products.map((product) => product._id)
                             );
                           }
@@ -200,12 +200,12 @@ const ProductsList = () => {
                             }
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setSelectedUsers([
+                                setSelectedProducts([
                                   ...selectedProducts,
                                   product._id,
                                 ]);
                               } else {
-                                setSelectedUsers(
+                                setSelectedProducts(
                                   selectedProducts.filter(
                                     (id) => id !== product._id
                                   )
@@ -281,7 +281,7 @@ const ProductsList = () => {
                             src="/images/deleteHover.png"
                             alt="View product"
                             className="w-6 h-6 cursor-pointer"
-                            onClick={() => deleteUserHandler(product._id)}
+                            onClick={() => deleteProductHandler(product._id)}
                           />
                         </td>
                       </tr>

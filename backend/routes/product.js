@@ -32,6 +32,10 @@ router
   .put(isAuthenticatedUser, authorizeRoles("admin", "staff"), updateProduct)
   .delete(isAuthenticatedUser, authorizeRoles("admin", "staff"), deleteProduct);
 
+router
+  .route("/admin/product/new")
+  .post(isAuthenticatedUser, authorizeRoles("admin", "staff"), newProduct);
+
 router.route("/review").put(isAuthenticatedUser, createProductReview);
 router.route("/reviews").get(isAuthenticatedUser, getProductReviews);
 router.route("/reviews").delete(isAuthenticatedUser, deleteReview);
