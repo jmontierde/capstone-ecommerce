@@ -12,6 +12,7 @@
   "author": "Jayson Caburatan",
   "license": "ISC",
   "dependencies": {
+    "16": "^0.0.2",
     "@stripe/react-stripe-js": "^2.1.1",
     "@stripe/stripe-js": "^1.54.1",
     "api": "^6.0.0",
@@ -45,7 +46,7 @@
     "validator": "^13.9.0"
   },
   "engines": {
-    "node": ">=14.17.0"
+    "node": ">=14.17.0 <16"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
