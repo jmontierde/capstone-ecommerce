@@ -126,7 +126,7 @@ const ProductDetails = () => {
             <div className=" w-3/4">
               {product.images && product.images.length > 0 && (
                 <img
-                  className="3/4 border border-[#000] p-3 mx-8"
+                  className="3/4 p-3 mx-8"
                   src={product.images[0].url}
                   alt={product.title}
                 />
@@ -140,7 +140,7 @@ const ProductDetails = () => {
                   .slice(1)
                   .map((img, index) => (
                     <img
-                      className="w-36 border border-[#000]"
+                      className="w-36"
                       key={index}
                       src={img.url}
                       alt={product.title}

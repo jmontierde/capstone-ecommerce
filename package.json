@@ -44,6 +44,9 @@
     "twilio": "^4.17.0",
     "validator": "^13.9.0"
   },
+  "engines": {
+    "node": ">=14.17.0"
+  },
   "devDependencies": {
     "nodemon": "^2.0.20"
   }

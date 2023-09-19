@@ -66,7 +66,7 @@ const ProcessOrder = () => {
   console.log("ORDER ID ");
 
   return (
-    <div className="flex container px-12 mx-auto">
+    <div className="flex ">
       <Sidebar />
       <div className="container mx-auto px-6 space-x-6 w-10/12">
         <div className="flex flex-col justify-center h-full">
