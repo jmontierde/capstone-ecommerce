@@ -11,9 +11,11 @@ const fileUpload = require("express-fileupload");
 const errorMiddleware = require("./middlewares/errors");
 const path = require("path");
 const dotenv = require("dotenv");
-dotenv.config({ path: "backend/config/config.env" });
-// if (process.env.NODE_ENV !== "PRODUCTION")
-//   require("dotenv").config({ path: "backend/config/config.env" });
+// dotenv.config({ path: "backend/config/config.env" });
+// dotenv.config({ path: "backend/config/config.env" });
+dotenv.config({ path: "./config/config.env" });
+
+console.log("PROCESS", process.env.PORT);
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyparser.urlencoded({ extended: true }));
