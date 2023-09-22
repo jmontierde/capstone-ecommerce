@@ -171,13 +171,13 @@ const Sidebar = () => {
             </ListItemPrefix>
             Orders
             <ListItemSuffix>
-              <Chip
+              {/* <Chip
                 value="14"
                 size="sm"
                 variant="ghost"
                 color="blue-gray"
                 className="rounded-full"
-              />
+              /> */}
             </ListItemSuffix>
           </ListItem>
         </Link>
@@ -190,13 +190,13 @@ const Sidebar = () => {
             </ListItemPrefix>
             Reviews
             <ListItemSuffix>
-              <Chip
+              {/* <Chip
                 value="14"
                 size="sm"
                 variant="ghost"
                 color="blue-gray"
                 className="rounded-full"
-              />
+              /> */}
             </ListItemSuffix>
           </ListItem>
         </Link>
@@ -221,13 +221,13 @@ const Sidebar = () => {
             </ListItemPrefix>
             Refunds
             <ListItemSuffix>
-              <Chip
+              {/* <Chip
                 value="14"
                 size="sm"
                 variant="ghost"
                 color="blue-gray"
                 className="rounded-full"
-              />
+              /> */}
             </ListItemSuffix>
           </ListItem>
         </Link>
@@ -239,13 +239,13 @@ const Sidebar = () => {
             </ListItemPrefix>
             Report
             <ListItemSuffix>
-              <Chip
+              {/* <Chip
                 value="14"
                 size="sm"
                 variant="ghost"
                 color="blue-gray"
                 className="rounded-full"
-              />
+              /> */}
             </ListItemSuffix>
           </ListItem>
         </Link>

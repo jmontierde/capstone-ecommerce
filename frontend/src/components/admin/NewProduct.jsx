@@ -6,7 +6,9 @@ import { newProduct, clearErrors } from "../../actions/productActions";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
 import { useNavigate } from "react-router-dom";
 import { getCategories } from "../../actions/productActions";
-
+import { Input, Select, Option, Textarea } from "@material-tailwind/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const NewProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -26,16 +28,16 @@ const NewProduct = () => {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
 
     if (success) {
       navigate("/admin/products");
-      alert.success("Product created successfully");
+      toast.success("Product created successfully");
       dispatch({ type: NEW_PRODUCT_RESET });
     }
-  }, [dispatch, alert, error, success, history]);
+  }, [dispatch, toast, error, success, history]);
 
   const isRequiredFieldEmpty =
     !name || !price || !description || !category || !stock || !seller;
@@ -99,6 +101,7 @@ const NewProduct = () => {
       reader.readAsDataURL(file);
     });
   };
+  console.log("ca", category);
 
   return (
     <>
@@ -107,76 +110,60 @@ const NewProduct = () => {
         <div className="  container p-6">
           <form onSubmit={submitHandler} encType="multipart/form-data">
             <div className="flex  mx-auto space-x-12 ">
-              <section className=" flex flex-col w-full ">
-                <label htmlFor="productName">Product Name</label>
-                <input
-                  type="text"
+              <section className=" flex flex-col w-full space-y-6">
+                <Input
+                  label="Product Name"
                   id="productName"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="border border-[#000] py-2 my-1 px-3"
+                  className="py-6"
                 />
-                <div className="flex gap-6 my-6">
+                <div className="flex gap-6">
                   <div className="flex flex-col w-9/12">
-                    <label htmlFor="category">Category</label>
-                    <br />
-                    <select
-                      className="border border-[#000] py-2 my-1 px-3 bg-[#fff]"
-                      id="category_field"
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
+                    <Select
+                      label="Select Category"
+                      className="py-6"
+                      onChange={(value) => setCategory(value)}
                     >
-                      <option value="">Select Category</option>
                       {categories.map((category) => (
-                        <option key={category.name} value={category.name}>
+                        <Option key={category.name} value={category.name}>
                           {category.name}
-                        </option>
+                        </Option>
                       ))}
-                    </select>
+                    </Select>
                   </div>
 
                   <div className="flex flex-col w-3/12">
-                    <label htmlFor="stock">Stock</label>
-                    <input
-                      type="text"
+                    <Input
+                      label="Stock"
+                      className="py-6 "
                       value={stock}
                       onChange={(e) => setStock(e.target.value)}
-                      className="border border-[#000] py-2 my-1 px-3"
                     />
                   </div>
                 </div>
-                <div className="flex flex-col">
-                  <label htmlFor="price">Price</label>
-                  <input
-                    type="text"
-                    id="price"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    className="border border-[#000] py-2 my-1 px-3"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="price">Seller</label>
-                  <input
-                    type="text"
-                    id="price"
-                    value={seller}
-                    onChange={(e) => setSeller(e.target.value)}
-                    className="border border-[#000] py-2 my-1 px-3"
-                  />
-                </div>
 
-                <div className="flex flex-col flex-wrap my-6">
-                  <label htmlFor="description">Description</label>
-                  <textarea
-                    type="text"
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    size={20}
-                    className="border border-[#000]  py-2 px-3 text- my-1  h-48"
-                  />
-                </div>
+                <Input
+                  label="Price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="py-6"
+                />
+
+                <Input
+                  label="Seller"
+                  value={seller}
+                  onChange={(e) => setSeller(e.target.value)}
+                  className="py-6"
+                />
+
+                <Textarea
+                  label="Description"
+                  id="description"
+                  value={description}
+                  className="h-72"
+                  onChange={(e) => setDescription(e.target.value)}
+                />
               </section>
               <section className="w-1/2">
                 <h4>Product Image</h4>
@@ -228,6 +215,7 @@ const NewProduct = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
