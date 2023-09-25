@@ -180,7 +180,7 @@ const Register = () => {
             >
               <div className="mb-4 flex flex-col gap-6">
                 <Input
-                  label="Username"
+                  label="Firs tName"
                   id="firstName"
                   name="firstName"
                   value={firstName}
