@@ -56,7 +56,7 @@ const Cart = () => {
           <>
             <div className="container mx-auto px-12 my-6">
               <h1>
-                Cart:{" "}
+                Cart: a
                 {cartItems.length > 1
                   ? `${cartItems.length} items`
                   : `${cartItems.length} item`}{" "}
@@ -64,7 +64,7 @@ const Cart = () => {
               <div className="flex gap-6">
                 <div className="flex flex-col outline-double w-2/3">
                   <div className="flex items-center justify-between p-6 w-full text-center">
-                    <h4 className="w-full bg-[#0232]">Product</h4>
+                    <h4 className="w-full bg-[#0232]">Producta</h4>
                     <h4 className="w-full bg-[#0232]">Quantity</h4>
                     <h4 className="w-full bg-[#0232]">Price</h4>
                     <h4 className="w-full bg-[#0232]">Action</h4>
