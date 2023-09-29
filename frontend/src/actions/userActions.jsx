@@ -57,6 +57,7 @@ import {
 } from "../constants/userConstant";
 
 //Login
+const url = "https://vapingsidewalk-backend.onrender.com";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -71,7 +72,7 @@ export const login = (email, password) => async (dispatch) => {
       },
     };
     const { data } = await axios.post(
-      "http://localhost:7000/api/v1/login/",
+      `${url}/api/v1/login/`,
       { email, password },
       config
     );
@@ -102,7 +103,7 @@ export const register = (userData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:7000/api/v1/register",
+      `${url}/api/v1/register`,
       userData,
       config
     );
@@ -138,7 +139,7 @@ export const verifyUser = (userId, verificationStatus) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:7000/api/v1/admin/verify/${userId}`,
+      `${url}/api/v1/admin/verify/${userId}`,
       { verificationStatus },
       config
     );
@@ -172,7 +173,7 @@ export const loadUser = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get("http://localhost:7000/api/v1/me", config);
+    const { data } = await axios.get(`${url}/api/v1/me`, config);
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -200,7 +201,7 @@ export const updateProfile = (userData) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      "http://localhost:7000/api/v1/me/update",
+      `${url}/api/v1/me/update`,
       userData,
       config
     );
@@ -234,7 +235,7 @@ export const updatePassword = (passwords) => async (dispatch) => {
     }
 
     const { data } = await axios.put(
-      "http://localhost:7000/api/v1/password/update",
+      `${url}/api/v1/password/update`,
       {
         oldPassword: passwords.oldPassword,
         newPassword: passwords.newPassword,
@@ -268,7 +269,7 @@ export const forgotPassword = (email) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:7000/api/v1/password/forgot",
+      `${url}/api/v1/password/forgot`,
       email,
       config
     );
@@ -296,7 +297,7 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
       },
     };
     const { data } = await axios.put(
-      `http://localhost:7000/api/v1/password/reset/${token}`,
+      `${url}/api/v1/password/reset/${token}`,
       JSON.stringify(passwords),
       config
     );
@@ -317,7 +318,7 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     localStorage.removeItem("token");
-    await axios.get("http://localhost:7000/api/v1/logout");
+    await axios.get(`${url}/api/v1/logout`);
     dispatch({ type: LOGOUT_SUCCESS });
   } catch (error) {
     dispatch({
@@ -341,10 +342,7 @@ export const allUsers = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(
-      "http://localhost:7000/api/v1/admin/users",
-      config
-    );
+    const { data } = await axios.get(`${url}/api/v1/admin/users`, config);
 
     console.log("ALL USERS ACTION", data);
 
@@ -374,7 +372,7 @@ export const updateUser = (id, userData) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:7000/api/v1/admin/user/${id}`,
+      `${url}/api/v1/admin/user/${id}`,
       userData,
       config
     );
@@ -403,10 +401,7 @@ export const getUserDetails = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(
-      `http://localhost:7000/api/v1/admin/user/${id}`,
-      config
-    );
+    const { data } = await axios.get(`${url}/api/v1/admin/user/${id}`, config);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
@@ -433,7 +428,7 @@ export const deleteUser = (id) => async (dispatch) => {
     };
 
     const { data } = await axios.delete(
-      `http://localhost:7000/api/v1/admin/user/${id}`,
+      `${url}/api/v1/admin/user/${id}`,
       config
     );
 
@@ -469,7 +464,7 @@ export const removeUser = (userId) => {
 //     };
 
 //     const { data } = await axios.get(
-//       "http://localhost:7000/api/v1/terms",
+//       "${url}/api/v1/terms",
 //       config
 //     );
 

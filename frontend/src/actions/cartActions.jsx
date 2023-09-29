@@ -7,6 +7,8 @@ import {
   GET_CHECKOUT,
 } from "../constants/cartConstant";
 
+const url = "https://vapingsidewalk-backend.onrender.com";
+
 export const addItemToCart = (id, quantity) => async (dispatch, getState) => {
   //   const token = localStorage.getItem("token");
   //   const config = {
@@ -14,9 +16,7 @@ export const addItemToCart = (id, quantity) => async (dispatch, getState) => {
   //       Authorization: `Bearer ${token}`,
   //     },
   //   };
-  const { data } = await axios.get(
-    `http://localhost:7000/api/v1/product/${id}`
-  );
+  const { data } = await axios.get(`${url}/api/v1/product/${id}`);
 
   dispatch({
     type: ADD_TO_CART,
@@ -40,10 +40,7 @@ export const getCheckout = (id, quantity) => async (dispatch, getState) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const { data } = await axios.get(
-    `http://localhost:7000/api/v1/product/${id}`,
-    config
-  );
+  const { data } = await axios.get(`${url}/api/v1/product/${id}`, config);
 
   dispatch({
     type: GET_CHECKOUT,

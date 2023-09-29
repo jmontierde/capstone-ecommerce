@@ -17,6 +17,7 @@ import {
   CLEAR_ERRORS,
 } from "../constants/termsConstant";
 import axios from "axios";
+const url = "https://vapingsidewalk-backend.onrender.com";
 
 export const createTerms = (title, content) => async (dispatch) => {
   try {
@@ -31,7 +32,7 @@ export const createTerms = (title, content) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `http://localhost:7000/api/v1/admin/term`,
+      `${url}/api/v1/admin/term`,
       { title, content },
       config
     );
@@ -63,7 +64,7 @@ export const getTerms = () => async (dispatch) => {
     // };
 
     const { data } = await axios.get(
-      "http://localhost:7000/api/v1/terms"
+      `${url}/api/v1/terms`
       // config
     );
 
@@ -92,7 +93,7 @@ export const deleteTerm = (id) => async (dispatch) => {
       },
     };
     const { data } = await axios.delete(
-      `http://localhost:7000/api/v1/admin/term/${id}`,
+      `${url}/api/v1/admin/term/${id}`,
       config
     );
 
@@ -123,7 +124,7 @@ export const updateTerm = (id, updatedFields) => async (dispatch) => {
     dispatch({ type: UPDATE_TERMS_REQUEST });
 
     const { data } = await axios.put(
-      `http://localhost:7000/api/v1/admin/term/${id}`, // Properly construct the URL
+      `${url}/api/v1/admin/term/${id}`, // Properly construct the URL
       updatedFields, // Include the updated fields in the request body
       config
     );

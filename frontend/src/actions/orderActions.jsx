@@ -34,6 +34,7 @@ import {
   UPDATE_REFUND_FAIL,
 } from "../constants/orderConstants";
 import { DELETE_REVIEW_FAIL } from "../constants/productConstants";
+const url = "https://vapingsidewalk-backend.onrender.com";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -47,11 +48,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(
-      "http://localhost:7000/api/v1/order/new",
-      order,
-      config
-    );
+    const { data } = await axios.post(`${url}/api/v1/order/new`, order, config);
 
     dispatch({
       type: CREATE_ORDER_SUCCESS,
@@ -76,10 +73,7 @@ export const myOrders = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(
-      "http://localhost:7000/api/v1/orders/me",
-      config
-    );
+    const { data } = await axios.get(`${url}/api/v1/orders/me`, config);
 
     console.log("MYORDERS", data.orders);
 
@@ -107,10 +101,7 @@ export const getOrderDetails = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(
-      `http://localhost:7000/api/v1/order/${id}`,
-      config
-    );
+    const { data } = await axios.get(`${url}/api/v1/order/${id}`, config);
 
     dispatch({
       type: ORDER_DETAILS_SUCCESS,
@@ -134,10 +125,7 @@ export const allOrders = () => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.get(
-      `http://localhost:7000/api/v1/admin/orders`,
-      config
-    );
+    const { data } = await axios.get(`${url}/api/v1/admin/orders`, config);
 
     dispatch({
       type: ALL_ORDERS_SUCCESS,
@@ -165,7 +153,7 @@ export const updateOrder = (id, refundData) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:7000/api/v1/admin/order/${id}`,
+      `${url}/api/v1/admin/order/${id}`,
       refundData,
       config
     );
@@ -193,7 +181,7 @@ export const deleteOrder = (id) => async (dispatch) => {
       },
     };
     const { data } = await axios.delete(
-      `http://localhost:7000/api/v1/admin/order/${id}`,
+      `${url}/api/v1/admin/order/${id}`,
       config
     );
 
@@ -222,7 +210,7 @@ export const createRefund = (refundData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:7000/api/v1/order/refund",
+      `${url}/api/v1/order/refund`,
       refundData,
       config
     );
@@ -252,7 +240,7 @@ export const allRefund = () => async (dispatch) => {
       },
     };
     const { data } = await axios.get(
-      `http://localhost:7000/api/v1/admin/order/refunds`,
+      `${url}/api/v1/admin/order/refunds`,
       config
     );
 
@@ -280,7 +268,7 @@ export const deleteRefund = (id) => async (dispatch) => {
       },
     };
     const { data } = await axios.delete(
-      `http://localhost:7000/api/v1/admin/refund/${id}`,
+      `${url}/api/v1/admin/refund/${id}`,
       config
     );
 
@@ -309,7 +297,7 @@ export const updateRefund = (id, refundData) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:7000/api/v1/admin/refund/${id}`,
+      `${url}/api/v1/admin/refund/${id}`,
       refundData,
       config
     );

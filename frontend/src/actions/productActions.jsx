@@ -49,6 +49,9 @@ import {
 } from "../constants/productConstants";
 
 //Related Product
+
+const url = "https://vapingsidewalk-backend.onrender.com";
+
 export const getRelatedProducts = (id) => async (dispatch) => {
   try {
     dispatch({ type: GET_RELATED_PRODUCTS_REQUEST });
@@ -62,7 +65,7 @@ export const getRelatedProducts = (id) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `http://localhost:7000/api/v1/products/related?id=${id}`,
+      `${url}/api/v1/products/related?id=${id}`,
       config
     );
     console.log("Categories from Action", data);
@@ -93,10 +96,10 @@ export const getProducts =
       dispatch({ type: ALL_PRODUCTS_REQUEST });
       //send the request to backend
 
-      let link = `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&ratings=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+      let link = `${url}/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&ratings=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
 
       if (category) {
-        link = `http://localhost:7000/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&category=${category}&ratings=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+        link = `${url}/api/v1/products?keyword=${keyword}&page=${currentPage}&sort=${sortOption}&category=${category}&ratings=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
       }
 
       const { data } = await axios.get(link);
@@ -126,7 +129,7 @@ export const newProduct = (productData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `http://localhost:7000/api/v1/admin/product/new`,
+      `${url}/api/v1/admin/product/new`,
       productData,
       config
     );
@@ -158,7 +161,7 @@ export const deleteProduct = (id) => async (dispatch) => {
       },
     };
     const { data } = await axios.delete(
-      `http://localhost:7000/api/v1/admin/product/${id}`,
+      `${url}/api/v1/admin/product/${id}`,
       config
     );
 
@@ -189,7 +192,7 @@ export const updateProduct = (id, productData) => async (dispatch) => {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
     const { data } = await axios.put(
-      `http://localhost:7000/api/v1/admin/product/${id}`,
+      `${url}/api/v1/admin/product/${id}`,
       productData,
       config
     );
@@ -219,7 +222,7 @@ export const newReview = (reviewData) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:7000/api/v1/review`,
+      `${url}/api/v1/review`,
       reviewData,
       config
     );
@@ -240,9 +243,7 @@ export const getProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(
-      `http://localhost:7000/api/v1/product/${id}`
-    );
+    const { data } = await axios.get(`${url}/api/v1/product/${id}`);
 
     dispatch({
       type: PRODUCT_DETAILS_SUCCESS,
@@ -267,10 +268,7 @@ export const getAdminProducts = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(
-      `http://localhost:7000/api/v1/admin/products`,
-      config
-    );
+    const { data } = await axios.get(`${url}/api/v1/admin/products`, config);
 
     dispatch({
       type: ADMIN_PRODUCTS_SUCCESS,
@@ -297,10 +295,7 @@ export const getProductReviews = (id) => async (dispatch) => {
       },
     };
 
-    const response = await axios.get(
-      `http://localhost:7000/api/v1/reviews?id=${id}`,
-      config
-    );
+    const response = await axios.get(`${url}/api/v1/reviews?id=${id}`, config);
 
     if (response.data.success) {
       if (response.data.reviews.length === 0) {
@@ -340,7 +335,7 @@ export const deleteReview = (id, productId) => async (dispatch) => {
       },
     };
     const { data } = await axios.delete(
-      `http://localhost:7000/api/v1/reviews?id=${id}&productId=${productId}`,
+      `${url}/api/v1/reviews?id=${id}&productId=${productId}`,
       config
     );
 
@@ -372,7 +367,7 @@ export const newCategory = (categoryData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `http://localhost:7000/api/v1/admin/category/new`,
+      `${url}/api/v1/admin/category/new`,
       categoryData,
       config
     );
@@ -393,7 +388,7 @@ export const getCategories = () => async (dispatch) => {
   try {
     dispatch({ type: GET_CATEGORIES_REQUEST });
 
-    const { data } = await axios.get("http://localhost:7000/api/v1/categories");
+    const { data } = await axios.get(`${url}/api/v1/categories`);
 
     console.log("Categories from Action", data);
     dispatch({
@@ -419,7 +414,7 @@ export const deleteCategory = (id) => async (dispatch) => {
       },
     };
     const { data } = await axios.delete(
-      `http://localhost:7000/api/v1/admin/category/${id}`,
+      `${url}/api/v1/admin/category/${id}`,
       config
     );
 
@@ -450,7 +445,7 @@ export const updateCategory = (id, categoryData) => async (dispatch) => {
     dispatch({ type: UPDATE_CATEGORY_REQUEST });
 
     const { data } = await axios.put(
-      `http://localhost:7000/api/v1/admin/category/${id}`, // Properly construct the URL
+      `${url}/api/v1/admin/category/${id}`, // Properly construct the URL
       categoryData,
       config
     );
