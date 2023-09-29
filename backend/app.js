@@ -24,42 +24,14 @@ app.use(
     limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
   })
 );
-const { Server } = require("socket.io");
-let onlineUsers = [];
 
-const io = new Server({ cors: "http://127.0.0.1:5173" });
-io.listen(3000);
+if (process.env.NODE_ENV === "PRODUCTION") {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-io.on("connection", (socket) => {
-  console.log("NEW CONNECTION", socket.id);
-
-  socket.on("addNewUser", (userId) => {
-    !onlineUsers.some((user) => user.userId === userId) &&
-      onlineUsers.push({ userId, socketId: socket.id });
-    console.log("onlineUsers", onlineUsers);
-
-    io.emit("getOnlineUsers", onlineUsers);
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
   });
-
-  //add message
-  socket.on("sendMessage", (message) => {
-    const user = onlineUsers.find((user) => user.userId === message.senderId);
-    console.log("sendMessage event received:", message);
-    console.log("USER APP", user);
-
-    if (user) {
-      io.to(user.socketId).emit("getMessage", {
-        chatId: message.chatId,
-        message: message, // Emit the full message object here
-      });
-      console.log("get Message event received:", message);
-    }
-  });
-  socket.on("disconnect", () => {
-    onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
-    io.emit("getOnlineUsers", onlineUsers);
-  });
-});
+}
 
 app.use(
   cors({
@@ -75,11 +47,7 @@ const auth = require("./routes/auth");
 const order = require("./routes/order");
 const payment = require("./routes/payment");
 const category = require("./routes/category");
-const chat = require("./routes/chat");
-const messages = require("./routes/messages");
 
-app.use("/api/v1", messages);
-app.use("/api/v1", chat);
 app.use("/api/v1", payment);
 app.use("/api/v1", products);
 app.use("/api/v1", auth);

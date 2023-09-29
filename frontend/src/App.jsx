@@ -43,7 +43,6 @@ import Report from "./components/admin/Report";
 import Three from "./components/Three";
 import Customizer from "./components/pages/Customizer";
 import NewCategory from "./components/admin/NewCategory";
-import GetChat from "./components/chat/GetChat";
 import VerifyUser from "./components/admin/VerifyUser";
 import TermsAndConditionsComponent from "./components/user/TermsAndConditions";
 import UpdateTerms from "./components/admin/UpdateTerms";
@@ -61,18 +60,7 @@ function App() {
     localStorage.getItem("termsAccepted") === "true"
   );
 
-  useEffect(() => {
-    // Check if the user has already accepted the terms
-    setTermsAccepted(localStorage.getItem("termsAccepted") === "true");
-  }, []);
-
   const navigate = useNavigate();
-
-  // Check if the user has accepted the terms
-  if (!termsAccepted) {
-    // If not, navigate them to the Terms and Conditions page
-    navigate("/terms");
-  }
 
   useEffect(() => {
     store.dispatch(loadUser());
@@ -107,7 +95,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/terms" element={<TermsAndConditionsComponent />} />
+          {/* <Route path="/terms" element={<TermsAndConditionsComponent />} /> */}
           {/* {termsAccepted ? (
             <> */}
           <Route path="/product" element={<Home />} />
@@ -115,7 +103,6 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/three" element={<Three />} />
-          <Route exact path="/chat" element={<GetChat />} />
           <Route exact path="/material" element={<TestPayment />} />
 
           <Route
