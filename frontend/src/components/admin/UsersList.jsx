@@ -93,7 +93,7 @@ const UsersList = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       <Sidebar />
       <Card className="h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">

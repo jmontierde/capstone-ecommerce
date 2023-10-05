@@ -88,9 +88,8 @@ const Home = () => {
             </ul>
           </div>
         </div>
-        <div className="w-4/5">
-          <h2 className="text-4xl ">Products</h2>
-          <div className="ml-auto m-6 w-64">
+        <div className="w-4/5 ">
+          <div className="flex justify-end my-6 ">
             <select
               value={sortOption}
               onChange={handleSortChange}
@@ -105,7 +104,7 @@ const Home = () => {
             </select>
           </div>
 
-          <div className="grid grid-cols-auto md:grid-cols-4 gap-6 text-center h-screen">
+          <div className="grid grid-cols-auto md:grid-cols-4 gap-6 text-center h-full ">
             {products &&
               products.map((product, index) => (
                 <Product key={product._id} product={product} />

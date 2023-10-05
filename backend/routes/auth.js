@@ -25,6 +25,7 @@ const {
   updateAddress,
   deleteAddress,
   allAddresses,
+  allUserTerms,
 } = require("../controllers/authController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
@@ -39,7 +40,6 @@ router
   .delete(isAuthenticatedUser, deleteAddress);
 
 router.route("/admin/users").get(isAuthenticatedUser, allUsers);
-// router.route("/terms").get(termsandcondition);
 
 router.route("/password/forgot").post(forgotPassword);
 router.route("/password/reset/:token").put(resetPassword);
@@ -57,6 +57,7 @@ router
   .post(isAuthenticatedUser, authorizeRoles("admin", "staff"), newTerms);
 
 router.route("/terms").get(isAuthenticatedUser, allTerms);
+router.route("/user/terms").get(allUserTerms);
 
 // router
 //   .route("/admin/version  /:version")

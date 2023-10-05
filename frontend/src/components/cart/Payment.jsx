@@ -24,6 +24,11 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
+import {
+  BanknotesIcon,
+  CreditCardIcon,
+  LockClosedIcon,
+} from "@heroicons/react/24/solid";
 
 export const PaymentForm = ({ stripePromise }) => {
   const alert = useAlert();
@@ -71,6 +76,7 @@ export const PaymentForm = ({ stripePromise }) => {
       },
     },
   };
+  const url = "https://vapingsidewalk-backend.onrender.com";
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -85,7 +91,7 @@ export const PaymentForm = ({ stripePromise }) => {
 
       if (paymentMethod === "card") {
         const response = await axios.post(
-          "http://localhost:7000/api/v1/payment/process",
+          `${url}/api/v1/payment/process`,
           paymentData,
           config
         );
@@ -142,7 +148,7 @@ export const PaymentForm = ({ stripePromise }) => {
         };
 
         const { data } = await axios.post(
-          "http://localhost:7000/api/v1/order/new",
+          `${url}/api/v1/order/new`,
           order,
           config
         );
@@ -168,26 +174,6 @@ export const PaymentForm = ({ stripePromise }) => {
       <CheckoutSteps />
       <div className="flex flex-col justify-center items-center">
         Payment Method
-        {/* <div className="flex flex-col w-1/3">
-          <label className="border  border-[#000]  py-3 space-x-2 px-3 table-fixed cursor-pointer">
-            <input
-              type="radio"
-              value="card"
-              checked={paymentMethod === "card"}
-              onChange={() => setPaymentMethod("card")}
-            />
-            Credit/Debit Card
-          </label>
-          <label className="border border-t-0 border-[#000]   py-3 space-x-2 px-3 table-fixed cursor-pointer">
-            <input
-              type="radio"
-              value="cash"
-              checked={paymentMethod === "cash"}
-              onChange={() => setPaymentMethod("cash")}
-            />
-            Cash on Delivery
-          </label>
-        </div> */}
         <Card className="w-full max-w-[24rem]">
           <List className="flex-row">
             <ListItem className="p-0">
@@ -243,7 +229,7 @@ export const PaymentForm = ({ stripePromise }) => {
         {/* ONLINE PAYMENT */}
         {paymentMethod === "card" ? (
           <form onSubmit={submitHandler} className="bg-[#fff] w-1/3 p-6 my-6">
-            <h1 className="mb-4 font-bold text-2xl">Card Info</h1>
+            <h1 className="mb-4 font-bold text-xl">Card Details</h1>
             <div className="w-full space-y-3">
               <label htmlFor="card_num_field">Card Number</label>
               <CardNumberElement
@@ -273,13 +259,25 @@ export const PaymentForm = ({ stripePromise }) => {
               />
             </div>
 
-            <button
+            {/* <button
               id="pay_btn"
               type="submit"
               className="w-full bg-[#1b6d3d] py-3 my-3 text-white text-xl"
             >
               Pay {` - ₱${orderInfo && orderInfo.totalPrice}`}
-            </button>
+            </button> */}
+            <Button size="lg" className=" w-full my-3" type="submit">
+              Pay Now
+            </Button>
+            <Typography
+              variant="lg"
+              type="submit"
+              color="gray"
+              className="mt-2 flex items-center justify-center gap-2 font-normal opacity-60"
+            >
+              <LockClosedIcon className="-mt-0.5 h-4 w-4 " /> Payments are
+              secure and encrypted
+            </Typography>
           </form>
         ) : (
           <span className="my-6">

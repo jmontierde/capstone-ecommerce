@@ -8,6 +8,81 @@ const { request } = require("../app");
 const cloudinary = require("cloudinary");
 const Category = require("../models/category");
 const User = require("../models/user");
+const Wishlist = require("../models/wishlist");
+
+// Wishlist
+
+exports.newWishlist = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const userId = req.user.id; // Assuming user ID is stored in req.user after authentication
+    const productId = req.params.productId;
+
+    // Check if the product is already in the user's wishlist
+    const wishlist = await Wishlist.findOne({ user: userId });
+    if (wishlist && wishlist.products.includes(productId)) {
+      return res
+        .status(400)
+        .json({ message: "Product is already in the wishlist" });
+    }
+
+    // If wishlist doesn't exist, create a new one
+    if (!wishlist) {
+      const newWishlist = new Wishlist({
+        user: userId,
+        products: [productId],
+      });
+      await newWishlist.save();
+    } else {
+      // Add the product to the existing wishlist
+      wishlist.products.push(productId);
+      await wishlist.save();
+    }
+
+    res.status(200).json({ message: "Product added to the wishlist" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+exports.getWishlist = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const userId = req.user.id; // Assuming user ID is stored in req.user after authentication
+
+    // Find the user's wishlist
+    const wishlist = await Wishlist.findOne({ user: userId }).populate(
+      "products"
+    );
+
+    if (!wishlist) {
+      return res.status(404).json({ message: "Wishlist not found" });
+    }
+
+    res.status(200).json({ products: wishlist.products });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Delete a category
+exports.deleteWishlist = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const userId = req.user.id; // Assuming user ID is stored in req.user after authentication
+    const productId = req.params.productId;
+
+    // Remove the product from the user's wishlist
+    await Wishlist.findOneAndUpdate(
+      { user: userId },
+      { $pull: { products: productId } }
+    );
+
+    res.status(200).json({ message: "Product removed from the wishlist" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 //Create a category
 exports.newCategory = catchAsyncErrors(async (req, res, next) => {

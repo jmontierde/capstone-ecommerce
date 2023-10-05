@@ -283,7 +283,6 @@ export const getAdminProducts = () => async (dispatch) => {
 };
 
 // Get product reviews
-
 export const getProductReviews = (id) => async (dispatch) => {
   try {
     dispatch({ type: GET_REVIEWS_REQUEST });
@@ -295,33 +294,58 @@ export const getProductReviews = (id) => async (dispatch) => {
       },
     };
 
-    const response = await axios.get(`${url}/api/v1/reviews?id=${id}`, config);
+    const { data } = await axios.get(`${url}/api/v1/reviews?id=${id}`, config);
 
-    if (response.data.success) {
-      if (response.data.reviews.length === 0) {
-        dispatch({
-          type: GET_REVIEWS_FAIL,
-          payload: "No reviews found for this product.",
-        });
-      } else {
-        dispatch({
-          type: GET_REVIEWS_SUCCESS,
-          payload: response.data.reviews,
-        });
-      }
-    } else {
-      dispatch({
-        type: GET_REVIEWS_FAIL,
-        payload: "Failed to fetch reviews for this product.",
-      });
-    }
+    dispatch({
+      type: GET_REVIEWS_SUCCESS,
+      payload: data.reviews,
+    });
   } catch (error) {
     dispatch({
       type: GET_REVIEWS_FAIL,
-      payload: error.response ? error.response.data.message : "Network error",
+      payload: error.response.data.message,
     });
   }
 };
+
+// export const getProductReviews = (id) => async (dispatch) => {
+//   try {
+//     dispatch({ type: GET_REVIEWS_REQUEST });
+//     const token = localStorage.getItem("token");
+
+//     const config = {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     };
+
+//     const response = await axios.get(`${url}/api/v1/reviews?id=${id}`, config);
+
+//     if (response.data.success) {
+//       if (response.data.reviews.length === 0) {
+//         dispatch({
+//           type: GET_REVIEWS_FAIL,
+//           payload: "No reviews found for this product.",
+//         });
+//       } else {
+//         dispatch({
+//           type: GET_REVIEWS_SUCCESS,
+//           payload: response.data.reviews,
+//         });
+//       }
+//     } else {
+//       dispatch({
+//         type: GET_REVIEWS_FAIL,
+//         payload: "Failed to fetch reviews for this product.",
+//       });
+//     }
+//   } catch (error) {
+//     dispatch({
+//       type: GET_REVIEWS_FAIL,
+//       payload: error.response ? error.response.data.message : "Network error",
+//     });
+//   }
+// };
 
 // Delete product review
 export const deleteReview = (id, productId) => async (dispatch) => {

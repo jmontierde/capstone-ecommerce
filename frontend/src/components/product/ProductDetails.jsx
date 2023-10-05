@@ -18,6 +18,8 @@ import { addItemToCart, getCheckout } from "../../actions/cartActions";
 import ListReviews from "../review/ListReviews";
 import { useNavigate } from "react-router-dom";
 import RelatedProducts from "./RelatedProduct";
+import { Rating } from "@material-tailwind/react";
+import { addToWishlist } from "../../actions/wishlistAction";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -35,7 +37,10 @@ const ProductDetails = () => {
   const { user } = useSelector((state) => state.auth);
   const { reviewError, success } = useSelector((state) => state.newReview);
 
-  console.log("User in ProductDetails:", user);
+  const addWishlistHandler = () => {
+    console.log("WISHLIST");
+    dispatch(addToWishlist(id));
+  };
 
   useEffect(() => {
     dispatch(getProductDetails(id));
@@ -85,7 +90,7 @@ const ProductDetails = () => {
   // Ratings
   const [rating, setRating] = useState(product.ratings || 0);
   const [hover, setHover] = useState(0);
-
+  const productRating = Math.floor(rating);
   const handleClick = (newRating) => {
     setRating(newRating);
   };
@@ -119,14 +124,14 @@ const ProductDetails = () => {
 
   return (
     <>
-      <div className="flex container mx-auto px-12 mt-12">
-        <div className="flex w-1/2 ">
-          <div className="flex flex-row-reverse  justify-end px-8   w-full">
+      <div className="flex container mx-auto mt-12 gap-6">
+        <div className="flex w-1/2 h-full bg-[#000]">
+          <div className="flex flex-row-reverse  justify-end w-full">
             {/* Right side image */}
-            <div className=" w-3/4">
+            <div className="w-full bg-[#FAFAFA]">
               {product.images && product.images.length > 0 && (
                 <img
-                  className="3/4 p-3 mx-8"
+                  className="mx-auto h-96"
                   src={product.images[0].url}
                   alt={product.title}
                 />
@@ -150,31 +155,19 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        <div className="w-1/2 text-left p-6 ">
+        <div className="w-1/2 text-left px-6 space-y-3">
           <h2 className="font-bold text-lg">{product.name}</h2>
 
           {/* Ratings */}
 
-          <div className="flex  items-center mr-auto pb-3">
-            {[...Array(5)].map((star, index) => {
-              const ratingValue = index + 1;
-              return (
-                <FaStar
-                  key={ratingValue}
-                  color={
-                    ratingValue <= (hover || rating) ? "#ffc107 " : "#e4e5e9"
-                  }
-                  size={20}
-                />
-              );
-            })}
+          <div className="flex  items-center mr-auto ">
+            <Rating value={productRating} readonly />
 
-            {/* <p className='mx-3'>{rating} out of 5 stars</p> */}
             <p className="pl-3">Reviews({product.numOfReviews})</p>
           </div>
-          <p className="w-5/6 py-3">{product.description}</p>
+          <p className="w-5/6 ">{product.description}</p>
           {/* Availability */}
-          <div className="flex my-3">
+          <div className="flex ">
             <h3 className="font-bold mr-2">Available:</h3>
             <span
               className={
@@ -185,11 +178,12 @@ const ProductDetails = () => {
             >
               {product.stock > 0 ? "In Stock" : "Out of Stock"}
             </span>
+            {product.stock}
           </div>
 
           {/* Quantity */}
           <label htmlFor="quantity">Quantity:</label>
-          <div className="flex items-center space-x-4 mb-6 w-48 p-3 my-3 rounded-sm  border border-[#171717]">
+          <div className="flex items-center space-x-4 w-48 p-3 rounded-sm  border border-[#171717]">
             <button className="px-3 py-1 " onClick={handleMinusQuantity}>
               -
             </button>
@@ -209,22 +203,30 @@ const ProductDetails = () => {
               +
             </button>
           </div>
-          <div className="flex">
+          <div className="flex items-center space-x-6">
             <button
-              className="bg-[#000] w-48 p-6 text-[#fff] hover:bg-[#222222]"
+              // className="bg-[#000] w-48 p-6 text-[#fff] hover:bg-[#222222]"
+              className="bg-[#4F46E5] hover:bg-[#4540a6] w-72 text-white rounded py-3 px-6 my-6 cursor-pointer"
               onClick={handleCart}
               disabled={product.stock === 0}
             >
               Add to Cart
             </button>
-            <Link
-              to={"/shipping"}
-              className="bg-[#953030] w-48 py-6 px-16 ml-3 text-[#ffffff] hover:bg-[#d26262]"
-              onClick={handleCheckout}
-              disabled={product.stock === 0}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="gray"
+              className="w-10 h-10 hover:bg-[#FAFAFA] cursor-pointer p-1"
+              onClick={addWishlistHandler}
             >
-              Checkout
-            </Link>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+              />
+            </svg>
           </div>
           {/* Review */}
           <div className="w-full my-6">

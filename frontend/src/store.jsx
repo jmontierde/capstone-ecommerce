@@ -15,6 +15,9 @@ import {
   categoryReducer,
   newCategoryReducer,
   relatedProductsReducer,
+  newWishlistReducer,
+  wishlistReducer,
+  deleteWishlistReducer,
 } from "./reducers/productReducers";
 import {
   authReducer,
@@ -55,6 +58,9 @@ import {
 } from "./reducers/termsReducers";
 
 const reducer = combineReducers({
+  newWishlist: newWishlistReducer,
+  wishlist: wishlistReducer,
+  deleteWishlist: deleteWishlistReducer,
   relatedProducts: relatedProductsReducer,
   checkout: checkoutReducer,
   terms: termsReducer,

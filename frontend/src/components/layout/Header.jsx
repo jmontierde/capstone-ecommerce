@@ -46,7 +46,7 @@ const Header = (keyword) => {
   return (
     <>
       <ToastContainer />
-      <nav className="container flex px-6  mx-auto py-6  w-screen justify-between items-center  cursor-pointer font-helvetica  ">
+      <nav className="container flex   mx-auto py-6  w-screen justify-between items-center  cursor-pointer font-helvetica  ">
         <h2 className="mr-16 uppercase sm:text-sm md:text-lg">
           Vapers Sidewalk
         </h2>

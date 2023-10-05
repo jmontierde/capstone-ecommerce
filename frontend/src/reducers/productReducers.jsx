@@ -54,6 +54,19 @@ import {
   GET_RELATED_PRODUCTS_SUCCESS,
   GET_RELATED_PRODUCTS_FAIL,
 } from "../constants/productConstants";
+import {
+  ADD_TO_WISHLIST_FAIL,
+  ADD_TO_WISHLIST_REQUEST,
+  ADD_TO_WISHLIST_RESET,
+  ADD_TO_WISHLIST_SUCCESS,
+  GET_WISHLIST_FAIL,
+  GET_WISHLIST_REQUEST,
+  GET_WISHLIST_SUCCESS,
+  REMOVE_FROM_WISHLIST_FAIL,
+  REMOVE_FROM_WISHLIST_REQUEST,
+  REMOVE_FROM_WISHLIST_RESET,
+  REMOVE_FROM_WISHLIST_SUCCESS,
+} from "../constants/wishlistConstant";
 
 export const productsReducer = (state = { products: [] }, action) => {
   switch (action.type) {
@@ -474,6 +487,114 @@ export const reviewReducer = (state = {}, action) => {
       };
 
     case DELETE_REVIEW_RESET:
+      return {
+        ...state,
+        isDeleted: false,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const newWishlistReducer = (state = { wishlist: {} }, action) => {
+  switch (action.type) {
+    case ADD_TO_WISHLIST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ADD_TO_WISHLIST_SUCCESS:
+      return {
+        loading: false,
+        success: action.payload.success,
+        wishlist: action.payload.wishlist,
+      };
+
+    case ADD_TO_WISHLIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case ADD_TO_WISHLIST_RESET:
+      return {
+        ...state,
+        success: false,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const wishlistReducer = (state = { wishlist: [] }, action) => {
+  switch (action.type) {
+    case GET_WISHLIST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case GET_WISHLIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        wishlist: action.payload,
+      };
+
+    case GET_WISHLIST_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const deleteWishlistReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REMOVE_FROM_WISHLIST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case REMOVE_FROM_WISHLIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeleted: action.payload,
+      };
+
+    case REMOVE_FROM_WISHLIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case REMOVE_FROM_WISHLIST_RESET:
       return {
         ...state,
         isDeleted: false,

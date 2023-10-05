@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { getTermsAndConditions } from "../../actions/termsActions";
 
-import { getTerms } from "../../actions/termsActions";
+import { getTerms, getUserTerms } from "../../actions/termsActions";
 const TermsAndConditions = () => {
-  const { termsAndConditions, loading, error } = useSelector(
-    (state) => state.terms
-  );
+  const { termsAndConditions } = useSelector((state) => state.terms);
+
   const [isChecked, setIsChecked] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getTerms());
+    dispatch(getUserTerms());
   }, [dispatch]);
 
   const handleRemoveTerms = () => {
@@ -74,7 +73,9 @@ const TermsAndConditions = () => {
             {". "}
             {term.title}
           </h1>
-          <p>{term.content}</p>
+          {term.content.map((item, itemIndex) => (
+            <p key={itemIndex}>{item}</p>
+          ))}
         </div>
       ))}
     </>

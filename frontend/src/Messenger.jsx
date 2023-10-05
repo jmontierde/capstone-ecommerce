@@ -9,7 +9,8 @@ const Messenger = () => {
     //   themeColor="#0084ff"
     // />
     <FacebookProvider appId="1258869378161194" chatSupport>
-      <CustomChat pageId="120127534518307" minimized={true} />
+      {/* <CustomChat pageId="120127534518307" minimized={true} /> */}
+      <CustomChat pageId="120127534518307" />
     </FacebookProvider>
   );
 };

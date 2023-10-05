@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CheckoutSteps from "./CheckoutSteps";
 import { useNavigate } from "react-router-dom";
+import { Card, Typography } from "@material-tailwind/react";
 const ConfirmOrder = () => {
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
+  const TABLE_HEAD = ["Product", "Quantity", "Price"];
   // Calculate Order Prices
   const itemsPrice = cartItems.reduce(
     (acc, cart) => acc + cart.price * cart.quantity,
@@ -33,39 +35,90 @@ const ConfirmOrder = () => {
 
   return (
     <>
-      <div className="container flex flex-col mx-auto px-12">
+      <div className="container flex flex-col mx-auto ">
         <CheckoutSteps />
-        {cartItems.map((cart) => (
-          <div className="flex justify-between items-center" key={cart.name}>
-            <div className="flex items-center w-1/2">
-              <img src={cart.image} alt={cart.name} className="w-1/4" />
-              <p className="font-semibold text-lg">{cart.name}</p>
-            </div>
-            <div className="flex justify-around text-lg  w-1/2">
-              <p>{cart.quantity}</p>
-              <p>{cart.price}</p>
-            </div>
-          </div>
-        ))}
-        <hr className=" outline-dashed outline-1 " />
-        <div className="flex container my-12">
-          <div className="w-4/6   p-6  space-y-3">
-            <h4 className="font-bold text-xl">Shipping Information</h4>
+        <Card className="h-full w-full my-12 mx-6">
+          <table className="w-full min-w-max table-fixed text-center">
+            <thead>
+              <tr>
+                {TABLE_HEAD.map((head) => (
+                  <th
+                    key={head}
+                    className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                  >
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal leading-none opacity-70"
+                    >
+                      {head}
+                    </Typography>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {cartItems.map((cart, index) => {
+                const isLast = index === cartItems.length - 1;
+                const classes = isLast
+                  ? "p-4"
+                  : "p-4 border-b border-blue-gray-50";
+
+                return (
+                  <tr key={cart.name}>
+                    <td className={`${classes} flex `}>
+                      <img
+                        src={cart.image}
+                        alt={cart.cart}
+                        className="w-48 h-48 "
+                      />
+                      <p className="text-sm text-center flex items-end mb-6">
+                        {cart.name}
+                      </p>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {cart.quantity}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {cart.price}
+                      </Typography>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </Card>
+
+        <hr />
+        <div className="flex container px-6 my-12">
+          <div className="w-4/6   space-y-3">
+            <h4 className=" text-xl font-semibold">Shipping Information</h4>
             <div className="flex flex-col">
-              <p className="font-bold">
+              <p className="">
                 Name:{" "}
-                <span className="font-semibold">
+                <span className="">
                   {user.firstName}
                   {""} {user.lastName}
                 </span>
               </p>
-              <p className="font-bold">
-                Phone:{" "}
-                <span className="font-semibold">{shippingInfo.phoneNo}</span>
+              <p className="">
+                Phone: <span className="">{shippingInfo.phoneNo}</span>
               </p>
-              <p className="font-bold">
+              <p className="">
                 Address:{" "}
-                <span className="font-semibold">
+                <span className="">
                   {`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`}
                 </span>
               </p>
@@ -73,17 +126,17 @@ const ConfirmOrder = () => {
           </div>
           {/* Payment */}
           <div className="w-2/6 flex flex-col">
-            <div className=" px-12 py-6 bg-[#FFF2F0]  rounded-2xl">
+            <div className=" px-12 py-6 bg-[#484487]  rounded-2xl">
               <div>
-                <div className="flex justify-between font-semibold">
-                  <p>₱Subtotal</p>
+                <div className="flex justify-between text-[#fff]">
+                  <p>Subtotal</p>
                   <p>₱{itemsPrice}</p>
                 </div>
-                <div className="flex justify-between font-semibold">
+                <div className="flex justify-between text-[#fff]">
                   <p>Shipping fee</p>
                   <p>₱{shippingPrice}</p>
                 </div>
-                <div className="flex mt-6 justify-between text-[#EE8576] font-bold bg">
+                <div className="flex mt-6 justify-between text-[#fff]">
                   <p>Total</p>
                   <p>₱{totalPrice}</p>
                 </div>
@@ -91,7 +144,7 @@ const ConfirmOrder = () => {
             </div>
             <div className="mt-6 ml-auto">
               <button
-                className="bg-[#f0c0b4] p-3 rounded text-[#000] font-semibold"
+                className="bg-[#4F46E5] p-3 rounded text-[#fff] "
                 onClick={processToPayment}
               >
                 Proceed to Payment

@@ -441,6 +441,18 @@ exports.allTerms = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+exports.allUserTerms = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const termsAndConditions = await TermsAndConditions.find();
+    res.status(201).json({
+      success: true,
+      termsAndConditions,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
+
 exports.updateTerms = catchAsyncErrors(async (req, res, next) => {
   try {
     const { title, content } = req.body;

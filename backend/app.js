@@ -47,12 +47,14 @@ const auth = require("./routes/auth");
 const order = require("./routes/order");
 const payment = require("./routes/payment");
 const category = require("./routes/category");
+const wishlist = require("./models/wishlist");
 
 app.use("/api/v1", payment);
 app.use("/api/v1", products);
 app.use("/api/v1", auth);
 app.use("/api/v1", order);
 app.use("/api/v1", category);
+app.use("/api/v1", wishlist);
 
 //Middleware to handle errors
 app.use(errorMiddleware);

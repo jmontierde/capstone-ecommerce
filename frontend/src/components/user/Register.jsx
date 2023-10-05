@@ -492,12 +492,12 @@ const Register = () => {
                     className="flex items-center font-normal"
                   >
                     I agree the
-                    <a
-                      href="#"
+                    <Link
+                      to="/terms"
                       className="font-medium transition-colors hover:text-gray-900 text-black"
                     >
                       &nbsp;Terms and Conditions
-                    </a>
+                    </Link>
                   </Typography>
                 }
                 className=" text-black"

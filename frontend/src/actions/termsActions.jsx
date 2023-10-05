@@ -55,20 +55,37 @@ export const getTerms = () => async (dispatch) => {
   try {
     dispatch({ type: GET_TERMS_REQUEST });
 
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
-    const { data } = await axios.get(
-      `${url}/api/v1/terms`
-      // config
-    );
+    const { data } = await axios.get(`${url}/api/v1/terms`, config);
 
-    // console.log("TERMS", data);
+    console.log("TERMS", data);
+
+    dispatch({
+      type: GET_TERMS_SUCCESS,
+      payload: data.termsAndConditions,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_TERMS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const getUserTerms = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_TERMS_REQUEST });
+
+    const { data } = await axios.get(`${url}/api/v1/user/terms`);
+
+    console.log("TERMSA", data);
 
     dispatch({
       type: GET_TERMS_SUCCESS,

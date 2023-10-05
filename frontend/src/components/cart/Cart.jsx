@@ -21,21 +21,26 @@ const Cart = () => {
 
   console.log("CART ITEM", cartItems);
 
-  const handleAddQuantity = (id, quantity, stock) => {
-    const newQuantity = quantity + 1;
-
-    if (newQuantity > stock) {
-      return;
+  const handleQuantityChange = (id, newQuantity, stock) => {
+    if (newQuantity < 1 || newQuantity > stock) {
+      return; // Don't update if the new quantity is invalid.
     }
     dispatch(addItemToCart(id, newQuantity));
   };
 
+  const handleAddQuantity = (id, quantity, stock) => {
+    const newQuantity = quantity + 1;
+
+    if (newQuantity <= stock) {
+      dispatch(addItemToCart(id, newQuantity));
+    }
+  };
+
   const handleMinusQuantity = (id, quantity) => {
     const newQuantity = quantity - 1;
-    if (newQuantity <= 0) {
-      return;
+    if (newQuantity >= 1) {
+      dispatch(addItemToCart(id, newQuantity));
     }
-    dispatch(addItemToCart(id, newQuantity));
   };
 
   const checkoutHandler = () => {
@@ -54,37 +59,38 @@ const Cart = () => {
           </div>
         ) : (
           <>
-            <div className="container mx-auto px-12 my-6">
-              <h1>
-                Cart: a
+            <div className="container mx-auto px-6 my-6">
+              {/* <h1>
+                Cart:
                 {cartItems.length > 1
                   ? `${cartItems.length} items`
                   : `${cartItems.length} item`}{" "}
-              </h1>
-              <div className="flex gap-6">
-                <div className="flex flex-col outline-double w-2/3">
-                  <div className="flex items-center justify-between p-6 w-full text-center">
-                    <h4 className="w-full bg-[#0232]">Producta</h4>
-                    <h4 className="w-full bg-[#0232]">Quantity</h4>
-                    <h4 className="w-full bg-[#0232]">Price</h4>
-                    <h4 className="w-full bg-[#0232]">Action</h4>
-                  </div>
-                  <hr className="h-px mb-3 bg-gray-200 border-0 dark:bg-gray-700" />
+              </h1> */}
+              <h1 className="font-bold text-4xl my-12">Shopping Cart</h1>
+              <div className="flex gap-16">
+                <div className="flex flex-col w-2/3">
+                  <hr className="h-px mb-3" />
                   {/* For Product */}
                   {cartItems.map((cart) => (
                     <>
                       <div
-                        className="flex items-center justify-between text-center w-full p-6 gap-1"
+                        className="flex justify-between space-x-32 items-start  w-full py-6 gap-1"
                         key={cart.name}
                       >
-                        <div className="w-full">
-                          <img src={cart.image} className="w-32 mx-auto" />
-                          <p>{cart.name}</p>
+                        <div className="w-4/6 flex ">
+                          <img
+                            src={cart.image}
+                            className="w-1/2 h-48 mx-auto bg-[#F7F7F7]"
+                          />
+                          <div className="flex flex-col px-6 w-1/2 justify-between ">
+                            <p>{cart.name}</p>
+                            <h4>₱{cart.price}</h4>
+                          </div>
                         </div>
-                        <div className="w-full">
-                          <div className="space-x-4 mb-6 w-48 p-3 my-3 rounded-sm  border border-[#171717] mx-auto">
+                        <div>
+                          <div className="space-x-1  p-3 flex items-center justify-between  rounded-sm  border border-[#171717] mx-auto ">
                             <button
-                              className="px-3 py-1 "
+                              className="px-3 py-1  "
                               onClick={() =>
                                 handleMinusQuantity(
                                   cart.product,
@@ -96,10 +102,16 @@ const Cart = () => {
                               -
                             </button>
                             <input
-                              className="w-16 text-center bg-transparent outline-none appearance-none"
+                              className="w-12 text-center bg-transparent outline-none appearance-none"
                               type="number"
                               value={cart.quantity}
-                              onChange={() => cart.quantity}
+                              onChange={(e) =>
+                                handleQuantityChange(
+                                  cart.product,
+                                  parseInt(e.target.value),
+                                  cart.stock
+                                )
+                              }
                               min="1"
                               style={{
                                 WebkitAppearance: "none",
@@ -123,29 +135,39 @@ const Cart = () => {
                           </div>
                         </div>
 
-                        <h4 className="w-full">{cart.price}</h4>
-                        <div className="w-full">
-                          <img
-                            src="./images/deleteHover.png"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
                             alt="delete"
-                            className="w-8 cursor-pointer mx-auto"
+                            className="w-8 cursor-pointer ml-auto"
                             onClick={() => removeCartItemHandler(cart.product)}
                           />
-                        </div>
+                        </svg>
                       </div>
                       <hr className="h-px mb-3 bg-gray-200 border-0 dark:bg-gray-700" />
                     </>
                   ))}
                 </div>
                 {/* Checkout */}
-                <div className="w-1/3 h-64 rounded-lg p-6 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-                  <div className="flex justify-between">
+                <div className="w-1/3 h-full space-y-6 rounded-lg p-6 bg-[#F9FAFB]">
+                  <h4>Order summary</h4>
+                  {/* <div className="flex justify-between">
                     <h5>Sub Total:</h5>
                     <p></p>
-                  </div>
+                  </div> */}
                   <div className="flex justify-between">
-                    <h5>Est. Total:</h5>
+                    <h5>Order total:</h5>
                     <p>
+                      ₱
                       {cartItems
                         .reduce(
                           (acc, cart) => acc + cart.quantity * cart.price,
@@ -156,7 +178,7 @@ const Cart = () => {
                   </div>
                   <button
                     onClick={checkoutHandler}
-                    className="bg-[#964747] text-white rounded py-3 px-6 my-6"
+                    className="bg-[#4F46E5] w-full text-white rounded py-3 px-6 my-6"
                   >
                     Checkout
                   </button>
