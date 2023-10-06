@@ -28,7 +28,7 @@ const Product = ({ product }) => {
             <img
               src={product.images[0].url}
               alt={product.name}
-              className="w-72 h-72 p-8  mx-auto bg-[#FBFBFB]"
+              className="w-72 h-72 p-8  mx-auto bg-[#F8F8F8]"
             />
           )}
           <h2 className="text-left text-base">{product.name}</h2>

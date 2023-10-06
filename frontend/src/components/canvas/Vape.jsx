@@ -45,6 +45,7 @@ export function Model(props) {
     easing.dampC(materials.LabelMat.color, snap.color, 0.25, delta);
   });
 
+  console.log(snap.color);
   const stateString = JSON.stringify(snap);
 
   return (
