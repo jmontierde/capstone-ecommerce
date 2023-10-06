@@ -10,12 +10,19 @@ import "react-toastify/dist/ReactToastify.css";
 import { useMediaQuery } from "react-responsive";
 import { Badge, Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { getWishlist } from "../../actions/wishlistAction";
 const Header = (keyword) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
+
+  const { wishlist } = useSelector((state) => state.getWishlist);
+
+  useEffect(() => {
+    dispatch(getWishlist());
+  }, [dispatch]);
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -112,6 +119,31 @@ const Header = (keyword) => {
               onClick={toggleSearchBar}
             />
           </div>
+
+          <Link to="/wishlist" className="relative ">
+            {wishlist.products && wishlist.products.length > 0 ? (
+              <span className="text-[#b42828] text-sm font-semibold absolute bottom-6 left-6">
+                {wishlist.products.length}
+              </span>
+            ) : (
+              <span></span>
+            )}
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="gray"
+              className="w-8 h-8 hover:bg-[#FAFAFA] cursor-pointer p-1"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+              />
+            </svg>
+          </Link>
 
           <Link to={"/cart"} className="relative ">
             {cartItems.length > 0 ? (

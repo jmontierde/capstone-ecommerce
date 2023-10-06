@@ -4,6 +4,7 @@ import {
   ADD_TO_WISHLIST_REQUEST,
   ADD_TO_WISHLIST_SUCCESS,
   GET_WISHLIST_FAIL,
+  GET_WISHLIST_REQUEST,
   GET_WISHLIST_SUCCESS,
   REMOVE_FROM_WISHLIST_FAIL,
   REMOVE_FROM_WISHLIST_REQUEST,
@@ -46,7 +47,7 @@ export const addToWishlist = (productId) => async (dispatch) => {
 
 export const getWishlist = () => async (dispatch) => {
   try {
-    dispatch({ type: GET_WISHLIST_SUCCESS });
+    dispatch({ type: GET_WISHLIST_REQUEST });
     const token = localStorage.getItem("token");
 
     const config = {
@@ -59,7 +60,7 @@ export const getWishlist = () => async (dispatch) => {
 
     dispatch({
       type: GET_WISHLIST_SUCCESS,
-      payload: data.wishlist,
+      payload: data,
     });
   } catch (error) {
     dispatch({

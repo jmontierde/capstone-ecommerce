@@ -52,6 +52,7 @@ import AllRefunds from "./components/admin/AllRefunds";
 import Messenger from "./Messenger";
 import Material from "./components/pages/Material";
 import TestPayment from "./components/cart/TestPayment";
+import Wishlist from "./components/product/Wishlist";
 function App() {
   // const dispatch = useDispatch()
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -156,6 +157,10 @@ function App() {
           <Route
             path="/refund"
             element={<ProtectedRoute component={Refund} exact />}
+          />
+          <Route
+            path="/wishlist"
+            element={<ProtectedRoute component={Wishlist} exact />}
           />
 
           {/* Admin */}

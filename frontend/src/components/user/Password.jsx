@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import SidebarAccount from "./SidebarAccount";
 
 // import { useNavigate } from "react-router-dom";
 // import { UPDATE_PASSWORD_RESET } from "../../constants/userConstant";
@@ -66,7 +65,6 @@ import SidebarAccount from "./SidebarAccount";
 const Password = () => {
   return (
     <div className="container mx-auto flex">
-      <SidebarAccount />
       <div className="bg-[#F7F9FB] w-4/5 p-12">
         <form className="flex flex-col">
           <label htmlFor="current-password">Current Password</label>

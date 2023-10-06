@@ -59,7 +59,7 @@ import {
 
 const reducer = combineReducers({
   newWishlist: newWishlistReducer,
-  wishlist: wishlistReducer,
+  getWishlist: wishlistReducer,
   deleteWishlist: deleteWishlistReducer,
   relatedProducts: relatedProductsReducer,
   checkout: checkoutReducer,

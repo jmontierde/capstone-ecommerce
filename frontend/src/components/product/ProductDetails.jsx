@@ -20,6 +20,9 @@ import { useNavigate } from "react-router-dom";
 import RelatedProducts from "./RelatedProduct";
 import { Rating } from "@material-tailwind/react";
 import { addToWishlist } from "../../actions/wishlistAction";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ADD_TO_WISHLIST_RESET } from "../../constants/wishlistConstant";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -35,10 +38,15 @@ const ProductDetails = () => {
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
-  const { reviewError, success } = useSelector((state) => state.newReview);
+  const { reviewError, success: reviewSuccess } = useSelector(
+    (state) => state.newReview
+  );
+
+  const { success: wishlistSuccess } = useSelector(
+    (state) => state.newWishlist
+  );
 
   const addWishlistHandler = () => {
-    console.log("WISHLIST");
     dispatch(addToWishlist(id));
   };
 
@@ -53,11 +61,25 @@ const ProductDetails = () => {
       alert.error(reviewError);
       dispatch(clearErrors());
     }
-    if (success) {
-      alert.success("Reivew posted successfully");
+    if (reviewSuccess) {
+      alert.success("Review posted successfully");
       dispatch({ type: NEW_REVIEW_RESET });
     }
-  }, [dispatch, alert, error, reviewError, id, success]);
+
+    if (wishlistSuccess) {
+      console.log("A");
+      alert.success("Added to wishlist successfully");
+      dispatch({ type: ADD_TO_WISHLIST_RESET });
+    }
+  }, [dispatch, alert, error, reviewError, id, reviewSuccess, wishlistSuccess]);
+  // Add the following code to reset wishlistSuccess
+  useEffect(() => {
+    if (wishlistSuccess) {
+      console.log("Wishlist success changed"); // Add this line
+      alert.success("Added to wishlist successfully");
+      dispatch({ type: ADD_TO_WISHLIST_RESET });
+    }
+  }, [wishlistSuccess, dispatch, alert]);
 
   //Review
 

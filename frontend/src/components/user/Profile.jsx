@@ -8,9 +8,9 @@ import {
 import { UPDATE_PROFILE_RESET } from "../../constants/userConstant";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
-import SidebarAccount from "./SidebarAccount";
 
 import Loader from "../layout/Loader";
+import { Input } from "@material-tailwind/react";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -85,10 +85,9 @@ const Profile = () => {
       ) : (
         <div className="container mx-auto bg-slate-200 mb-6">
           {/* User Profile */}
-          <div className="flex w-full  border border-t-[#9a9a9a]">
-            <SidebarAccount />
+          <div className="flex flex-col w-full  border border-t-[#9a9a9a]">
             {/* Personal Information */}
-            <div className="bg-[#F7F9FB] w-4/5 p-12">
+            <div className="bg-[#F7F9FB] w-full p-12">
               <div className="mb-6">
                 <h2 className="font-bold text-2xl">General Details</h2>
                 <p className="text-[#3f3e3e] text-sm">
@@ -156,6 +155,29 @@ const Profile = () => {
                 </div>
                 <button className="bg-[#3B49DF] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6">
                   UPDATE
+                </button>
+              </form>
+            </div>
+
+            <div>
+              <form
+                className="flex flex-col space-y-6"
+                encType="multipart/form-data"
+              >
+                <Input
+                  label="Current Password"
+                  id="current-password"
+                  size="lg"
+                />
+                <Input label="New Password" id="new-password" size="lg" />
+                <Input
+                  label="Confirm Password"
+                  id="confirm-password"
+                  size="lg"
+                />
+
+                <button className="uppercase bg-[#3B49DF] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6">
+                  Update Password
                 </button>
               </form>
             </div>

@@ -20,9 +20,11 @@ exports.newWishlist = catchAsyncErrors(async (req, res, next) => {
     // Check if the product is already in the user's wishlist
     const wishlist = await Wishlist.findOne({ user: userId });
     if (wishlist && wishlist.products.includes(productId)) {
-      return res
-        .status(400)
-        .json({ message: "Product is already in the wishlist" });
+      return res.status(400).json({
+        message: "Product is already in the wishlist",
+        success: false,
+      });
+      // Include success: false for failed cases
     }
 
     // If wishlist doesn't exist, create a new one
@@ -38,10 +40,15 @@ exports.newWishlist = catchAsyncErrors(async (req, res, next) => {
       await wishlist.save();
     }
 
-    res.status(200).json({ message: "Product added to the wishlist" });
+    // Return success: true for successful case
+
+    res.status(201).json({
+      success: true,
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error", success: false });
+    // Include success: false for error cases
   }
 });
 
