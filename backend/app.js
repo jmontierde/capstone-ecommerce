@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === "PRODUCTION") {
 
 app.use(
   cors({
-    origin: "https://vapingsidewalk-frontend.onrender.com", // Replace with your frontend domain
+    origin: "https://vapingsidewalk-client.onrender.com", // Replace with your frontend domain
     credentials: true,
   })
 );
