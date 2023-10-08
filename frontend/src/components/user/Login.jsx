@@ -72,6 +72,11 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               outline={true} // Add this line to enable the input border
             />
+            <Link to="/password/forgot">
+              <span className="text-xs text-[#305FB9] font-semibold">
+                Forgot Password
+              </span>
+            </Link>
           </div>
 
           <Button className="mt-6 bg-[#212121]" fullWidth type="submit">

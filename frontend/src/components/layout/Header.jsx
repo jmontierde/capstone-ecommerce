@@ -90,6 +90,14 @@ const Header = (keyword) => {
                 Customization
               </Link>
             </li>
+            <li className="flex-none">
+              <Link
+                to="/password"
+                className="block py-2 px-4 rounded-lg hover:bg-[#6d5e5e] hover:text-white"
+              >
+                Password
+              </Link>
+            </li>
             {/* <li className="flex-none">
               <Link
                 to="/material"

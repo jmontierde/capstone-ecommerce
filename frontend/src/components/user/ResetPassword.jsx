@@ -30,7 +30,7 @@ const ResetPassword = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
+    console.log("T");
     const passwords = {
       password: password,
       confirmPassword: confirmPassword,

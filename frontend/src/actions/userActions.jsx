@@ -206,6 +206,8 @@ export const updateProfile = (userData) => async (dispatch) => {
       config
     );
 
+    console.log("USERDATA", data);
+
     dispatch({
       type: UPDATE_PROFILE_SUCCESS,
       payload: data.success,
@@ -219,9 +221,10 @@ export const updateProfile = (userData) => async (dispatch) => {
 };
 
 // Update password
-export const updatePassword = (passwords) => async (dispatch) => {
+export const updatePassword = (passwordData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PASSWORD_REQUEST });
+    const token = localStorage.getItem("token");
 
     const config = {
       headers: {
@@ -230,17 +233,9 @@ export const updatePassword = (passwords) => async (dispatch) => {
       },
     };
 
-    if (passwords.newPassword !== passwords.confirmPassword) {
-      throw new Error("New password and confirm password do not match");
-    }
-
     const { data } = await axios.put(
       `${url}/api/v1/password/update`,
-      {
-        oldPassword: passwords.oldPassword,
-        newPassword: passwords.newPassword,
-        confirmPassword: passwords.confirmPassword,
-      },
+      passwordData,
       config
     );
 

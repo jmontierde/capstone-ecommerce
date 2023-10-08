@@ -19,7 +19,7 @@ import ListReviews from "../review/ListReviews";
 import { useNavigate } from "react-router-dom";
 import RelatedProducts from "./RelatedProduct";
 import { Rating } from "@material-tailwind/react";
-import { addToWishlist } from "../../actions/wishlistAction";
+import { addToWishlist, getWishlist } from "../../actions/wishlistAction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ADD_TO_WISHLIST_RESET } from "../../constants/wishlistConstant";
@@ -66,6 +66,8 @@ const ProductDetails = () => {
       dispatch({ type: NEW_REVIEW_RESET });
     }
 
+    dispatch(getWishlist());
+
     if (wishlistSuccess) {
       console.log("A");
       alert.success("Added to wishlist successfully");
@@ -73,13 +75,13 @@ const ProductDetails = () => {
     }
   }, [dispatch, alert, error, reviewError, id, reviewSuccess, wishlistSuccess]);
   // Add the following code to reset wishlistSuccess
-  useEffect(() => {
-    if (wishlistSuccess) {
-      console.log("Wishlist success changed"); // Add this line
-      alert.success("Added to wishlist successfully");
-      dispatch({ type: ADD_TO_WISHLIST_RESET });
-    }
-  }, [wishlistSuccess, dispatch, alert]);
+  // useEffect(() => {
+  //   if (wishlistSuccess) {
+  //     console.log("Wishlist success changed"); // Add this line
+  //     alert.success("Added to wishlist successfully");
+  //     dispatch({ type: ADD_TO_WISHLIST_RESET });
+  //   }
+  // }, [wishlistSuccess, dispatch, alert]);
 
   //Review
 

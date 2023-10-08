@@ -130,7 +130,7 @@ const ConfirmOrder = () => {
               <div>
                 <div className="flex justify-between text-[#fff]">
                   <p>Subtotal</p>
-                  <p>₱{itemsPrice}</p>
+                  <p>₱{itemsPrice.toFixed(2)}</p>
                 </div>
                 <div className="flex justify-between text-[#fff]">
                   <p>Shipping fee</p>

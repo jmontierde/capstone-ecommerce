@@ -2,10 +2,14 @@ import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateProfile,
+  updatePassword,
   loadUser,
   clearErrors,
 } from "../../actions/userActions";
-import { UPDATE_PROFILE_RESET } from "../../constants/userConstant";
+import {
+  UPDATE_PROFILE_RESET,
+  UPDATE_PASSWORD_RESET,
+} from "../../constants/userConstant";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 
@@ -24,12 +28,14 @@ const Profile = () => {
     "/images/default_avatar.jpg"
   );
 
-  const [name, setName] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
 
   useEffect(() => {
     if (user) {
-      setName(user.name);
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
       setEmail(user.email);
       setAvatarPreview(user.avatar.url);
     }
@@ -44,7 +50,8 @@ const Profile = () => {
       dispatch(loadUser());
 
       // Update the states with the new values from the updated user object
-      setName(user.name);
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
       setEmail(user.email);
       setAvatarPreview(user.avatar.url);
 
@@ -58,7 +65,8 @@ const Profile = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.set("name", name);
+    formData.set("firstName", firstName);
+    formData.set("lastName", lastName);
     formData.set("email", email);
     formData.set("avatar", avatar);
 
@@ -78,6 +86,58 @@ const Profile = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
+  // Password
+  const [oldPassword, setOldPassword] = useState();
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  console.log("A", user);
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+
+    if (isUpdated) {
+      alert.success("Password updated successfully");
+      dispatch(loadUser());
+      navigate("/me");
+      // Update the states with the new values from the updated user object
+      // setPassword(user.password);
+      // setNewPassword(newPassword);
+      // setConfirmPassword(confirmPassword);
+
+      dispatch({
+        type: UPDATE_PASSWORD_RESET,
+      });
+    }
+  }, [dispatch, alert, error, isUpdated, user]);
+
+  const submitHandlerPassword = (e) => {
+    e.preventDefault();
+    const formDataPassword = new FormData();
+    formDataPassword.set("oldPassword", oldPassword);
+    formDataPassword.set("password", password);
+
+    dispatch(updateProfile(formDataPassword));
+    // if (newPassword !== confirmPassword) {
+    //   alert.error("The new password and confirm password do not match");
+    //   return;
+    // }
+
+    // const passwordData = {
+    //   oldPassword: password,
+    //   newPassword: newPassword,
+    //   confirmPassword: confirmPassword,
+    // };
+
+    console.log("FORM", formDataPassword);
+
+    dispatch(updatePassword(formDataPassword));
+  };
+
   return (
     <>
       {loading ? (
@@ -85,9 +145,9 @@ const Profile = () => {
       ) : (
         <div className="container mx-auto bg-slate-200 mb-6">
           {/* User Profile */}
-          <div className="flex flex-col w-full  border border-t-[#9a9a9a]">
+          <div className="flex flex-col w-full ">
             {/* Personal Information */}
-            <div className="bg-[#F7F9FB] w-full p-12">
+            <div className=" w-full">
               <div className="mb-6">
                 <h2 className="font-bold text-2xl">General Details</h2>
                 <p className="text-[#3f3e3e] text-sm">
@@ -97,7 +157,7 @@ const Profile = () => {
               <form
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
-                className="bg-[#FFF] border rounded-md p-6"
+                className="bg-[#FFF] border-b-3 rounded-md py-6"
               >
                 <div>
                   <figure className="flex items-center ">
@@ -107,7 +167,10 @@ const Profile = () => {
                       className="w-32 h-32 rounded-full"
                     />
                     <figcaption className="ml-6">
-                      <h2 className="font-semibold text-xl">{user.name}</h2>
+                      <h2 className="font-semibold text-xl">
+                        {user.firstName} {user.lastName}
+                      </h2>
+
                       <p className="text-[#000000] font-light mb-4">
                         {user.email}
                       </p>
@@ -133,14 +196,23 @@ const Profile = () => {
                   <div className="flex flex-col gap-3">
                     <h4 className="font-semibold mt-6">Personal</h4>
                     <hr />
-                    <h5>Full name</h5>
+                    <h5>First name</h5>
                     <input
-                      type="name"
+                      type="input"
                       id="name_field"
-                      name="name"
+                      name="firstName"
                       className="border border-[#000] p-3"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                    <h5>Last name</h5>
+                    <input
+                      type="input"
+                      id="name_field"
+                      name="lastName"
+                      className="border border-[#000] p-3"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                     />
                     <h5>Email</h5>
                     <input
@@ -163,20 +235,37 @@ const Profile = () => {
               <form
                 className="flex flex-col space-y-6"
                 encType="multipart/form-data"
+                onSubmit={submitHandlerPassword}
               >
                 <Input
                   label="Current Password"
                   id="current-password"
                   size="lg"
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
                 />
-                <Input label="New Password" id="new-password" size="lg" />
                 <Input
+                  label="New Password"
+                  id="new-password"
+                  size="lg"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {/* <Input
                   label="Confirm Password"
                   id="confirm-password"
                   size="lg"
-                />
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                /> */}
 
-                <button className="uppercase bg-[#3B49DF] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6">
+                <button
+                  className="uppercase bg-[#3B49DF] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6"
+                  type="submit"
+                >
                   Update Password
                 </button>
               </form>

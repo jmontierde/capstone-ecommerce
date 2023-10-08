@@ -233,6 +233,8 @@ exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
 // Update / Change Password => api/v1/password/update
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
+  console.log("Received request to update password");
+  console.log("Request body:", req.body);
 
   // Check previous user password
   const isMatched = await user.comparePassword(req.body.oldPassword);
@@ -240,13 +242,13 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Old password is incorrect"));
   }
 
-  if (req.body.newPassword !== req.body.confirmPassword) {
-    return next(
-      new ErrorHandler("New password and confirm password do not match")
-    );
-  }
+  // if (req.body.newPassword !== req.body.confirmPassword) {
+  //   return next(
+  //     new ErrorHandler("New password and confirm password do not match")
+  //   );
+  // }
 
-  user.password = req.body.newPassword;
+  user.password = req.body.password;
   await user.save();
 
   sendToken(user, 200, res);
