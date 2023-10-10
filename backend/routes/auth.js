@@ -59,10 +59,6 @@ router
 router.route("/terms").get(isAuthenticatedUser, allTerms);
 router.route("/user/terms").get(allUserTerms);
 
-// router
-//   .route("/admin/version  /:version")
-//   .post(isAuthenticatedUser, authorizeRoles("admin", "staff"), newVersion);
-
 router
   .route("/admin/term/:id")
   .put(isAuthenticatedUser, authorizeRoles("admin", "staff"), updateTerms)

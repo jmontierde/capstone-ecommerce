@@ -221,7 +221,7 @@ export const updateProfile = (userData) => async (dispatch) => {
 };
 
 // Update password
-export const updatePassword = (passwordData) => async (dispatch) => {
+export const updatePassword = (passwords) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PASSWORD_REQUEST });
     const token = localStorage.getItem("token");
@@ -235,9 +235,12 @@ export const updatePassword = (passwordData) => async (dispatch) => {
 
     const { data } = await axios.put(
       `${url}/api/v1/password/update`,
-      passwordData,
+      passwords,
       config
     );
+    console.log("Response data:", data);
+
+    console.log(passwords);
 
     dispatch({
       type: UPDATE_PASSWORD_SUCCESS,

@@ -127,6 +127,8 @@ const ProductDetails = () => {
     setHover(0);
   };
 
+  console.log("PARAM", id);
+
   const handleCart = () => {
     dispatch(addItemToCart(id, quantity));
     alert.success("Item Added to Cart");

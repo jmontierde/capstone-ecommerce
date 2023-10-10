@@ -224,6 +224,8 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
+  console.log(user);
+
   res.status(200).json({
     success: true,
     user,
@@ -233,26 +235,43 @@ exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
 // Update / Change Password => api/v1/password/update
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
-  console.log("Received request to update password");
-  console.log("Request body:", req.body);
 
   // Check previous user password
   const isMatched = await user.comparePassword(req.body.oldPassword);
   if (!isMatched) {
     return next(new ErrorHandler("Old password is incorrect"));
   }
-
-  // if (req.body.newPassword !== req.body.confirmPassword) {
-  //   return next(
-  //     new ErrorHandler("New password and confirm password do not match")
-  //   );
-  // }
-
   user.password = req.body.password;
   await user.save();
 
   sendToken(user, 200, res);
 });
+
+// exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
+//   const { currentPassword, newPassword } = req.body;
+//   const userId = req.user._id; // Assuming you have implemented user authentication
+
+//   // Fetch the user by ID
+//   const user = await User.findById(userId).select("+password");
+
+//   // Check if the current password is correct
+//   const isPasswordMatched = await user.comparePassword(currentPassword);
+
+//   if (!isPasswordMatched) {
+//     return next(new ErrorHandler("Current password is incorrect", 401));
+//   }
+
+//   // Update the user's password
+//   user.password = newPassword;
+//   await user.save();
+
+//   // You may want to send a confirmation email to the user here
+
+//   res.status(200).json({
+//     success: true,
+//     message: "Password updated successfully",
+//   });
+// });
 
 //Update user profile => /api/v1/me/update
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
@@ -287,6 +306,8 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     runValidators: true,
     useFindAndModify: false,
   });
+
+  console.log("USER PROFILE", user);
 
   res.status(200).json({
     success: true,

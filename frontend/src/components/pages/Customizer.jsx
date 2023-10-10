@@ -10,6 +10,10 @@ import { ColorPicker, CustomButton, FilePicker, Tab } from "../customizer";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../actions/productActions";
 import Three from "../Three";
+import { addItemToCart } from "../../actions/cartActions";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Customizer = ({ setSelectedTexture, selectedTexture }) => {
   const dispatch = useDispatch();
@@ -27,6 +31,23 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
     logoShirt: true,
     stylishShirt: false,
   });
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  // Handle product selection
+  const handleProductSelect = (product) => {
+    setSelectedProduct(product);
+    console.log("PRODUCT HANDLE", product);
+  };
+
+  const handleCart = () => {
+    if (selectedProduct) {
+      dispatch(addItemToCart(selectedProduct._id, 1)); // Assuming you want to add 1 quantity
+      toast.success("Item Added to Cart");
+    } else {
+      toast.error("Please select a product first.");
+    }
+  };
 
   const handleTexture = (texture) => {
     setSelectedTexture(texture);
@@ -131,9 +152,10 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
 
   return (
     <AnimatePresence>
+      <ToastContainer />
       {!snap.intro && (
         <>
-          <motion.div
+          {/* <motion.div
             key="custom"
             className="absolute top-0 left-0 z-10"
             {...slideAnimation("left")}
@@ -151,7 +173,7 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
                 {generateTabContent()}
               </div>
             </div>
-          </motion.div>
+          </motion.div> */}
 
           <motion.div
             className="absolute z-10 inset-y-1/2 right-12"
@@ -163,22 +185,28 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
               {products
                 .filter((category) => category.category === "Skin")
                 .map((product) => (
-                  <img
-                    key={product._id}
-                    src={product.images[0].url}
-                    alt={product.name}
-                    className="w-12 h-12 cursor-pointer rounded-full" // Add cursor-pointer class to make it clear it's clickable
-                    onClick={() => handleTexture(product.images[0].url)} // Call the handleProductClick function on click
-                  />
+                  <>
+                    <img
+                      key={product._id}
+                      src={product.images[0].url}
+                      alt={product.name}
+                      className="w-12 h-12 cursor-pointer rounded-full" // Add cursor-pointer class to make it clear it's clickable
+                      onClick={() => {
+                        handleProductSelect(product);
+                        handleTexture(product.images[0].url); // Change the skin of the selected product
+                      }} // Call the handleProductClick function on click
+                    />
+                  </>
                 ))}
             </div>
 
-            {/* <CustomButton
-              type="filled"
-              title="Go Back"
-              handleClick={() => (state.intro = true)}
-              customStyles="w-fit px-4 py-2.5 mt-24 mr-12 font-bold text-sm"
-            /> */}
+            <button
+              className="bg-[#4F46E5] hover:bg-[#4540a6] text-white rounded py-3 px-6 my-6 cursor-pointer"
+              onClick={handleCart}
+              // disabled={product.stock === 0}
+            >
+              Add to Cart
+            </button>
           </motion.div>
 
           <motion.div

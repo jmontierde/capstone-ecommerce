@@ -42,7 +42,7 @@ export function Model(props) {
   });
 
   useFrame((state, delta) => {
-    easing.dampC(materials.LabelMat.color, snap.color, 0.25, delta);
+    easing.dampC(materials.LabelMat.color, 0.25, delta);
   });
 
   console.log(snap.color);
@@ -69,7 +69,7 @@ export function Model(props) {
                     name="Cartridge_CartridgeMat_0"
                     geometry={nodes.Cartridge_CartridgeMat_0.geometry}
                     material={materials.PodMat}
-                    material-color={snap.color}
+                    // material-color={snap.color}
                   />
                 </group>
                 <group
@@ -84,13 +84,13 @@ export function Model(props) {
                     material={
                       props.selectedTexture ? fullMaterial : logoMaterial
                     }
-                    material-color={snap.color}
+                    // material-color={snap.color}
                   />
                   <mesh
                     name="Case_PodMat_0"
                     geometry={nodes.Case_PodMat_0.geometry}
                     material={materials.PodMat}
-                    material-color={snap.color}
+                    // material-color={snap.color}
                   />
                   <mesh
                     name="Case_CartridgeMat_0"
