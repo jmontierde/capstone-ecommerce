@@ -20,7 +20,7 @@ const ConfirmOrder = () => {
   // Maybe add later
   // const taxPrice = Number((0.05 * itemsPrice).toFixed(2));
   // const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);0
-  const totalPrice = (itemsPrice + shippingPrice).toFixed(2);
+  const totalPrice = itemsPrice.toFixed(2);
   const processToPayment = () => {
     const data = {
       itemsPrice: itemsPrice.toFixed(2),
@@ -63,7 +63,7 @@ const ConfirmOrder = () => {
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
-
+                console.log("CONFIRM", cart);
                 return (
                   <tr key={cart.name}>
                     <td className={`${classes} flex `}>
@@ -73,7 +73,7 @@ const ConfirmOrder = () => {
                         className="w-48 h-48 "
                       />
                       <p className="text-sm text-center flex items-end mb-6">
-                        {cart.name}
+                        {cart.firstName} {cart.lastName}
                       </p>
                     </td>
                     <td className={classes}>
@@ -132,10 +132,7 @@ const ConfirmOrder = () => {
                   <p>Subtotal</p>
                   <p>₱{itemsPrice.toFixed(2)}</p>
                 </div>
-                <div className="flex justify-between text-[#fff]">
-                  <p>Shipping fee</p>
-                  <p>₱{shippingPrice}</p>
-                </div>
+
                 <div className="flex mt-6 justify-between text-[#fff]">
                   <p>Total</p>
                   <p>₱{totalPrice}</p>

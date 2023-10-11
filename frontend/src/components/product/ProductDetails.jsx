@@ -92,8 +92,13 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
 
   const handleQuantityChange = (event) => {
-    setQuantity(parseInt(event.target.value));
+    const newQuantity = parseInt(event.target.value);
+    if (newQuantity >= 1 && newQuantity <= product.stock) {
+      setQuantity(newQuantity);
+    }
   };
+
+  console.log("a", product.quantity);
 
   const handleAddQuantity = () => {
     if (quantity >= product.stock) {
@@ -126,8 +131,6 @@ const ProductDetails = () => {
   const handleMouseLeave = () => {
     setHover(0);
   };
-
-  console.log("PARAM", id);
 
   const handleCart = () => {
     dispatch(addItemToCart(id, quantity));
@@ -202,9 +205,9 @@ const ProductDetails = () => {
                   : "text-[#770505]"
               }
             >
-              {product.stock > 0 ? "In Stock" : "Out of Stock"}
+              {product.stock > 0 ? "In Stock " : "Out of Stock "}
             </span>
-            {product.stock}
+            ({product.stock})
           </div>
 
           {/* Quantity */}

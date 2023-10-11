@@ -87,56 +87,44 @@ const Profile = () => {
   };
 
   // Password
-  const [oldPassword, setOldPassword] = useState();
+  // const [oldPassword, setOldPassword] = useState();
 
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
 
-  console.log("A", user);
+  // console.log("A", user);
 
-  useEffect(() => {
-    if (error) {
-      alert.error(error);
-      dispatch(clearErrors());
-    }
+  // useEffect(() => {
+  //   if (error) {
+  //     alert.error(error);
+  //     dispatch(clearErrors());
+  //   }
 
-    if (isUpdated) {
-      alert.success("Password updated successfully");
-      dispatch(loadUser());
-      navigate("/me");
-      // Update the states with the new values from the updated user object
-      // setPassword(user.password);
-      // setNewPassword(newPassword);
-      // setConfirmPassword(confirmPassword);
+  //   if (isUpdated) {
+  //     alert.success("Password updated successfully");
+  //     dispatch(loadUser());
+  //     navigate("/me");
+  //     // Update the states with the new values from the updated user object
+  //     setPassword(user.password);
+  //     setNewPassword(newPassword);
+  //     setConfirmPassword(confirmPassword);
 
-      dispatch({
-        type: UPDATE_PASSWORD_RESET,
-      });
-    }
-  }, [dispatch, alert, error, isUpdated, user]);
+  //     dispatch({
+  //       type: UPDATE_PASSWORD_RESET,
+  //     });
+  //   }
+  // }, [dispatch, alert, error, isUpdated, user]);
 
-  const submitHandlerPassword = (e) => {
-    e.preventDefault();
-    const formDataPassword = new FormData();
-    formDataPassword.set("oldPassword", oldPassword);
-    formDataPassword.set("password", password);
+  // const submitHandlerPassword = (e) => {
+  //   e.preventDefault();
+  //   const formDataPassword = new FormData();
+  //   formDataPassword.set("oldPassword", oldPassword);
+  //   formDataPassword.set("password", password);
 
-    dispatch(updateProfile(formDataPassword));
-    // if (newPassword !== confirmPassword) {
-    //   alert.error("The new password and confirm password do not match");
-    //   return;
-    // }
+  //   dispatch(updateProfile(formDataPassword));
 
-    // const passwordData = {
-    //   oldPassword: password,
-    //   newPassword: newPassword,
-    //   confirmPassword: confirmPassword,
-    // };
-
-    console.log("FORM", formDataPassword);
-
-    dispatch(updatePassword(formDataPassword));
-  };
+  //   dispatch(updatePassword(formDataPassword));
+  // };
 
   return (
     <>
@@ -231,7 +219,7 @@ const Profile = () => {
               </form>
             </div>
 
-            <div>
+            {/* <div>
               <form
                 className="flex flex-col space-y-6"
                 encType="multipart/form-data"
@@ -253,14 +241,7 @@ const Profile = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                {/* <Input
-                  label="Confirm Password"
-                  id="confirm-password"
-                  size="lg"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                /> */}
+              
 
                 <button
                   className="uppercase bg-[#3B49DF] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6"
@@ -269,7 +250,7 @@ const Profile = () => {
                   Update Password
                 </button>
               </form>
-            </div>
+            </div> */}
           </div>
         </div>
       )}

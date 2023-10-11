@@ -49,14 +49,15 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
 
 // Get single order => /api/v1/order/:id
 exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req.params.id).populate(
-    "user",
-    "fistName lastName email"
-  );
+  const order = await Order.findById(req.params.id).populate({
+    path: "user",
+    select: "firstName lastName email",
+  });
 
   if (!order) {
     return next(new ErrorHandler("Order not found with this ID", 404));
   }
+
   res.status(200).json({
     success: true,
     order,
@@ -129,6 +130,10 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
     default:
       return next(new ErrorHandler("Invalid status", 400));
   }
+
+  order.orderItems.forEach(async (item) => {
+    await updateStock(item.product, item.quantity);
+  });
 
   order.orderStatus = status;
   await order.save();

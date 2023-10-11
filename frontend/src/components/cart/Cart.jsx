@@ -22,7 +22,7 @@ const Cart = () => {
   console.log("CART ITEM", cartItems);
 
   const handleQuantityChange = (id, newQuantity, stock) => {
-    if (newQuantity < 1 || newQuantity > stock) {
+    if (newQuantity <= 0 || newQuantity > stock) {
       return; // Don't update if the new quantity is invalid.
     }
     dispatch(addItemToCart(id, newQuantity));
@@ -44,7 +44,32 @@ const Cart = () => {
   };
 
   const checkoutHandler = () => {
-    navigate("/shipping");
+    // Check if there are items with a quantity of 0 or exceeding stock or NaN
+    const invalidItems = cartItems.filter(
+      (cart) =>
+        isNaN(cart.quantity) || cart.quantity <= 0 || cart.quantity > cart.stock
+    );
+
+    if (invalidItems.length > 0) {
+      // Display an error message
+      alert.error("Please update the quantity of items in your cart.");
+
+      // Optionally, you can focus on the first invalid item for a better user experience
+      const firstInvalidItem = invalidItems[0];
+      const invalidItemIndex = cartItems.findIndex(
+        (item) => item.product === firstInvalidItem.product
+      );
+      const inputElement = document.getElementById(
+        `quantityInput_${invalidItemIndex}`
+      );
+
+      if (inputElement) {
+        inputElement.focus();
+      }
+    } else {
+      // Proceed to the checkout page
+      navigate("/shipping");
+    }
   };
 
   return (
@@ -158,10 +183,7 @@ const Cart = () => {
                 {/* Checkout */}
                 <div className="lg:w-1/3 h-full space-y-6 rounded-lg p-6 bg-[#F9FAFB]">
                   <h4>Order summary</h4>
-                  {/* <div className="flex justify-between">
-                    <h5>Sub Total:</h5>
-                    <p></p>
-                  </div> */}
+
                   <div className="flex justify-between">
                     <h5>Order total:</h5>
                     <p>

@@ -63,8 +63,6 @@ const ProcessOrder = () => {
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
 
-  console.log("ORDER ID ");
-
   return (
     <div className="flex ">
       <Sidebar />
@@ -75,12 +73,12 @@ const ProcessOrder = () => {
           <h4 className="text-2xl">Shipping Info</h4>
           <div className="pl-6 py-6">
             <p>
-              <b>Name:</b> {user && user.name}
+              <b>Email:</b> {user && `${user.email}`}
             </p>
             <p>
               <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
             </p>
-            <p className="mb-4">
+            <p>
               <b>Address:</b>
               {shippingDetails}
             </p>

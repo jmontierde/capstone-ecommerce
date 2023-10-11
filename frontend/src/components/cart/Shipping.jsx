@@ -23,6 +23,8 @@ const Shipping = () => {
   const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
   const [country, setCountry] = useState(shippingInfo.country);
 
+  console.log("USER", user);
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -95,15 +97,18 @@ const Shipping = () => {
             placeholder="Postalcode / ZIP"
             className="border w-full py-3 pl-3 text-lg border-[#5c5858]"
             value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
+            onChange={(e) => {
+              // Use regular expression to allow only numeric values
+              const value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+              setPostalCode(value);
+            }}
             required
           />
           <input
             type="text"
             placeholder="Phone"
             className="border w-full py-3 pl-3 text-lg border-[#5c5858]"
-            value={phoneNo}
-            onChange={(e) => setPhoneNo(e.target.value)}
+            value={user.phoneNumber}
             required
           />
           <select

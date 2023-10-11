@@ -7,7 +7,6 @@ import { FaStar } from "react-icons/fa"; // Import the FaStar component for star
 const RelatedProducts = ({ productId }) => {
   const dispatch = useDispatch();
 
-  console.log("PROI", productId);
   const { relatedProducts, loading, error } = useSelector(
     (state) => state.relatedProducts
   );
@@ -16,8 +15,6 @@ const RelatedProducts = ({ productId }) => {
     // Fetch related products when the component mounts
     dispatch(getRelatedProducts(productId));
   }, [dispatch, productId]);
-
-  console.log("RELATED", relatedProducts);
 
   // Function to generate star icons based on the rating value
   const renderStarRating = (rating) => {

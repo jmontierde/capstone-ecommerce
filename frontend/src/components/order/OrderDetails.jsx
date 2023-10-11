@@ -45,6 +45,8 @@ const OrderDetails = () => {
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
 
+  console.log("AAA", order);
+
   return (
     <div className="container mx-auto px-6 space-x-6 w-3/4">
       <div className="flex flex-col justify-center h-full">
@@ -53,14 +55,13 @@ const OrderDetails = () => {
         <h4 className="text-2xl">Shipping Info</h4>
         <div className="pl-6 py-6">
           <p>
-            <b>Name:</b> {user && user.name}
+            <b>Email:</b> {user && user.email}
           </p>
           <p>
             <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
           </p>
-          <p className="mb-4">
-            <b>Address:</b>
-            {shippingDetails}
+          <p>
+            <b>Address:</b> {shippingDetails}
           </p>
           <p>
             <b>Amount:</b> {totalPrice}

@@ -62,6 +62,8 @@ export const PaymentForm = ({ stripePromise }) => {
     order.totalPrice = orderInfo.totalPrice;
   }
 
+  console.log("ORDER", order);
+
   const paymentData = {
     amount: Math.round(orderInfo.totalPrice * 100),
   };
@@ -106,11 +108,14 @@ export const PaymentForm = ({ stripePromise }) => {
           payment_method: {
             card: elements.getElement(CardNumberElement),
             billing_details: {
-              name: user.name,
+              firstName: user.firstName,
+              lastName: user.lastName,
               email: user.email,
             },
           },
         });
+
+        console.log("A");
 
         if (result.error) {
           alert.error(result.error.message);
