@@ -169,7 +169,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   try {
     await sendEmail(user.email, "Password Recovery Notification", message);
-    await sendSMS(user.phoneNumber, message);
+    // await sendSMS(user.phoneNumber, message);
     res.status(200).json({
       success: true,
       message: `Email sent to: ${user.email}`,
@@ -224,8 +224,6 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
-  console.log(user);
-
   res.status(200).json({
     success: true,
     user,
@@ -234,44 +232,32 @@ exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
 
 // Update / Change Password => api/v1/password/update
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user.id).select("+password");
+  try {
+    const user = await User.findById(req.user.id).select("+password");
 
-  // Check previous user password
-  const isMatched = await user.comparePassword(req.body.oldPassword);
-  if (!isMatched) {
-    return next(new ErrorHandler("Old password is incorrect"));
+    // Check if newPassword and confirmPassword match
+    if (req.body.newPassword !== req.body.confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "New password and confirm password do not match",
+      });
+    }
+
+    // Check previous user password
+    const isMatched = await user.comparePassword(req.body.oldPassword);
+    if (!isMatched) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Old password is incorrect" });
+    }
+
+    user.password = req.body.newPassword;
+    await user.save();
+    sendToken(user, 200, res);
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
   }
-  user.password = req.body.password;
-  await user.save();
-
-  sendToken(user, 200, res);
 });
-
-// exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
-//   const { currentPassword, newPassword } = req.body;
-//   const userId = req.user._id; // Assuming you have implemented user authentication
-
-//   // Fetch the user by ID
-//   const user = await User.findById(userId).select("+password");
-
-//   // Check if the current password is correct
-//   const isPasswordMatched = await user.comparePassword(currentPassword);
-
-//   if (!isPasswordMatched) {
-//     return next(new ErrorHandler("Current password is incorrect", 401));
-//   }
-
-//   // Update the user's password
-//   user.password = newPassword;
-//   await user.save();
-
-//   // You may want to send a confirmation email to the user here
-
-//   res.status(200).json({
-//     success: true,
-//     message: "Password updated successfully",
-//   });
-// });
 
 //Update user profile => /api/v1/me/update
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
@@ -306,8 +292,6 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     runValidators: true,
     useFindAndModify: false,
   });
-
-  console.log("USER PROFILE", user);
 
   res.status(200).json({
     success: true,

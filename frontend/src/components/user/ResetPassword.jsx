@@ -36,6 +36,8 @@ const ResetPassword = () => {
       confirmPassword: confirmPassword,
     };
 
+    console.log("FORGOT");
+
     dispatch(resetPassword(token, passwords));
   };
 

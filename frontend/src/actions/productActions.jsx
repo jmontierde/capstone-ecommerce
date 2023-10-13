@@ -50,7 +50,7 @@ import {
 
 //Related Product
 
-const url = "https://vapingsidewalk-backend.onrender.com";
+const url = "http://localhost:7000";
 
 export const getRelatedProducts = (id) => async (dispatch) => {
   try {

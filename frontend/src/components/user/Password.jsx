@@ -6,15 +6,20 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 import { loadUser, clearErrors } from "../../actions/userActions";
-
+import { useAlert } from "react-alert";
 import { updatePassword } from "../../actions/userActions";
 
 const Password = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { error, isUpdated, loading } = useSelector((state) => state.user);
+  const alert = useAlert();
+
+  const { error, isUpdated, loading } = useSelector(
+    (state) => state.updatePass
+  );
   const [oldPassword, setOldPassword] = useState("");
-  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     if (error) {
@@ -35,23 +40,13 @@ const Password = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("Form submitted");
 
-    // Log the values of oldPassword and password to ensure they are correct
-    console.log("oldPassword:", oldPassword);
-    console.log("password:", password);
-
-    // Create a FormData object and append the fields to it
     const formData = new FormData();
     formData.set("oldPassword", oldPassword);
-    formData.set("password", password);
-    console.log("Before dispatch");
+    formData.set("newPassword", newPassword);
+    formData.set("confirmPassword", confirmPassword);
 
-    // Dispatch the updatePassword action with the FormData
     dispatch(updatePassword(formData));
-    console.log("form data", dispatch(updatePassword(formData)));
-
-    console.log("After dispatch");
   };
 
   return (
@@ -66,14 +61,24 @@ const Password = () => {
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
           />
-          <label htmlFor="new_password_field">Old Password</label>
+          <label htmlFor="new_password_field">New Password</label>
 
           <input
             type="password"
             id="new_password_field"
             name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+
+          <label htmlFor="confirm_password_field">Confirm Password</label>
+
+          <input
+            type="password"
+            id="confirm_password_field"
+            name="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
           <button

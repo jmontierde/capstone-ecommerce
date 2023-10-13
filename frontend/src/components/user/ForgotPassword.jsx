@@ -8,9 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   // const toast = useAlert();
-  const { error, loading, message } = useSelector(
-    (state) => state.forgotPassword
-  );
+  const { error, loading, message } = useSelector((state) => state.forgotPass);
 
   const [email, setEmail] = useState("");
 
@@ -30,7 +28,7 @@ const ForgotPassword = () => {
 
     const formData = new FormData();
     formData.set("email", email);
-
+    console.log("formData", formData);
     dispatch(forgotPassword(formData));
   };
 

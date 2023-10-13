@@ -78,7 +78,7 @@ export const PaymentForm = ({ stripePromise }) => {
       },
     },
   };
-  const url = "https://vapingsidewalk-backend.onrender.com";
+  const url = "http://localhost:7000";
 
   const submitHandler = async (e) => {
     e.preventDefault();

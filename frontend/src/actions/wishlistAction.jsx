@@ -10,7 +10,7 @@ import {
   REMOVE_FROM_WISHLIST_REQUEST,
   REMOVE_FROM_WISHLIST_SUCCESS,
 } from "../constants/wishlistConstant";
-const url = "https://vapingsidewalk-backend.onrender.com";
+const url = "http://localhost:7000";
 
 // Add a product to the user's wishlist
 export const addToWishlist = (productId) => async (dispatch) => {

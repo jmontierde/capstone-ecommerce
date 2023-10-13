@@ -7,7 +7,7 @@ import {
   GET_CHECKOUT,
 } from "../constants/cartConstant";
 
-const url = "https://vapingsidewalk-backend.onrender.com";
+const url = "http://localhost:7000";
 
 export const addItemToCart = (id, quantity) => async (dispatch, getState) => {
   //   const token = localStorage.getItem("token");
