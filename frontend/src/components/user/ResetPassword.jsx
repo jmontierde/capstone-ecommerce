@@ -9,7 +9,7 @@ const ResetPassword = () => {
   //State
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { error, success } = useSelector((state) => state.forgotPassword);
+  const { error, success } = useSelector((state) => state.resetPass);
   // Import
   const navigate = useNavigate();
   const alert = useAlert();

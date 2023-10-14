@@ -89,6 +89,11 @@ const Register = () => {
       return;
     }
 
+    if (!checkTerms) {
+      toast.error("Please check the terms and conditions");
+      return;
+    }
+
     const formData = new FormData();
     formData.set("firstName", firstName);
     formData.set("lastName", lastName);

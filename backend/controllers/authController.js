@@ -123,10 +123,13 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
 
 // Forgot Password => /api/v1/password/forgot
 exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
+  console.log("Request Body:", req.body);
+
   const user = await User.findOne({
     email: req.body.email,
-    phoneNumber: req.body.phoneNumber,
   });
+
+  console.log("User Object:", user);
 
   if (!user) {
     return next(new ErrorHandler("User not found with this email", 404));
@@ -136,11 +139,6 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const resetToken = user.getResetPasswordToken();
 
   await user.save({ validateBeforeSave: false });
-
-  // Create reset password url
-  // const resetUrl = `${req.protocol}://${req.get(
-  //   "host"
-  // )}/password/reset/${resetToken}`;
 
   // Frontend Url
   const resetUrl = `http://127.0.0.1:5173/password/reset/${resetToken}`;

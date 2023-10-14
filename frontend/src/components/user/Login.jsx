@@ -22,6 +22,8 @@ const Login = () => {
   const navigate = useNavigate();
   const alert = useAlert();
 
+  console.log("error", error);
+
   useEffect(() => {
     console.log("Error from Redux:", error);
     if (isAuthenticated) {
