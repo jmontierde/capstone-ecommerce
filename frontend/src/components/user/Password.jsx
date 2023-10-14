@@ -21,15 +21,20 @@ const Password = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  console.log("ERROR", error);
+
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
+      // Remove the navigate to the login route on error
+      // navigate("/password");
     }
 
     if (isUpdated) {
       alert.success("Password updated successfully");
       dispatch(loadUser());
+      // Redirect the user to a different route on success, if needed
       navigate("/me");
 
       dispatch({
@@ -85,7 +90,7 @@ const Password = () => {
             className="uppercase bg-[#bdbfd1] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6"
             type="submit"
           >
-            Update Passworda
+            Update Password
           </button>
         </form>
       </div>

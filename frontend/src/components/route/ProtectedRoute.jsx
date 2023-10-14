@@ -14,9 +14,9 @@ const ProtectedRoute = ({
     return null; // Display a loading spinner or component here
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
+  // if (!isAuthenticated) {
+  //   return <Navigate to="/login" />;
+  // }
   if (
     (isAdmin || isStaff) &&
     user?.role !== "admin" &&

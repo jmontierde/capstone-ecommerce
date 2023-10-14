@@ -108,8 +108,8 @@ export const PaymentForm = ({ stripePromise }) => {
           payment_method: {
             card: elements.getElement(CardNumberElement),
             billing_details: {
-              firstName: user.firstName,
-              lastName: user.lastName,
+              // firstName: user.firstName,
+              // lastName: user.lastName,
               email: user.email,
             },
           },

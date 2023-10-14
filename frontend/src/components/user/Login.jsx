@@ -5,13 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  Card,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
+import { Card, Input, Button, Typography } from "@material-tailwind/react";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,10 +16,9 @@ const Login = () => {
   const navigate = useNavigate();
   const alert = useAlert();
 
-  console.log("error", error);
+  console.log("error", user);
 
   useEffect(() => {
-    console.log("Error from Redux:", error);
     if (isAuthenticated) {
       navigate("/product");
     }
@@ -33,6 +26,12 @@ const Login = () => {
       dispatch(clearErrors());
       toast.error(error);
     }
+    if (!user) {
+      toast.error("Invalid Email or Password");
+    }
+    // if (!user) {
+    //   toast.error("Invalid Email or Password");
+    // }
   }, [dispatch, alert, user, isAuthenticated, error]);
 
   const submitHandler = (e) => {

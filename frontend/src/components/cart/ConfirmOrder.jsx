@@ -73,7 +73,7 @@ const ConfirmOrder = () => {
                         className="w-48 h-48 "
                       />
                       <p className="text-sm text-center flex items-end mb-6">
-                        {cart.firstName} {cart.lastName}
+                        {cart.name}
                       </p>
                     </td>
                     <td className={classes}>

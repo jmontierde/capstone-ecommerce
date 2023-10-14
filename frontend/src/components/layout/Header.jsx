@@ -20,6 +20,8 @@ const Header = (keyword) => {
 
   const { wishlist } = useSelector((state) => state.getWishlist);
 
+  console.log("Loading", loading);
+
   useEffect(() => {
     dispatch(getWishlist());
   }, [dispatch]);
@@ -232,12 +234,7 @@ const Header = (keyword) => {
                   >
                     Refund
                   </Link>
-                  {/* <Link
-                    to="/address"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Address
-                  </Link> */}
+
                   <Link
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     to="/product"
@@ -261,7 +258,11 @@ const Header = (keyword) => {
               </Link>
             )
           )}
-
+          {!loading && (
+            <Link to="/login" className="m-auto text-2xl ">
+              <BsPerson />
+            </Link>
+          )}
           {/* Hamburger */}
           {isMenuOpen ? (
             <img

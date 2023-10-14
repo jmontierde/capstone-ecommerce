@@ -5,6 +5,14 @@ import { resetPassword, clearErrors } from "../../actions/userActions";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
+import {
+  Card,
+  Input,
+  Checkbox,
+  Button,
+  Typography,
+} from "@material-tailwind/react";
+
 const ResetPassword = () => {
   //State
   const [password, setPassword] = useState("");
@@ -42,8 +50,11 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] flex flex-col items-center w-2/4 h-screen my-12">
+    <div
+      className="flex items-center justify-center"
+      style={{ height: "calc(100vh - 87.99px)" }}
+    >
+      {/* <div className="shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] flex flex-col items-center w-2/4 h-screen my-12">
         <h1 className="font-bold mt-12 text-2xl mb-3">Reset Password</h1>
         <p className="text-center mb-3">
           Enter your new password <br />
@@ -87,7 +98,40 @@ const ResetPassword = () => {
             Send
           </button>
         </form>
-      </div>
+      </div> */}
+      <Card color="transparent" shadow={false}>
+        <Typography variant="h4" color="blue-gray">
+          Change Password
+        </Typography>
+        {/* <Typography color="gray" className="mt-1 font-normal">
+          Enter your details to register.
+        </Typography> */}
+        <form
+          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+          onSubmit={submitHandler}
+        >
+          <div className="mb-4 flex flex-col gap-6">
+            <Input
+              type="password"
+              size="lg"
+              label="New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Input
+              type="password"
+              size="lg"
+              label="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+
+          <Button className="mt-6" fullWidth type="submit">
+            Reset
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 };

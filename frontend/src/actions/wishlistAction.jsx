@@ -3,6 +3,7 @@ import {
   ADD_TO_WISHLIST_FAIL,
   ADD_TO_WISHLIST_REQUEST,
   ADD_TO_WISHLIST_SUCCESS,
+  CLEAR_ERRORS,
   GET_WISHLIST_FAIL,
   GET_WISHLIST_REQUEST,
   GET_WISHLIST_SUCCESS,
@@ -97,4 +98,10 @@ export const removeFromWishlist = (productId) => async (dispatch) => {
       payload: error.response.data.message,
     });
   }
+};
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_ERRORS,
+  });
 };

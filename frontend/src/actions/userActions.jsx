@@ -247,9 +247,10 @@ export const updatePassword = (passwords) => async (dispatch) => {
       payload: data.success,
     });
   } catch (error) {
+    console.log("Error message from API:", error.response.data.message);
     dispatch({
-      type: UPDATE_PASSWORD_FAIL,
-      payload: error.response ? error.response.data.message : error.message,
+      type: LOGIN_FAIL,
+      payload: error.response.data.message, // Set the error message
     });
   }
 };
