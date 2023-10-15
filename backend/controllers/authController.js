@@ -21,6 +21,14 @@ function isGmailEmail(email) {
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const { firstName, lastName, email, password, phoneNumber } = req.body;
 
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    return res
+      .status(400)
+      .json({ message: "An account with this email already exists." });
+  }
+
   const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
     folder: "avatars",
     width: 150,
@@ -78,7 +86,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 
     sendToken(user, 200, res);
   } catch (error) {
-    next(new ErrorHandler(error.message, 400));
+    res.status(400).json({ message: error });
   }
 });
 
@@ -94,37 +102,42 @@ const validateEmail = (email) => {
 };
 
 // Login user => /api/v1/login
-exports.loginUser = catchAsyncErrors(async (req, res, next) => {
-  const { email, password } = req.body;
-  // Check if email and password is entered by user
-  if (!email || !password) {
-    return next(new ErrorHandler("Please enter email and password", 400));
+exports.login = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    // Check if email and password are entered by the user
+    if (!email || !password) {
+      res.status(400).json("Please enter email and password");
+      return;
+    }
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user) {
+      res.status(401).json({ message: "Invalid Email or Password" });
+      return;
+    }
+
+    // Check if the user is verified
+    if (user.verificationStatus !== "Verified") {
+      res.status(403).json("Your account is pending verification.");
+      return;
+    }
+
+    // Check if the password is correct
+    const isPasswordMatched = await user.comparePassword(password);
+
+    if (!isPasswordMatched) {
+      res.status(401).json({ message: "Invalid Email or Password" });
+      return;
+    }
+    sendToken(user, 200, res);
+  } catch (error) {
+    res.status(500).json({ message: error });
   }
-  const user = await User.findOne({ email }).select("+password");
-
-  if (!user) {
-    return next(new ErrorHandler("Invalid Email or Password", 401));
-  }
-
-  // Check if user is verified
-  if (user.verificationStatus !== "Verified") {
-    return next(new ErrorHandler("Your account is pending verification.", 403));
-  }
-
-  //Checks if password is correct or not
-  const isPasswordMatched = await user.comparePassword(password);
-
-  if (!isPasswordMatched) {
-    return next(new ErrorHandler("Invalid Email or Password", 401));
-  }
-
-  sendToken(user, 200, res);
 });
 
 // Forgot Password => /api/v1/password/forgot
 exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
-  console.log("Request Body:", req.body);
-
   const user = await User.findOne({
     email: req.body.email,
   });
@@ -178,7 +191,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
     await user.save({ validateBeforeSave: false });
 
-    return next(new ErrorHandler(error.message, 500));
+    res.status(500).json({ message: error });
   }
 });
 
@@ -197,15 +210,12 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   });
 
   if (!user) {
-    return next(
-      new ErrorHandler(
-        "Password reset token is invalid or has been expired",
-        400
-      )
-    );
+    res
+      .status(400)
+      .json({ message: "Password reset token is invalid or has been expired" });
   }
   if (req.body.password !== req.body.confirmPassword) {
-    return next(new ErrorHandler("Password does not match", 400));
+    res.status(400).json({ message: "Password does not match" });
   }
 
   // Setup new password
@@ -330,9 +340,9 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if (!user) {
-    return next(
-      new ErrorHandler(`User does not found with id: ${req.params.id}`)
-    );
+    res
+      .status(401)
+      .json({ message: `User does not found with id: ${req.params.id}` });
   }
 
   res.status(200).json({
@@ -387,7 +397,8 @@ exports.verifyUser = catchAsyncErrors(async (req, res, next) => {
       .status(200)
       .json({ message: "User verification status updated successfully." });
   } catch (error) {
-    next(new ErrorHandler(error.message, 400));
+    res.status(400).json({ message: error });
+    console.log("error", error);
   }
 });
 
@@ -396,9 +407,9 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if (!user) {
-    return next(
-      new ErrorHandler(`User does not found with id: ${req.params.id}`)
-    );
+    res
+      .status(401)
+      .json({ message: `User does not found with id: ${req.params.id}` });
   }
 
   const message = `Subject: Account Deletion Notification\n\nDear ${user.firstName} ${user.lastName},\n\nWe regret to inform you that your account with Vaping Sidewalk has been deleted.\n\nReason for Deletion: You've violated our rules and regulations.\n\nIf you believe this action was taken in error or if you have any questions, please contact our support team at ${process.env.SMTP_FROM_EMAIL}.\n\nThank you for your understanding.\n\nSincerely,\nThe Vapers Sidewalk Team`;
@@ -413,7 +424,7 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
       message: `Email sent to: ${user.email}`,
     });
   } catch (error) {
-    return next(new ErrorHandler(error.message, 500));
+    res.status(500).json({ message: error });
   }
 });
 
@@ -442,7 +453,7 @@ exports.allTerms = catchAsyncErrors(async (req, res, next) => {
       termsAndConditions,
     });
   } catch (error) {
-    return next(new ErrorHandler(error.message, 500));
+    res.status(500).json({ message: error });
   }
 });
 
@@ -454,7 +465,7 @@ exports.allUserTerms = catchAsyncErrors(async (req, res, next) => {
       termsAndConditions,
     });
   } catch (error) {
-    return next(new ErrorHandler(error.message, 500));
+    res.status(500).json({ message: error });
   }
 });
 
@@ -544,7 +555,7 @@ exports.allAddresses = catchAsyncErrors(async (req, res, next) => {
       addresses,
     });
   } catch (error) {
-    return next(new ErrorHandler(error.message, 500));
+    res.status(500).json({ message: error });
   }
 });
 

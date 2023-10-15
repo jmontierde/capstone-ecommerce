@@ -258,11 +258,6 @@ const Header = (keyword) => {
               </Link>
             )
           )}
-          {!loading && (
-            <Link to="/login" className="m-auto text-2xl ">
-              <BsPerson />
-            </Link>
-          )}
           {/* Hamburger */}
           {isMenuOpen ? (
             <img

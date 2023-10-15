@@ -202,7 +202,14 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
 
             <button
               className="bg-[#4F46E5] hover:bg-[#4540a6] text-white rounded py-3 px-6 my-6 cursor-pointer"
-              onClick={handleCart}
+              onClick={() => {
+                if (selectedProduct && selectedProduct.stock > 0) {
+                  handleCart();
+                } else {
+                  toast.error("This product is out of stock.");
+                }
+              }}
+              // disabled={!selectedProduct || selectedProduct.stock === 0}
               // disabled={product.stock === 0}
             >
               Add to Cart

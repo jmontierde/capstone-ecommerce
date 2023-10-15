@@ -26,9 +26,9 @@ const Login = () => {
       dispatch(clearErrors());
       toast.error(error);
     }
-    if (!user) {
-      toast.error("Invalid Email or Password");
-    }
+    // if (!user) {
+    //   toast.error("Invalid Email or Password");
+    // }
     // if (!user) {
     //   toast.error("Invalid Email or Password");
     // }

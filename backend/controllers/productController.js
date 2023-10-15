@@ -292,7 +292,7 @@ exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    res.status(404).json({ message: "Invalid Email or Password" });
   }
 
   res.status(200).json({
@@ -306,7 +306,7 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
   let product = await Product.findById(req.params.id);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    res.status(401).json({ message: "Product not found" });
   }
 
   let images = [];
@@ -380,7 +380,7 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    res.status(401).json({ message: "Product not found" });
   }
 
   // Deleting images associated with the product

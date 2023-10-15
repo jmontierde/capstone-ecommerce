@@ -49,12 +49,15 @@ const Register = () => {
 
   useEffect(() => {
     if (user) {
-      if (user.verificationStatus === "Verified") {
-        navigate("/login");
-      } else if (user.verificationStatus === "Pending") {
-        navigate("/login");
-        toast.error("Your account is pending verification by the admin.");
-      }
+      toast.success("Your account is pending verification by the admin.");
+      console.log("USER", user);
+
+      // if (user.verificationStatus === "Verified") {
+      //   navigate("/login");
+      // } else if (user.verificationStatus === "Pending") {
+      //   navigate("/login");
+      //   toast.error("Your account is pending verification by the admin.");
+      // }
     }
     if (error) {
       toast.error(error);
@@ -65,7 +68,7 @@ const Register = () => {
   const isRequiredFieldEmpty =
     !firstName || !lastName || !email || !password || !phoneNumber;
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     console.log("ERROR", error);
 
@@ -104,16 +107,37 @@ const Register = () => {
     formData.set("validId", validId);
     formData.set("withBirthdayId", withBirthdayId);
 
-    // dispatch(register(formData));
+    dispatch(register(formData));
 
-    const success = dispatch(register(formData));
+    // const response = dispatch(register(formData));
+    // console.log("RESPONSE", response);
 
-    if (success) {
-      toast.success("You've succefully create an account");
-      toast.error("Your account is pending verification by the admin.");
-      // Registration was successful, navigate to login page
-      navigate("/login");
-    }
+    // try {
+    //   const response = await dispatch(register(formData));
+    //   console.log("RESPONSE", response);
+
+    //   if (response.data) {
+    //     toast.success("Your account is pending verification by the admin.");
+    //     toast.success("You've successfully created an account");
+    //     navigate("/login");
+    //   } else if (response.error) {
+    //     toast.error(response.error);
+    //   }
+    // } catch (error) {
+    //   console.error("Error:", error);
+    // }
+
+    // if (response.error) {
+    //   toast.error(response.error);
+    // } else if (response.verificationStatus === "Verified") {
+    //   console.log("response", response);
+
+    //   toast.success("You've successfully created an account");
+    //   navigate("/login");
+    // } else if (response.verificationStatus === "Pending") {
+    //   console.log("response", response);
+    //   toast.error("Your account is pending verification by the admin.");
+    // }
   };
 
   console.log("check", checkTerms);

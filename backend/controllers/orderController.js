@@ -41,9 +41,9 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
       order,
     });
   } catch (error) {
-    return next(
-      new ErrorHandler("Order created, but SMS notification failed.", 200)
-    ); // Handle SMS sending failure gracefully
+    res
+      .status(200)
+      .json({ message: "Order created, but SMS notification failed." });
   }
 });
 
@@ -55,7 +55,7 @@ exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
   });
 
   if (!order) {
-    return next(new ErrorHandler("Order not found with this ID", 404));
+    res.status(404).json({ message: "Order not found with this ID" });
   }
 
   res.status(200).json({
@@ -147,7 +147,7 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
   if (order.orderStatus === "Delivered") {
-    return next(new ErrorHandler("You have already delivered this order", 400));
+    res.status(400).json({ message: "You have already delivered this order" });
   }
 
   order.orderItems.forEach(async (item) => {
@@ -175,7 +175,7 @@ exports.deleteOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
   if (!order) {
-    return next(new ErrorHandler("Order not found with this ID", 404));
+    res.status(404).json({ message: "Order not found with this ID" });
   }
 
   await order.remove();
@@ -212,7 +212,7 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
       refund,
     });
   } catch (error) {
-    next(new ErrorHandler(error.message, 400));
+    res.status(400).json({ message: error });
   }
 });
 
@@ -221,7 +221,7 @@ exports.getSingleRefund = catchAsyncErrors(async (req, res, next) => {
   const refund = await Refund.findById(req.params.id);
 
   if (!refund) {
-    return next(new ErrorHandler("Refund not found with this ID", 404));
+    res.status(404).json({ message: "Refund not found with this ID" });
   }
 
   res.status(200).json({
@@ -246,7 +246,7 @@ exports.updateRefund = catchAsyncErrors(async (req, res, next) => {
   const refund = await Refund.findById(req.params.id);
 
   if (!refund) {
-    return next(new ErrorHandler("Refund not found", 404));
+    res.status(404).json({ message: "Refund not found" });
   }
 
   // Update the refund status based on the value passed in the request body
@@ -265,7 +265,7 @@ exports.deleteRefund = catchAsyncErrors(async (req, res, next) => {
   const refund = await Refund.findById(req.params.id);
 
   if (!refund) {
-    return next(new ErrorHandler("Refund not found with this ID", 404));
+    res.status(404).json({ message: "Refund not found with this ID" });
   }
 
   await refund.remove();

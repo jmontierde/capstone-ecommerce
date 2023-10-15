@@ -38,9 +38,13 @@ const ProductDetails = () => {
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
+
   const { reviewError, success: reviewSuccess } = useSelector(
     (state) => state.newReview
   );
+
+  const isProductInCart = cartItems.some((item) => item.product === id);
 
   const { success: wishlistSuccess } = useSelector(
     (state) => state.newWishlist
@@ -54,15 +58,15 @@ const ProductDetails = () => {
     dispatch(getProductDetails(id));
 
     if (error) {
-      alert.error(error);
+      toast.error(error);
     }
 
     if (reviewError) {
-      alert.error(reviewError);
+      toast.error(reviewError);
       dispatch(clearErrors());
     }
     if (reviewSuccess) {
-      alert.success("Review posted successfully");
+      toast.success("Review posted successfully");
       dispatch({ type: NEW_REVIEW_RESET });
     }
 
@@ -70,10 +74,10 @@ const ProductDetails = () => {
 
     if (wishlistSuccess) {
       console.log("A");
-      alert.success("Added to wishlist successfully");
+      toast.success("Added to wishlist successfully");
       dispatch({ type: ADD_TO_WISHLIST_RESET });
     }
-  }, [dispatch, alert, error, reviewError, id, reviewSuccess, wishlistSuccess]);
+  }, [dispatch, toast, error, reviewError, id, reviewSuccess, wishlistSuccess]);
   // Add the following code to reset wishlistSuccess
   // useEffect(() => {
   //   if (wishlistSuccess) {
@@ -134,11 +138,7 @@ const ProductDetails = () => {
 
   const handleCart = () => {
     dispatch(addItemToCart(id, quantity));
-    alert.success("Item Added to Cart");
-  };
-
-  const handleCheckout = () => {
-    dispatch(getCheckout(id, quantity));
+    toast.success("Item Added to Cart");
   };
 
   const reviewHandler = () => {
@@ -153,6 +153,7 @@ const ProductDetails = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="flex container mx-auto mt-12 gap-6">
         <div className="flex w-1/2 h-full bg-[#000]">
           <div className="flex flex-row-reverse  justify-end w-full">
@@ -234,12 +235,13 @@ const ProductDetails = () => {
           </div>
           <div className="flex items-center space-x-6">
             <button
-              // className="bg-[#000] w-48 p-6 text-[#fff] hover:bg-[#222222]"
               className="bg-[#4F46E5] hover:bg-[#4540a6] w-72 text-white rounded py-3 px-6 my-6 cursor-pointer"
               onClick={handleCart}
-              disabled={product.stock === 0}
+              disabled={product.stock === 0 || isProductInCart} // Disable if out of stock or in cart
             >
-              Add to Cart
+              {isProductInCart
+                ? "Product is already in the cart"
+                : "Add to Cart"}
             </button>
             <svg
               xmlns="http://www.w3.org/2000/svg"

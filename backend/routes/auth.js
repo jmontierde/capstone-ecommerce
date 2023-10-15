@@ -1,10 +1,11 @@
 // user
 const express = require("express");
 const router = express.Router();
+const sendToken = require("../utils/jwtToken");
 
 const {
   registerUser,
-  loginUser,
+  login,
   logout,
   forgotPassword,
   resetPassword,
@@ -29,9 +30,10 @@ const {
 } = require("../controllers/authController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
-
+const User = require("../models/user");
 router.route("/register").post(registerUser);
-router.route("/login").post(loginUser);
+router.route("/login").post(login);
+
 router.route("/logout").get(logout);
 router.route("/address").post(newAddress);
 router
