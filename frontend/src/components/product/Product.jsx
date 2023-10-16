@@ -23,16 +23,19 @@ const Product = ({ product }) => {
   return (
     <Link to={`/product/${product._id}`}>
       <>
-        <div className="w-full h-2/4 space-y-1">
-          {product.images && product.images.length > 0 && (
-            <img
-              src={product.images[0].url}
-              alt={product.name}
-              className="w-72 h-72 p-8  mx-auto bg-[#F8F8F8]"
-            />
-          )}
-          <h2 className="text-left text-base">{product.name}</h2>
-          {/* <div className="flex items-center justify-center mx-auto">
+        <div className="w-full space-y-1 h-full  ">
+          <div className="px-6 lg:px-0">
+            {product.images && product.images.length > 0 && (
+              <img
+                src={product.images[0].url}
+                alt={product.name}
+                className="w-72 h-72 py-8  mx-auto bg-[#F8F8F8]"
+              />
+            )}
+            <h2 className="text-center lg:text-left text-base md:px-12 lg:px-0">
+              {product.name}
+            </h2>
+            {/* <div className="flex items-center justify-center mx-auto">
             {[...Array(5)].map((star, index) => {
               const ratingValue = index + 1;
               return (
@@ -47,7 +50,10 @@ const Product = ({ product }) => {
             })}
             <p className="pl-1">({product.numOfReviews})</p>
           </div> */}
-          <h5 className="text-sm text-left mb-6">₱{product.price}</h5>
+            <h5 className="text-sm text-center lg:text-left md:px-12 lg:px-0 ">
+              ₱{product.price}
+            </h5>
+          </div>
         </div>
       </>
     </Link>

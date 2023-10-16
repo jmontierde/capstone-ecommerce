@@ -12,6 +12,7 @@ import {
   clearErrors,
 } from "../../actions/productActions";
 import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
+import { Input, Select, Option, Textarea } from "@material-tailwind/react";
 
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -72,11 +73,12 @@ const UpdateProduct = () => {
 
     if (isUpdated) {
       toast.success("Product updated successfully");
-      setTimeout(() => {
-        dispatch({ type: UPDATE_PRODUCT_RESET });
-      }, 2000);
+      navigate("/admin/products");
+      dispatch({ type: UPDATE_PRODUCT_RESET });
     }
   }, [dispatch, error, isUpdated, updateError, product]);
+
+  console.log("CAT", category);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -93,23 +95,35 @@ const UpdateProduct = () => {
       formData.append("images", image);
     });
 
+    console.log("form data", formData);
+
     dispatch(updateProduct(product._id, formData));
   };
 
   const onChange = (e) => {
     const files = Array.from(e.target.files);
 
-    setImagesPreview([]);
-    setImages([]);
-    setOldImages([]);
+    // Keep the old images and old images preview while adding new ones
+    const newImagesPreview = [...imagesPreview];
+    const newImages = [...oldImages];
+
+    let filesProcessed = 0; // Counter to track processed files
 
     files.forEach((file) => {
       const reader = new FileReader();
 
       reader.onload = () => {
         if (reader.readyState === 2) {
-          setImagesPreview((oldArray) => [...oldArray, reader.result]);
-          setImages((oldArray) => [...oldArray, reader.result]);
+          newImagesPreview.push(reader.result);
+          newImages.push(file);
+
+          // Check if all files have been processed
+          filesProcessed++;
+          if (filesProcessed === files.length) {
+            // Update the state with new images and images preview
+            setImagesPreview(newImagesPreview);
+            setImages(newImages);
+          }
         }
       };
 
@@ -120,82 +134,66 @@ const UpdateProduct = () => {
   console.log("Name", name);
   return (
     <>
-      <ToastContainer />
-      <div className="flex container mx-auto px-12">
+      <div className="flex ">
         <Sidebar />
-        <div className="w-10/12 container p-6">
+        <div className="  container p-6">
           <form onSubmit={submitHandler} encType="multipart/form-data">
-            <div className="flex  space-x-12 ">
-              <section className="w-1/2 flex flex-col ">
-                <label htmlFor="productName">Product Name</label>
-                <input
-                  type="text"
+            <div className="flex  mx-auto space-x-12 ">
+              <section className=" flex flex-col w-full space-y-6">
+                <Input
+                  label="Product Name"
                   id="productName"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="border border-[#000] py-2 my-1 px-3"
+                  className="py-6"
                 />
-                <div className="flex gap-6 my-6">
+                <div className="flex gap-6">
                   <div className="flex flex-col w-9/12">
-                    <label htmlFor="category">Category</label>
-                    <br />
-                    <select
-                      className="border border-[#000] py-2 my-1 px-3 bg-[#fff]"
-                      id="category_field"
+                    <Select
+                      label="Select Category"
+                      className="py-6"
                       value={category}
-                      onChange={(e) => setCategory(e.target.value)}
+                      onChange={(value) => setCategory(value)}
                     >
-                      <option value="">Select Category</option>
                       {categories.map((category) => (
-                        <option key={category.name} value={category.name}>
+                        <Option key={category.name} value={category.name}>
                           {category.name}
-                        </option>
+                        </Option>
                       ))}
-                    </select>
+                    </Select>
                   </div>
 
                   <div className="flex flex-col w-3/12">
-                    <label htmlFor="stock">Stock</label>
-                    <input
-                      type="text"
+                    <Input
+                      label="Stock"
+                      className="py-6 "
                       value={stock}
                       onChange={(e) => setStock(e.target.value)}
-                      className="border border-[#000] py-2 my-1 px-3"
                     />
                   </div>
                 </div>
-                <div className="flex flex-col">
-                  <label htmlFor="price">Price</label>
-                  <input
-                    type="text"
-                    id="price"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    className="border border-[#000] py-2 my-1 px-3"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="price">Seller</label>
-                  <input
-                    type="text"
-                    id="price"
-                    value={seller}
-                    onChange={(e) => setSeller(e.target.value)}
-                    className="border border-[#000] py-2 my-1 px-3"
-                  />
-                </div>
 
-                <div className="flex flex-col flex-wrap my-6">
-                  <label htmlFor="description">Description</label>
-                  <textarea
-                    type="text"
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    size={20}
-                    className="border border-[#000]  py-2 px-3 text- my-1  h-48"
-                  />
-                </div>
+                <Input
+                  label="Price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="py-6"
+                />
+
+                <Input
+                  label="Seller"
+                  value={seller}
+                  onChange={(e) => setSeller(e.target.value)}
+                  className="py-6"
+                />
+
+                <Textarea
+                  label="Description"
+                  id="description"
+                  value={description}
+                  className="h-72"
+                  onChange={(e) => setDescription(e.target.value)}
+                />
               </section>
               <section className="w-1/2">
                 <h4>Product Image</h4>
@@ -240,7 +238,7 @@ const UpdateProduct = () => {
                           multiple
                         />
                       </div>
-                      {/* {oldImages &&
+                      {oldImages &&
                         oldImages.map((img) => (
                           <img
                             key={img}
@@ -250,7 +248,7 @@ const UpdateProduct = () => {
                             width="55"
                             height="52"
                           />
-                        ))} */}
+                        ))}
 
                       {imagesPreview.map((img) => (
                         <img
@@ -268,10 +266,11 @@ const UpdateProduct = () => {
                   <button
                     id="login_button"
                     type="submit"
-                    className="bg-[#003171] w-1/4 py-3 text-white rounded my-6"
-                    disabled={loading ? true : false}
+                    className="bg-[#003171] w-1/3 py-3  text-white rounded my-6"
+                    // disabled={loading}
                   >
-                    Update Product
+                    Add Product
+                    {/* {loading ? "Adding Product..." : "Add Product"} */}
                   </button>
                 </div>
               </section>
@@ -279,6 +278,7 @@ const UpdateProduct = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

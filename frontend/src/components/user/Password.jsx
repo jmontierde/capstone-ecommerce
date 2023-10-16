@@ -4,7 +4,7 @@ import { UPDATE_PASSWORD_RESET } from "../../constants/userConstant";
 import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
-
+import { Input } from "@material-tailwind/react";
 import { loadUser, clearErrors } from "../../actions/userActions";
 import { useAlert } from "react-alert";
 import { updatePassword } from "../../actions/userActions";
@@ -21,14 +21,12 @@ const Password = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  console.log("ERROR", error);
-
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
       // Remove the navigate to the login route on error
-      // navigate("/password");
+      navigate("/password");
     }
 
     if (isUpdated) {
@@ -45,7 +43,10 @@ const Password = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      alert.error("Please fill in all the fields.");
+      return;
+    }
     const formData = new FormData();
     formData.set("oldPassword", oldPassword);
     formData.set("newPassword", newPassword);
@@ -55,45 +56,47 @@ const Password = () => {
   };
 
   return (
-    <div className="container mx-auto flex">
-      <div className="bg-[#F7F9FB] w-4/5 p-12">
-        <form className="flex flex-col" onSubmit={submitHandler}>
-          <label htmlFor="old_password_field">Old Password</label>
-          <input
-            type="password"
-            id="old_password_field"
-            name="oldPassword"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-          />
-          <label htmlFor="new_password_field">New Password</label>
+    <div
+      className="flex justify-center items-center"
+      style={{ height: "calc(100vh - 90px)" }}
+    >
+      <form
+        className="mt-8 mb-2 space-y-6 w-80 max-w-screen-lg sm:w-96"
+        encType="multipart/form-data"
+        onSubmit={submitHandler}
+      >
+        <Input
+          label="Current Password"
+          id="current-password"
+          size="lg"
+          type="password"
+          value={oldPassword}
+          onChange={(e) => setOldPassword(e.target.value)}
+        />
+        <Input
+          label="New Password"
+          id="new-password"
+          size="lg"
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+        <Input
+          label="Confirm Password"
+          id="confirm-password"
+          size="lg"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
-          <input
-            type="password"
-            id="new_password_field"
-            name="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-
-          <label htmlFor="confirm_password_field">Confirm Password</label>
-
-          <input
-            type="password"
-            id="confirm_password_field"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-
-          <button
-            className="uppercase bg-[#bdbfd1] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6"
-            type="submit"
-          >
-            Update Password
-          </button>
-        </form>
-      </div>
+        <button
+          className="uppercase bg-[#3B49DF] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6 w-full"
+          type="submit"
+        >
+          Update Password
+        </button>
+      </form>
     </div>
   );
 };

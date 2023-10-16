@@ -112,7 +112,7 @@ export const authReducer = (
     case LOAD_USER_REQUEST:
       return {
         loading: true,
-        isAuthenticated: false,
+        // isAuthenticated: false,
       };
 
     case LOGIN_SUCCESS:
@@ -137,7 +137,8 @@ export const authReducer = (
       return {
         loading: false,
         isAuthenticated: false,
-        user: null,
+        user: {},
+        error: null, // Clear any previous error
       };
 
     case LOAD_USER_FAIL:

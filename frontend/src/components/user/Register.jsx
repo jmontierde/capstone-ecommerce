@@ -46,18 +46,14 @@ const Register = () => {
     (state) => state.auth
   );
   const navigate = useNavigate();
-
+  console.log("isAuthenticated", isAuthenticated);
   useEffect(() => {
-    if (user) {
-      toast.success("Your account is pending verification by the admin.");
-      console.log("USER", user);
-
-      // if (user.verificationStatus === "Verified") {
-      //   navigate("/login");
-      // } else if (user.verificationStatus === "Pending") {
-      //   navigate("/login");
-      //   toast.error("Your account is pending verification by the admin.");
-      // }
+    if (isAuthenticated) {
+      toast.success("You've successfully created an account"); // Success toast
+      navigate("/login");
+    } else if (error) {
+      toast.error(error); // Error toast
+      dispatch(clearErrors());
     }
     if (error) {
       toast.error(error);
@@ -107,37 +103,37 @@ const Register = () => {
     formData.set("validId", validId);
     formData.set("withBirthdayId", withBirthdayId);
 
-    dispatch(register(formData));
+    // dispatch(register(formData));
 
-    // const response = dispatch(register(formData));
+    const response = dispatch(register(formData));
     // console.log("RESPONSE", response);
 
-    // try {
-    //   const response = await dispatch(register(formData));
-    //   console.log("RESPONSE", response);
+    try {
+      const response = dispatch(register(formData));
+      console.log("RESPONSE", response);
 
-    //   if (response.data) {
-    //     toast.success("Your account is pending verification by the admin.");
-    //     toast.success("You've successfully created an account");
-    //     navigate("/login");
-    //   } else if (response.error) {
-    //     toast.error(response.error);
-    //   }
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
+      if (response.data) {
+        toast.success("Your account is pending verification by the admin.");
+        toast.success("You've successfully created an account");
+        navigate("/login");
+      } else if (response.error) {
+        toast.error(response.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
 
-    // if (response.error) {
-    //   toast.error(response.error);
-    // } else if (response.verificationStatus === "Verified") {
-    //   console.log("response", response);
+    if (response.error) {
+      toast.error(response.error);
+    } else if (response.verificationStatus === "Verified") {
+      console.log("response", response);
 
-    //   toast.success("You've successfully created an account");
-    //   navigate("/login");
-    // } else if (response.verificationStatus === "Pending") {
-    //   console.log("response", response);
-    //   toast.error("Your account is pending verification by the admin.");
-    // }
+      toast.success("You've successfully created an account");
+      navigate("/login");
+    } else if (response.verificationStatus === "Pending") {
+      console.log("response", response);
+      toast.error("Your account is pending verification by the admin.");
+    }
   };
 
   console.log("check", checkTerms);
@@ -301,32 +297,6 @@ const Register = () => {
                             />
                           </label>
                         </div>
-                        {/* <input
-                          type="file"
-                          id="avatarUpload"
-                          name="avatar"
-                          className="hidden"
-                          accept="image/*"
-                          onChange={onChange}
-                        />
-                        <div className="flex items-center  border border-black rounded">
-                          <span
-                            className="text-gray-600  text-center border border-black cursor-pointer w-1/3 py-2"
-                            onClick={() =>
-                              document.getElementById("avatarUpload").click()
-                            }
-                          >
-                            No file chosen
-                          </span>
-                          <span
-                            className="text-blue-500 w-2/3 py-2 border pl-3 border-black cursor-pointer "
-                            onClick={() =>
-                              document.getElementById("avatarUpload").click()
-                            }
-                          >
-                            Choose File
-                          </span>
-                        </div> */}
                         {avatar && (
                           <img
                             src={avatar}
@@ -389,31 +359,7 @@ const Register = () => {
                             />
                           </label>
                         </div>
-                        {/* <input
-                          type="file"
-                          id="validId"
-                          name="validId"
-                          onChange={onChange}
-                          accept="image/png, image/jpeg"
-                        />
-                        <div className="flex items-center  border border-black rounded">
-                          <span
-                            className="text-gray-600  text-center border  border-black cursor-pointer w-1/3 py-2"
-                            onClick={() =>
-                              document.getElementById("validId").click()
-                            }
-                          >
-                            No file chosen
-                          </span>
-                          <span
-                            className="text-blue-500 w-2/3 py-2 border pl-3 border-black cursor-pointer "
-                            onClick={() =>
-                              document.getElementById("validId").click()
-                            }
-                          >
-                            Choose File
-                          </span>
-                        </div> */}
+
                         {validId && (
                           <img
                             src={validId}
@@ -476,31 +422,7 @@ const Register = () => {
                             />
                           </label>
                         </div>
-                        {/* <input
-                          type="file"
-                          id="withBirthdayId"
-                          name="withBirthdayId"
-                          onChange={onChange}
-                          accept="image/png, image/jpeg"
-                        />
-                        <div className="flex items-center  border border-black rounded">
-                          <span
-                            className="text-gray-600 border text-center border-black cursor-pointer w-1/3 py-2"
-                            onClick={() =>
-                              document.getElementById("withBirthdayId").click()
-                            }
-                          >
-                            No file chosen
-                          </span>
-                          <span
-                            className="text-blue-500 w-2/3 py-2 border pl-3 border-black cursor-pointer "
-                            onClick={() =>
-                              document.getElementById("withBirthdayId").click()
-                            }
-                          >
-                            Choose File
-                          </span>
-                        </div> */}
+
                         {validId && (
                           <img
                             src={withBirthdayId}

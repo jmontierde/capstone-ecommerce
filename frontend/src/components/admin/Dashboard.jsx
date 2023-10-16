@@ -55,7 +55,7 @@ const Dashboard = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex ">
+        <div className="flex flex-col lg:flex-row">
           <Sidebar />
           <div className=" container p-6 space-y-6 ">
             <h1 className="font-semibold text-4xl">Welcome back!</h1>

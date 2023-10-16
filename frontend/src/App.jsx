@@ -53,13 +53,12 @@ import Messenger from "./Messenger";
 import Material from "./components/pages/Material";
 import TestPayment from "./components/cart/TestPayment";
 import Wishlist from "./components/product/Wishlist";
+import Les from "./components/admin/Les";
+
 function App() {
   // const dispatch = useDispatch()
   const [stripeApiKey, setStripeApiKey] = useState("");
   const { user, isAuthenticated, loading } = useSelector((state) => state.auth);
-  const [termsAccepted, setTermsAccepted] = useState(
-    localStorage.getItem("termsAccepted") === "true"
-  );
 
   const navigate = useNavigate();
 
@@ -142,6 +141,7 @@ function App() {
             path="/password"
             element={<ProtectedRoute component={Password} />}
           />
+
           <Route path="/password/forgot" element={<ForgotPassword />} />
           <Route path="/password/reset/:token" element={<ResetPassword />} />
           <Route path="/payment" element={<Payment />} />
@@ -180,6 +180,13 @@ function App() {
           />
 
           <Route
+            path="/les"
+            element={
+              <ProtectedRoute component={Les} isAdmin={true} isStaff={true} />
+            }
+          />
+
+          <Route
             path="/admin/products"
             element={
               <ProtectedRoute
@@ -199,6 +206,7 @@ function App() {
               />
             }
           />
+
           <Route
             path="/admin/product/:id"
             element={

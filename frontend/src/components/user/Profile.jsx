@@ -14,7 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 
 import Loader from "../layout/Loader";
-import { Input } from "@material-tailwind/react";
+
+import { Input, Button, Typography } from "@material-tailwind/react";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -63,7 +64,10 @@ const Profile = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
+    if (!firstName || !lastName || !email) {
+      alert.error("Please fill in all the fields.");
+      return;
+    }
     const formData = new FormData();
     formData.set("firstName", firstName);
     formData.set("lastName", lastName);
@@ -86,46 +90,6 @@ const Profile = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  // Password
-  // const [oldPassword, setOldPassword] = useState();
-
-  // const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
-
-  // console.log("A", user);
-
-  // useEffect(() => {
-  //   if (error) {
-  //     alert.error(error);
-  //     dispatch(clearErrors());
-  //   }
-
-  //   if (isUpdated) {
-  //     alert.success("Password updated successfully");
-  //     dispatch(loadUser());
-  //     navigate("/me");
-  //     // Update the states with the new values from the updated user object
-  //     setPassword(user.password);
-  //     setNewPassword(newPassword);
-  //     setConfirmPassword(confirmPassword);
-
-  //     dispatch({
-  //       type: UPDATE_PASSWORD_RESET,
-  //     });
-  //   }
-  // }, [dispatch, alert, error, isUpdated, user]);
-
-  // const submitHandlerPassword = (e) => {
-  //   e.preventDefault();
-  //   const formDataPassword = new FormData();
-  //   formDataPassword.set("oldPassword", oldPassword);
-  //   formDataPassword.set("password", password);
-
-  //   dispatch(updateProfile(formDataPassword));
-
-  //   dispatch(updatePassword(formDataPassword));
-  // };
-
   return (
     <>
       {loading ? (
@@ -136,121 +100,85 @@ const Profile = () => {
           <div className="flex flex-col w-full ">
             {/* Personal Information */}
             <div className=" w-full">
-              <div className="mb-6">
-                <h2 className="font-bold text-2xl">General Details</h2>
-                <p className="text-[#3f3e3e] text-sm">
+              <div className="mb-6 px-6 md:px-0">
+                <h2 className="font-bold md:text-2xl text-lg">
+                  General Details
+                </h2>
+                <p className="text-[#3f3e3e] md:text-normal text-sm">
                   Update your photo and personal details here.
                 </p>
               </div>
               <form
+                className="mt-8 mb-2 lg:w-full sm:w-full sm:px-6 md:px-0"
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
-                className="bg-[#FFF] border-b-3 rounded-md py-6"
               >
-                <div>
-                  <figure className="flex items-center ">
-                    <img
-                      src={avatarPreview}
-                      alt={user && user.name}
-                      className="w-32 h-32 rounded-full"
-                    />
-                    <figcaption className="ml-6">
-                      <h2 className="font-semibold text-xl">
-                        {user.firstName} {user.lastName}
-                      </h2>
+                <figure className="flex items-center ">
+                  <img
+                    src={avatarPreview}
+                    alt={user && user.name}
+                    className="w-32 h-32 rounded-full"
+                  />
+                  <figcaption className="ml-6">
+                    <h2 className="font-semibold  text-base md:text-xl">
+                      {user.firstName} {user.lastName}
+                    </h2>
 
-                      <p className="text-[#000000] font-light mb-4">
-                        {user.email}
-                      </p>
-                      <div className="custom-file">
-                        <label
-                          htmlFor="customFile"
-                          className="border border-[#494848] px-6 py-1.5 rounded cursor-pointer hover:bg-[#3B49DF] hover:text-[#fff] hover:border-transparent"
-                        >
-                          UPDATE PROFILE
-                          <input
-                            type="file"
-                            name="avatar"
-                            className="custom-file-input"
-                            id="customFile"
-                            accept="image/*"
-                            style={{ display: "none" }}
-                            onChange={onChange}
-                          />
-                        </label>
-                      </div>
-                    </figcaption>
-                  </figure>
-                  <div className="flex flex-col gap-3">
-                    <h4 className="font-semibold mt-6">Personal</h4>
-                    <hr />
-                    <h5>First name</h5>
-                    <input
-                      type="input"
-                      id="name_field"
-                      name="firstName"
-                      className="border border-[#000] p-3"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                    />
-                    <h5>Last name</h5>
-                    <input
-                      type="input"
-                      id="name_field"
-                      name="lastName"
-                      className="border border-[#000] p-3"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                    />
-                    <h5>Email</h5>
-                    <input
-                      type="email"
-                      id="email_field"
-                      name="email"
-                      className="border border-[#000] p-3"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
+                    <p className="text-[#000000] font-light mb-4 text-sm md:text-base">
+                      {user.email}
+                    </p>
+                    <div className="custom-file">
+                      <label
+                        htmlFor="customFile"
+                        className="border border-[#494848] px-6 py-1.5 rounded cursor-pointer hover:bg-[#3B49DF] hover:text-[#fff] hover:border-transparent"
+                      >
+                        UPDATE PROFILE
+                        <input
+                          type="file"
+                          name="avatar"
+                          className="custom-file-input"
+                          id="customFile"
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          onChange={onChange}
+                        />
+                      </label>
+                    </div>
+                  </figcaption>
+                </figure>
+                <div className="mb-4 flex flex-col items-center justify-center gap-6  mt-12">
+                  <Input
+                    size="lg"
+                    label="Enter your First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+
+                  <Input
+                    size="lg"
+                    label="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+
+                  <Input
+                    size="lg"
+                    label="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </div>
-                <button className="bg-[#3B49DF] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6">
-                  UPDATE
-                </button>
-              </form>
-            </div>
 
-            {/* <div>
-              <form
-                className="flex flex-col space-y-6"
-                encType="multipart/form-data"
-                onSubmit={submitHandlerPassword}
-              >
-                <Input
-                  label="Current Password"
-                  id="current-password"
+                <Button
+                  className="mt-6 md:w-auto bg-[#4F46E5]"
                   size="lg"
-                  type="password"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                />
-                <Input
-                  label="New Password"
-                  id="new-password"
-                  size="lg"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              
-
-                <button
-                  className="uppercase bg-[#3B49DF] rounded py-3 px-9 text-white hover:bg-[#3B71CA] text-sm my-6"
+                  fullWidth
                   type="submit"
                 >
-                  Update Password
-                </button>
+                  Update
+                </Button>
               </form>
-            </div> */}
+            </div>
           </div>
         </div>
       )}

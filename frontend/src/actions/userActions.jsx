@@ -221,6 +221,7 @@ export const updateProfile = (userData) => async (dispatch) => {
 };
 
 // Update password
+// Update password
 export const updatePassword = (passwords) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PASSWORD_REQUEST });
@@ -240,20 +241,54 @@ export const updatePassword = (passwords) => async (dispatch) => {
     );
     console.log("Response data:", data);
 
-    console.log(passwords);
-
     dispatch({
       type: UPDATE_PASSWORD_SUCCESS,
       payload: data.success,
     });
   } catch (error) {
-    console.log("Error message from API:", error.response.data.message);
-    dispatch({
-      type: LOGIN_FAIL,
-      payload: error.response.data.message, // Set the error message
-    });
+    console.log("Error message from API:", error);
+
+    if (error.response) {
+      // If the error has a response, it means it's a server error
+      const response = error.response;
+      if (response.status === 400) {
+        // Handle specific error codes, such as 400 (Bad Request)
+        if (
+          response.data &&
+          response.data.message === "Old password is incorrect"
+        ) {
+          // Handle the case where the old password is incorrect
+          // You might want to display an error message to the user
+          dispatch({
+            type: UPDATE_PASSWORD_FAIL,
+            payload: "Old password is incorrect",
+          });
+        } else {
+          // Handle other 400 errors here
+          dispatch({
+            type: UPDATE_PASSWORD_FAIL,
+            payload: "An error occurred while updating the password",
+          });
+        }
+      } else {
+        // Handle other status codes (e.g., 401 for unauthorized)
+        // This is where you don't log the user out but handle the error appropriately
+        dispatch({
+          type: UPDATE_PASSWORD_FAIL,
+          payload: "An error occurred while updating the password",
+        });
+      }
+    } else {
+      // Handle network errors (e.g., server is down, no internet connection)
+      // This is where you don't log the user out but handle the error appropriately
+      dispatch({
+        type: UPDATE_PASSWORD_FAIL,
+        payload: "Network error occurred",
+      });
+    }
   }
 };
+
 // Forgot password
 export const forgotPassword = (email) => async (dispatch) => {
   try {

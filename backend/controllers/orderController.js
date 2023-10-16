@@ -186,9 +186,18 @@ exports.deleteOrder = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
-  const { orderId, reasons, otherReason } = req.body; // Change "reason" to "reasons"
+  const { orderId, reasons, otherReason } = req.body;
 
+  // Attempt to find the order by its ID
   const order = await Order.findById(orderId);
+
+  if (!order) {
+    // Order not found, return an error response
+    return res
+      .status(400)
+      .json({ message: "Incorrect orderId. No order found." });
+  }
+
   const result = await cloudinary.v2.uploader.upload(req.body.imageReason, {
     folder: "reason-refund",
     width: 150,

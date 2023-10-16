@@ -55,16 +55,16 @@ const Header = (keyword) => {
   return (
     <>
       <ToastContainer />
-      <nav className="container flex   mx-auto py-6  w-screen justify-between items-center  cursor-pointer font-helvetica  ">
+      <nav className="container flex   mx-auto py-6 sm:px-3 md:px-0  w-screen justify-between items-center  cursor-pointer font-helvetica  ">
         <h2 className="mr-16 uppercase sm:text-sm md:text-lg">
           Vapers Sidewalk
         </h2>
-        <div className="block md:flex space-x-6 items-center uppercase">
+        <div className="block md:flex space-x-6  items-center uppercase">
           <ul
             className={
               isMenuOpen
                 ? "hidden sm:hidden  lg:flex xl:flex "
-                : "flex flex-col items-center space-x-6  justify-center uppercase fixed top-0 left-0 mt-24 w-full h-full bg-[#ad5050]  xl:bg-slate-800 lg:hidden "
+                : "flex flex-col items-center space-x-6  justify-center uppercase fixed top-0 left-0 mt-24 w-full h-full bg-[#ad5050] z-50  xl:bg-slate-800 lg:hidden "
             }
             onClick={() => setIsMenuOpen(true)}
           >
@@ -92,30 +92,6 @@ const Header = (keyword) => {
                 Customization
               </Link>
             </li>
-            <li className="flex-none">
-              <Link
-                to="/password"
-                className="block py-2 px-4 rounded-lg hover:bg-[#6d5e5e] hover:text-white"
-              >
-                Password
-              </Link>
-            </li>
-            {/* <li className="flex-none">
-              <Link
-                to="/material"
-                className="block py-2 px-4 rounded-lg hover:bg-[#6d5e5e] hover:text-white"
-              >
-                Test Payment
-              </Link>
-            </li> */}
-            {/* <li className="flex-none">
-              <Link
-                to="/chat"
-                className="block py-2 px-4 rounded-lg hover:bg-[#6d5e5e] hover:text-white"
-              >
-                Chat
-              </Link>
-            </li> */}
           </ul>
         </div>
 
@@ -221,6 +197,12 @@ const Header = (keyword) => {
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
                     Profile
+                  </Link>
+                  <Link
+                    to="/password"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    Password
                   </Link>
                   <Link
                     to="/orders/me"
