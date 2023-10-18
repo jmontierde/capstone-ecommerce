@@ -137,7 +137,7 @@ const AllRefunds = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex">
+        <div className="flex flex-col lg:flex-row ">
           <Sidebar />
           <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -151,14 +151,14 @@ const AllRefunds = () => {
                   </Typography>
                 </div>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-6">
                 <button
-                  className="bg-red-500 text-white px-3 py-2"
+                  className="bg-red-500 text-white px-3 py-3 lg:py-2 text-xs rounded lg:text-base"
                   onClick={deleteSelectedRefunds}
                 >
                   Delete Selected Products
                 </button>
-                <div className="relative w-full md:w-72 mr-6">
+                <div className="relative lg:w-72 w-48 lg:mr-6">
                   <input
                     type="text"
                     placeholder="Search"

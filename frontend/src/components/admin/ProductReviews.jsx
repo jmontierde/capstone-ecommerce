@@ -132,10 +132,10 @@ const ProductReviews = () => {
   return (
     <div>
       <MetaData title={"Product Reviews"} />
-      <div className="flex">
+      <div className="flex flex-col lg:flex-row ">
         <Sidebar />
 
-        <div className="w-10/12 ">
+        <div className="w-full max-h-screen">
           <div className="flex justify-center  items-center my-12">
             <form onSubmit={submitHandler} className="space-y-6">
               <div className="w-96 ">
@@ -167,7 +167,7 @@ const ProductReviews = () => {
 
           {reviews ? (
             reviews.length > 0 ? (
-              <Card className="h-full w-full">
+              <Card className="h-auto w-full">
                 <CardHeader
                   floated={false}
                   shadow={false}
@@ -185,12 +185,12 @@ const ProductReviews = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <button
-                      className="bg-red-500 text-white px-3 py-2"
+                      className="bg-red-500 text-white px-3 py-3 lg:py-2 text-xs rounded lg:text-base"
                       onClick={deleteSelectedReviews}
                     >
                       Delete Selected reviews
                     </button>
-                    <div className="relative w-full md:w-72 mr-6">
+                    <div className="relative lg:w-72 w-48 lg:mr-6">
                       <input
                         type="text"
                         placeholder="Search"

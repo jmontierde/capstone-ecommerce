@@ -6,13 +6,23 @@ import Loader from "../layout/Loader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import html2canvas from "html2canvas";
-
+import { Card, Typography } from "@material-tailwind/react";
 const Report = () => {
   const { loading, error, orders } = useSelector((state) => state.allOrders);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [showDayPicker, setShowDayPicker] = useState(false);
+
+  const TABLE_HEAD = [
+    "No",
+    "ORDER ID",
+    "Item Name",
+    "Num of Items",
+    "Quantity",
+    "Amount",
+    "Total",
+  ];
 
   const filterOrdersByMonth = () => {
     return orders.filter((order) => {
@@ -114,15 +124,15 @@ const Report = () => {
   };
 
   return (
-    <div className="flex font-helvetica">
+    <div className="flex font-helvetica  flex-col lg:flex-row  ">
       <Sidebar />
       <div className="w-full ">
         <div className="flex justify-between px-6 items-center my-6 ">
-          <div className="space-x-3">
+          <div className="lg:space-x-3 sm:w-1/2">
             <select
               value={showDayPicker ? "day" : selectedWeek ? "week" : "month"}
               onChange={handleSelectChange}
-              className="border rounded px-4 py-2"
+              className="border rounded px-4 py-2 w-full lg:w-auto"
             >
               <option value="month">Month</option>
               <option value="week">Week</option>
@@ -132,14 +142,14 @@ const Report = () => {
               <DatePicker
                 selected={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
-                className="border rounded px-4 py-2"
+                className="border rounded px-4 py-2 w-full lg:w-auto"
               />
             ) : selectedWeek ? (
               <DatePicker
                 selected={selectedWeek}
                 onChange={(date) => setSelectedWeek(date)}
                 showWeekNumbers
-                className="border rounded px-4 py-2"
+                className="border rounded px-4 py-2 w-full lg:w-auto"
               />
             ) : (
               <DatePicker
@@ -147,13 +157,13 @@ const Report = () => {
                 onChange={(date) => setSelectedDate(date)}
                 showMonthYearPicker
                 dateFormat="MMMM yyyy"
-                className="border rounded px-4 py-2 mr-4"
+                className="border rounded px-4 py-2 mr-4 w-full lg:w-auto"
               />
             )}
           </div>
 
           <button
-            className="px-4 py-2 ml-4 rounded bg-blue-500 text-white"
+            className="px-4 py-2 ml-4 rounded bg-blue-500 text-white "
             onClick={downloadPDF}
           >
             Download PDF
@@ -164,52 +174,121 @@ const Report = () => {
         ) : (
           <div className="flex container mx-auto ">
             <div className="flex flex-col w-full justify-center ">
-              <table ref={pdfTableRef} className="table-fixed   w-full h-auto">
-                <thead className="bg-[#ECEFF1]">
-                  <tr>
-                    <th className="px-4 py-2">No</th>
-                    <th className="px-4 py-2">ORDER ID</th>
-                    <th className="px-4 py-2">Item Name</th>
-                    <th className="px-4 py-2">Num of Items</th>
-                    <th className="px-4 py-2">Quantity</th>
-                    <th className="px-4 py-2">Amount</th>
-                    <th className="px-4 py-2">Total</th>
-                  </tr>
-                </thead>
-                <tbody className="text-center">
-                  {filteredOrders.map((order, index) => (
-                    <tr key={order._id}>
-                      <td className="border px-4 py-2">{index + 1}</td>
-                      <td className="border px-4 py-2 break-all">
-                        {order._id}
-                      </td>
+              <Card className="h-full w-full overflow-scroll">
+                <table
+                  className="w-full min-w-max table-auto text-left"
+                  ref={pdfTableRef}
+                >
+                  <thead>
+                    <tr>
+                      {TABLE_HEAD.map((head) => (
+                        <th
+                          key={head}
+                          className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                        >
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal leading-none opacity-70"
+                          >
+                            {head}
+                          </Typography>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredOrders.map((order, index) => {
+                      const isLast = index === filteredOrders.length - 1;
+                      const classes = isLast
+                        ? "p-4"
+                        : "p-4 border-b border-blue-gray-50";
+
+                      return (
+                        <tr key={order._id}>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {index + 1}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {order._id}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {order.orderItems.map((item) => (
+                                <div key={item._id}>{item.name}</div>
+                              ))}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {order.orderItems.length}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              as="a"
+                              href="#"
+                              variant="small"
+                              color="blue-gray"
+                              className="font-medium"
+                            >
+                              {order.orderItems[0].quantity}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              as="a"
+                              href="#"
+                              variant="small"
+                              color="blue-gray"
+                              className="font-medium"
+                            >
+                              ₱{order.totalPrice.toLocaleString()}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              as="a"
+                              href="#"
+                              variant="small"
+                              color="blue-gray"
+                              className="font-medium"
+                            >
+                              ₱{order.totalPrice.toLocaleString()}
+                            </Typography>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    <tr>
+                      <td className="border px-4 py-2" colSpan="6"></td>
                       <td className="border px-4 py-2">
-                        {order.orderItems.map((item) => (
-                          <div key={item._id}>{item.name}</div>
-                        ))}
-                      </td>
-                      <td className="border px-4 py-2">
-                        {order.orderItems.length}
-                      </td>
-                      <td className="border px-4 py-2">
-                        {order.orderItems[0].quantity}
-                      </td>
-                      <td className="border px-4 py-2">
-                        ₱{order.totalPrice.toLocaleString()}
-                      </td>
-                      <td className="border px-4 py-2">
-                        ₱{order.totalPrice.toLocaleString()}
+                        Total Price: ₱{totalTotalPrice.toLocaleString()}
                       </td>
                     </tr>
-                  ))}
-                  <tr>
-                    <td className="border px-4 py-2" colSpan="6"></td>
-                    <td className="border px-4 py-2">
-                      Total Price: ₱{totalTotalPrice.toLocaleString()}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </Card>
             </div>
           </div>
         )}

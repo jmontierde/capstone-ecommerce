@@ -165,10 +165,10 @@ const UpdateTerms = () => {
   const currentItems = filteredTerms.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <div className="flex ">
+    <div className="flex flex-col lg:flex-row   ">
       <Sidebar />
 
-      <div className="flex flex-col container px-6 mx-auto">
+      <div className="flex flex-col container  py-3 lg:py-0 mx-auto">
         <Card className="h-full ">
           <CardHeader floated={false} shadow={false} className="rounded-none">
             <div className="mb-8 flex items-center justify-between gap-8">
@@ -245,8 +245,8 @@ const UpdateTerms = () => {
           {/* Create New Terms */}
 
           {/* // */}
-          <CardBody className="overflow-scroll px-0">
-            <table className="mt-4 w-full border-collapse table-auto text-left">
+          <CardBody className="overflow-scroll px-0 ">
+            <table className="mt-4 w-full border-collapse table-auto text-left ">
               <thead>
                 <tr>
                   <th className="cursor-pointer bterm-y bterm-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 ">

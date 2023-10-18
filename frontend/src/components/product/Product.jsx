@@ -29,7 +29,7 @@ const Product = ({ product }) => {
               <img
                 src={product.images[0].url}
                 alt={product.name}
-                className="w-72 h-72 py-8  mx-auto bg-[#F8F8F8]"
+                className="w-72 h-72 py-8 px-6 mx-auto bg-[#F8F8F8]"
               />
             )}
             <h2 className="text-center lg:text-left text-base md:px-12 lg:px-0">

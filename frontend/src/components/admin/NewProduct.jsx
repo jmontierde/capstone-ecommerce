@@ -101,15 +101,14 @@ const NewProduct = () => {
       reader.readAsDataURL(file);
     });
   };
-  console.log("ca", category);
 
   return (
     <>
-      <div className="flex ">
+      <div className="flex flex-col lg:flex-row">
         <Sidebar />
-        <div className="  container p-6">
+        <div className="container p-6">
           <form onSubmit={submitHandler} encType="multipart/form-data">
-            <div className="flex  mx-auto space-x-12 ">
+            <div className="flex flex-col  lg:flex-row  mx-auto lg:space-x-12 ">
               <section className=" flex flex-col w-full space-y-6">
                 <Input
                   label="Product Name"
@@ -133,7 +132,7 @@ const NewProduct = () => {
                     </Select>
                   </div>
 
-                  <div className="flex flex-col w-3/12">
+                  <div className="flex flex-col ">
                     <Input
                       label="Stock"
                       className="py-6 "
@@ -165,22 +164,22 @@ const NewProduct = () => {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </section>
-              <section className="w-1/2">
-                <h4>Product Image</h4>
+              <section className="lg:w-1/2 ">
+                <div className="flex flex-col justify-between ">
+                  <div className="flex   ">
+                    <div className="flex flex-col ">
+                      {imagesPreview.length > 0 &&
+                        imagesPreview.map((img, index) => (
+                          <img
+                            src={img}
+                            key={index}
+                            alt="Images Preview"
+                            className=" flex w-44 h-44  "
+                          />
+                        ))}
+                    </div>
 
-                <div className="flex flex-col my-6">
-                  <div className="flex space-x-12   ">
-                    {imagesPreview.length > 0 &&
-                      imagesPreview.map((img, index) => (
-                        <img
-                          src={img}
-                          key={index}
-                          alt="Images Preview"
-                          className="w-44 h-44 bg-[#FCFBFC]"
-                        />
-                      ))}
-
-                    <div className="flex justify-center items-center text-center border-2 py-12 rounded border-dotted border-[#000] w-44">
+                    <div className="flex justify-center items-center text-center border-2 py-12 rounded border-dotted border-[#000]  w-44 h-44">
                       <label
                         htmlFor="fileInput"
                         className="cursor-pointer text-[#413f3f] text-sm font-thin"
@@ -204,7 +203,7 @@ const NewProduct = () => {
                   <button
                     id="login_button"
                     type="submit"
-                    className="bg-[#003171] w-1/3 py-3  text-white rounded my-6"
+                    className="bg-[#003171] w-full lg:w-1/3 py-3  text-white rounded my-6"
                     disabled={loading}
                   >
                     {loading ? "Adding Product..." : "Add Product"}

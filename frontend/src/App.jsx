@@ -53,7 +53,6 @@ import Messenger from "./Messenger";
 import Material from "./components/pages/Material";
 import TestPayment from "./components/cart/TestPayment";
 import Wishlist from "./components/product/Wishlist";
-import Les from "./components/admin/Les";
 
 function App() {
   // const dispatch = useDispatch()
@@ -177,13 +176,6 @@ function App() {
           <Route
             path="/admin/verify/:userId"
             element={<ProtectedRoute component={VerifyUser} exact />}
-          />
-
-          <Route
-            path="/les"
-            element={
-              <ProtectedRoute component={Les} isAdmin={true} isStaff={true} />
-            }
           />
 
           <Route

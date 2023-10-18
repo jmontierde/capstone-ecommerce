@@ -22,13 +22,9 @@ const Login = () => {
     if (isAuthenticated) {
       navigate("/product");
     }
-    if (error) {
-      dispatch(clearErrors());
-      toast.error(error);
-    }
-    // if (!user) {
-    //   toast.error("Invalid Email or Password");
-    // }
+
+    console.log("ERROR", error);
+
     // if (!user) {
     //   toast.error("Invalid Email or Password");
     // }
@@ -36,6 +32,10 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (error) {
+      dispatch(clearErrors());
+      toast.error(error);
+    }
 
     dispatch(login(email, password));
   };

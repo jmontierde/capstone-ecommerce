@@ -37,7 +37,7 @@ const ConfirmOrder = () => {
     <>
       <div className="container flex flex-col mx-auto ">
         <CheckoutSteps />
-        <Card className="h-full w-full my-12 mx-6">
+        <Card className="h-full w-full my-12 lg:mx-6">
           <table className="w-full min-w-max table-fixed text-center">
             <thead>
               <tr>
@@ -66,7 +66,9 @@ const ConfirmOrder = () => {
                 console.log("CONFIRM", cart);
                 return (
                   <tr key={cart.name}>
-                    <td className={`${classes} flex `}>
+                    <td
+                      className={`${classes} flex flex-col lg:flex-row space-y-3 lg:space-y-0`}
+                    >
                       <img
                         src={cart.image}
                         alt={cart.cart}
@@ -102,8 +104,8 @@ const ConfirmOrder = () => {
         </Card>
 
         <hr />
-        <div className="flex container px-6 my-12">
-          <div className="w-4/6   space-y-3">
+        <div className="flex flex-col lg:flex-row container px-6 my-12 space-y-3 lg:space-y-0">
+          <div className="w-full   space-y-3 lg:w-4/6">
             <h4 className=" text-xl font-semibold">Shipping Information</h4>
             <div className="flex flex-col">
               <p className="">
@@ -125,8 +127,8 @@ const ConfirmOrder = () => {
             </div>
           </div>
           {/* Payment */}
-          <div className="w-2/6 flex flex-col">
-            <div className=" px-12 py-6 bg-[#484487]  rounded-2xl">
+          <div className="w-full lg:w-2/6 flex flex-col">
+            <div className=" px-12 py-6 bg-[#484487]  rounded">
               <div>
                 <div className="flex justify-between text-[#fff]">
                   <p>Subtotal</p>
@@ -139,7 +141,7 @@ const ConfirmOrder = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-6 ml-auto">
+            <div className="my-3  lg:mt-6 lg:ml-auto">
               <button
                 className="bg-[#4F46E5] p-3 rounded text-[#fff] "
                 onClick={processToPayment}

@@ -57,21 +57,21 @@ const Dashboard = () => {
       ) : (
         <div className="flex flex-col lg:flex-row">
           <Sidebar />
-          <div className=" container p-6 space-y-6 ">
+          <div className="w-full container p-6 space-y-6 ">
             <h1 className="font-semibold text-4xl">Welcome back!</h1>
 
-            <div className="flex gap-6">
-              <section className="flex flex-col w-4/12 ">
+            <div className="flex flex-col lg:flex-row gap-6 ">
+              <section className="flex flex-col w-full lg:w-4/12 ">
                 <div className="text-center  h-full flex flex-col ">
-                  <div className="bg-[#1D1D1D] flex justify-center items-center rounded-t-lg  h-36 w-full space-x-1 ">
+                  <div className="bg-[#1D1D1D] flex justify-start items-center rounded-t-lg px-6  h-36 w-full space-x-1 ">
                     <img
                       src={user.avatar.url}
                       alt="avatar"
-                      className="rounded-full w-24 h-24"
+                      className="rounded-full w-24 h-24 bg-[#fefbfb]"
                     />
 
-                    <div className=" break-all">
-                      <h2 className="text-[#fff] text-lg">{user.name}</h2>
+                    <div className=" text-left px-1 break-all">
+                      <h2 className="text-[#fff] text-lg">{`${user.firstName} ${user.lastName}`}</h2>
                       <p className="text-[#BBC363] text-sm">{user.email}</p>
                     </div>
                   </div>
@@ -86,23 +86,42 @@ const Dashboard = () => {
                 </div>
               </section>
               {/* Other Info */}
-              <section className="w-8/12 ">
-                <div className="flex justify-around items-center gap-6 text-white">
+              <section className="w-full lg:w-8/12 ">
+                <div className="flex justify-around items-center gap-1 lg:gap-6 text-white">
                   <div className="bg-[#373737] w-full rounded-lg h-36 flex flex-col justify-center items-center">
-                    <h4 className="text-lg">Products</h4>
+                    <h4 className="text-sm lg:text-lg">Products</h4>
                     <p>{products && products.length}</p>
-                    <Link to="/admin/products">View Details</Link>
+                    <Link
+                      to="/admin/products"
+                      className="text-xs lg:text-base hover:opacity-70"
+                    >
+                      View Details
+                    </Link>
                   </div>
                   <div className="bg-[#373737] w-full rounded-lg h-36 flex flex-col justify-center items-center">
-                    <h4 className="text-lg">Orders</h4>
+                    <h4 className="text-sm lg:text-lg">Orders</h4>
                     <p>{orders && orders.length}</p>
+                    <Link
+                      to="/admin/orders"
+                      className="text-xs lg:text-base hover:opacity-70"
+                    >
+                      View Details
+                    </Link>
                   </div>
                   <div className="bg-[#373737] w-full rounded-lg h-36 flex flex-col justify-center items-center">
-                    <h4 className="text-lg">Users</h4>
+                    <h4 className="text-sm lg:text-lg">Users</h4>
                     <p>{users && users.length}</p>
+                    <Link
+                      to="/admin/users"
+                      className="text-xs lg:text-base hover:opacity-70"
+                    >
+                      View Details
+                    </Link>
                   </div>
                   <div className="bg-[#373737] w-full rounded-lg h-36 flex flex-col justify-center items-center">
-                    <h4 className="text-lg">Out of Stock</h4>
+                    <h4 className="text-sm  lg:text-lg text-center">
+                      Out of Stock
+                    </h4>
                     <p>{outOfStock}</p>
                   </div>
                 </div>

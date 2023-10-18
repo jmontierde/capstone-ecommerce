@@ -233,7 +233,10 @@ export const PaymentForm = ({ stripePromise }) => {
         </Card>
         {/* ONLINE PAYMENT */}
         {paymentMethod === "card" ? (
-          <form onSubmit={submitHandler} className="bg-[#fff] w-1/3 p-6 my-6">
+          <form
+            onSubmit={submitHandler}
+            className="w-full lg:w-1/2 py-6 lg:px-6 my-6 "
+          >
             <h1 className="mb-4 font-bold text-xl">Card Details</h1>
             <div className="w-full space-y-3">
               <label htmlFor="card_num_field">Card Number</label>

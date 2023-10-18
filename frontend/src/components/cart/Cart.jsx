@@ -84,14 +84,16 @@ const Cart = () => {
           </div>
         ) : (
           <>
-            <div className="container mx-auto my-6">
+            <div className="container mx-auto sm:px-6 my-6">
               {/* <h1>
                 Cart:
                 {cartItems.length > 1
                   ? `${cartItems.length} items`
                   : `${cartItems.length} item`}{" "}
               </h1> */}
-              <h1 className="font-bold text-4xl my-12">Shopping Cart</h1>
+              <h1 className="font-bold text-2xl lg:text-4xl my-12">
+                Shopping Cart
+              </h1>
               <div className="flex sm:flex-col lg:flex-row gap-16">
                 <div className="flex flex-col lg:w-2/3">
                   <hr className="h-px mb-3" />
@@ -99,20 +101,20 @@ const Cart = () => {
                   {cartItems.map((cart) => (
                     <>
                       <div
-                        className="flex justify-between space-x-32 items-start w-full py-6 gap-1"
+                        className="flex justify-between items-center lg:items-start w-full py-6 gap-6 "
                         key={cart.name}
                       >
-                        <div className="w-4/6  flex ">
+                        <div className="w-full  flex flex-col lg:flex-row ">
                           <img
                             src={cart.image}
-                            className="w-1/2 h-48 mx-auto bg-[#F7F7F7]"
+                            className="lg:w-1/2 w-full h-48 mx-auto bg-[#F7F7F7]"
                           />
-                          <div className="flex flex-col px-6 w-1/2 justify-between ">
+                          <div className="flex flex-col lg:px-6  w-full lg:w-1/2 lg:justify-between  ">
                             <p>{cart.name}</p>
                             <h4>₱{cart.price}</h4>
                           </div>
                         </div>
-                        <div className="space-x-1  p-3 flex items-center justify-between  rounded-sm  border border-[#171717] mx-auto ">
+                        <div className="space-x-1  p-3 flex items-center justify-between  rounded-sm  border border-[#171717] mx-auto w-44">
                           <button
                             className="px-3 py-1  "
                             onClick={() =>
@@ -164,7 +166,7 @@ const Cart = () => {
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="w-6 h-6"
+                          className="w-2/4  h-6  "
                         >
                           <path
                             strokeLinecap="round"

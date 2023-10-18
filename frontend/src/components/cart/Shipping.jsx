@@ -34,10 +34,10 @@ const Shipping = () => {
   return (
     <>
       <CheckoutSteps />
-      <div className="flex items-center justify-center h-screen  font-sans">
+      <div className="flex items-center justify-center   font-sans ">
         <form
           onSubmit={submitHandler}
-          className="flex flex-col  items-center justify-center gap-8 w-1/2"
+          className="flex flex-col  items-center justify-center gap-8 p-6  w-full lg:px-0 lg:w-1/2 "
         >
           <label
             htmlFor="personal-info"
@@ -45,7 +45,7 @@ const Shipping = () => {
           >
             Personal Information
           </label>
-          <div className="flex gap-2 w-full ">
+          <div className="flex flex-col lg:flex-row gap-6  w-full ">
             <input
               type="text"
               placeholder="First Name"
@@ -63,12 +63,12 @@ const Shipping = () => {
           </div>
 
           {/* Address */}
-          <label htmlFor="address" className="mr-auto font-semibold text-xl">
-            Country / Region
-          </label>
 
-          <div className="flex gap-2 w-full">
-            <div className="flex gap-2 w-full">
+          <div className="flex flex-col gap-6 w-full">
+            <label htmlFor="address" className="mr-auto font-semibold text-xl">
+              Country / Region
+            </label>
+            <div className="flex flex-col lg:flex-row  gap-6 w-full">
               <input
                 type="text"
                 placeholder="Street Address"

@@ -10,7 +10,7 @@ const CheckoutSteps = ({ shipping, confirmOrder, payment }) => {
   };
 
   return (
-    <div className=" container flex flex-col  mx-auto ">
+    <div className=" container flex flex-col sm:px-6  mx-auto ">
       <Breadcrumbs>
         <Link
           to="/cart"
