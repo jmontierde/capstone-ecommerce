@@ -186,7 +186,7 @@ const NewCategory = () => {
                     className="bg-red-500 text-white px-3 py-3 lg:py-2 text-xs rounded lg:text-base"
                     onClick={deleteSelectedRefunds}
                   >
-                    Delete Selected Products
+                    Delete Selected Category
                   </button>
                   <div className="relative lg:w-72 w-full lg:mr-6">
                     <input

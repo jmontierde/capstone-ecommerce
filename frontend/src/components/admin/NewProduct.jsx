@@ -66,6 +66,17 @@ const NewProduct = () => {
       );
       return;
     }
+    const parsedStock = parseFloat(stock);
+    if (
+      isNaN(parsedStock) ||
+      !/^\d+(\.\d{1,2})?$/.test(price) ||
+      parsedStock <= 0
+    ) {
+      alert.error(
+        "Please enter a valid positive numeric price for the product."
+      );
+      return;
+    }
 
     const formData = new FormData();
     formData.set("name", name);

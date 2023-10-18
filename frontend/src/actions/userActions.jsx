@@ -51,6 +51,7 @@ import {
   VERIFY_USER_SUCCESS,
   VERIFY_USER_FAIL,
   REGISTER_USER_SUCCESS_PENDING_VERIFICATION,
+  CLEAR_ERRORS_REDUCER,
   // GET_TERMS_REQUEST,
   // GET_TERMS_SUCCESS,
   // GET_TERMS_FAIL,
@@ -246,7 +247,7 @@ export const updatePassword = (passwords) => async (dispatch) => {
       payload: data.success,
     });
   } catch (error) {
-    console.log("Error message from API:", error);
+    // console.log("Error message from API:", error);
 
     if (error.response) {
       // If the error has a response, it means it's a server error
@@ -263,6 +264,7 @@ export const updatePassword = (passwords) => async (dispatch) => {
             type: UPDATE_PASSWORD_FAIL,
             payload: "Old password is incorrect",
           });
+          console.log("res");
         } else {
           // Handle other 400 errors here
           dispatch({
@@ -519,5 +521,11 @@ export const removeUser = (userId) => {
 export const clearErrors = () => async (dispatch) => {
   dispatch({
     type: CLEAR_ERRORS,
+  });
+};
+
+export const clearErrorsReducer = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_ERRORS_REDUCER,
   });
 };

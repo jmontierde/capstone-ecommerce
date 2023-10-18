@@ -58,7 +58,7 @@ const AllRefunds = () => {
     }
 
     if (isDeleted) {
-      alert.success("Order deleted successfully");
+      alert.success("Refund deleted successfully");
       navigate("/admin/refunds");
       dispatch({ type: DELETE_REFUND_RESET });
     }
@@ -156,7 +156,7 @@ const AllRefunds = () => {
                   className="bg-red-500 text-white px-3 py-3 lg:py-2 text-xs rounded lg:text-base"
                   onClick={deleteSelectedRefunds}
                 >
-                  Delete Selected Products
+                  Delete Selected Refunds
                 </button>
                 <div className="relative lg:w-72 w-48 lg:mr-6">
                   <input
@@ -208,6 +208,7 @@ const AllRefunds = () => {
                 </thead>
                 <tbody>
                   {currentItems.map((refund, index) => {
+                    console.log("REFUND", refund._id);
                     const isLast = index === refunds.length - 1;
                     const classes = isLast
                       ? "p-4"
@@ -321,7 +322,7 @@ const AllRefunds = () => {
                               src="/images/deleteHover.png"
                               alt="View refund"
                               className="w-6 h-6 cursor-pointer"
-                              onClick={() => deleteUserHandler(refund._id)}
+                              onClick={() => dispatch(deleteRefund(refund._id))}
                             />
                           </div>
                         </td>

@@ -13,6 +13,7 @@ import {
   ListItemPrefix,
   Typography,
 } from "@material-tailwind/react";
+import { clearErrorsReducer } from "../../actions/userActions";
 
 const Refund = () => {
   const dispatch = useDispatch();
@@ -31,9 +32,12 @@ const Refund = () => {
 
   useEffect(() => {
     if (error) {
+      console.log("ERROR Refund", error);
       alert.error(error);
       dispatch(clearErrors());
     }
+
+    console.log("ERRRROR", error);
 
     if (success) {
       alert.success("Refund request successfully");
@@ -240,7 +244,6 @@ const Refund = () => {
               <button
                 className="bg-[#030105] border rounded py-2 my-3 text-[#fff] "
                 type="submit"
-                disabled={loading ? true : false}
               >
                 Refund
               </button>

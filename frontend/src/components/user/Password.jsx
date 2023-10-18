@@ -5,7 +5,11 @@ import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
 import { Input } from "@material-tailwind/react";
-import { loadUser, clearErrors } from "../../actions/userActions";
+import {
+  loadUser,
+  clearErrors,
+  clearErrorsReducer,
+} from "../../actions/userActions";
 import { useAlert } from "react-alert";
 import { updatePassword } from "../../actions/userActions";
 
@@ -24,7 +28,9 @@ const Password = () => {
   useEffect(() => {
     if (error) {
       alert.error(error);
-      dispatch(clearErrors());
+
+      console.log("ERROR", error);
+      dispatch(clearErrorsReducer());
       // Remove the navigate to the login route on error
       navigate("/password");
     }
@@ -47,6 +53,7 @@ const Password = () => {
       alert.error("Please fill in all the fields.");
       return;
     }
+
     const formData = new FormData();
     formData.set("oldPassword", oldPassword);
     formData.set("newPassword", newPassword);

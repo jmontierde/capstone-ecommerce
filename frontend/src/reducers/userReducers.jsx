@@ -50,6 +50,7 @@ import {
   // GET_TERMS_SUCCESS,
   // GET_TERMS_FAIL,
   CLEAR_ERRORS,
+  CLEAR_ERRORS_REDUCER,
 } from "../constants/userConstant";
 
 // export const termsReducer = (state = { content: [] }, action) => {
@@ -106,6 +107,8 @@ export const authReducer = (
   state = { user: {}, loading: false, isAuthenticated: false, error: null },
   action
 ) => {
+  console.log("state authReducer", state);
+
   switch (action.type) {
     case LOGIN_REQUEST:
     case REGISTER_USER_REQUEST:
@@ -237,6 +240,8 @@ export const userReducer = (state = {}, action) => {
 };
 
 export const updatePasswordReducer = (state = {}, action) => {
+  console.log("state", state);
+
   switch (action.type) {
     case UPDATE_PASSWORD_REQUEST:
       return {
@@ -260,14 +265,17 @@ export const updatePasswordReducer = (state = {}, action) => {
     case UPDATE_PASSWORD_FAIL:
       return {
         ...state,
-        loading: false,
+        loading: true,
         error: action.payload,
+        isAuthenticated: true,
       };
 
     case CLEAR_ERRORS:
+      console.log("ERROR", CLEAR_ERRORS);
       return {
         ...state,
         error: null,
+        isAuthenticated: true,
       };
 
     default:
@@ -416,6 +424,22 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
       };
 
     case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const clearErrorsReducer = (state = {}, action) => {
+  console.log("state", state);
+
+  switch (action.type) {
+    case CLEAR_ERRORS_REDUCER:
+      console.log("ERROR", CLEAR_ERRORS_REDUCER);
       return {
         ...state,
         error: null,
