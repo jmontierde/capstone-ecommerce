@@ -16,11 +16,21 @@ const ConfirmOrder = () => {
     (acc, cart) => acc + cart.price * cart.quantity,
     0
   );
-  const shippingPrice = itemsPrice > 200 ? 0 : 25;
+  // const shippingPrice = itemsPrice > 200 ? 0 : 25;
   // Maybe add later
   // const taxPrice = Number((0.05 * itemsPrice).toFixed(2));
-  // const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);0
-  const totalPrice = itemsPrice.toFixed(2);
+  // const totalPrice = itemsPrice.toFixed(2);
+  let shippingPrice;
+
+  if (shippingInfo.state === "Metro Manila") {
+    shippingPrice = 60;
+  } else {
+    shippingPrice = 120;
+  }
+  const totalPrice = (itemsPrice + shippingPrice).toFixed(2);
+
+  console.log("totalPrice", totalPrice);
+
   const processToPayment = () => {
     const data = {
       itemsPrice: itemsPrice.toFixed(2),
@@ -121,7 +131,7 @@ const ConfirmOrder = () => {
               <p className="">
                 Address:{" "}
                 <span className="">
-                  {`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`}
+                  {`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.state} ${shippingInfo.country}`}
                 </span>
               </p>
             </div>
@@ -134,8 +144,13 @@ const ConfirmOrder = () => {
                   <p>Subtotal</p>
                   <p>₱{itemsPrice.toFixed(2)}</p>
                 </div>
+                <div className="flex justify-between text-[#fff]">
+                  <p>Shipping fee</p>
+                  <p>₱{shippingPrice.toFixed(2)}</p>
+                </div>
+                <hr className="my-3" />
 
-                <div className="flex mt-6 justify-between text-[#fff]">
+                <div className="flex  justify-between text-[#fff]">
                   <p>Total</p>
                   <p>₱{totalPrice}</p>
                 </div>

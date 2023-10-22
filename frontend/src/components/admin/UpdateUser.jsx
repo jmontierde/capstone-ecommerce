@@ -15,7 +15,9 @@ import { useNavigate, useParams } from "react-router-dom";
 const UpdateUser = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState();
   const [email, setEmail] = useState("");
+
   const [role, setRole] = useState("");
 
   const alert = useAlert();
@@ -63,6 +65,8 @@ const UpdateUser = () => {
     const formData = new FormData();
     formData.set("firstName", firstName);
     formData.set("lastName", lastName);
+    formData.set("phoneNumber", phoneNumber);
+
     formData.set("email", email);
     formData.set("role", role);
 
@@ -92,6 +96,13 @@ const UpdateUser = () => {
                   id="lastName"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  className="border border-[#000] py-2 my-1 px-3"
+                />
+                <input
+                  type="text"
+                  id="lastName"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   className="border border-[#000] py-2 my-1 px-3"
                 />
                 <div className="flex flex-col py-2 my-1 space-y-1">

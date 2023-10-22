@@ -19,15 +19,19 @@ const orderSchema = mongoose.Schema({
       type: String,
       required: true,
     },
+    state: {
+      type: String,
+      required: true,
+    },
     country: {
       type: String,
       required: true,
     },
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    type: mongoose.Schema.ObjectId,
     ref: "User",
+    required: true,
   },
   orderItems: [
     {
@@ -86,12 +90,6 @@ const orderSchema = mongoose.Schema({
     required: true,
     default: 0.0,
   },
-
-  // orderStatus: {
-  //     type: String,
-  //     required: true,
-  //     default: 'Processing'
-  // },
   orderStatus: {
     type: String,
     enum: [
@@ -106,6 +104,11 @@ const orderSchema = mongoose.Schema({
   deliveredAt: {
     type: Date,
   },
+  // paymentMethod: {
+  //   type: String,
+  //   enum: ["COD", "Online"], // Add other payment methods as needed
+  //   required: true,
+  // },
   createdAt: {
     type: Date,
     default: Date.now(),

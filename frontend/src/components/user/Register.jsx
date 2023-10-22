@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { register, clearErrors } from "../../actions/userActions";
+import {
+  register,
+  clearErrors,
+  clearErrorsReducer,
+} from "../../actions/userActions";
+import axios from "axios";
+
 // import MetaData from './layout/MetaData'
 import { useAlert } from "react-alert";
 import { Link, useNavigate } from "react-router-dom";
@@ -24,7 +30,7 @@ const Register = () => {
     password: "",
     phoneNumber: "",
   });
-
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const { firstName, lastName, email, password, phoneNumber } = user;
 
   const [avatar, setAvatar] = useState(null);
@@ -45,19 +51,18 @@ const Register = () => {
   const { isAuthenticated, error, loading } = useSelector(
     (state) => state.auth
   );
+
+  console.log("ERROR REGUSTER", error);
   const navigate = useNavigate();
   console.log("isAuthenticated", isAuthenticated);
   useEffect(() => {
-    if (isAuthenticated) {
-      toast.success("You've successfully created an account"); // Success toast
+    if (registrationSuccess) {
+      toast.success("You've successfully created an account"); // Display success toast
       navigate("/login");
-    } else if (error) {
-      toast.error(error); // Error toast
-      dispatch(clearErrors());
     }
     if (error) {
       toast.error(error);
-      dispatch(clearErrors());
+      dispatch(clearErrorsReducer());
     }
   }, [dispatch, toast, isAuthenticated, error]);
 
@@ -103,36 +108,13 @@ const Register = () => {
     formData.set("validId", validId);
     formData.set("withBirthdayId", withBirthdayId);
 
-    // dispatch(register(formData));
+    const success = dispatch(register(formData));
 
-    const response = dispatch(register(formData));
-    // console.log("RESPONSE", response);
-
-    try {
-      const response = dispatch(register(formData));
-      console.log("RESPONSE", response);
-
-      if (response.data) {
-        toast.success("Your account is pending verification by the admin.");
-        toast.success("You've successfully created an account");
-        navigate("/login");
-      } else if (response.error) {
-        toast.error(response.error);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    if (response.error) {
-      toast.error(response.error);
-    } else if (response.verificationStatus === "Verified") {
-      console.log("response", response);
-
-      toast.success("You've successfully created an account");
-      navigate("/login");
-    } else if (response.verificationStatus === "Pending") {
-      console.log("response", response);
+    if (success) {
+      toast.success("You've succefully create an account");
       toast.error("Your account is pending verification by the admin.");
+      // Registration was successful, navigate to login page
+      navigate("/login");
     }
   };
 

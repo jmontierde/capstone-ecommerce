@@ -34,6 +34,7 @@ import {
   UPDATE_REFUND_FAIL,
 } from "../constants/orderConstants";
 import { DELETE_REVIEW_FAIL } from "../constants/productConstants";
+import { CLEAR_ERRORS_REDUCER } from "../constants/userConstant";
 const url = "http://localhost:7000";
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -319,6 +320,6 @@ export const updateRefund = (id, refundData) => async (dispatch) => {
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({
-    type: CLEAR_ERRORS,
+    type: CLEAR_ERRORS_REDUCER,
   });
 };

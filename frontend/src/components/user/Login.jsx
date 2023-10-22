@@ -24,18 +24,18 @@ const Login = () => {
     }
 
     console.log("ERROR", error);
-
-    // if (!user) {
-    //   toast.error("Invalid Email or Password");
-    // }
   }, [dispatch, alert, user, isAuthenticated, error]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (error) {
-      dispatch(clearErrors());
-      toast.error(error);
+    if (!user) {
+      console.log("A");
+      toast.error("Invalid Email or Password");
     }
+    // if (error) {
+    //   dispatch(clearErrors());
+    //   toast.error(error);
+    // }
 
     dispatch(login(email, password));
   };

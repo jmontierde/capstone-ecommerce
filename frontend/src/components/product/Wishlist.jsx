@@ -32,7 +32,7 @@ const Wishlist = () => {
     // }
 
     if (isDeleted) {
-      toast.success("User deleted successfully");
+      toast.success("Wishlist deleted successfully");
       navigate("/wishlist");
       dispatch({ type: REMOVE_FROM_WISHLIST_RESET });
     }

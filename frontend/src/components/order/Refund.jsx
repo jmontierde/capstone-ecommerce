@@ -13,7 +13,6 @@ import {
   ListItemPrefix,
   Typography,
 } from "@material-tailwind/react";
-import { clearErrorsReducer } from "../../actions/userActions";
 
 const Refund = () => {
   const dispatch = useDispatch();
@@ -46,8 +45,7 @@ const Refund = () => {
     }
   }, [dispatch, alert, error, success]);
 
-  const isRequiredFieldEmpty =
-    !orderId || selectedReasons.length === 0 || !otherReason;
+  const isRequiredFieldEmpty = !orderId || selectedReasons.length === 0;
 
   const submitHandler = (e) => {
     e.preventDefault();

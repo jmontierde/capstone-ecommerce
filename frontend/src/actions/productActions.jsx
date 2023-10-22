@@ -47,6 +47,7 @@ import {
   GET_RELATED_PRODUCTS_REQUEST,
   GET_RELATED_PRODUCTS_FAIL,
 } from "../constants/productConstants";
+import { CLEAR_ERRORS_REDUCER } from "../constants/userConstant";
 
 //Related Product
 
@@ -196,6 +197,8 @@ export const updateProduct = (id, productData) => async (dispatch) => {
       productData,
       config
     );
+
+    console.log("Data", data);
 
     dispatch({
       type: UPDATE_PRODUCT_SUCCESS,
@@ -491,6 +494,6 @@ export const updateCategory = (id, categoryData) => async (dispatch) => {
 };
 export const clearErrors = () => async (dispatch) => {
   dispatch({
-    type: CLEAR_ERRORS,
+    type: CLEAR_ERRORS_REDUCER,
   });
 };

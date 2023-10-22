@@ -31,12 +31,18 @@ const Profile = () => {
 
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+
   const [email, setEmail] = useState();
+
+  console.log(user.phoneNumber);
 
   useEffect(() => {
     if (user) {
       setFirstName(user.firstName);
       setLastName(user.lastName);
+      setPhoneNumber(user.phoneNumber);
+
       setEmail(user.email);
       setAvatarPreview(user.avatar.url);
     }
@@ -53,6 +59,8 @@ const Profile = () => {
       // Update the states with the new values from the updated user object
       setFirstName(user.firstName);
       setLastName(user.lastName);
+      setPhoneNumber(user.phoneNumber);
+
       setEmail(user.email);
       setAvatarPreview(user.avatar.url);
 
@@ -71,6 +79,7 @@ const Profile = () => {
     const formData = new FormData();
     formData.set("firstName", firstName);
     formData.set("lastName", lastName);
+    formData.set("phoneNumber", phoneNumber);
     formData.set("email", email);
     formData.set("avatar", avatar);
 
@@ -159,6 +168,12 @@ const Profile = () => {
                     label="Last Name"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                  />
+                  <Input
+                    size="lg"
+                    label="Phone Number"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                   />
 
                   <Input

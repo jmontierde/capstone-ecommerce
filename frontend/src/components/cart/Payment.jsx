@@ -67,6 +67,7 @@ export const PaymentForm = ({ stripePromise }) => {
   const paymentData = {
     amount: Math.round(orderInfo.totalPrice * 100),
   };
+  console.log("paymentData", paymentData);
 
   const options = {
     style: {

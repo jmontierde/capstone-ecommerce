@@ -10,6 +10,7 @@ const cloudinary = require("cloudinary");
 const isEmailValid = require("../utils/emailValidator");
 const TermsAndConditions = require("../models/TermsAndConditions");
 const Address = require("../models/address");
+const twilio = require("twilio");
 // Register a user => /api/v1/register
 // Email validator function
 function isGmailEmail(email) {
@@ -20,6 +21,14 @@ function isGmailEmail(email) {
 }
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const { firstName, lastName, email, password, phoneNumber } = req.body;
+
+  const existingUserWithPhoneNumber = await User.findOne({ phoneNumber });
+
+  if (existingUserWithPhoneNumber) {
+    return res
+      .status(400)
+      .json({ message: "This phone number is already in use." });
+  }
 
   const existingUser = await User.findOne({ email });
 
@@ -56,6 +65,26 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     // if (!isEmailValid) {
     //   throw new Error("Invalid email address");
     // }
+
+    // let phoneNumber = req.body.phoneNumber;
+    // // Remove any non-numeric characters from the phone number
+    // phoneNumber = phoneNumber.replace(/\D/g, "");
+    // Send a verification code to the provided phone number using Twilio
+    // const twilioClient = new twilio(
+    //   process.env.TWILIO_ACCOUNT_SID,
+    //   process.env.TWILIO_AUTH_TOKEN
+    // );
+
+    // console.log("twilioClient", twilioClient);
+
+    // const verificationCode = Math.floor(1000 + Math.random() * 9000); // Generate a random verification code
+
+    // await twilioClient.messages.create({
+    //   body: `Your verification code is: ${verificationCode}`,
+    //   from: process.env.TWILIO_PHONE_NUMBER,
+    //   to: phoneNumber,
+    // });
+
     const user = await User.create({
       firstName,
       lastName,
@@ -79,6 +108,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
         public_id: validId.public_id,
         url: validId.secure_url,
       },
+      // verificationCode: verificationCode,
     });
 
     // const smsMessage = "Thank you for signing up!";
@@ -86,7 +116,8 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 
     sendToken(user, 200, res);
   } catch (error) {
-    res.status(400).json({ message: error });
+    console.error(error);
+    return res.status(400).json({ message: error });
   }
 });
 
@@ -273,6 +304,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
   };
 
   // Update avatar

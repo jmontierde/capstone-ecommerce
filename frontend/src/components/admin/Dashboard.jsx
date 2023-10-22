@@ -55,12 +55,12 @@ const Dashboard = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex flex-col lg:flex-row">
+        <div className="flex flex-col lg:flex-row ">
           <Sidebar />
           <div className="w-full container p-6 space-y-6 ">
             <h1 className="font-semibold text-4xl">Welcome back!</h1>
 
-            <div className="flex flex-col lg:flex-row gap-6 ">
+            <div className="flex flex-col lg:flex-row gap-6 w-full">
               <section className="flex flex-col w-full lg:w-4/12 ">
                 <div className="text-center  h-full flex flex-col ">
                   <div className="bg-[#1D1D1D] flex justify-start items-center rounded-t-lg px-6  h-36 w-full space-x-1 ">
@@ -86,7 +86,7 @@ const Dashboard = () => {
                 </div>
               </section>
               {/* Other Info */}
-              <section className="w-full lg:w-8/12 ">
+              <section className="w-full  lg:w-8/12  ">
                 <div className="flex justify-around items-center gap-1 lg:gap-6 text-white">
                   <div className="bg-[#373737] w-full rounded-lg h-36 flex flex-col justify-center items-center">
                     <h4 className="text-sm lg:text-lg">Products</h4>

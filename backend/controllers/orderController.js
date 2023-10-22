@@ -6,8 +6,12 @@ const Product = require("../models/product");
 const Refund = require("../models/refund");
 const cloudinary = require("cloudinary");
 const sendSMS = require("../utils/sendSMS");
-
+const NodeGeocoder = require("node-geocoder");
 // Create a new order => /api/v1/order/new
+const geocoder = NodeGeocoder({
+  provider: "google",
+  apiKey: "7502029e110644f39c6cfd90a63c3b83", // Replace with your Google Maps API key
+});
 
 exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   const {
@@ -91,57 +95,6 @@ exports.allOrders = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
-//   const { status } = req.body;
-
-//   const order = await Order.findById(req.params.id);
-
-//   if (!order) {
-//     return next(new ErrorHandler("Order not found with this ID", 404));
-//   }
-
-//   if (order.orderStatus === "Delivered") {
-//     return next(new ErrorHandler("You have already delivered this order", 400));
-//   }
-
-//   // Add validation for status transitions here
-//   switch (status) {
-//     case "Order Ready":
-//       if (order.orderStatus !== "Order Placed") {
-//         return next(new ErrorHandler("Invalid status transition", 400));
-//       }
-//       break;
-//     case "In Transit":
-//       if (order.orderStatus !== "Order Ready") {
-//         return next(new ErrorHandler("Invalid status transition", 400));
-//       }
-//       break;
-//     case "Out of Delivery":
-//       if (order.orderStatus !== "In Transit") {
-//         return next(new ErrorHandler("Invalid status transition", 400));
-//       }
-//       break;
-//     case "Delivered":
-//       if (order.orderStatus !== "Out of Delivery") {
-//         return next(new ErrorHandler("Invalid status transition", 400));
-//       }
-//       order.deliveredAt = Date.now();
-//       break;
-//     default:
-//       return next(new ErrorHandler("Invalid status", 400));
-//   }
-
-//   order.orderItems.forEach(async (item) => {
-//     await updateStock(item.product, item.quantity);
-//   });
-
-//   order.orderStatus = status;
-//   await order.save();
-
-//   res.status(200).json({
-//     success: true,
-//   });
-// });
 // Update / Process order - ADMIN  =>   /api/v1/admin/order/:id
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
@@ -278,6 +231,67 @@ exports.deleteRefund = catchAsyncErrors(async (req, res, next) => {
   }
 
   await refund.remove();
+
+  res.status(200).json({
+    success: true,
+  });
+});
+
+// COD orders
+exports.createOrderFromCOD = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { orderId, numItems, amount, status } = req.body;
+
+    const order = await Order.create({
+      orderId,
+      numItems,
+      amount,
+      status,
+      paymentMethod: "COD", // Set payment method to COD
+      shippingInfo: req.body.shippingInfo, // Assuming shippingInfo is sent in the request body
+      user: req.user._id, // Assuming user information is available in req.user
+    });
+
+    res.status(201).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Update Order - ADMIN => /api/v1/admin/orders/:id
+exports.updateOrderFromCOD = catchAsyncErrors(async (req, res, next) => {
+  const { orderId, numItems, amount, status } = req.body;
+
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(new ErrorHandler("Order not found with this ID", 404));
+  }
+
+  // Update order properties
+  order.orderId = orderId;
+  order.numItems = numItems;
+  order.amount = amount;
+  order.status = status;
+
+  await order.save();
+
+  res.status(200).json({
+    success: true,
+  });
+});
+
+exports.deleteOrderFromCOD = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(new ErrorHandler("Order not found with this ID", 404));
+  }
+
+  await order.remove();
 
   res.status(200).json({
     success: true,

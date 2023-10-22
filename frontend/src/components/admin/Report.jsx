@@ -252,7 +252,9 @@ const Report = () => {
                               color="blue-gray"
                               className="font-medium"
                             >
-                              {order.orderItems[0].quantity}
+                              {order.orderItems && order.orderItems.length > 0
+                                ? order.orderItems[0].quantity
+                                : "N/A"}
                             </Typography>
                           </td>
                           <td className={classes}>

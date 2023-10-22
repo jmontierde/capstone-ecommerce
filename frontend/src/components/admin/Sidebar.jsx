@@ -57,7 +57,7 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <div className="flex flex-col   ">
+    <div className="flex flex-col ">
       {/* <img
         src="./images/hamburger.png"
         alt=""
@@ -81,7 +81,7 @@ const Sidebar = () => {
       </svg>
 
       {openSidebarAdmin ? (
-        <Card className="min-h-screen h-full w-full max-w-[20rem] p-6 shadow-xl shadow-blue-gray-900/5 lg:block absolute  lg:relative mt-6 lg:mt-0 z-50">
+        <Card className="min-h-screen h-full  w-full max-w-[20rem] lg:p-6 shadow-xl shadow-blue-gray-900/5 lg:block absolute  lg:relative mt-6 lg:mt-0 z-50">
           <List>
             <Link to="/dashboard">
               <ListItem>

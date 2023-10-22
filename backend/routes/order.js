@@ -13,6 +13,7 @@ const {
   allRefunds,
   deleteRefund,
   updateRefund,
+  createOrderFromCOD,
 } = require("../controllers/orderController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
@@ -40,6 +41,8 @@ router
   .route("/admin/order/:id")
   .put(isAuthenticatedUser, authorizeRoles("admin", "staff"), updateOrder)
   .delete(isAuthenticatedUser, authorizeRoles("admin", "staff"), deleteOrder);
+
+router.route("/create/order/cod").post(isAuthenticatedUser, createOrderFromCOD);
 
 // router
 //   .route("/admin/orders")

@@ -103,27 +103,17 @@ const UpdateProduct = () => {
   const onChange = (e) => {
     const files = Array.from(e.target.files);
 
-    // Keep the old images and old images preview while adding new ones
-    const newImagesPreview = [...imagesPreview];
-    const newImages = [...oldImages];
-
-    let filesProcessed = 0; // Counter to track processed files
+    setImagesPreview([]);
+    setImages([]);
+    setOldImages([]);
 
     files.forEach((file) => {
       const reader = new FileReader();
 
       reader.onload = () => {
         if (reader.readyState === 2) {
-          newImagesPreview.push(reader.result);
-          newImages.push(file);
-
-          // Check if all files have been processed
-          filesProcessed++;
-          if (filesProcessed === files.length) {
-            // Update the state with new images and images preview
-            setImagesPreview(newImagesPreview);
-            setImages(newImages);
-          }
+          setImagesPreview((oldArray) => [...oldArray, reader.result]);
+          setImages((oldArray) => [...oldArray, reader.result]);
         }
       };
 
@@ -220,57 +210,32 @@ const UpdateProduct = () => {
                     ))}
 
                     <div className="flex justify-center items-center text-center border-2 py-12 rounded border-dotted border-[#000] w-44">
-                      <div>
-                        <label
-                          htmlFor="fileInput"
-                          className="cursor-pointer text-[#413f3f] text-sm font-thin"
-                        >
-                          Drop your image here, or select
-                          <span className="text-[#0c2176] font-normal pl-1">
-                            click to browse.
-                          </span>
-                        </label>
-                        <input
-                          id="fileInput"
-                          type="file"
-                          className="hidden"
-                          onChange={onChange}
-                          multiple
-                        />
-                      </div>
-                      {oldImages &&
-                        oldImages.map((img) => (
-                          <img
-                            key={img}
-                            src={img.url}
-                            alt={img.url}
-                            className="mt-3 mr-2"
-                            width="55"
-                            height="52"
-                          />
-                        ))}
-
-                      {imagesPreview.map((img) => (
-                        <img
-                          src={img}
-                          key={img}
-                          alt="Images Preview"
-                          className="mt-3 mr-2"
-                          width="55"
-                          height="52"
-                        />
-                      ))}
+                      <label
+                        htmlFor="fileInput"
+                        className="cursor-pointer text-[#413f3f] text-sm font-thin"
+                      >
+                        Drop your image here, or select
+                        <span className="text-[#0c2176] font-normal pl-1">
+                          click to browse.
+                        </span>
+                      </label>
+                      <input
+                        id="fileInput"
+                        type="file"
+                        className="hidden"
+                        onChange={onChange}
+                        multiple
+                      />
                     </div>
                   </div>
 
                   <button
                     id="login_button"
                     type="submit"
-                    className="bg-[#003171] w-1/3 py-3  text-white rounded my-6"
-                    // disabled={loading}
+                    className="bg-[#003171] w-1/4 py-3 text-white rounded my-6"
+                    disabled={loading ? true : false}
                   >
-                    Add Product
-                    {/* {loading ? "Adding Product..." : "Add Product"} */}
+                    Update Product
                   </button>
                 </div>
               </section>

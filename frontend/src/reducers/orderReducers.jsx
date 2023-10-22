@@ -35,6 +35,7 @@ import {
   DELETE_REFUND_RESET,
   UPDATE_REFUND_SUCCESS,
 } from "../constants/orderConstants";
+import { CLEAR_ERRORS_REDUCER } from "../constants/userConstant";
 
 export const newOrderReducer = (state = {}, action) => {
   switch (action.type) {
@@ -210,6 +211,7 @@ export const orderReducer = (state = {}, action) => {
 
 // Refund
 export const createRefundOrderReducer = (state = { refund: {} }, action) => {
+  console.log("State Refund", state);
   switch (action.type) {
     case REFUND_ORDER_REQUEST:
       return {
@@ -236,7 +238,7 @@ export const createRefundOrderReducer = (state = { refund: {} }, action) => {
         success: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,

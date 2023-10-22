@@ -40,10 +40,12 @@ const OrderDetails = () => {
 
   const shippingDetails =
     shippingInfo &&
-    `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`;
+    `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode},  ${shippingInfo.state},  ${shippingInfo.country}`;
 
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
+
+  console.log("paymentInfo", paymentInfo);
 
   console.log("AAA", order);
 

@@ -67,6 +67,7 @@ import {
   REMOVE_FROM_WISHLIST_RESET,
   REMOVE_FROM_WISHLIST_SUCCESS,
 } from "../constants/wishlistConstant";
+import { CLEAR_ERRORS_REDUCER } from "../constants/userConstant";
 
 export const productsReducer = (state = { products: [] }, action) => {
   switch (action.type) {
@@ -386,7 +387,7 @@ export const productReducer = (state = {}, action) => {
         isUpdated: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,

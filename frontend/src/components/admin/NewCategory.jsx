@@ -66,7 +66,7 @@ const NewCategory = () => {
     }
 
     if (isDeleted) {
-      toast.success("User deleted successfully");
+      toast.success("Category deleted successfully");
       navigate("/admin/maintenance/category");
       dispatch({ type: DELETE_CATEGORY_RESET });
     }

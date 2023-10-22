@@ -161,10 +161,13 @@ export const authReducer = (
     case LOGIN_FAIL:
     case REGISTER_USER_FAIL:
       return {
+        // ...state,
+        // loading: false,
+        // isAuthenticated: false,
+        // user: null,
+        // error: action.payload,
         ...state,
         loading: false,
-        isAuthenticated: false,
-        user: null,
         error: action.payload, // Set the error message in the state
       };
 
@@ -439,7 +442,7 @@ export const clearErrorsReducer = (state = {}, action) => {
 
   switch (action.type) {
     case CLEAR_ERRORS_REDUCER:
-      console.log("ERROR", CLEAR_ERRORS_REDUCER);
+      console.log("CLEAR_ERRORS_REDUCER", CLEAR_ERRORS_REDUCER);
       return {
         ...state,
         error: null,

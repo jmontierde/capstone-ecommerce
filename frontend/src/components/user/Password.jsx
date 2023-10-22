@@ -54,6 +54,11 @@ const Password = () => {
       return;
     }
 
+    if (newPassword !== confirmPassword) {
+      alert.error("New password and confirm password do not match.");
+      return;
+    }
+
     const formData = new FormData();
     formData.set("oldPassword", oldPassword);
     formData.set("newPassword", newPassword);
