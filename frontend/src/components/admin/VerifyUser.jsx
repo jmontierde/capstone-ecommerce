@@ -70,7 +70,7 @@ const VerifyUser = () => {
   const deleteSelectedUsers = () => {
     if (selectedUser.length > 0) {
       selectedUser.forEach((productId) => {
-        deleteProductHandler(productId);
+        deleteUserHandler(productId);
       });
       setSelectedProducts([]);
     } else {
@@ -127,7 +127,7 @@ const VerifyUser = () => {
       ) : (
         <div className="flex flex-col lg:flex-row ">
           <Sidebar />
-          <div className="w-full max-h-screen ">
+          <div className="w-full">
             <Card className="h-full w-full">
               <CardHeader
                 floated={false}

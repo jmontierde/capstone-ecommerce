@@ -53,37 +53,6 @@ import {
   CLEAR_ERRORS_REDUCER,
 } from "../constants/userConstant";
 
-// export const termsReducer = (state = { content: [] }, action) => {
-//   switch (action.type) {
-//     case GET_TERMS_REQUEST:
-//       return {
-//         ...state,
-//         loading: true,
-//       };
-//     case GET_TERMS_SUCCESS:
-//       return {
-//         ...state,
-//         content: action.payload,
-//       };
-
-//     case GET_TERMS_FAIL:
-//       return {
-//         ...state,
-//         loading: false,
-//         error: action.payload,
-//       };
-
-//     case CLEAR_ERRORS:
-//       return {
-//         ...state,
-//         error: null,
-//       };
-
-//     default:
-//       return state;
-//   }
-// };
-
 export const removeUserReducer = (state = { users: [] }, action) => {
   switch (action.type) {
     case REMOVE_USER:
@@ -103,19 +72,15 @@ export const removeUserReducer = (state = { users: [] }, action) => {
   }
 };
 
-export const authReducer = (
-  state = { user: {}, loading: false, isAuthenticated: false, error: null },
-  action
-) => {
-  console.log("state authReducer", state);
-
+export const authReducer = (state = { user: {} }, action) => {
+  console.log("STATA", state);
   switch (action.type) {
     case LOGIN_REQUEST:
     case REGISTER_USER_REQUEST:
     case LOAD_USER_REQUEST:
       return {
         loading: true,
-        // isAuthenticated: false,
+        isAuthenticated: false,
       };
 
     case LOGIN_SUCCESS:
@@ -132,7 +97,7 @@ export const authReducer = (
       return {
         ...state,
         loading: false,
-        isAuthenticated: false, // Set isAuthenticated to false until the user is verified
+        isAuthenticated: true, // Set isAuthenticated to false until the user is verified
         user: action.payload,
       };
 
@@ -140,8 +105,7 @@ export const authReducer = (
       return {
         loading: false,
         isAuthenticated: false,
-        user: {},
-        error: null, // Clear any previous error
+        user: null,
       };
 
     case LOAD_USER_FAIL:
@@ -161,14 +125,11 @@ export const authReducer = (
     case LOGIN_FAIL:
     case REGISTER_USER_FAIL:
       return {
-        // ...state,
-        // loading: false,
-        // isAuthenticated: false,
-        // user: null,
-        // error: action.payload,
         ...state,
         loading: false,
-        error: action.payload, // Set the error message in the state
+        isAuthenticated: false,
+        user: null,
+        error: action.payload,
       };
 
     case CLEAR_ERRORS:
@@ -381,6 +342,18 @@ export const allUsersReducer = (state = { users: [] }, action) => {
       };
 
     case VERIFY_USER_SUCCESS:
+      const verifiedUserId = action.payload;
+      // Filter out the verified user from the state
+      const updatedUsers = state.users.filter(
+        (user) => user._id !== verifiedUserId
+      );
+
+      return {
+        ...state,
+        loading: false,
+        users: updatedUsers,
+      };
+
     case VERIFY_USER_FAIL:
       return {
         ...state,

@@ -227,18 +227,14 @@ const Header = (keyword) => {
                 </ul>
               </div>
             </div>
-          ) : !loading && user && user.verificationStatus === "Pending" ? (
-            <div className="flex items-center justify-center">
-              <Link to="/login" className="m-auto text-2xl ">
-                <BsPerson />
-              </Link>
-            </div>
           ) : (
-            !loading && (
+            !loading &&
+            (console.log("F"),
+            (
               <Link to="/login" className="m-auto text-2xl ">
                 <BsPerson />
               </Link>
-            )
+            ))
           )}
           {/* Hamburger */}
           {isMenuOpen ? (

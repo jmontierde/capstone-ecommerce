@@ -16,11 +16,19 @@ const Login = () => {
   const navigate = useNavigate();
   const alert = useAlert();
 
-  console.log("error", user);
-
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/product");
+    }
+
+    if (error) {
+      dispatch(clearErrors());
+      toast.error(error);
+    }
+
+    if (user && user.verificationStatus !== "Verified") {
+      dispatch(clearErrors());
+      toast.error("Your account is pending verification.");
     }
 
     console.log("ERROR", error);
@@ -28,13 +36,9 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!user) {
-      console.log("A");
-      toast.error("Invalid Email or Password");
-    }
-    // if (error) {
-    //   dispatch(clearErrors());
-    //   toast.error(error);
+    // if (!user) {
+    //   console.log("A");
+    //   toast.error("Invalid Email or Password");
     // }
 
     dispatch(login(email, password));

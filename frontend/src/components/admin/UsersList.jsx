@@ -66,6 +66,8 @@ const UsersList = () => {
     dispatch(deleteUser(id));
   };
 
+  console.log("USERS", users);
+
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [masterCheckboxChecked, setMasterCheckboxChecked] = useState(false);
 
@@ -80,8 +82,10 @@ const UsersList = () => {
     }
   };
 
-  const filteredUsers = users.filter((user) =>
-    user.email.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = users.filter(
+    (user) =>
+      user.verificationStatus === "Verified" &&
+      user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
@@ -95,7 +99,7 @@ const UsersList = () => {
   return (
     <div className="flex flex-col lg:flex-row ">
       <Sidebar />
-      <div className="w-full max-h-screen ">
+      <div className="w-full ">
         <Card className="h-full w-full">
           <ToastContainer />
           <CardHeader floated={false} shadow={false} className="rounded-none">

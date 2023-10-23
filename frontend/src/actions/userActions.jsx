@@ -109,15 +109,15 @@ export const register = (userData) => async (dispatch) => {
       config
     );
 
-    console.log("REGISTER DATA", data);
-    dispatch({
-      type: REGISTER_USER_SUCCESS_PENDING_VERIFICATION,
-      payload: data.user,
-    });
+    // console.log("REGISTER DATA", data);
     // dispatch({
-    //   type: REGISTER_USER_SUCCESS,
+    //   type: REGISTER_USER_SUCCESS_PENDING_VERIFICATION,
     //   payload: data.user,
     // });
+    dispatch({
+      type: REGISTER_USER_SUCCESS,
+      payload: data.user,
+    });
   } catch (error) {
     console.log("ERROR", error);
     dispatch({

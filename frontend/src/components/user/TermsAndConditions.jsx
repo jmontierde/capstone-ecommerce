@@ -34,51 +34,24 @@ const TermsAndConditions = () => {
   console.log("Terms", termsAndConditions);
 
   return (
-    // <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#5d3f3f] w-screen container mx-auto">
-    //   {!showTerms ? (
-    //     <div
-    //       style={{
-    //         maxHeight: "400px",
-    //         overflowY: "auto",
-    //       }}
-    //     >
-    //       <h1>Terms and Conditions</h1>
-
-    //       {termsAndConditions.map((term, index) => (
-    //         <div className="bg-green-300" key={index}>
-    //           <h1>{term.title}</h1>
-    //           <p>{term.content}</p>
-    //         </div>
-    //       ))}
-
-    //       <>
-    //         <input
-    //           type="checkbox"
-    //           checked={isChecked}
-    //           onChange={() => setIsChecked(!isChecked)}
-    //         />
-    //         <p>Terms and Conditions have been accepted.</p>
-    //         <button onClick={handleRemoveTerms}>Continue</button>
-    //       </>
-    //     </div>
-    //   ) : null}
-    // </div>
-    <>
-      <h1>Terms and Conditions</h1>
+    <div className="container mx-auto space-y-3 my-6">
+      <h1 className="text-2xl font-bold">Terms and Conditions</h1>
 
       {termsAndConditions.map((term, index) => (
-        <div className="bg-green-300" key={index}>
-          <h1>
+        <div key={index}>
+          <h2 className="font-semibold text-lg">
             {index + 1}
             {". "}
             {term.title}
-          </h1>
+          </h2>
           {term.content.map((item, itemIndex) => (
-            <p key={itemIndex}>{item}</p>
+            <p key={itemIndex} className="text-base">
+              {item}
+            </p>
           ))}
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

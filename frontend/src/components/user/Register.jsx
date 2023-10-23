@@ -30,7 +30,6 @@ const Register = () => {
     password: "",
     phoneNumber: "",
   });
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const { firstName, lastName, email, password, phoneNumber } = user;
 
   const [avatar, setAvatar] = useState(null);
@@ -52,17 +51,19 @@ const Register = () => {
     (state) => state.auth
   );
 
-  console.log("ERROR REGUSTER", error);
   const navigate = useNavigate();
-  console.log("isAuthenticated", isAuthenticated);
   useEffect(() => {
-    if (registrationSuccess) {
+    if (isAuthenticated) {
       toast.success("You've successfully created an account"); // Display success toast
+      console.log("HELLO WORLD");
+
       navigate("/login");
     }
+    console.log("isAuthenticated", isAuthenticated);
+
     if (error) {
       toast.error(error);
-      dispatch(clearErrorsReducer());
+      dispatch(clearErrors());
     }
   }, [dispatch, toast, isAuthenticated, error]);
 
@@ -108,17 +109,15 @@ const Register = () => {
     formData.set("validId", validId);
     formData.set("withBirthdayId", withBirthdayId);
 
-    const success = dispatch(register(formData));
+    dispatch(register(formData));
 
-    if (success) {
-      toast.success("You've succefully create an account");
-      toast.error("Your account is pending verification by the admin.");
-      // Registration was successful, navigate to login page
-      navigate("/login");
-    }
+    // if (success) {
+    //   toast.success("You've succefully create an account");
+    //   toast.error("Your account is pending verification by the admin.");
+    //   // Registration was successful, navigate to login page
+    //   navigate("/login");
+    // }
   };
-
-  console.log("check", checkTerms);
 
   const onChange = (e) => {
     if (e.target.name === "avatar") {
@@ -239,14 +238,14 @@ const Register = () => {
                         >
                           Upload Avatar
                         </label>
-                        <div class="flex items-center justify-center w-full">
+                        <div className="flex items-center justify-center w-full">
                           <label
                             for="avatar"
-                            class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                           >
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
                               <svg
-                                class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -260,13 +259,13 @@ const Register = () => {
                                   d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                                 />
                               </svg>
-                              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                <span class="font-semibold">
+                              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                <span className="font-semibold">
                                   Click to upload
                                 </span>{" "}
                                 or drag and drop
                               </p>
-                              <p class="text-xs text-gray-500 dark:text-gray-400">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
                                 SVG, PNG, JPG or GIF (MAX. 800x400px)
                               </p>
                             </div>
@@ -275,7 +274,7 @@ const Register = () => {
                               name="avatar"
                               onChange={onChange}
                               type="file"
-                              class="hidden"
+                              className="hidden"
                             />
                           </label>
                         </div>
@@ -301,14 +300,14 @@ const Register = () => {
                         >
                           Submit (1) valid id (include birthdate)
                         </label>
-                        <div class="flex items-center justify-center w-full">
+                        <div className="flex items-center justify-center w-full">
                           <label
                             for="validId"
-                            class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                           >
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
                               <svg
-                                class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -322,13 +321,13 @@ const Register = () => {
                                   d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                                 />
                               </svg>
-                              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                <span class="font-semibold">
+                              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                <span className="font-semibold">
                                   Click to upload
                                 </span>{" "}
                                 or drag and drop
                               </p>
-                              <p class="text-xs text-gray-500 dark:text-gray-400">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
                                 SVG, PNG, JPG or GIF (MAX. 800x400px)
                               </p>
                             </div>
@@ -337,7 +336,7 @@ const Register = () => {
                               name="validId"
                               onChange={onChange}
                               type="file"
-                              class="hidden"
+                              className="hidden"
                             />
                           </label>
                         </div>
@@ -364,14 +363,14 @@ const Register = () => {
                         >
                           Submit (1) valid id (include birthdate)
                         </label>
-                        <div class="flex items-center justify-center w-full">
+                        <div className="flex items-center justify-center w-full">
                           <label
                             for="withBirthdayId"
-                            class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                           >
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
                               <svg
-                                class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -385,13 +384,13 @@ const Register = () => {
                                   d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                                 />
                               </svg>
-                              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                <span class="font-semibold">
+                              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                <span className="font-semibold">
                                   Click to upload
                                 </span>{" "}
                                 or drag and drop
                               </p>
-                              <p class="text-xs text-gray-500 dark:text-gray-400">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
                                 SVG, PNG, JPG or GIF (MAX. 800x400px)
                               </p>
                             </div>
@@ -400,7 +399,7 @@ const Register = () => {
                               name="withBirthdayId"
                               onChange={onChange}
                               type="file"
-                              class="hidden"
+                              className="hidden"
                             />
                           </label>
                         </div>

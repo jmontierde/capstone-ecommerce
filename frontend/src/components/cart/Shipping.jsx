@@ -16,9 +16,9 @@ const Shipping = () => {
   const [city, setCity] = useState(shippingInfo.city || "");
   const [postalCode, setPostalCode] = useState(shippingInfo.postalCode);
   const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
-  const [state, setState] = useState(shippingInfo.state.isoCode || "");
+  const [state, setState] = useState(shippingInfo.state);
 
-  const [countryCode, setCountryCode] = useState(shippingInfo.country.isoCode); // Store ISO code
+  const [countryCode, setCountryCode] = useState(shippingInfo.country); // Store ISO code
   const [citiesList, setCitiesList] = useState([]);
 
   // List of countries with ISO codes
@@ -33,6 +33,8 @@ const Shipping = () => {
     (stateSelect) => stateSelect.isoCode === state
   );
 
+  console.log("city", city);
+
   useEffect(() => {
     if (state) {
       const cities = City.getCitiesOfState(countryCode, state);
@@ -40,7 +42,6 @@ const Shipping = () => {
     }
   }, [state, countryCode]);
 
-  console.log("CCC", city);
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -48,10 +49,10 @@ const Shipping = () => {
       saveShippingInfo({
         address,
         city,
-        state: selectedState.name,
+        state: selectedState ? selectedState.name : "", // Check if selectedState is defined
         phoneNo,
         postalCode,
-        country: selectedCountry.name,
+        country: selectedCountry ? selectedCountry.name : "",
       })
     );
     navigate("/order/confirm");
