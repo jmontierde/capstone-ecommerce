@@ -53,9 +53,12 @@ const Header = (keyword) => {
   };
 
   return (
-    <>
+    <div className=" fixed top-0 w-screen z-20">
       <ToastContainer />
-      <nav className="container flex   mx-auto py-6 sm:px-3 md:px-0  w-screen justify-between items-center  cursor-pointer font-helvetica  ">
+      <nav
+        className="flex  py-3 sm:px-3 md:px-0 justify-around items-center  cursor-pointer font-helvetica  bg-[#111111] text-white
+      "
+      >
         <h2 className="mr-16 uppercase sm:text-sm md:text-lg">
           Vapers Sidewalk
         </h2>
@@ -71,7 +74,7 @@ const Header = (keyword) => {
             <li className="flex-none">
               <Link
                 to="/"
-                className="block py-2 px-4 rounded-lg hover:bg-[#6d5e5e] hover:text-white"
+                className="block py-2 px-4 rounded-lg hover:text-[#e6e355] "
               >
                 Home
               </Link>
@@ -79,7 +82,7 @@ const Header = (keyword) => {
             <li className="flex-none">
               <Link
                 to="/product"
-                className="block py-2 px-4 rounded-lg hover:bg-[#6d5e5e] hover:text-white"
+                className="block py-2 px-4 rounded-lg hover:text-[#e6e355]  "
               >
                 Product
               </Link>
@@ -87,7 +90,7 @@ const Header = (keyword) => {
             <li className="flex-none">
               <Link
                 to="/three"
-                className="block py-2 px-4 rounded-lg hover:bg-[#6d5e5e] hover:text-white"
+                className="block py-2 px-4 rounded-lg hover:text-[#e6e355]  "
               >
                 Customization
               </Link>
@@ -166,9 +169,9 @@ const Header = (keyword) => {
               </button>
               <div
                 id="dropdownHover"
-                className={`absolute top-12 -right-1/2 z-10 ${
+                className={`absolute top-12 -right-1/2 z-50 ${
                   isProfileOpen ? "block" : "hidden"
-                } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
+                } bg-white divide-y divide-gray-100 rounded-lg shadow w-44  dark:bg-gray-700`}
               >
                 <ul
                   className="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -261,7 +264,7 @@ const Header = (keyword) => {
           )}
         </div>
       </nav>
-    </>
+    </div>
   );
 };
 

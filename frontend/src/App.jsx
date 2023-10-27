@@ -54,6 +54,7 @@ import Material from "./components/pages/Material";
 import TestPayment from "./components/cart/TestPayment";
 import Wishlist from "./components/product/Wishlist";
 import AgeVerification from "./components/user/AgeVerification";
+import HomePage from "./components/HomePage";
 
 function App() {
   // const dispatch = useDispatch()
@@ -109,6 +110,7 @@ function App() {
           <Route path="/terms" element={<TermsAndConditionsComponent />} />
           {/* {termsAccepted ? (
         <> */}
+          <Route path="/" element={<HomePage />} />
           <Route path="/product" element={<Home />} />
           <Route path="/search/:keyword" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetails />} />
