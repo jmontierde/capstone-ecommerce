@@ -34,22 +34,9 @@ const productSchema = new mongoose.Schema({
     },
   ],
   category: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId, // Reference to the Category model
+    ref: "Category", // Name of the Category model
     required: [true, "Please select category for this product"],
-    enum: {
-      values: [
-        "Atomizers",
-        "Mods",
-        "Coils",
-        "Tanks",
-        "Batteries",
-        "Relx",
-        "Skin",
-        "Accessories",
-        "Disposable Vapes",
-      ],
-      message: "Please select correct category for product",
-    },
   },
   seller: {
     type: String,

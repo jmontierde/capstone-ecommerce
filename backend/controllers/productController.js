@@ -179,6 +179,8 @@ exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
 });
 
 //Create new product => /api/v1/admin/product/new
+// Create new product => /api/v1/admin/product/new
+// Create new product => /api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors(async (req, res, next) => {
   try {
     let images = [];
@@ -203,6 +205,16 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
 
     req.body.images = imagesLinks;
     req.body.user = req.user.id;
+
+    // Find the category ObjectId based on the category name
+    const category = await Category.findOne({ name: req.body.category });
+
+    if (!category) {
+      return res.status(400).json({ error: "Invalid category" });
+    }
+
+    // Set the correct category ObjectId
+    req.body.category = category._id;
 
     const product = await Product.create(req.body);
 
