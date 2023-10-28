@@ -76,12 +76,12 @@ const Home = () => {
 
   const [categorySize, setCategorySize] = useState(false);
 
-  console.log("categorySize", categorySize);
+  console.log("categorySize", selectedCategories);
 
   return (
     <>
       <MetaData title={"Vapers Sidewalk"} />
-      <div className="flex flex-col lg:flex-row container py-6 mx-auto">
+      <div className="flex flex-col lg:flex-row container py-6 mx-auto mt-20">
         <div className="w-1/5 flex flex-col container mr-auto h-full">
           <div>
             {isLargeScreen && (
@@ -90,26 +90,33 @@ const Home = () => {
                 {/* Step 3: Conditionally render the categories based on the state variable. */}
                 {showCategories && (
                   <ul>
-                    {categories.map((category) => (
-                      <li className="pt-3" key={category.name}>
-                        <input
-                          type="checkbox"
-                          className="cursor-pointer"
-                          id={category.name}
-                          name={category.name}
-                          checked={selectedCategories.includes(category.name)}
-                          onChange={() =>
-                            handleCategoryFilterChange(category.name)
-                          }
-                        />
-                        <label
-                          htmlFor={category.name}
-                          className="pl-2 cursor-pointer"
-                        >
-                          {category.name}
-                        </label>
-                      </li>
-                    ))}
+                    {categories.map(
+                      (category) => (
+                        console.log("A", category._id),
+                        (
+                          <li className="pt-3" key={category._id}>
+                            <input
+                              type="checkbox"
+                              className="cursor-pointer"
+                              id={category._id}
+                              name={category._id}
+                              checked={selectedCategories.includes(
+                                category._id
+                              )}
+                              onChange={() =>
+                                handleCategoryFilterChange(category._id)
+                              }
+                            />
+                            <label
+                              htmlFor={category.name}
+                              className="pl-2 cursor-pointer"
+                            >
+                              {category.name}
+                            </label>
+                          </li>
+                        )
+                      )
+                    )}
                   </ul>
                 )}
               </div>
