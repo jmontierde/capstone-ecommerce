@@ -37,7 +37,7 @@ const Header = (keyword) => {
     if (isMenuOpen) {
       document.body.style.overflow = "auto"; // Prevent scrolling
     } else {
-      document.body.style.overflow = "hidden"; // Enable scrolling
+      document.body.style.overflow = "auto"; // Enable scrolling
     }
   }, [isMenuOpen]);
 
@@ -98,7 +98,7 @@ const Header = (keyword) => {
           </ul>
         </div>
 
-        <div className="flex  items-center justify-center  text-[#525151] space-x-3 py-1 sm:space-x-6 ">
+        <div className="flex  items-center justify-center  text-[#ffffff] space-x-3 py-1 sm:space-x-6 ">
           <div className="relative ">
             {isSearchOpen && (
               <Search keyword={keyword} onClose={toggleSearchBar} />
@@ -123,8 +123,8 @@ const Header = (keyword) => {
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
-              stroke="gray"
-              className="w-8 h-8 hover:bg-[#FAFAFA] cursor-pointer p-1"
+              stroke="white"
+              className="w-8 h-8 hover:opacity-75 cursor-pointer p-1"
             >
               <path
                 strokeLinecap="round"
@@ -143,7 +143,7 @@ const Header = (keyword) => {
               <span></span>
             )}
 
-            <BsCart3 className="text-xl"></BsCart3>
+            <BsCart3 className="text-xl hover:opacity-70"></BsCart3>
           </Link>
 
           {!loading && user && user.verificationStatus === "Verified" ? (

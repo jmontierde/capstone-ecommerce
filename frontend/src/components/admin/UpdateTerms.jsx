@@ -168,7 +168,7 @@ const UpdateTerms = () => {
     <div className="flex flex-col lg:flex-row   ">
       <Sidebar />
 
-      <div className="flex flex-col container  py-3 lg:py-0 mx-auto">
+      <div className="flex flex-col container  py-3 lg:py-0 mx-auto mt-20">
         <Card className="h-full ">
           <CardHeader floated={false} shadow={false} className="rounded-none">
             <div className="mb-8 flex items-center justify-between gap-8">

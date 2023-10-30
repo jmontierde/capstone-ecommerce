@@ -126,7 +126,7 @@ const Report = () => {
   return (
     <div className="flex font-helvetica  flex-col lg:flex-row  ">
       <Sidebar />
-      <div className="w-full ">
+      <div className="w-full mt-20">
         <div className="flex justify-between px-6 items-center my-6 ">
           <div className="lg:space-x-3 sm:w-1/2">
             <select

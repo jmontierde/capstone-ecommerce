@@ -135,7 +135,7 @@ const ProductReviews = () => {
       <div className="flex flex-col lg:flex-row ">
         <Sidebar />
 
-        <div className="w-full max-h-screen">
+        <div className="w-full max-h-screen mt-20">
           <div className="flex justify-center  items-center my-12">
             <form onSubmit={submitHandler} className="space-y-6">
               <div className="w-96 ">

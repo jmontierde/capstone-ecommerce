@@ -38,17 +38,17 @@ const RelatedProducts = ({ productId }) => {
   }
 
   return (
-    <div className="container mx-auto  related-products-container">
+    <div className="container mx-auto px-6 lg:px-0  related-products-container">
       <h2 className="text-left">Related Products</h2>
 
-      <div className="flex items-center justify-center gap-6 mt-6 mb-12 ">
+      <div className="flex items-center justify-center gap-3 lg:gap-6 mt-6 mb-12 ">
         {relatedProducts.map((product) => (
-          <div key={product._id} className=" w-full text-center ">
+          <div key={product._id} className=" w-full text-center">
             <Link to={`/product/${product._id}`}>
               <img
                 src={product.images[0].url}
                 alt={product.name}
-                className="w-48 h-48 mx-auto"
+                className="w-48  h-48 mx-auto"
               />
               <h3>{product.name}</h3>
               <p>₱{product.price}</p>

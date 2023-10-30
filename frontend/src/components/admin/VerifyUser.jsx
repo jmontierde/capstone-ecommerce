@@ -127,7 +127,7 @@ const VerifyUser = () => {
       ) : (
         <div className="flex flex-col lg:flex-row ">
           <Sidebar />
-          <div className="w-full">
+          <div className="w-full mt-20">
             <Card className="h-full w-full">
               <CardHeader
                 floated={false}

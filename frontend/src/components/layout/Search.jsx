@@ -27,7 +27,7 @@ const Search = () => {
   }
 
   return (
-    <div className="flex text-[#525151] space-x-6 ">
+    <div className="flex text-[#ffffff] hover:opacity-75 space-x-6 ">
       {isSearch && (
         <input
           type="text"

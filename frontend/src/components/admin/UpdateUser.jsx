@@ -78,7 +78,7 @@ const UpdateUser = () => {
       <ToastContainer />
       <div className="flex container mx-auto px-12">
         <Sidebar />
-        <div className="w-10/12 container p-6">
+        <div className="w-10/12 container p-6 mt-20">
           <form onSubmit={submitHandler} encType="multipart/form-data">
             <div className="flex space-x-12 ">
               <section className="w-1/2 flex flex-col space-y-1">

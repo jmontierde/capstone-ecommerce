@@ -1,5 +1,7 @@
 import React from "react";
 import { Carousel } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+
 const HomePage = () => {
   return (
     <div className="bg-[#000] text-white">
@@ -11,7 +13,7 @@ const HomePage = () => {
       <Carousel
         className="rounded-xl"
         autoPlay
-        style={{ height: "calc(100vh - 46.448px)" }}
+        style={{ height: "lg:calc(100vh - 46.448px)" }}
         navigation={({ setActiveIndex, activeIndex, length }) => (
           <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
             {new Array(length).fill("").map((_, i) => (
@@ -29,33 +31,33 @@ const HomePage = () => {
         <img
           src="/product-image/carousel-3.jpg"
           alt="image 1"
-          className="h-full w-full object-cover"
+          className="h-full lg:w-full lg:object-cover"
         />
         <img
           src="/product-image/carousel-6.jpg"
           alt="image 2"
-          className="h-full w-full object-cover"
+          className="h-full lg:w-full lg:object-cover"
         />
         <img
           src="/product-image/carousel-4.jpg"
           alt="image 3"
-          className="h-full w-full object-cover"
+          className="h-full lg:w-full lg:object-cover"
         />
         <img
           src="/product-image/carousel-5.jpg"
           alt="image 3"
-          className="h-full w-full object-cover"
+          className="h-full lg:w-full lg:object-cover"
         />
       </Carousel>
       <div
-        className="flex flex-col justify-center items-center gap-24 h-screen"
+        className="flex flex-col justify-center items-center space-y-6  py-6 lg:gap-24 lg:h-screen "
         // style={{ height: "calc(100vh - 60.448px)" }}
       >
-        <div className=" w-1/2 mx-auto text-center space-y-6">
-          <h4 className="font-bold text-2xl">
+        <div className="bg-[#000] px-6 lg:w-1/2 mx-auto text-center space-y-6">
+          <h4 className="font-bold text-xl lg:text-2xl">
             Elevate Your Vaping Experience with VapingSidewalk
           </h4>
-          <p>
+          <p className="text-sm lg:text-base text-[#d5d5d5]">
             We're your one-stop destination for the latest and greatest in
             vaping products. Explore our extensive collection of premium
             e-liquids, cutting-edge vape devices, and accessories to elevate
@@ -64,9 +66,11 @@ const HomePage = () => {
             enjoyable and hassle-free.
           </p>
         </div>
-        <div className=" w-1/2 mx-auto text-center space-y-6">
-          <h4 className="font-bold text-2xl">The VapingSidewalk Adventure</h4>
-          <p>
+        <div className="bg-[#000] px-6 lg:w-1/2 mx-auto text-center space-y-6">
+          <h4 className="font-bold text-xl  lg:text-2xl">
+            The VapingSidewalk Adventure
+          </h4>
+          <p className="text-sm lg:text-base text-[#d5d5d5]">
             The VapingSidewalk Adventure is more than just a shopping
             experience; it's a journey tailored to you. We're dedicated to
             providing a voyage that's seamless and satisfying for our customers.
@@ -80,37 +84,54 @@ const HomePage = () => {
           </p>
         </div>
       </div>
-      <div className="mx-12 py-6">
-        <img src="/product-image/main-kv.jpg" alt="" className="h-3/4 " />
-        <div className=" grid grid-flow-col place-items-center h-2/6 bg-[#1A1A1A] text-[#6A6D6F] font-bold text-center">
-          <div className="py-6 hover:text-[#e6e355] cursor-pointer">
-            <img src="/product-image/pod.webp" alt="pod" className="h-52" />
-            <h4>Pod</h4>
-          </div>
-          <div className="py-6 hover:text-[#e6e355] cursor-pointer">
-            <img
-              src="/product-image/pod-mod.webp"
-              alt="pod-mod"
-              className="h-52"
-            />
-            <h4>Pod Mod</h4>
-          </div>
-          <div className="py-6 hover:text-[#e6e355] cursor-pointer">
-            <img
-              src="/product-image/tank-mod.webp"
-              alt="tank-mod"
-              className="h-52"
-            />
-            <h4>Tank Mod</h4>
-          </div>
-          <div className="py-6 hover:text-[#e6e355] cursor-pointer">
-            <img
-              src="/product-image/pen style.webp"
-              alt="pen style"
-              className="h-52"
-            />
-            <h4>Pen Style</h4>
-          </div>
+      <div className="lg:mx-12 mx-6 py-6">
+        <img
+          src="/product-image/main-kv.jpg"
+          alt=""
+          className="h-3/4  opacity-50"
+        />
+        <div className=" grid grid-cols-4 place-items-center h-2/6 bg-[#1A1A1A] text-[#6A6D6F] font-bold text-center">
+          <Link to="/pod">
+            <div className="py-6 hover:text-[#e6e355] cursor-pointer">
+              <img
+                src="/product-image/pod.webp"
+                alt="pod"
+                className="h-32 w-full lg:h-52"
+              />
+              <h4>Pod</h4>
+            </div>
+          </Link>
+
+          <Link to="/pod-mod">
+            <div className="py-6 hover:text-[#e6e355] cursor-pointer">
+              <img
+                src="/product-image/podMod.png"
+                alt="pod-mod"
+                className="h-32 w-full lg:h-52"
+              />
+              <h4>Pod Mod</h4>
+            </div>
+          </Link>
+          <Link to="/tank-mod">
+            <div className="py-6 hover:text-[#e6e355] cursor-pointer">
+              <img
+                src="/product-image/armour.png"
+                alt="tank-mod"
+                className="h-32 w-full lg:h-52"
+              />
+              <h4>Tank Mod</h4>
+            </div>
+          </Link>
+          <Link to="/pen-style">
+            <div className="py-6 hover:text-[#e6e355] cursor-pointer">
+              <img
+                src="/product-image/pen style.webp"
+                alt="pen style"
+                className="h-32 w-full lg:h-52"
+              />
+              <h4>Pen Style</h4>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

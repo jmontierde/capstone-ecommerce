@@ -45,7 +45,7 @@ const Login = () => {
   };
 
   return (
-    <div className="container mx-auto flex item-center justify-center w-screen">
+    <div className="container mx-auto flex item-center justify-center mt-20 w-screen">
       <ToastContainer />
       <Card
         color="transparent"

@@ -45,9 +45,9 @@ const ConfirmOrder = () => {
 
   return (
     <>
-      <div className="container flex flex-col mx-auto ">
+      <div className="container flex flex-col mx-auto mt-28">
         <CheckoutSteps />
-        <Card className="h-full w-full my-12 lg:mx-6">
+        <Card className="h-full w-full my-12 lg:mx-6 ">
           <table className="w-full min-w-max table-fixed text-center">
             <thead>
               <tr>

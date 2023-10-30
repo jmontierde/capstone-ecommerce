@@ -154,8 +154,8 @@ const ProductDetails = () => {
   return (
     <>
       <ToastContainer />
-      <div className="flex container mx-auto mt-12 gap-6">
-        <div className="flex w-1/2 h-full bg-[#000]">
+      <div className="flex flex-col lg:flex-row container mx-auto  gap-6 mt-32">
+        <div className="flex lg:w-1/2 h-full bg-[#000]">
           <div className="flex flex-row-reverse  justify-end w-full">
             {/* Right side image */}
             <div className="w-full bg-[#FAFAFA]">
@@ -185,7 +185,7 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        <div className="w-1/2 text-left px-6 space-y-3">
+        <div className="lg:w-1/2  text-left px-6 space-y-3">
           <h2 className="font-bold text-lg">{product.name}</h2>
 
           {/* Ratings */}
@@ -195,7 +195,7 @@ const ProductDetails = () => {
 
             <p className="pl-3">Reviews({product.numOfReviews})</p>
           </div>
-          <p className="w-5/6 ">{product.description}</p>
+          <p className="lg:w-5/6 ">{product.description}</p>
           {/* Availability */}
           <div className="flex ">
             <h3 className="font-bold mr-2">Available:</h3>

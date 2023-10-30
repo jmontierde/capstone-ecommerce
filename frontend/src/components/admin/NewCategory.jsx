@@ -157,7 +157,7 @@ const NewCategory = () => {
       ) : (
         <div className="flex flex-col lg:flex-row ">
           <Sidebar />
-          <Card className="h-full w-full">
+          <Card className="h-full w-full mt-20">
             <CardHeader floated={false} shadow={false} className="rounded-none">
               <div className="mb-8 flex items-center justify-between gap-8">
                 <div>

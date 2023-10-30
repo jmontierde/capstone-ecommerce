@@ -69,7 +69,7 @@ const ProcessOrder = () => {
   return (
     <div className="flex ">
       <Sidebar />
-      <div className="container mx-auto px-6 space-x-6 w-10/12">
+      <div className="container mx-auto px-6 space-x-6 w-10/12 mt-20">
         <div className="flex flex-col justify-center h-full">
           <h1 className="text-4xl font-bold my-5">Order # {order._id}</h1>
 

@@ -99,7 +99,7 @@ const UsersList = () => {
   return (
     <div className="flex flex-col lg:flex-row ">
       <Sidebar />
-      <div className="w-full ">
+      <div className="w-full mt-20">
         <Card className="h-full w-full">
           <ToastContainer />
           <CardHeader floated={false} shadow={false} className="rounded-none">

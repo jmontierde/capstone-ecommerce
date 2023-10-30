@@ -59,7 +59,7 @@ const Shipping = () => {
   };
 
   return (
-    <>
+    <div className=" mt-28">
       <CheckoutSteps />
       <div className="flex items-center justify-center font-sans">
         <form
@@ -151,7 +151,7 @@ const Shipping = () => {
           </button>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -167,7 +167,7 @@ const Register = () => {
   return (
     <>
       <ToastContainer />
-      <div className="container mx-auto ">
+      <div className="container mx-auto mt-20">
         <div
           className="flex justify-center items-center flex-col py-6  "
           // style={{ height: "calc(100vh - 9.5rem)" }}

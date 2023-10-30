@@ -126,7 +126,7 @@ const UpdateProduct = () => {
     <>
       <div className="flex ">
         <Sidebar />
-        <div className="  container p-6">
+        <div className="  container p-6 mt-20">
           <form onSubmit={submitHandler} encType="multipart/form-data">
             <div className="flex  mx-auto space-x-12 ">
               <section className=" flex flex-col w-full space-y-6">

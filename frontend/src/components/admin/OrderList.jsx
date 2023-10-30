@@ -113,7 +113,7 @@ const OrderList = () => {
       ) : (
         <div className="flex flex-col lg:flex-row  min-h-screen">
           <Sidebar />
-          <Card className="lg:h-full lg:w-full h-1/2 ">
+          <Card className="lg:h-full lg:w-full h-1/2 mt-20">
             <CardHeader floated={false} shadow={false} className="rounded-none">
               <div className="mb-8 flex items-center justify-between gap-8">
                 <div>

@@ -175,7 +175,7 @@ export const PaymentForm = ({ stripePromise }) => {
   //
 
   return (
-    <div className="container flex flex-col  mx-auto px-12 pb-8">
+    <div className="container flex flex-col  mx-auto px-12 pb-8 mt-28">
       <CheckoutSteps />
       <div className="flex flex-col justify-center items-center">
         Payment Method

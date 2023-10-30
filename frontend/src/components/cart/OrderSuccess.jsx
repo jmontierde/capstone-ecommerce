@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const OrderSuccess = () => {
   return (
     <>
-      <div className="flex justify-center items-center w-screen h-screen">
+      <div className="flex justify-center items-center w-screen h-screen mt-20">
         <div className="text-center ">
           <img
             src="./images/order-success.png"

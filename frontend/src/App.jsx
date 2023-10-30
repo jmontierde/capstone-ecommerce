@@ -51,10 +51,13 @@ import Refund from "./components/order/Refund";
 import AllRefunds from "./components/admin/AllRefunds";
 import Messenger from "./Messenger";
 import Material from "./components/pages/Material";
-import TestPayment from "./components/cart/TestPayment";
 import Wishlist from "./components/product/Wishlist";
 import AgeVerification from "./components/user/AgeVerification";
 import HomePage from "./components/HomePage";
+import Pod from "./components/product/Pod";
+import PodMod from "./components/product/PodMod";
+import TankMod from "./components/product/TankMod";
+import PenStyle from "./components/product/PenStyle";
 
 function App() {
   // const dispatch = useDispatch()
@@ -112,11 +115,15 @@ function App() {
         <> */}
           <Route path="/" element={<HomePage />} />
           <Route path="/product" element={<Home />} />
+          <Route path="/pod" element={<Pod />} />
+          <Route path="/pod-mod" element={<PodMod />} />
+          <Route path="/tank-mod" element={<TankMod />} />
+          <Route path="/pen-style" element={<PenStyle />} />
+
           <Route path="/search/:keyword" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/three" element={<Three />} />
-          <Route exact path="/material" element={<TestPayment />} />
 
           <Route
             path="/shipping"

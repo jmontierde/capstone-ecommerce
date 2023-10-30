@@ -5,8 +5,9 @@ import { getProducts, getCategories } from "../actions/productActions";
 import Product from "./product/Product";
 import MetaData from "./layout/MetaData";
 import Pagination from "react-js-pagination";
-import { useMediaQuery } from "@react-hook/media-query";
+// import { useMediaQuery } from "@react-hook/media-query";
 import Loader from "./layout/Loader";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -30,12 +31,11 @@ const Home = () => {
 
   // Use the useMediaQuery hook to detect screen size
   const isLargeScreen = useMediaQuery("(min-width: 1024px");
-  const isMediumScreen = useMediaQuery("(min-width: 1024px");
 
-  const isSmScreen = useMediaQuery({ maxWidth: 480 });
-  const isMdScreen = useMediaQuery({ maxWidth: 768 });
-  const isLgScreen = useMediaQuery({ maxWidth: 976 });
-  const isXlScreen = useMediaQuery({ maxWidth: 1440 });
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 1023px)");
+  // const isLargeDevice = useMediaQuery("only screen and (max-width : 768px)");
+
+  console.log("isSmallDevice", isSmallDevice);
 
   // Step 1: Add a state variable to track whether categories should be displayed.
   const [showCategories, setShowCategories] = useState(isLargeScreen);
@@ -76,8 +76,6 @@ const Home = () => {
 
   const [categorySize, setCategorySize] = useState(false);
 
-  console.log("categorySize", selectedCategories);
-
   return (
     <>
       <MetaData title={"Vapers Sidewalk"} />
@@ -90,61 +88,16 @@ const Home = () => {
                 {/* Step 3: Conditionally render the categories based on the state variable. */}
                 {showCategories && (
                   <ul>
-                    {categories.map(
-                      (category) => (
-                        console.log("A", category._id),
-                        (
-                          <li className="pt-3" key={category._id}>
-                            <input
-                              type="checkbox"
-                              className="cursor-pointer"
-                              id={category._id}
-                              name={category._id}
-                              checked={selectedCategories.includes(
-                                category._id
-                              )}
-                              onChange={() =>
-                                handleCategoryFilterChange(category._id)
-                              }
-                            />
-                            <label
-                              htmlFor={category.name}
-                              className="pl-2 cursor-pointer"
-                            >
-                              {category.name}
-                            </label>
-                          </li>
-                        )
-                      )
-                    )}
-                  </ul>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="lg:w-4/5  md:w-full ">
-          <div className=" flex justify-between items-start px-12">
-            <div
-              className="cursor-pointer my-auto relative w-full"
-              onClick={() => setCategorySize(!categorySize)}
-            >
-              Category
-              {categorySize ? (
-                <div className="absolute  w-full">
-                  {" "}
-                  <ul>
                     {categories.map((category) => (
-                      <li className="pt-3" key={category.name}>
+                      <li className="pt-3" key={category._id}>
                         <input
                           type="checkbox"
                           className="cursor-pointer"
-                          id={category.name}
-                          name={category.name}
-                          checked={selectedCategories.includes(category.name)}
+                          id={category._id}
+                          name={category._id}
+                          checked={selectedCategories.includes(category._id)}
                           onChange={() =>
-                            handleCategoryFilterChange(category.name)
+                            handleCategoryFilterChange(category._id)
                           }
                         />
                         <label
@@ -156,12 +109,52 @@ const Home = () => {
                       </li>
                     ))}
                   </ul>
-                </div>
-              ) : (
-                <span></span>
-              )}
-            </div>
-            <div className="flex items-start justify-start w-auto">
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="lg:w-4/5  md:w-full ">
+          <div className=" flex  justify-between lg:justify-end  items-center px-12 lg:px-0">
+            {isSmallDevice && (
+              <div
+                className="cursor-pointer my-auto relative w-full"
+                onClick={() => setCategorySize(!categorySize)}
+              >
+                Category
+                {categorySize ? (
+                  <div className="absolute  w-full">
+                    {" "}
+                    <ul>
+                      {categories.map((category) => (
+                        <li className="pt-3" key={category._id}>
+                          <input
+                            type="checkbox"
+                            className="cursor-pointer"
+                            id={category._id}
+                            name={category._id}
+                            checked={selectedCategories.includes(category._id)}
+                            onChange={() =>
+                              handleCategoryFilterChange(category._id)
+                            }
+                          />
+                          <label
+                            htmlFor={category._id}
+                            className="pl-2 cursor-pointer"
+                          >
+                            {category.name}
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <span></span>
+                )}
+              </div>
+            )}
+            <div className="flex items-start justify-start   w-auto">
               <select
                 value={sortOption}
                 onChange={handleSortChange}
@@ -177,7 +170,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="mt-6 grid  sm:grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 xl:gap-x-8 ">
+          <div className="mt-6 grid mx-6 lg:mx-0   gap-x-6 gap-y-10 grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 xl:gap-x-8 ">
             {products &&
               products.map((product, index) => (
                 <Product key={product._id} product={product} />

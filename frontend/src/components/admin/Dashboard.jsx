@@ -57,7 +57,7 @@ const Dashboard = () => {
       ) : (
         <div className="flex flex-col lg:flex-row ">
           <Sidebar />
-          <div className="w-full container p-6 space-y-6 ">
+          <div className="w-full container p-6 space-y-6 mt-20">
             <h1 className="font-semibold text-4xl">Welcome back!</h1>
 
             <div className="flex flex-col lg:flex-row gap-6 w-full">

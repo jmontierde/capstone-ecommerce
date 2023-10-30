@@ -115,7 +115,7 @@ const ProductsList = () => {
       ) : (
         <div className="flex flex-col lg:flex-row  ">
           <Sidebar />
-          <div className="w-full max-h-screen ">
+          <div className="w-full max-h-screen mt-20">
             <Card className="h-auto w-full">
               <CardHeader
                 floated={false}
