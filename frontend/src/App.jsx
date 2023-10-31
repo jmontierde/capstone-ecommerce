@@ -39,7 +39,7 @@ import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
-import Report from "./components/admin/Report";
+import ReportCOD from "./components/admin/ReportCOD";
 import Three from "./components/Three";
 import Customizer from "./components/pages/Customizer";
 import NewCategory from "./components/admin/NewCategory";
@@ -58,6 +58,7 @@ import Pod from "./components/product/Pod";
 import PodMod from "./components/product/PodMod";
 import TankMod from "./components/product/TankMod";
 import PenStyle from "./components/product/PenStyle";
+import ReportCard from "./components/admin/ReportCard";
 
 function App() {
   // const dispatch = useDispatch()
@@ -281,10 +282,20 @@ function App() {
             }
           />
           <Route
-            path="/admin/report"
+            path="/admin/report/cod"
             element={
               <ProtectedRoute
-                component={Report}
+                component={ReportCOD}
+                isAdmin={true}
+                isStaff={true}
+              />
+            }
+          />
+          <Route
+            path="/admin/report/card"
+            element={
+              <ProtectedRoute
+                component={ReportCard}
                 isAdmin={true}
                 isStaff={true}
               />

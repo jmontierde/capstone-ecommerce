@@ -22,7 +22,15 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     shippingPrice,
     totalPrice,
     paymentInfo,
+    paymentMethod,
   } = req.body;
+
+  let paymentStatus = "Not Paid"; // Default status for all orders
+
+  if (paymentMethod === "COD") {
+    // If it's a COD order, set the paymentStatus to "Not Paid"
+    paymentStatus = "Not Paid";
+  }
 
   const order = await Order.create({
     orderItems,
@@ -34,6 +42,8 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     paymentInfo,
     paidAt: Date.now(),
     user: req.user._id,
+    paymentMethod,
+    paymentStatus,
   });
   const smsMessage = `Thank you for placing an order with us. Your order ID is ${order._id}. We will process your order and keep you updated on its status.`;
   try {
@@ -99,15 +109,29 @@ exports.allOrders = catchAsyncErrors(async (req, res, next) => {
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
-  if (order.orderStatus === "Delivered") {
-    res.status(400).json({ message: "You have already delivered this order" });
-  }
+  // if (order.orderStatus === "Delivered") {
+  //   res.status(400).json({ message: "You have already delivered this order" });
+  // }
 
   order.orderItems.forEach(async (item) => {
     await updateStock(item.product, item.quantity);
   });
 
-  (order.orderStatus = req.body.status), (order.deliveredAt = Date.now());
+  order.orderStatus = req.body.orderStatus; // Update order status
+
+  if (req.body.paymentStatus) {
+    // If paymentStatus is provided in the request, update it
+    if (!["Paid", "Not Paid"].includes(req.body.paymentStatus)) {
+      res.status(400).json({ message: "Invalid payment status update" });
+      return;
+    }
+    order.paymentStatus = req.body.paymentStatus;
+    if (req.body.paymentStatus === "Paid") {
+      order.paidAt = Date.now();
+    } else {
+      order.paidAt = null;
+    }
+  }
 
   await order.save();
 

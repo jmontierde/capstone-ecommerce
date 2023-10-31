@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import html2canvas from "html2canvas";
 import { Card, Typography } from "@material-tailwind/react";
-const Report = () => {
+const ReportCOD = () => {
   const { loading, error, orders } = useSelector((state) => state.allOrders);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -92,10 +92,9 @@ const Report = () => {
 
   useEffect(() => {
     // Calculate the total of totalPrice column whenever filteredOrders changes
-    const newTotalTotalPrice = filteredOrders.reduce(
-      (total, order) => total + order.totalPrice,
-      0
-    );
+    const newTotalTotalPrice = filteredOrders
+      .filter((filtOrder) => filtOrder.paymentMethod === "COD")
+      .reduce((total, order) => total + order.totalPrice, 0);
     setTotalTotalPrice(newTotalTotalPrice);
   }, [filteredOrders]);
 
@@ -198,90 +197,97 @@ const Report = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredOrders.map((order, index) => {
-                      const isLast = index === filteredOrders.length - 1;
-                      const classes = isLast
-                        ? "p-4"
-                        : "p-4 border-b border-blue-gray-50";
+                    {filteredOrders
+                      .filter(
+                        (filtOrder) =>
+                          filtOrder.paymentMethod === "COD" &&
+                          filtOrder.paymentStatus === "Paid"
+                      )
+                      .map((order, index) => {
+                        console.log("order", order);
+                        const isLast = index === filteredOrders.length - 1;
+                        const classes = isLast
+                          ? "p-4"
+                          : "p-4 border-b border-blue-gray-50";
 
-                      return (
-                        <tr key={order._id}>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {index + 1}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {order._id}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {order.orderItems.map((item) => (
-                                <div key={item._id}>{item.name}</div>
-                              ))}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {order.orderItems.length}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              as="a"
-                              href="#"
-                              variant="small"
-                              color="blue-gray"
-                              className="font-medium"
-                            >
-                              {order.orderItems && order.orderItems.length > 0
-                                ? order.orderItems[0].quantity
-                                : "N/A"}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              as="a"
-                              href="#"
-                              variant="small"
-                              color="blue-gray"
-                              className="font-medium"
-                            >
-                              ₱{order.totalPrice.toLocaleString()}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              as="a"
-                              href="#"
-                              variant="small"
-                              color="blue-gray"
-                              className="font-medium"
-                            >
-                              ₱{order.totalPrice.toLocaleString()}
-                            </Typography>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                        return (
+                          <tr key={order._id}>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {index + 1}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {order._id}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {order.orderItems.map((item) => (
+                                  <div key={item._id}>{item.name}</div>
+                                ))}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {order.orderItems.length}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                as="a"
+                                href="#"
+                                variant="small"
+                                color="blue-gray"
+                                className="font-medium"
+                              >
+                                {order.orderItems && order.orderItems.length > 0
+                                  ? order.orderItems[0].quantity
+                                  : "N/A"}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                as="a"
+                                href="#"
+                                variant="small"
+                                color="blue-gray"
+                                className="font-medium"
+                              >
+                                ₱{order.totalPrice.toLocaleString()}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                as="a"
+                                href="#"
+                                variant="small"
+                                color="blue-gray"
+                                className="font-medium"
+                              >
+                                ₱{order.totalPrice.toLocaleString()}
+                              </Typography>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     <tr>
                       <td className="border px-4 py-2" colSpan="6"></td>
                       <td className="border px-4 py-2">
@@ -299,4 +305,4 @@ const Report = () => {
   );
 };
 
-export default Report;
+export default ReportCOD;

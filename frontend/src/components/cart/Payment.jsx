@@ -130,7 +130,7 @@ export const PaymentForm = ({ stripePromise }) => {
               },
               totalPrice: orderInfo.totalPrice,
             };
-
+            order.paymentMethod = "CARD";
             console.log("PAYMENT INFO", order);
             dispatch(createOrder(order));
 
@@ -151,6 +151,7 @@ export const PaymentForm = ({ stripePromise }) => {
           },
           totalPrice: orderInfo.totalPrice,
         };
+        order.paymentMethod = "COD";
 
         const { data } = await axios.post(
           `${url}/api/v1/order/new`,
@@ -175,7 +176,7 @@ export const PaymentForm = ({ stripePromise }) => {
   //
 
   return (
-    <div className="container flex flex-col  mx-auto px-12 pb-8 mt-28">
+    <div className="container flex flex-col  mx-auto px-12 pb-8">
       <CheckoutSteps />
       <div className="flex flex-col justify-center items-center">
         Payment Method

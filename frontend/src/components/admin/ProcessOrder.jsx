@@ -17,6 +17,7 @@ import { useParams } from "react-router-dom";
 
 const ProcessOrder = () => {
   const [status, setStatus] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState(""); // Add paymentStatus state
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -36,6 +37,8 @@ const ProcessOrder = () => {
 
   const orderId = useParams().id;
 
+  console.log("orderId", orderId);
+
   useEffect(() => {
     dispatch(getOrderDetails(orderId));
 
@@ -52,7 +55,8 @@ const ProcessOrder = () => {
 
   const updateOrderHandler = (id) => {
     const formData = new FormData();
-    formData.set("status", status);
+    formData.set("orderStatus", status);
+    formData.set("paymentStatus", paymentStatus); // Include paymentStatus in the form data
 
     dispatch(updateOrder(id, formData));
   };
@@ -64,7 +68,7 @@ const ProcessOrder = () => {
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
 
-  console.log("ORDER ID ");
+  console.log("ORDER ID ", order);
 
   return (
     <div className="flex ">
@@ -94,12 +98,30 @@ const ProcessOrder = () => {
 
           <h4 className="text-lg mt-4">Payment</h4>
           <div className="ml-6 my-6">
-            <p className={isPaid ? "text-green-500" : "text-red-500"}>
-              <b>{isPaid ? "PAID" : "NOT PAID"}</b>
-            </p>
+            {order.paymentMethod === "CARD" ? (
+              <p className={isPaid ? "text-green-500" : "text-red-500"}>
+                <b>{isPaid ? "PAID" : "NOT PAID"}</b>
+              </p>
+            ) : (
+              <p
+                className={
+                  order.paymentStatus === "Paid"
+                    ? "text-green-500"
+                    : "text-red-500"
+                }
+              >
+                <b>{order.paymentStatus}</b>
+              </p>
+            )}
 
-            <h4 className="my-4 font-bold">Stripe ID</h4>
-            <p className="font-semibold">{paymentInfo && paymentInfo.id}</p>
+            {order.paymentMethod === "CARD" ? (
+              <>
+                <h4 className="my-4 font-bold">Stripe ID</h4>
+                <p className="font-semibold">{paymentInfo && paymentInfo.id}</p>
+              </>
+            ) : (
+              <span></span>
+            )}
 
             <h4 className="my-4">Order Status:</h4>
             <p
@@ -198,6 +220,18 @@ const ProcessOrder = () => {
                 <option value="In Transit">In Transit</option>
                 <option value="Out of Delivery">Out of Delivery</option>
                 <option value="Delivered">Delivered</option>
+              </select>
+            </div>
+            <h4 className="my-4 text-xl">Payment Status</h4>
+            <div className="">
+              <select
+                className="border border-[#000] py-2 my-1 px-8 bg-[#fff]"
+                name="paymentStatus"
+                value={paymentStatus}
+                onChange={(e) => setPaymentStatus(e.target.value)}
+              >
+                <option value="Paid">Paid</option>
+                <option value="Not Paid">Not Paid</option>
               </select>
             </div>
 

@@ -73,7 +73,6 @@ export const removeUserReducer = (state = { users: [] }, action) => {
 };
 
 export const authReducer = (state = { user: {} }, action) => {
-  console.log("STATA", state);
   switch (action.type) {
     case LOGIN_REQUEST:
     case REGISTER_USER_REQUEST:

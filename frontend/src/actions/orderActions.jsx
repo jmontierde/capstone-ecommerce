@@ -58,7 +58,9 @@ export const createOrder = (order) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: CREATE_ORDER_FAIL,
-      payload: error.response.data.message,
+      payload: error.response
+        ? error.response.data.message
+        : "An error occurred while creating the order.",
     });
   }
 };
@@ -158,6 +160,8 @@ export const updateOrder = (id, refundData) => async (dispatch) => {
       refundData,
       config
     );
+
+    console.log("Data UPDATE", data);
 
     dispatch({
       type: UPDATE_ORDER_SUCCESS,

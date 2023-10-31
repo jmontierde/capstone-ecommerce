@@ -38,6 +38,8 @@ const OrderDetails = () => {
     orderStatus,
   } = order;
 
+  console.log("order", order);
+
   const shippingDetails =
     shippingInfo &&
     `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode},  ${shippingInfo.state},  ${shippingInfo.country}`;

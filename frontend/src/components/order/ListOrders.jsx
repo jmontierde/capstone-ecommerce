@@ -24,15 +24,19 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
+import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { myOrders, clearErrors } from "../../actions/orderActions";
+import { myOrders, clearErrors, deleteOrder } from "../../actions/orderActions";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 const ListOrders = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { loading, error, orders } = useSelector((state) => state.myOrders);
-
+  const { isDeleted } = useSelector((state) => state.order);
   useEffect(() => {
     dispatch(myOrders());
 
@@ -40,7 +44,15 @@ const ListOrders = () => {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, error]);
+
+    if (isDeleted) {
+      toast.success("Order deleted successfully");
+      navigate("/orders/me");
+      dispatch({ type: DELETE_ORDER_RESET });
+    }
+  }, [dispatch, alert, error, isDeleted]);
+
+  console.log("MY ORDER", orders);
 
   // Pagination
   // Pagination
@@ -52,7 +64,9 @@ const ListOrders = () => {
 
   const [masterCheckboxChecked, setMasterCheckboxChecked] = useState(false);
   const [selectedOrders, setSelectedOrders] = useState([]);
-
+  const deleteOrderHandler = (id) => {
+    dispatch(deleteOrder(id));
+  };
   const deleteSelectedOrders = () => {
     if (selectedOrders.length > 0) {
       selectedOrders.forEach((orderId) => {
@@ -92,6 +106,7 @@ const ListOrders = () => {
         <Loader />
       ) : (
         <div className="flex container mx-auto">
+          <ToastContainer />
           <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
               <div className="mb-8 flex items-center justify-between gap-8">

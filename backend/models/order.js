@@ -104,11 +104,16 @@ const orderSchema = mongoose.Schema({
   deliveredAt: {
     type: Date,
   },
-  // paymentMethod: {
-  //   type: String,
-  //   enum: ["COD", "Online"], // Add other payment methods as needed
-  //   required: true,
-  // },
+  paymentMethod: {
+    type: String,
+    enum: ["COD", "CARD"], // Add other payment methods as needed
+    required: true,
+  },
+  paymentStatus: {
+    type: String,
+    enum: ["Paid", "Not Paid"], // Add more options if needed
+    default: "Not Paid", // Default status for COD orders
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
