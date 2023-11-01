@@ -54,11 +54,27 @@ const ProcessOrder = () => {
   }, [dispatch, alert, error, isUpdated, orderId]);
 
   const updateOrderHandler = (id) => {
-    const formData = new FormData();
-    formData.set("orderStatus", status);
-    formData.set("paymentStatus", paymentStatus); // Include paymentStatus in the form data
+    if (orderStatus === "Delivered") {
+      // Allow updating paymentStatus
+      if (paymentStatus !== "") {
+        const formData = new FormData();
+        formData.set("orderStatus", orderStatus);
+        formData.set("paymentStatus", paymentStatus); // Include paymentStatus in the form data
 
-    dispatch(updateOrder(id, formData));
+        dispatch(updateOrder(id, formData));
+      } else {
+        alert.error(
+          "Payment status is required when order status is Delivered."
+        );
+      }
+    } else {
+      // Order status is not "Delivered," allow updating both status fields
+      const formData = new FormData();
+      formData.set("orderStatus", status);
+      formData.set("paymentStatus", paymentStatus); // Include paymentStatus in the form data
+
+      dispatch(updateOrder(id, formData));
+    }
   };
 
   console.log("USER AA", user);
@@ -68,7 +84,7 @@ const ProcessOrder = () => {
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
 
-  console.log("ORDER ID ", order);
+  console.log("ORDERRRR", order);
 
   return (
     <div className="flex ">
@@ -222,18 +238,22 @@ const ProcessOrder = () => {
                 <option value="Delivered">Delivered</option>
               </select>
             </div>
-            <h4 className="my-4 text-xl">Payment Status</h4>
-            <div className="">
-              <select
-                className="border border-[#000] py-2 my-1 px-8 bg-[#fff]"
-                name="paymentStatus"
-                value={paymentStatus}
-                onChange={(e) => setPaymentStatus(e.target.value)}
-              >
-                <option value="Paid">Paid</option>
-                <option value="Not Paid">Not Paid</option>
-              </select>
-            </div>
+
+            {order.paymentMethod === "COD" && (
+              <div className="">
+                <h4 className="my-4 text-xl">Payment Status</h4>
+
+                <select
+                  className="border border-[#040202] py-2 my-1 px-8 bg-[#fff]"
+                  name="paymentStatus"
+                  value={paymentStatus}
+                  onChange={(e) => setPaymentStatus(e.target.value)}
+                >
+                  <option value="Paid">Paid</option>
+                  <option value="Not Paid">Not Paid</option>
+                </select>
+              </div>
+            )}
 
             <button
               className="bg-[#2e69a8] rounded py-2 my-3 text-white px-8"

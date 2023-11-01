@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../actions/productActions";
 import HeaderCategory from "./HeaderCategory";
+import { Link } from "react-router-dom";
 const PodMod = () => {
   const dispatch = useDispatch();
   const {
@@ -33,16 +34,18 @@ const PodMod = () => {
           {products
             .filter((prod) => prod.category === "653cbe735c09dc4ba0134fbd")
             .map((product) => (
-              <div className=" space-y-3">
-                {product.images && product.images.length > 0 && (
-                  <img
-                    src={product.images[0].url}
-                    alt={product.name}
-                    className="w-96 h-fit py-8 px-6 mx-auto rounded-lg bg-[#F8F8F8]"
-                  />
-                )}
-                <p>{product.name}</p>
-              </div>
+              <Link to={`/product/${product._id}`}>
+                <div className=" space-y-3">
+                  {product.images && product.images.length > 0 && (
+                    <img
+                      src={product.images[0].url}
+                      alt={product.name}
+                      className="w-96 h-fit py-8 px-6 mx-auto rounded-lg bg-[#F8F8F8]"
+                    />
+                  )}
+                  <p>{product.name}</p>
+                </div>
+              </Link>
             ))}
         </div>
       </div>

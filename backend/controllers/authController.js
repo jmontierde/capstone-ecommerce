@@ -307,6 +307,32 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     phoneNumber: req.body.phoneNumber,
   };
 
+  // Check for duplicate email
+  const existingUserWithEmail = await User.findOne({
+    email: req.body.email,
+    _id: { $ne: req.user.id }, // Exclude the current user's ID
+  });
+
+  if (existingUserWithEmail) {
+    return res.status(400).json({
+      success: false,
+      error: "Email is already in use by another user.",
+    });
+  }
+
+  // Check for duplicate phone number
+  const existingUserWithPhone = await User.findOne({
+    phoneNumber: req.body.phoneNumber,
+    _id: { $ne: req.user.id }, // Exclude the current user's ID
+  });
+
+  if (existingUserWithPhone) {
+    return res.status(400).json({
+      success: false,
+      error: "Phone number is already in use by another user.",
+    });
+  }
+
   // Update avatar
   if (req.body.avatar) {
     const user = await User.findById(req.user.id);

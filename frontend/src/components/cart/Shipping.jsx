@@ -32,6 +32,7 @@ const Shipping = () => {
   const selectedState = statesList.find(
     (stateSelect) => stateSelect.isoCode === state
   );
+  console.log("state", selectedState);
 
   console.log("city", city);
 

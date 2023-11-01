@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../actions/productActions";
 import HeaderCategory from "./HeaderCategory";
+import { Link } from "react-router-dom";
 
 const Pod = () => {
   const dispatch = useDispatch();
@@ -16,8 +17,6 @@ const Pod = () => {
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
-
-  console.log("PRODUCTS", products);
 
   return (
     <div className=" mx-auto text-white bg-[#be5f5f] mt-16">
@@ -35,16 +34,18 @@ const Pod = () => {
           {products
             .filter((prod) => prod.category === "653c9b1a5e1252cb11e27118")
             .map((product) => (
-              <div className=" space-y-3">
-                {product.images && product.images.length > 0 && (
-                  <img
-                    src={product.images[0].url}
-                    alt={product.name}
-                    className="w-96 h-fit py-8 px-6 mx-auto rounded-lg bg-[#F8F8F8]"
-                  />
-                )}
-                <p>{product.name}</p>
-              </div>
+              <Link to={`/product/${product._id}`}>
+                <div className=" space-y-3">
+                  {product.images && product.images.length > 0 && (
+                    <img
+                      src={product.images[0].url}
+                      alt={product.name}
+                      className="w-96 h-fit py-8 px-6 mx-auto rounded-lg bg-[#F8F8F8]"
+                    />
+                  )}
+                  <p>{product.name}</p>
+                </div>
+              </Link>
             ))}
         </div>
       </div>

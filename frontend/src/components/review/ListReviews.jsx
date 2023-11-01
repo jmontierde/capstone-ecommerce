@@ -6,7 +6,7 @@ const ListReviews = ({ reviews }) => {
   console.log("Reviews in ListReviews:", reviews[0].avatar.url);
 
   return (
-    <div className="container mx-auto px-6 w-75">
+    <div className="container mx-auto px-6 w-75  my-6">
       <h3>Customer Reviews</h3>
       <hr />
       {reviews &&
@@ -15,8 +15,8 @@ const ListReviews = ({ reviews }) => {
           const rating = review.rating || 0;
 
           return (
-            <div key={review._id}>
-              <div className="flex items-center my-3">
+            <div key={review._id} className="space-y-1">
+              <div className="flex items-center my-3 ">
                 {review.avatar.url && review.avatar.url.length > 0 && (
                   <img
                     src={review.avatar.url}

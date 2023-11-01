@@ -80,7 +80,7 @@ const UpdateProduct = () => {
 
   console.log("CAT", category);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -95,9 +95,20 @@ const UpdateProduct = () => {
       formData.append("images", image);
     });
 
-    console.log("form data", formData);
+    try {
+      const response = dispatch(updateProduct(product._id, formData));
 
-    dispatch(updateProduct(product._id, formData));
+      if (response && response.data.success) {
+        toast.success("Product updated successfully");
+        navigate("/admin/products");
+        dispatch({ type: UPDATE_PRODUCT_RESET });
+      } else {
+        toast.error("Failed to update product");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while updating the product");
+    }
   };
 
   const onChange = (e) => {
@@ -145,11 +156,16 @@ const UpdateProduct = () => {
                       value={category}
                       onChange={(value) => setCategory(value)}
                     >
-                      {categories.map((category) => (
-                        <Option key={category.name} value={category.name}>
-                          {category.name}
-                        </Option>
-                      ))}
+                      {categories.map(
+                        (category) => (
+                          console.log("value", category),
+                          (
+                            <Option key={category.name} value={category._id}>
+                              {category.name}
+                            </Option>
+                          )
+                        )
+                      )}
                     </Select>
                   </div>
 

@@ -214,9 +214,10 @@ export const updateProfile = (userData) => async (dispatch) => {
       payload: data.success,
     });
   } catch (error) {
+    console.log("ERROR ACTION", error.response.data.error);
     dispatch({
       type: UPDATE_PROFILE_FAIL,
-      payload: error.response.data.message,
+      payload: error.response.data.error,
     });
   }
 };

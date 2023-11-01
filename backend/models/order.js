@@ -9,7 +9,6 @@ const orderSchema = mongoose.Schema({
     },
     city: {
       type: String,
-      required: true,
     },
     phoneNo: {
       type: String,

@@ -5,6 +5,7 @@ import {
   updatePassword,
   loadUser,
   clearErrors,
+  clearErrorsReducer,
 } from "../../actions/userActions";
 import {
   UPDATE_PROFILE_RESET,
@@ -14,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 
 import Loader from "../layout/Loader";
-
+import { allUsers } from "../../actions/userActions";
 import { Input, Button, Typography } from "@material-tailwind/react";
 
 const Profile = () => {
@@ -24,6 +25,7 @@ const Profile = () => {
 
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const { error, isUpdated, loading } = useSelector((state) => state.user);
+  const { users } = useSelector((state) => state.allUsers);
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(
     "/images/default_avatar.jpg"
@@ -35,9 +37,10 @@ const Profile = () => {
 
   const [email, setEmail] = useState();
 
-  console.log(user.phoneNumber);
+  console.log("AAA", users);
 
   useEffect(() => {
+    dispatch(allUsers());
     if (user) {
       setFirstName(user.firstName);
       setLastName(user.lastName);
@@ -47,9 +50,11 @@ const Profile = () => {
       setAvatarPreview(user.avatar.url);
     }
 
+    console.log("Aerror", error);
+
     if (error) {
       alert.error(error);
-      dispatch(clearErrors());
+      dispatch(clearErrorsReducer());
     }
 
     if (isUpdated) {
@@ -76,6 +81,18 @@ const Profile = () => {
       alert.error("Please fill in all the fields.");
       return;
     }
+
+    // const filteredUsers = users.filter((u) => u._id !== user._id);
+    // const existingEmail = filteredUsers.some((u) => u.email === email);
+    // const existingPhoneNumber = filteredUsers.some(
+    //   (u) => u.phoneNumber === phoneNumber
+    // );
+
+    // if (existingEmail || existingPhoneNumber) {
+    //   alert.error("Email and phone number must be unique.");
+    //   return;
+    // }
+
     const formData = new FormData();
     formData.set("firstName", firstName);
     formData.set("lastName", lastName);
@@ -98,6 +115,8 @@ const Profile = () => {
 
     reader.readAsDataURL(e.target.files[0]);
   };
+
+  console.log("user", user);
 
   return (
     <>

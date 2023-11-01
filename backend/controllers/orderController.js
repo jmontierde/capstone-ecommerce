@@ -109,27 +109,45 @@ exports.allOrders = catchAsyncErrors(async (req, res, next) => {
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
-  // if (order.orderStatus === "Delivered") {
-  //   res.status(400).json({ message: "You have already delivered this order" });
-  // }
-
-  order.orderItems.forEach(async (item) => {
-    await updateStock(item.product, item.quantity);
-  });
-
-  order.orderStatus = req.body.orderStatus; // Update order status
-
-  if (req.body.paymentStatus) {
-    // If paymentStatus is provided in the request, update it
-    if (!["Paid", "Not Paid"].includes(req.body.paymentStatus)) {
-      res.status(400).json({ message: "Invalid payment status update" });
+  // Check if the order status is "Delivered"
+  if (order.orderStatus === "Delivered") {
+    // Allow updating payment status
+    if (req.body.paymentStatus) {
+      if (!["Paid", "Not Paid"].includes(req.body.paymentStatus)) {
+        res.status(400).json({ message: "Invalid payment status update" });
+        return;
+      }
+      order.paymentStatus = req.body.paymentStatus;
+      if (req.body.paymentStatus === "Paid") {
+        order.paidAt = Date.now();
+      } else {
+        order.paidAt = null;
+      }
+    } else {
+      // Payment status is not provided
+      res.status(400).json({ message: "Payment status is required" });
       return;
     }
-    order.paymentStatus = req.body.paymentStatus;
-    if (req.body.paymentStatus === "Paid") {
-      order.paidAt = Date.now();
-    } else {
-      order.paidAt = null;
+  } else {
+    // Order status is not "Delivered," allow updating order status
+    order.orderItems.forEach(async (item) => {
+      await updateStock(item.product, item.quantity);
+    });
+
+    order.orderStatus = req.body.orderStatus; // Update order status
+
+    if (req.body.paymentStatus) {
+      // If paymentStatus is provided in the request, update it
+      if (!["Paid", "Not Paid"].includes(req.body.paymentStatus)) {
+        res.status(400).json({ message: "Invalid payment status update" });
+        return;
+      }
+      order.paymentStatus = req.body.paymentStatus;
+      if (req.body.paymentStatus === "Paid") {
+        order.paidAt = Date.now();
+      } else {
+        order.paidAt = null;
+      }
     }
   }
 

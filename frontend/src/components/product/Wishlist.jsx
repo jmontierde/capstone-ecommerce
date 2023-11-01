@@ -39,9 +39,9 @@ const Wishlist = () => {
   }, [dispatch, isDeleted, error]);
 
   return (
-    <div className="container mx-auto space-y-6">
+    <div className="container mx-auto space-y-6 mt-24">
       <ToastContainer />
-      <h1 className="mt-12 text-2xl font-bold">My Wishlist</h1>
+      <h1 className="mt-12 text-2xl font-bold ">My Wishlist</h1>
       <div className="grid grid-cols-auto md:grid-cols-4 gap-6 text-center">
         {wishlist && wishlist.products && wishlist.products.length > 0 ? (
           wishlist.products.map((product) => (

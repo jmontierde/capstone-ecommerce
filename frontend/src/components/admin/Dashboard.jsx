@@ -27,7 +27,17 @@ const Dashboard = () => {
     }
   });
 
-  console.log("OUT", outOfStock);
+  // Filter "Paid" orders and calculate the total amount
+  const paidOrders = orders
+    ? orders.filter((order) => order?.paymentStatus === "Paid")
+    : [];
+
+  const totalAmountOrder = paidOrders.reduce(
+    (total, order) => total + order.totalPrice,
+    0
+  );
+
+  console.log("totalAmountOrder", totalAmountOrder);
 
   useEffect(() => {
     dispatch(getAdminProducts());
@@ -79,7 +89,7 @@ const Dashboard = () => {
                   <div className="bg-[#E9F167] h-36 text-left rounded-b-lg  p-6">
                     <h5 className="text-lg">Total Amount</h5>
                     <p className="font-bold text-4xl">
-                      ₱{totalAmount && totalAmount.toLocaleString()}
+                      ₱{totalAmountOrder && totalAmountOrder.toLocaleString()}
                       {/* ₱57,142.23 */}
                     </p>
                   </div>

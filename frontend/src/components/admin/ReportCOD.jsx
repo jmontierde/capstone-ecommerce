@@ -93,7 +93,11 @@ const ReportCOD = () => {
   useEffect(() => {
     // Calculate the total of totalPrice column whenever filteredOrders changes
     const newTotalTotalPrice = filteredOrders
-      .filter((filtOrder) => filtOrder.paymentMethod === "COD")
+      .filter(
+        (filtOrder) =>
+          filtOrder.paymentMethod === "COD" &&
+          filtOrder.paymentStatus === "Paid"
+      )
       .reduce((total, order) => total + order.totalPrice, 0);
     setTotalTotalPrice(newTotalTotalPrice);
   }, [filteredOrders]);
@@ -126,6 +130,8 @@ const ReportCOD = () => {
     <div className="flex font-helvetica  flex-col lg:flex-row  ">
       <Sidebar />
       <div className="w-full mt-20">
+        <h1 className="mt-6 px-6 text-2xl uppercase">Cash on Delivery</h1>
+
         <div className="flex justify-between px-6 items-center my-6 ">
           <div className="lg:space-x-3 sm:w-1/2">
             <select
