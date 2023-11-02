@@ -45,7 +45,15 @@ const UsersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items to display per page
 
-  const TABLE_HEAD = ["No.", "User Id", "Name", "Email", "Role", "Actions"];
+  const TABLE_HEAD = [
+    "No.",
+    "User Id",
+    "Name",
+    "Email",
+    "Role",
+    "Phone Number",
+    "Actions",
+  ];
 
   useEffect(() => {
     dispatch(allUsers());
@@ -233,6 +241,15 @@ const UsersList = () => {
                           className="font-normal"
                         >
                           {user.email}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {user.phoneNumber}
                         </Typography>
                       </td>
                       <td className={classes}>

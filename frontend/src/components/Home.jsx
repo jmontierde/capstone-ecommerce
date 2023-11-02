@@ -33,7 +33,6 @@ const Home = () => {
   const isLargeScreen = useMediaQuery("(min-width: 1024px");
 
   const isSmallDevice = useMediaQuery("only screen and (max-width : 1023px)");
-  // const isLargeDevice = useMediaQuery("only screen and (max-width : 768px)");
 
   console.log("isSmallDevice", isSmallDevice);
 

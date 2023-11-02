@@ -50,6 +50,12 @@ const VerifyUser = () => {
       navigate("/admin/verify/:userId");
       dispatch({ type: DELETE_USER_RESET });
     }
+
+    if (isUpdated) {
+      // Handle success after verifying a user here
+      toast.success("User verified successfully");
+      dispatch({ type: VERIFY_USER_RESET });
+    }
   }, [dispatch, isUpdated, isDeleted]);
 
   const handleVerify = (userId, verificationStatus) => {

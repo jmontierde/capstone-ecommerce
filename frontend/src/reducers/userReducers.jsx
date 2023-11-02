@@ -342,6 +342,7 @@ export const allUsersReducer = (state = { users: [] }, action) => {
 
     case VERIFY_USER_SUCCESS:
       const verifiedUserId = action.payload;
+
       // Filter out the verified user from the state
       const updatedUsers = state.users.filter(
         (user) => user._id !== verifiedUserId
@@ -351,6 +352,7 @@ export const allUsersReducer = (state = { users: [] }, action) => {
         ...state,
         loading: false,
         users: updatedUsers,
+        isUpdated: true, // Set isUpdated to true
       };
 
     case VERIFY_USER_FAIL:

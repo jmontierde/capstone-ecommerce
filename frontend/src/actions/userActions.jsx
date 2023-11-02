@@ -414,6 +414,8 @@ export const updateUser = (id, userData) => async (dispatch) => {
       config
     );
 
+    console.log("DAta", data);
+
     dispatch({
       type: UPDATE_USER_SUCCESS,
       payload: data.success,
@@ -439,7 +441,7 @@ export const getUserDetails = (id) => async (dispatch) => {
     };
 
     const { data } = await axios.get(`${url}/api/v1/admin/user/${id}`, config);
-
+    console.log("get user details data", data);
     dispatch({
       type: USER_DETAILS_SUCCESS,
       payload: data.user,

@@ -219,6 +219,7 @@ const Register = () => {
                   onChange={onChange}
                   className="border border-[#000]"
                 />
+
                 <PhoneInput
                   id="phoneNumber"
                   name="phoneNumber"

@@ -60,31 +60,6 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   );
 
   try {
-    // const isEmailValid = validateEmail(email);
-
-    // if (!isEmailValid) {
-    //   throw new Error("Invalid email address");
-    // }
-
-    // let phoneNumber = req.body.phoneNumber;
-    // // Remove any non-numeric characters from the phone number
-    // phoneNumber = phoneNumber.replace(/\D/g, "");
-    // Send a verification code to the provided phone number using Twilio
-    // const twilioClient = new twilio(
-    //   process.env.TWILIO_ACCOUNT_SID,
-    //   process.env.TWILIO_AUTH_TOKEN
-    // );
-
-    // console.log("twilioClient", twilioClient);
-
-    // const verificationCode = Math.floor(1000 + Math.random() * 9000); // Generate a random verification code
-
-    // await twilioClient.messages.create({
-    //   body: `Your verification code is: ${verificationCode}`,
-    //   from: process.env.TWILIO_PHONE_NUMBER,
-    //   to: phoneNumber,
-    // });
-
     const user = await User.create({
       firstName,
       lastName,
@@ -108,11 +83,10 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
         public_id: validId.public_id,
         url: validId.secure_url,
       },
-      // verificationCode: verificationCode,
     });
 
-    // const smsMessage = "Thank you for signing up!";
-    // await sendSMS(user.phoneNumber, smsMessage);
+    const smsMessage = "Thank you for signing up!";
+    await sendSMS(user.phoneNumber, smsMessage);
 
     sendToken(user, 200, res);
   } catch (error) {
@@ -211,7 +185,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   try {
     await sendEmail(user.email, "Password Recovery Notification", message);
-    // await sendSMS(user.phoneNumber, message);
+    await sendSMS(user.phoneNumber, message);
     res.status(200).json({
       success: true,
       message: `Email sent to: ${user.email}`,
@@ -385,8 +359,6 @@ exports.allUsers = catchAsyncErrors(async (req, res, next) => {
     throw error;
   });
 
-  console.log("USERS ALL", users);
-
   res.status(200).json({
     success: true,
     users,
@@ -415,6 +387,7 @@ exports.updateUser = catchAsyncErrors(async (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
     role: req.body.role,
   };
 
@@ -476,7 +449,7 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     await sendEmail(user.email, "Account Deletion Notification", message);
     await user.remove();
 
-    // await sendSMS(user.phoneNumber, message);
+    await sendSMS(user.phoneNumber, message);
     res.status(200).json({
       success: true,
       message: `Email sent to: ${user.email}`,
