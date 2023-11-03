@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "./CheckoutSteps";
 import { saveShippingInfo } from "../../actions/cartActions";
 import { Country, State, City } from "country-state-city";
-
+import { Input } from "@material-tailwind/react";
 const Shipping = () => {
   const { user } = useSelector((state) => state.auth);
   const { shippingInfo } = useSelector((state) => state.cart);
@@ -32,16 +32,17 @@ const Shipping = () => {
   const selectedState = statesList.find(
     (stateSelect) => stateSelect.isoCode === state
   );
-  console.log("state", selectedState);
 
-  console.log("city", city);
+  console.log("phoneNo", phoneNo);
 
   useEffect(() => {
+    setPhoneNo(user.phoneNumber);
+
     if (state) {
       const cities = City.getCitiesOfState(countryCode, state);
       setCitiesList(cities);
     }
-  }, [state, countryCode]);
+  }, [state, countryCode, user.phoneNumber]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -60,12 +61,12 @@ const Shipping = () => {
   };
 
   return (
-    <div className=" mt-28">
+    <div className=" pt-28  ">
       <CheckoutSteps />
-      <div className="flex items-center justify-center font-sans">
+      <div className="flex items-center  text-black justify-center font-sans">
         <form
           onSubmit={submitHandler}
-          className="flex flex-col items-center justify-center gap-8 p-6 w-full lg:px-0 lg:w-1/2"
+          className="flex flex-col items-center justify-center gap-8 p-6 my-6 w-full lg:px-0 lg:w-1/3"
         >
           <div className="flex flex-col gap-6 w-full">
             <label htmlFor="address" className="mr-auto font-semibold text-xl">
@@ -112,19 +113,18 @@ const Shipping = () => {
               </option>
             ))}
           </select>
-          {citiesList.length > 0 && (
-            <select
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="w-full p-4 bg-[#fff] border-2 border-[#5c5858]"
-            >
-              {citiesList.map((city) => (
-                <option key={city.id} value={city.name}>
-                  {city.name}
-                </option>
-              ))}
-            </select>
-          )}
+
+          <select
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="w-full p-4 bg-[#fff] border-2 border-[#5c5858]"
+          >
+            {citiesList.map((city) => (
+              <option key={city.id} value={city.name}>
+                {city.name}
+              </option>
+            ))}
+          </select>
           <input
             type="text"
             placeholder="Postalcode / ZIP"
@@ -140,13 +140,13 @@ const Shipping = () => {
             type="text"
             placeholder="Phone"
             className="border w-full py-3 pl-3 text-lg border-[#5c5858]"
-            value={user.phoneNumber}
+            value={phoneNo}
             required
           />
 
           <button
             type="submit"
-            className="bg-[#100f0fe1] w-full py-4 text-white text-xl uppercase hover-bg-[#000]"
+            className="bg-[#000] w-full py-4 text-white font-semibold text-lg uppercase hover-bg-[#000]"
           >
             Submit
           </button>

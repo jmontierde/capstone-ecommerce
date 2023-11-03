@@ -17,6 +17,7 @@ const sendSMS = async (to, body) => {
       to: to, // The 'to' parameter should be passed as an argument
     });
     console.log("SMS sent successfully. Message SID:", message.sid);
+    console.log("to", to);
   } catch (error) {
     console.error("Error sending SMS:", error.message);
   }

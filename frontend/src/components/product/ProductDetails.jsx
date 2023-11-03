@@ -152,16 +152,16 @@ const ProductDetails = () => {
   };
 
   return (
-    <>
+    <div className="bg-[#121212] pt-28 min-h-screen text-white">
       <ToastContainer />
-      <div className="flex flex-col lg:flex-row container mx-auto  gap-6 mt-32">
-        <div className="flex lg:w-1/2 h-full bg-[#000]">
+      <div className="flex flex-col lg:flex-row lg:mx-12    gap-6 ">
+        <div className="flex lg:w-1/2 min-h-full ">
           <div className="flex flex-row-reverse  justify-end w-full">
             {/* Right side image */}
-            <div className="w-full bg-[#FAFAFA]">
+            <div className="w-full bg-[#1E1E1E]">
               {product.images && product.images.length > 0 && (
                 <img
-                  className="mx-auto h-96"
+                  className="mx-auto min-h-96"
                   src={product.images[0].url}
                   alt={product.title}
                 />
@@ -185,7 +185,7 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        <div className="lg:w-1/2  text-left px-6 space-y-3">
+        <div className="lg:w-1/2 text-left px-6 space-y-3">
           <h2 className="font-bold text-lg">{product.name}</h2>
 
           {/* Ratings */}
@@ -195,15 +195,13 @@ const ProductDetails = () => {
 
             <p className="pl-3">Reviews({product.numOfReviews})</p>
           </div>
-          <p className="lg:w-5/6 ">{product.description}</p>
+          <p className="lg:w-5/6 text-[#dbdbdb]">{product.description}</p>
           {/* Availability */}
           <div className="flex ">
-            <h3 className="font-bold mr-2">Available:</h3>
+            <h3 className=" mr-2">Available:</h3>
             <span
               className={
-                product.stock > 0
-                  ? "font-bold text-[#0db313]"
-                  : "text-[#770505]"
+                product.stock > 0 ? "text-[#0db313]" : "text-[#770505]"
               }
             >
               {product.stock > 0 ? "In Stock " : "Out of Stock "}
@@ -213,7 +211,7 @@ const ProductDetails = () => {
 
           {/* Quantity */}
           <label htmlFor="quantity">Quantity:</label>
-          <div className="flex items-center space-x-4 w-48 p-3 rounded-sm  border border-[#171717]">
+          <div className="flex items-center space-x-4 w-48 p-3 rounded-sm  border border-[#cdcdcd]">
             <button className="px-3 py-1 " onClick={handleMinusQuantity}>
               -
             </button>
@@ -363,14 +361,14 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-      <>
+      <div>
         <RelatedProducts productId={id} />
 
         {product.reviews && product.reviews.length > 0 && (
           <ListReviews reviews={product.reviews} />
         )}
-      </>
-    </>
+      </div>
+    </div>
   );
 };
 

@@ -39,7 +39,7 @@ const Wishlist = () => {
   }, [dispatch, isDeleted, error]);
 
   return (
-    <div className="container mx-auto space-y-6 mt-24">
+    <div className="space-y-6 pt-24 px-16 min-h-screen text-white bg-[#121212]">
       <ToastContainer />
       <h1 className="mt-12 text-2xl font-bold ">My Wishlist</h1>
       <div className="grid grid-cols-auto md:grid-cols-4 gap-6 text-center">
@@ -47,7 +47,7 @@ const Wishlist = () => {
           wishlist.products.map((product) => (
             <div
               key={product._id}
-              className="bg-[#E7E8EA] hover:opacity-80 p-6"
+              className="bg-[#1E1E1E] hover:opacity-80  p-6"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,10 @@ const Wishlist = () => {
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-              <Link to={`/product/${product._id}`}>
+              <Link
+                to={`/product/${product._id}`}
+                className="hover:text-[#e6e355] "
+              >
                 {product.images && product.images.length > 0 && (
                   <img
                     className="mx-auto w-48 h-48"

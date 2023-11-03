@@ -61,9 +61,9 @@ exports.getWishlist = catchAsyncErrors(async (req, res, next) => {
       "products"
     );
 
-    if (!wishlist) {
-      return res.status(404).json({ message: "Wishlist not found" });
-    }
+    // if (!wishlist) {
+    //   return res.status(404).json({ message: "Wishlist not found" });
+    // }
 
     res.status(200).json({ products: wishlist.products });
   } catch (error) {

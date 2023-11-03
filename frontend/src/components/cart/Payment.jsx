@@ -176,11 +176,12 @@ export const PaymentForm = ({ stripePromise }) => {
   //
 
   return (
-    <div className="container flex flex-col  mx-auto px-12 pb-8">
+    <div className=" flex flex-col  min-h-screen pt-28  px-12 pb-8">
       <CheckoutSteps />
       <div className="flex flex-col justify-center items-center">
-        Payment Method
-        <Card className="w-full max-w-[24rem]">
+        <h1 className="font-semibold my-3 text-xl"> Payment Method</h1>
+
+        <Card className="w-full max-w-[24rem] ">
           <List className="flex-row">
             <ListItem className="p-0">
               <label
@@ -236,7 +237,7 @@ export const PaymentForm = ({ stripePromise }) => {
         {paymentMethod === "card" ? (
           <form
             onSubmit={submitHandler}
-            className="w-full lg:w-1/2 py-6 lg:px-6 my-6 "
+            className="w-full lg:w-1/3 py-12 lg:px-8 my-6 bg-[#fff] rounded"
           >
             <h1 className="mb-4 font-bold text-xl">Card Details</h1>
             <div className="w-full space-y-3">

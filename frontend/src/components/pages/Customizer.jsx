@@ -205,12 +205,15 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
               onClick={() => {
                 if (selectedProduct && selectedProduct.stock > 0) {
                   handleCart();
+                } else if (!selectedProduct) {
+                  toast.error(
+                    "Please select a product before adding it to the cart."
+                  );
                 } else {
                   toast.error("This product is out of stock.");
                 }
               }}
               // disabled={!selectedProduct || selectedProduct.stock === 0}
-              // disabled={product.stock === 0}
             >
               Add to Cart
             </button>

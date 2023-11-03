@@ -56,12 +56,15 @@ const Header = (keyword) => {
     <div className=" fixed top-0 w-screen z-20">
       <ToastContainer />
       <nav
-        className="flex  py-3 sm:px-3 md:px-0 justify-around items-center  cursor-pointer font-helvetica  bg-[#111111] text-white
+        className="flex  py-3 sm:px-3 md:px-0 justify-around items-center  cursor-pointer font-helvetica  bg-[#1F1F1F] text-white
       "
       >
-        <h2 className="mr-16 uppercase sm:text-sm md:text-lg">
-          Vapers Sidewalk
-        </h2>
+        <Link to="/">
+          <h2 className="mr-16 uppercase sm:text-sm md:text-lg">
+            Vapers Sidewalk
+          </h2>
+        </Link>
+
         <div className="block md:flex space-x-6  items-center uppercase">
           <ul
             className={

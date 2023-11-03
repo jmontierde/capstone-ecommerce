@@ -24,12 +24,12 @@ const Product = ({ product }) => {
     <Link to={`/product/${product._id}`}>
       <>
         <div className="w-full h-full  ">
-          <div className="space-y-1 lg:px-0">
+          <div className="space-y-1 lg:px-0 hover:opacity-80 hover:text-[#e6e355] ">
             {product.images && product.images.length > 0 && (
               <img
                 src={product.images[0].url}
                 alt={product.name}
-                className="w-full h-72 py-8 lg:px-6 mx-auto bg-[#F8F8F8]"
+                className="w-full h-72 py-8 lg:px-6 mx-auto bg-[#1E1E1E]"
               />
             )}
             <h2 className="text-left text-base md:px-12 lg:px-0">

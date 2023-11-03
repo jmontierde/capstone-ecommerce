@@ -73,9 +73,9 @@ const Cart = () => {
   };
 
   return (
-    <>
+    <div className="mt-16 py-12   min-h-screen">
       <CheckoutSteps />
-      <>
+      <div>
         {cartItems.length === 0 ? (
           <div className="flex items-center justify-center h-screen">
             <h2 className="text-center font-bold text-4xl">
@@ -84,7 +84,7 @@ const Cart = () => {
           </div>
         ) : (
           <>
-            <div className="container mx-auto sm:px-6 my-6">
+            <div className="mx-6 sm:px-6 my-6">
               {/* <h1>
                 Cart:
                 {cartItems.length > 1
@@ -114,7 +114,7 @@ const Cart = () => {
                             <h4>₱{cart.price}</h4>
                           </div>
                         </div>
-                        <div className="space-x-1  p-3 flex items-center justify-between  rounded-sm  border border-[#171717] mx-auto w-44">
+                        <div className="space-x-1  p-3 flex items-center justify-between  rounded-sm  border border-[#1E1E1E] mx-auto w-44">
                           <button
                             className="px-3 py-1  "
                             onClick={() =>
@@ -183,7 +183,7 @@ const Cart = () => {
                   ))}
                 </div>
                 {/* Checkout */}
-                <div className="lg:w-1/3 h-full space-y-6 rounded-lg p-6 bg-[#F9FAFB]">
+                <div className="lg:w-1/3 h-full space-y-6 rounded-lg p-6  text-white bg-[#1E1E1E]">
                   <h4>Order summary</h4>
 
                   <div className="flex justify-between">
@@ -200,7 +200,7 @@ const Cart = () => {
                   </div>
                   <button
                     onClick={checkoutHandler}
-                    className="bg-[#4F46E5] w-full text-white rounded py-3 px-6 my-6"
+                    className="bg-[#4F46E5] hover:opacity-75 w-full text-white rounded py-3 px-6 my-6"
                   >
                     Checkout
                   </button>
@@ -209,8 +209,8 @@ const Cart = () => {
             </div>
           </>
         )}
-      </>
-    </>
+      </div>
+    </div>
   );
 };
 

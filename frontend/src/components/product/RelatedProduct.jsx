@@ -38,7 +38,7 @@ const RelatedProducts = ({ productId }) => {
   }
 
   return (
-    <div className="container mx-auto px-6 lg:px-0  related-products-container">
+    <div className="container mx-auto px-6 lg:px-0 my-6  related-products-container">
       <h2 className="text-left">Related Products</h2>
 
       <div className="flex items-center justify-center gap-3 lg:gap-6 mt-6 mb-12 ">

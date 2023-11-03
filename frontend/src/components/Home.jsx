@@ -74,15 +74,15 @@ const Home = () => {
   let count = productsCount;
 
   const [categorySize, setCategorySize] = useState(false);
-
+  // 0c0c0c
   return (
     <>
       <MetaData title={"Vapers Sidewalk"} />
-      <div className="flex flex-col lg:flex-row container py-6 mx-auto mt-20">
-        <div className="w-1/5 flex flex-col container mr-auto h-full">
+      <div className="flex flex-col lg:flex-row text-white py-12 lg:px-16 min-h-screen  mt-16  bg-[#121212]">
+        <div className="w-1/5 flex flex-col container  mr-auto h-full">
           <div>
             {isLargeScreen && (
-              <div>
+              <div className="text-[#d3d3d3]">
                 <h3 className="font-bold">Filter by Category:</h3>
                 {/* Step 3: Conditionally render the categories based on the state variable. */}
                 {showCategories && (
@@ -101,7 +101,7 @@ const Home = () => {
                         />
                         <label
                           htmlFor={category.name}
-                          className="pl-2 cursor-pointer"
+                          className="pl-2 cursor-pointer hover:text-[#e6e355]"
                         >
                           {category.name}
                         </label>
@@ -114,11 +114,11 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="lg:w-4/5  md:w-full ">
+        <div className="lg:w-4/5  md:w-full  text-[#d3d3d3] ">
           <div className=" flex  justify-between lg:justify-end  items-center px-12 lg:px-0">
             {isSmallDevice && (
               <div
-                className="cursor-pointer my-auto relative w-full"
+                className="cursor-pointer my-auto relative w-auto "
                 onClick={() => setCategorySize(!categorySize)}
               >
                 Category
@@ -157,7 +157,7 @@ const Home = () => {
               <select
                 value={sortOption}
                 onChange={handleSortChange}
-                className="py-3 lg:p-3 border   w-auto text-sm lg:text-normal"
+                className="py-3 lg:p-3 border text-black  w-auto text-sm lg:text-normal"
               >
                 <option value="">Sort By</option>
                 <option value="new-arrival">New Arrival</option>
@@ -169,7 +169,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="mt-6 grid mx-6 lg:mx-0   gap-x-6 gap-y-10 grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 xl:gap-x-8 ">
+          <div className="mt-6 grid mx-6 lg:mx-0    gap-x-6 gap-y-10 grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 xl:gap-x-8 ">
             {products &&
               products.map((product, index) => (
                 <Product key={product._id} product={product} />

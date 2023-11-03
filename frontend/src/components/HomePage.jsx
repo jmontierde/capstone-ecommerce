@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div className="bg-[#000] text-white">
+    <div className="bg-[#020202] text-white">
       <video autoPlay loop muted playsInline>
         <source src="./product-image/main-video-armour.mp4" type="video/mp4" />
         Your browser does not support the video tag.
@@ -53,7 +53,7 @@ const HomePage = () => {
         className="flex flex-col justify-center items-center space-y-6  py-6 lg:gap-24 lg:h-screen "
         // style={{ height: "calc(100vh - 60.448px)" }}
       >
-        <div className="bg-[#000] px-6 lg:w-1/2 mx-auto text-center space-y-6">
+        <div className=" px-6 lg:w-1/2 mx-auto text-center space-y-6">
           <h4 className="font-bold text-xl lg:text-2xl">
             Elevate Your Vaping Experience with VapingSidewalk
           </h4>
@@ -66,7 +66,7 @@ const HomePage = () => {
             enjoyable and hassle-free.
           </p>
         </div>
-        <div className="bg-[#000] px-6 lg:w-1/2 mx-auto text-center space-y-6">
+        <div className=" px-6 lg:w-1/2 mx-auto text-center space-y-6">
           <h4 className="font-bold text-xl  lg:text-2xl">
             The VapingSidewalk Adventure
           </h4>

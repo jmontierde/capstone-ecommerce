@@ -16,7 +16,7 @@ const AgeVerification = ({ onVerification }) => {
   };
 
   return (
-    <div className="  h-screen py-6">
+    <div className="  h-screen py-6  mt-16">
       <div
         className=" bg-white-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-70 border border-gray-100
         w-1/4 mx-auto space-y-6 p-6"
