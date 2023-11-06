@@ -176,7 +176,7 @@ const ProductReviews = () => {
                   <div className="mb-8 flex items-center justify-between">
                     <div>
                       <Typography variant="h5" color="blue-gray">
-                        reviews List
+                        Reviews List
                       </Typography>
                       <Typography color="gray" className="mt-1 font-normal">
                         See information about all reviews

@@ -17,6 +17,7 @@ import { useAlert } from "react-alert";
 import Loader from "../layout/Loader";
 import { allUsers } from "../../actions/userActions";
 import { Input, Button, Typography } from "@material-tailwind/react";
+import PhoneInput from "react-phone-number-input";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -145,7 +146,7 @@ const Profile = () => {
                   <img
                     src={avatarPreview}
                     alt={user && user.name}
-                    className="w-32 h-32 rounded-full"
+                    className="w-32 h-32 border border-[#a5a4a4] rounded-full"
                   />
                   <figcaption className="ml-6">
                     <h2 className="font-semibold  text-base md:text-xl">
@@ -188,11 +189,16 @@ const Profile = () => {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                   />
-                  <Input
-                    size="lg"
-                    label="Phone Number"
+                  <PhoneInput
+                    placeholder="Phone Number"
                     value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    onChange={setPhoneNumber}
+                    className="w-full border my-custom-input border-[#000] rounded"
+                    onKeyPress={(e) => {
+                      if (phoneNumber.length >= 13) {
+                        e.preventDefault(); // Prevent typing more characters
+                      }
+                    }}
                   />
 
                   <Input

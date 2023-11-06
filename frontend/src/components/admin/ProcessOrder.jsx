@@ -101,8 +101,8 @@ const ProcessOrder = () => {
             <p>
               <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
             </p>
-            <p className="mb-4">
-              <b>Address:</b>
+            <p>
+              <b>Address: </b>
               {shippingDetails}
             </p>
             <p>

@@ -227,6 +227,11 @@ const Register = () => {
                   value={phoneNumber}
                   onChange={(value) => setUser({ ...user, phoneNumber: value })}
                   defaultCountry="PH"
+                  onKeyPress={(e) => {
+                    if (phoneNumber.length >= 13) {
+                      e.preventDefault(); // Prevent typing more characters
+                    }
+                  }}
                   className="border border-[#000] w-96 h-12 rounded"
                 />
                 <>

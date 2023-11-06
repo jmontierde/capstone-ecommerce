@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import Loader from "../layout/Loader";
 import { allUsers } from "../../actions/userActions";
+import PhoneInput from "react-phone-number-input";
+
 import {
   Input,
   Button,
@@ -121,7 +123,7 @@ const UpdateUser = () => {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
-                <Input
+                {/* <Input
                   size="lg"
                   label="Phone Number"
                   value={phoneNumber}
@@ -139,6 +141,18 @@ const UpdateUser = () => {
                       ? "Phone number is required."
                       : ""
                   }
+                /> */}
+
+                <PhoneInput
+                  placeholder="Phone Number"
+                  value={phoneNumber}
+                  onChange={setPhoneNumber}
+                  className="w-full border my-custom-input border-[#000] rounded"
+                  onKeyPress={(e) => {
+                    if (phoneNumber.length >= 13) {
+                      e.preventDefault(); // Prevent typing more characters
+                    }
+                  }}
                 />
 
                 <Input

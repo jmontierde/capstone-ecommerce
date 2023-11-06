@@ -16,9 +16,9 @@ const AgeVerification = ({ onVerification }) => {
   };
 
   return (
-    <div className="  h-screen py-6  mt-16">
+    <div className="bg-[#121212]  h-screen py-6  mt-16">
       <div
-        className=" bg-white-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-70 border border-gray-100
+        className=" bg-white-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg text-white  bg-opacity-70 border border-gray-100
         w-1/4 mx-auto space-y-6 p-6"
       >
         <img
@@ -38,13 +38,13 @@ const AgeVerification = ({ onVerification }) => {
         </p>
         <input
           type="date"
-          className="w-full mx-auto p-3 border border-[#000]"
+          className="w-full mx-auto p-3 border text-black border-[#000]"
           value={birthdate}
           onChange={(e) => setBirthdate(e.target.value)}
         />
         <button
           onClick={handleVerification}
-          className="bg-transparent border border-[#000] w-24 py-2 mx-auto "
+          className="bg-transparent border border-[#dbdbdb] w-24 py-2 mx-auto "
         >
           Submit
         </button>

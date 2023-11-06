@@ -154,7 +154,7 @@ const ProductDetails = () => {
   return (
     <div className="bg-[#121212] pt-28 min-h-screen text-white">
       <ToastContainer />
-      <div className="flex flex-col lg:flex-row lg:mx-12    gap-6 ">
+      <div className="flex flex-col lg:flex-row lg:mx-12  gap-6 ">
         <div className="flex lg:w-1/2 min-h-full ">
           <div className="flex flex-row-reverse  justify-end w-full">
             {/* Right side image */}
@@ -331,7 +331,7 @@ const ProductDetails = () => {
                             id="review"
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
-                            className="w-full mx-6 border-1 h-48 bg-[#ffffff73] "
+                            className="w-full mx-6 border-1 text-black h-48 bg-[#ffffff73] "
                           />
                         </div>
 

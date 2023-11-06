@@ -78,8 +78,8 @@ const Cart = () => {
       <div>
         {cartItems.length === 0 ? (
           <div className="flex items-center justify-center h-screen">
-            <h2 className="text-center font-bold text-4xl">
-              Your Cart is Empty
+            <h2 className="text-center font-semibold text-4xl">
+              Your Shopping Cart is Currently Empty
             </h2>
           </div>
         ) : (

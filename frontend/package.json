@@ -27,6 +27,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.4.0",
     "jspdf-autotable": "^3.5.15",
+    "libphonenumber-js": "^1.10.49",
     "maath": "^0.7.0",
     "mdbreact": "^5.2.0",
     "moment": "^2.29.4",

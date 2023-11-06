@@ -166,7 +166,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const message = `
       Subject: Password Reset Request
       
-      Dear [Your Name],
+      Dear ${user.firstName} ${user.lastName},
       
       We have received a request to reset the password for your email account associated with ${user.email}. If you have not initiated this request, please ignore this email.
       

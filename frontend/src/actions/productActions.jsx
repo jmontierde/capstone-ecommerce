@@ -69,7 +69,6 @@ export const getRelatedProducts = (id) => async (dispatch) => {
       `${url}/api/v1/products/related?id=${id}`,
       config
     );
-    console.log("Categories from Action", data);
     dispatch({
       type: GET_RELATED_PRODUCTS_SUCCESS, // Correct action type
       payload: data.relatedProducts,
@@ -417,7 +416,6 @@ export const getCategories = () => async (dispatch) => {
 
     const { data } = await axios.get(`${url}/api/v1/categories`);
 
-    console.log("Categories from Action", data);
     dispatch({
       type: GET_CATEGORIES_SUCCESS, // Correct action type
       payload: data.categories,

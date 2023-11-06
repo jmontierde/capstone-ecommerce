@@ -13,7 +13,9 @@
 html {
   font-family: "Inter", sans-serif;
 }
-
+.my-custom-input {
+  padding: 12px;
+}
 .sidebar {
   height: 100%;
   max-height: 100vh;

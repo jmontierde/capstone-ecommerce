@@ -1,34 +1,29 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
 
-import { useParams } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrderDetails, clearErrors } from "../../actions/orderActions";
+import {
+  getOrderDetails,
+  updateOrder,
+  clearErrors,
+} from "../../actions/orderActions";
+import { UPDATE_ORDER_RESET } from "../../constants/orderConstants";
+import { Card, Typography } from "@material-tailwind/react";
+import { useParams } from "react-router-dom";
 
 const OrderDetails = () => {
+  const [status, setStatus] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState(""); // Add paymentStatus state
+
   const alert = useAlert();
   const dispatch = useDispatch();
-  const { id } = useParams();
 
-  const {
-    loading,
-    error,
-    order = {},
-  } = useSelector((state) => state.orderDetails);
+  const TABLE_HEAD = ["Products", "Price", "Quantity"];
 
-  useEffect(() => {
-    dispatch(getOrderDetails(id));
-
-    if (error) {
-      alert.error(error);
-      dispatch(clearErrors());
-    }
-  }, [dispatch, alert, error, id]);
-
+  const { loading, order = {} } = useSelector((state) => state.orderDetails);
   const {
     shippingInfo,
     orderItems,
@@ -37,98 +32,193 @@ const OrderDetails = () => {
     totalPrice,
     orderStatus,
   } = order;
+  const { error, isUpdated } = useSelector((state) => state.order);
 
-  console.log("order", order);
+  const orderId = useParams().id;
 
+  console.log("orderId", orderId);
+
+  useEffect(() => {
+    dispatch(getOrderDetails(orderId));
+
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+
+    if (isUpdated) {
+      alert.success("Order updated successfully");
+      dispatch({ type: UPDATE_ORDER_RESET });
+    }
+  }, [dispatch, alert, error, isUpdated, orderId]);
+
+  const updateOrderHandler = (id) => {
+    if (orderStatus === "Delivered") {
+      // Allow updating paymentStatus
+      if (paymentStatus !== "") {
+        const formData = new FormData();
+        formData.set("orderStatus", orderStatus);
+        formData.set("paymentStatus", paymentStatus); // Include paymentStatus in the form data
+
+        dispatch(updateOrder(id, formData));
+      } else {
+        alert.error(
+          "Payment status is required when order status is Delivered."
+        );
+      }
+    } else {
+      // Order status is not "Delivered," allow updating both status fields
+      const formData = new FormData();
+      formData.set("orderStatus", status);
+      formData.set("paymentStatus", paymentStatus); // Include paymentStatus in the form data
+
+      dispatch(updateOrder(id, formData));
+    }
+  };
+
+  console.log("USER AA", user);
   const shippingDetails =
     shippingInfo &&
-    `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode},  ${shippingInfo.state},  ${shippingInfo.country}`;
-
+    `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`;
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
 
-  console.log("paymentInfo", paymentInfo);
-
-  console.log("AAA", order);
+  console.log("ORDERRRR", order);
 
   return (
-    <div className="container mx-auto px-6 space-x-6 w-3/4">
-      <div className="flex flex-col justify-center h-full">
-        <h1 className="text-4xl font-bold my-5">Order # {order._id}</h1>
+    <div className="flex bg-[#121212] py-6 text-[#efefef]">
+      <div className="container mx-auto px-6 space-x-6 w-10/12 mt-20">
+        <div className="flex flex-col justify-center h-full">
+          <h1 className="text-4xl font-bold my-5">Order # {order._id}</h1>
 
-        <h4 className="text-2xl">Shipping Info</h4>
-        <div className="pl-6 py-6">
-          <p>
-            <b>Email:</b> {user && user.email}
-          </p>
-          <p>
-            <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
-          </p>
-          <p>
-            <b>Address:</b> {shippingDetails}
-          </p>
-          <p>
-            <b>Amount:</b> {totalPrice}
-          </p>
-        </div>
-
-        <hr />
-
-        <h4 className="text-2xl mt-4">Payment</h4>
-        <div className="ml-6 my-6">
-          <p className={isPaid ? "text-green-500" : "text-red-500"}>
-            <b>{isPaid ? "PAID" : "NOT PAID"}</b>
-          </p>
-
-          <h4 className="my-4">Order Status:</h4>
-          <p
-            className={
-              order.orderStatus &&
-              String(order.orderStatus).includes("Delivered")
-                ? "text-green-500"
-                : "text-red-500"
-            }
-          >
-            <b>{orderStatus}</b>
-          </p>
-        </div>
-
-        <hr />
-        <h4 className="text-2xl my-4">Order Items:</h4>
-
-        <div className="flex flex-col justify-between items-center mr-auto text-center bg-gray-500">
-          <div className="flex justify-around items-center mx-auto w-full text-xl font-semibold mt-6">
-            <h1 className="w-1/6">Products</h1>
-            <h1 className="w-1/6">Product Name</h1>
-            <h1 className="w-1/6">Price</h1>
-            <h1 className="w-1/6">Quantity</h1>
+          <h4 className="text-lg">Shipping Info</h4>
+          <div className="pl-6 py-6">
+            <p>
+              <b>Name:</b> {user && `${user.firstName} ${user.lastName}`}
+            </p>
+            <p>
+              <b>Phone: </b> {shippingInfo && ` ${shippingInfo.phoneNo}`}
+            </p>
+            <p>
+              <b>Address: </b>
+              {shippingDetails}
+            </p>
+            <p>
+              <b>Amount:</b> {totalPrice}
+            </p>
           </div>
-          {orderItems &&
-            orderItems.map((item) => (
-              <div
-                key={item.product}
-                className="space-y-3 flex justify-around items-center w-full"
+
+          <hr />
+
+          <h4 className="text-lg mt-4">Payment</h4>
+          <div className="ml-6 my-6">
+            {order.paymentMethod === "CARD" ? (
+              <p className={isPaid ? "text-green-500" : "text-red-500"}>
+                <b>{isPaid ? "PAID" : "NOT PAID"}</b>
+              </p>
+            ) : (
+              <p
+                className={
+                  order.paymentStatus === "Paid"
+                    ? "text-green-500"
+                    : "text-red-500"
+                }
               >
-                <img src={item.image} alt={item.name} className="w-1/6" />
+                <b>{order.paymentStatus}</b>
+              </p>
+            )}
 
-                <div className="text-xl w-1/6">
-                  <Link to={`/products/${item.product}`}>{item.name}</Link>
-                </div>
+            {order.paymentMethod === "CARD" ? (
+              <>
+                <h4 className="my-4 font-bold">Stripe ID</h4>
+                <p className="font-semibold">{paymentInfo && paymentInfo.id}</p>
+              </>
+            ) : (
+              <span></span>
+            )}
 
-                <div className="text-xl w-1/6">
-                  <p>{item.price}</p>
-                </div>
+            <h4 className="my-4">Order Status:</h4>
+            <p
+              className={
+                order.orderStatus &&
+                String(order.orderStatus).includes("Delivered")
+                  ? "text-green-500"
+                  : "text-red-500"
+              }
+            >
+              <b>{orderStatus}</b>
+            </p>
+          </div>
 
-                <div className="text-xl w-1/6">
-                  <p>
-                    {item.quantity}
-                    {item.quantity > 1 ? " Pieces" : " Piece"}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <hr />
+          <h4 className="text-lg my-3">Order Items:</h4>
+
+          <Card className="h-full w-full overflow-scroll">
+            <table className="w-full min-w-max table-fixed text-left ">
+              <thead>
+                <tr>
+                  {TABLE_HEAD.map((head) => (
+                    <th
+                      key={head}
+                      className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                    >
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal leading-none opacity-70"
+                      >
+                        {head}
+                      </Typography>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {orderItems &&
+                  orderItems.map((item, index) => {
+                    const isLast = index === orderItems.length - 1;
+                    const classes = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
+
+                    return (
+                      <tr key={item.product}>
+                        <td className={`${classes}  flex flex-col space-y-3`}>
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-48 h-48 p-6 bg-[#F8F8F8]"
+                          />
+                          <Link to={`/products/${item.product}`}>
+                            {item.name}
+                          </Link>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            <p>{item.price}</p>
+                          </Typography>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {item.quantity}
+                          </Typography>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </Card>
+          <hr />
         </div>
-        <hr />
       </div>
     </div>
   );
