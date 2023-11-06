@@ -5,6 +5,7 @@ import {
   updatePassword,
   loadUser,
   clearErrors,
+  clearErrorsReducer,
 } from "../../actions/userActions";
 import {
   UPDATE_PROFILE_RESET,
@@ -53,7 +54,7 @@ const Profile = () => {
 
     if (error) {
       alert.error(error);
-      dispatch(clearErrors());
+      dispatch(clearErrorsReducer());
     }
 
     if (isUpdated) {
@@ -78,6 +79,17 @@ const Profile = () => {
     e.preventDefault();
     if (!firstName || !lastName || !email) {
       alert.error("Please fill in all the fields.");
+      return;
+    }
+
+    const filteredUsers = users.filter((u) => u._id !== user._id);
+    const existingEmail = filteredUsers.some((u) => u.email === email);
+    const existingPhoneNumber = filteredUsers.some(
+      (u) => u.phoneNumber === phoneNumber
+    );
+
+    if (existingEmail || existingPhoneNumber) {
+      alert.error("Email and phone number must be unique.");
       return;
     }
 
@@ -111,7 +123,7 @@ const Profile = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="container mx-auto bg-slate-200 mb-6 mt-24">
+        <div className="container mx-auto bg-slate-200 mb-6">
           {/* User Profile */}
           <div className="flex flex-col w-full ">
             {/* Personal Information */}
