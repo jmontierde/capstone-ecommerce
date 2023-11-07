@@ -86,7 +86,7 @@ function App() {
         };
 
         const { data } = await axios.get(
-          "https://vapingsidewalk-server.onrender.com/api/v1/stripeapi",
+          "https://vapingsidewalk-backend.onrender.com/api/v1/stripeapi",
           config
         );
 

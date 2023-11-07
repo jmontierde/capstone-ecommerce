@@ -26,7 +26,7 @@ export const createMessages = (chatId, senderId, text) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `https://vapingsidewalk-server.onrender.com/api/v1/messages`,
+      `https://vapingsidewalk-backend.onrender.com/api/v1/messages`,
       { chatId, senderId, text },
       config
     );
@@ -61,7 +61,7 @@ export const getMessages = (currentChat) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `https://vapingsidewalk-server.onrender.com/api/v1/messages/${currentChat}`,
+      `https://vapingsidewalk-backend.onrender.com/api/v1/messages/${currentChat}`,
       config
     );
     console.log("GET MESSAGES FROM ACTION", data);

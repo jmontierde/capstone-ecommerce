@@ -65,8 +65,8 @@ exports.sendStripApi = catchAsyncErrors(async (req, res, next) => {
 //       payment_method: "paypal",
 //     },
 //     redirect_urls: {
-//       return_url: "https://vapingsidewalk-server.onrender.com/success", // Replace with your success URL
-//       cancel_url: "https://vapingsidewalk-server.onrender.com/cancel", // Replace with your cancel URL
+//       return_url: "https://vapingsidewalk-backend.onrender.com/success", // Replace with your success URL
+//       cancel_url: "https://vapingsidewalk-backend.onrender.com/cancel", // Replace with your cancel URL
 //     },
 //     transactions: [
 //       {

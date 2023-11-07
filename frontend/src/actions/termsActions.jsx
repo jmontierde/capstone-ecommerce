@@ -17,7 +17,7 @@ import {
   CLEAR_ERRORS,
 } from "../constants/termsConstant";
 import axios from "axios";
-const url = "https://vapingsidewalk-server.onrender.com";
+const url = "https://vapingsidewalk-backend.onrender.com";
 
 export const createTerms = (title, content) => async (dispatch) => {
   try {

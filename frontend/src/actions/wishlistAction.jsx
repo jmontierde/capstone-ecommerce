@@ -11,7 +11,7 @@ import {
   REMOVE_FROM_WISHLIST_REQUEST,
   REMOVE_FROM_WISHLIST_SUCCESS,
 } from "../constants/wishlistConstant";
-const url = "https://vapingsidewalk-server.onrender.com";
+const url = "https://vapingsidewalk-backend.onrender.com";
 
 // Add a product to the user's wishlist
 export const addToWishlist = (productId) => async (dispatch) => {
