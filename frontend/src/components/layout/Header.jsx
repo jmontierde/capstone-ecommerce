@@ -70,7 +70,7 @@ const Header = (keyword) => {
             className={
               isMenuOpen
                 ? "hidden sm:hidden  lg:flex xl:flex "
-                : "flex flex-col items-center space-x-6  justify-center uppercase fixed top-0 left-0 mt-24 w-full h-full bg-[#ad5050] z-50  xl:bg-slate-800 lg:hidden "
+                : "flex flex-col items-center space-x-6  justify-center uppercase fixed top-0 left-0 mt-16 w-full h-full bg-[#121212] z-30  xl:bg-slate-800 lg:hidden "
             }
             onClick={() => setIsMenuOpen(true)}
           >
@@ -156,7 +156,7 @@ const Header = (keyword) => {
                 onClick={toggleProfileDropdown}
                 data-dropdown-toggle="dropdownHover"
                 data-dropdown-trigger="hover"
-                className="text-white font-medium text-sm text-center inline-flex items-center"
+                className="text-white font-medium text-sm text-center  rounded-full  inline-flex justify-center items-center"
                 type="button"
               >
                 <figure>
@@ -244,8 +244,11 @@ const Header = (keyword) => {
           )}
           {/* Hamburger */}
           {isMenuOpen ? (
-            <img
-              src="/images/hamburger-menu.png"
+            <svg
+              viewBox="-0.5 0 25 25"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke="#fff"
               className={
                 isMenuOpen
                   ? "w-4 h-4 block lg:hidden  "
@@ -253,17 +256,64 @@ const Header = (keyword) => {
               }
               alt=""
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-            />
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                {" "}
+                <path
+                  d="M2 12.32H22"
+                  stroke="#fff"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>{" "}
+                <path
+                  d="M2 18.32H22"
+                  stroke="#fff"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>{" "}
+                <path
+                  d="M2 6.32001H22"
+                  stroke="#fff"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>{" "}
+              </g>
+            </svg>
           ) : (
-            <img
-              src="/images/close-menu.png"
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
               className={
                 isMenuOpen
                   ? "hidden  w-4 h-4 lg:hidden"
                   : "block w-4 h-4 lg:hidden"
               }
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-            />
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                {" "}
+                <path
+                  d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z"
+                  fill="#fff"
+                ></path>{" "}
+              </g>
+            </svg>
           )}
         </div>
       </nav>

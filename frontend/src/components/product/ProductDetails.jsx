@@ -155,13 +155,13 @@ const ProductDetails = () => {
     <div className="bg-[#121212] pt-28 min-h-screen text-white">
       <ToastContainer />
       <div className="flex flex-col lg:flex-row lg:mx-12  gap-6 ">
-        <div className="flex lg:w-1/2 min-h-full ">
-          <div className="flex flex-row-reverse  justify-end w-full">
+        <div className="flex lg:w-1/2 ">
+          <div className="flex flex-row-reverse   bg-[#f00f]  justify-end w-full ">
             {/* Right side image */}
-            <div className="w-full bg-[#1E1E1E]">
+            <div className="w-full mx-auto bg-[#1E1E1E]">
               {product.images && product.images.length > 0 && (
                 <img
-                  className="mx-auto min-h-96"
+                  className="mx-auto w-96 h-full object-cover "
                   src={product.images[0].url}
                   alt={product.title}
                 />

@@ -114,16 +114,16 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="lg:w-4/5  md:w-full  text-[#d3d3d3] ">
-          <div className=" flex  justify-between lg:justify-end  items-center px-12 lg:px-0">
+        <div className="lg:w-4/5  md:w-full   text-[#d3d3d3] ">
+          <div className=" flex  justify-between lg:justify-end  items-center px-6 lg:px-0">
             {isSmallDevice && (
               <div
-                className="cursor-pointer my-auto relative w-auto "
+                className="cursor-pointer my-auto   relative w-full "
                 onClick={() => setCategorySize(!categorySize)}
               >
-                Category
+                <h5 className="hover:text-[#e6e355] ">Category</h5>
                 {categorySize ? (
-                  <div className="absolute  w-full">
+                  <div className="absolute ">
                     {" "}
                     <ul>
                       {categories.map((category) => (

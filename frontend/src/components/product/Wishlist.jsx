@@ -39,7 +39,7 @@ const Wishlist = () => {
   }, [dispatch, isDeleted, error]);
 
   return (
-    <div className="space-y-6 pt-24 px-16 min-h-screen text-white bg-[#121212]">
+    <div className="space-y-6 pt-24 py-6 px-16 min-h-screen text-white bg-[#121212]">
       <ToastContainer />
       <h1 className="mt-12 text-2xl font-bold ">My Wishlist</h1>
       <div className="grid grid-cols-auto md:grid-cols-4 gap-6 text-center">
@@ -66,7 +66,7 @@ const Wishlist = () => {
               </svg>
               <Link
                 to={`/product/${product._id}`}
-                className="hover:text-[#e6e355] "
+                className="hover:text-[#e6e355]"
               >
                 {product.images && product.images.length > 0 && (
                   <img

@@ -22,11 +22,14 @@ const PenStyle = () => {
 
   return (
     <div className=" mx-auto text-white bg-[#000000] mt-16">
-      <img
-        src="./product-image/pen-style-model.jpg"
-        alt="pod-model"
-        className="w-screen h-96 object-cover"
-      />
+      <div className="lg:h-screen ">
+        <img
+          src="./product-image/pen-style-model.webp"
+          alt="pod-model"
+          className="w-screen lg:h-screen object-fill  bg-[#fff] "
+        />
+      </div>
+
       <HeaderCategory />
       <div className="bg-[#000] p-6 space-y-6">
         <h2 className="text-center font-semibold my-12 text-3xl">
