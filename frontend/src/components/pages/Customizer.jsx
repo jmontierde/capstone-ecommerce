@@ -19,6 +19,11 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
 
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+  console.log("productssss", products);
+
   const snap = useSnapshot(state);
 
   const [file, setFile] = useState("");

@@ -21,11 +21,15 @@ import {
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
-  const [open, setOpen] = React.useState(0);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
+  const [open, setOpen] = React.useState(0);
   const [openSidebarAdmin, setOpenSidebarAdmin] = useState(false);
+
+  console.log("ME", user);
 
   useEffect(() => {
     if (openSidebarAdmin) {
@@ -200,18 +204,32 @@ const Sidebar = () => {
               </ListItem>
               {open === 2 ? (
                 <AccordionBody className="py-1">
-                  <List className="p-0">
-                    <Link to="/admin/users">
-                      <ListItem>
-                        <ListItemPrefix>
-                          <ChevronRightIcon
-                            strokeWidth={3}
-                            className="h-3 w-5"
-                          />
-                        </ListItemPrefix>
-                        All Users
-                      </ListItem>
-                    </Link>
+                  {user.role === "admin" ? (
+                    <List className="p-0">
+                      <Link to="/admin/users">
+                        <ListItem>
+                          <ListItemPrefix>
+                            <ChevronRightIcon
+                              strokeWidth={3}
+                              className="h-3 w-5"
+                            />
+                          </ListItemPrefix>
+                          All Users
+                        </ListItem>
+                      </Link>
+                      <Link to="/admin/verify/:userId">
+                        <ListItem>
+                          <ListItemPrefix>
+                            <ChevronRightIcon
+                              strokeWidth={3}
+                              className="h-3 w-5"
+                            />
+                          </ListItemPrefix>
+                          Verify Users
+                        </ListItem>
+                      </Link>
+                    </List>
+                  ) : (
                     <Link to="/admin/verify/:userId">
                       <ListItem>
                         <ListItemPrefix>
@@ -223,7 +241,7 @@ const Sidebar = () => {
                         Verify Users
                       </ListItem>
                     </Link>
-                  </List>
+                  )}
                 </AccordionBody>
               ) : null}
             </Accordion>
@@ -279,19 +297,6 @@ const Sidebar = () => {
               </ListItem>
             </Link>
 
-            {/* <Link to="/admin/report">
-              <ListItem>
-                <ListItemPrefix>
-                  <img
-                    src="/images/report.png"
-                    alt="Report"
-                    className="h-5 w-5"
-                  />
-                </ListItemPrefix>
-                Report
-                <ListItemSuffix></ListItemSuffix>
-              </ListItem>
-            </Link> */}
             <Accordion
               open={open === 3}
               icon={

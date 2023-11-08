@@ -34,7 +34,7 @@ const TermsAndConditions = () => {
   console.log("Terms", termsAndConditions);
 
   return (
-    <div className="container mx-auto space-y-3 my-6">
+    <div className="container mx-auto space-y-3 mt-24 py-12 ">
       <h1 className="text-2xl font-bold">Terms and Conditions</h1>
 
       {termsAndConditions.map((term, index) => (

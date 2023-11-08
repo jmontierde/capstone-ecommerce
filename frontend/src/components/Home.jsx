@@ -176,7 +176,7 @@ const Home = () => {
               ))}
           </div>
           {resPerPage <= count && (
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-12">
               <Pagination
                 activePage={currentPage}
                 itemsCountPerPage={resPerPage}
@@ -186,10 +186,10 @@ const Home = () => {
                 prevPageText={"Prev"}
                 firstPageText={"First"}
                 lastPageText={"Last"}
-                itemClass="page-item border border-gray-300 mr-1 w-20 py-6 flex justify-center items-center cursor-pointer hover-bg-gray-300"
+                itemClass="page-item border border-[#fff] mr-1 w-20 py-6 flex justify-center items-center cursor-pointer hover:bg-[#1E1E1E]"
                 linkClass="page-link"
                 innerClass="flex items-center"
-                activeClass="bg-gray-300"
+                activeClass="bg-[#1E1E1E]"
               />
             </div>
           )}

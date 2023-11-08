@@ -41,6 +41,9 @@ const NewProduct = () => {
 
   const isRequiredFieldEmpty =
     !name || !price || !description || !category || !stock || !seller;
+  const isPriceValid = /^(\d+(\.\d{0,2})?)?$/.test(price);
+  const isStockValid = /^\d+(\.\d{0,2})?$/.test(stock);
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -145,6 +148,7 @@ const NewProduct = () => {
 
                   <div className="flex flex-col ">
                     <Input
+                      type="number"
                       label="Stock"
                       className="py-6 "
                       value={stock}
@@ -154,6 +158,7 @@ const NewProduct = () => {
                 </div>
 
                 <Input
+                  type="number"
                   label="Price"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
@@ -215,9 +220,9 @@ const NewProduct = () => {
                     id="login_button"
                     type="submit"
                     className="bg-[#003171] w-full lg:w-1/3 py-3  text-white rounded my-6"
-                    disabled={loading}
+                    // disabled={loading}
                   >
-                    {loading ? "Adding Product..." : "Add Product"}
+                    Add Product
                   </button>
                 </div>
               </section>

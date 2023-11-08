@@ -171,6 +171,7 @@ const UpdateProduct = () => {
 
                   <div className="flex flex-col w-3/12">
                     <Input
+                      type="number"
                       label="Stock"
                       className="py-6 "
                       value={stock}
@@ -180,6 +181,7 @@ const UpdateProduct = () => {
                 </div>
 
                 <Input
+                  type="number"
                   label="Price"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}

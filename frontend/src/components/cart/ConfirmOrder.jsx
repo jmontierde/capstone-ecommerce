@@ -161,7 +161,7 @@ const ConfirmOrder = () => {
               </div>
               <div className="my-3  lg:mt-6 lg:ml-auto">
                 <button
-                  className="bg-[#4F46E5] p-3 rounded text-[#fff] "
+                  className="bg-[#4F46E5] hover:opacity-80 p-3 rounded text-[#fff] "
                   onClick={processToPayment}
                 >
                   Proceed to Payment
