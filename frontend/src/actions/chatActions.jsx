@@ -29,7 +29,7 @@ export const createChat = (firstId, secondId) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `http://localhost:7000/api/v1/chats`,
+      `https://vapingsidewalk-server.onrender.com/api/v1/chats`,
       { firstId, secondId },
       config
     );
@@ -62,7 +62,7 @@ export const getUserChats = (userId) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `http://localhost:7000/api/v1/chat/${userId}`,
+      `https://vapingsidewalk-server.onrender.com/api/v1/chat/${userId}`,
       config
     );
 
@@ -94,7 +94,7 @@ export const getChat = (firstId, secondId) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `http://localhost:7000/api/v1/chat/find/${firstId}/${secondId}`,
+      `https://vapingsidewalk-server.onrender.com/api/v1/chat/find/${firstId}/${secondId}`,
       config
     );
 
