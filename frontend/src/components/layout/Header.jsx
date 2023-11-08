@@ -84,12 +84,21 @@ const Header = (keyword) => {
             </li>
             <li className="flex-none">
               <Link
+                to="/about"
+                className="block py-2 px-4 rounded-lg hover:text-[#e6e355]  "
+              >
+                About
+              </Link>
+            </li>
+            <li className="flex-none">
+              <Link
                 to="/product"
                 className="block py-2 px-4 rounded-lg hover:text-[#e6e355]  "
               >
                 Product
               </Link>
             </li>
+
             <li className="flex-none">
               <Link
                 to="/three"

@@ -107,7 +107,7 @@ const UpdateProduct = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred while updating the product");
+      // toast.error("An error occurred while updating the product");
     }
   };
 

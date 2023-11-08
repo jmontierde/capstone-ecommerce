@@ -134,6 +134,35 @@ const HomePage = () => {
           </Link>
         </div>
       </div>
+      <section id="contact">
+        <div
+          className="flex flex-col justify-center items-center h-screen space-y-12 text-white bg-no-repeat bg-center"
+          // style={{ backgroundImage: `url(${image2})` }}
+        >
+          <h2 className="md:text-7xl max-w-7xl text-center container px-6 mx-auto underline-offset-2 text-3xl">
+            Let's{" "}
+            <span className="opacity-50">
+              {" "}
+              connect online to share our passion for{" "}
+            </span>{" "}
+            vaping and explore new horizons ↣
+          </h2>
+          <div className="border-t border-gray-300 py-8 text-xs md:text-xl opacity-80">
+            <a
+              href="mailto:vapingsidewalk@gmail.com"
+              className="mr-6 hover:opacity-60"
+            >
+              vapingsidewalk@gmail.com
+            </a>
+            <a
+              href="https://www.facebook.com/vsidevapeshop"
+              className="mr-6 hover:opacity-60"
+            >
+              facebook
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

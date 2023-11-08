@@ -181,28 +181,32 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
           </motion.div> */}
 
           <motion.div
-            className="absolute z-10 inset-y-1/2 right-12"
+            className="absolute z-12 inset-y-1/2 right-12"
             {...fadeAnimation}
           >
-            <div className="flex flex-col items-center gap-3  ">
+            <div className="flex flex-col items-center gap-3 ">
               <h3 className="font-bold">Textures</h3>
-
-              {products
-                .filter((category) => category.category === "Skin")
-                .map((product) => (
-                  <>
-                    <img
-                      key={product._id}
-                      src={product.images[0].url}
-                      alt={product.name}
-                      className="w-12 h-12 cursor-pointer rounded-full" // Add cursor-pointer class to make it clear it's clickable
-                      onClick={() => {
-                        handleProductSelect(product);
-                        handleTexture(product.images[0].url); // Change the skin of the selected product
-                      }} // Call the handleProductClick function on click
-                    />
-                  </>
-                ))}
+              <div className="grid grid-cols-2  items-center justify-center mx-auto gap-6">
+                {products
+                  .filter(
+                    (category) =>
+                      category.category === "64cc6852182d28d94bdfc28a"
+                  )
+                  .map((product) => (
+                    <>
+                      <img
+                        key={product._id}
+                        src={product.images[0].url}
+                        alt={product.name}
+                        className="w-12 h-12 cursor-pointer rounded-full" // Add cursor-pointer class to make it clear it's clickable
+                        onClick={() => {
+                          handleProductSelect(product);
+                          handleTexture(product.images[0].url); // Change the skin of the selected product
+                        }} // Call the handleProductClick function on click
+                      />
+                    </>
+                  ))}
+              </div>
             </div>
 
             <button

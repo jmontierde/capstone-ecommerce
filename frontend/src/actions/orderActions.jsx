@@ -35,7 +35,7 @@ import {
 } from "../constants/orderConstants";
 import { DELETE_REVIEW_FAIL } from "../constants/productConstants";
 import { CLEAR_ERRORS_REDUCER } from "../constants/userConstant";
-const url = "https://vapingsidewalk-backend.onrender.com";
+const url = "http://localhost:7000";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {

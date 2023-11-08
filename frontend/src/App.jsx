@@ -59,6 +59,7 @@ import PodMod from "./components/product/PodMod";
 import TankMod from "./components/product/TankMod";
 import PenStyle from "./components/product/PenStyle";
 import ReportCard from "./components/admin/ReportCard";
+import About from "./components/layout/About";
 
 function App() {
   // const dispatch = useDispatch()
@@ -86,7 +87,7 @@ function App() {
         };
 
         const { data } = await axios.get(
-          "https://vapingsidewalk-backend.onrender.com/api/v1/stripeapi",
+          "http://localhost:7000/api/v1/stripeapi",
           config
         );
 
@@ -116,6 +117,8 @@ function App() {
         <> */}
             <Route path="/" element={<HomePage />} />
             <Route path="/product" element={<Home />} />
+            <Route path="/about" element={<About />} />
+
             <Route path="/pod" element={<Pod />} />
             <Route path="/pod-mod" element={<PodMod />} />
             <Route path="/tank-mod" element={<TankMod />} />
