@@ -1,4 +1,5 @@
 const Order = require("../models/order");
+const mongoose = require("mongoose");
 
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
@@ -31,8 +32,19 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     // If it's a COD order, set the paymentStatus to "Not Paid"
     paymentStatus = "Not Paid";
   }
+  const orderCounter = await mongoose.connection.db
+    .collection("counters")
+    .findOneAndUpdate(
+      { _id: "orderId" },
+      { $inc: { sequence_value: 1 } },
+      { returnOriginal: false }
+    );
+
+  // Extract the next order ID
+  const orderId = orderCounter.value.sequence_value;
 
   const order = await Order.create({
+    orderId,
     orderItems,
     shippingInfo,
     itemsPrice,
@@ -45,7 +57,7 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     paymentMethod,
     paymentStatus,
   });
-  const smsMessage = `Thank you for placing an order with us. Your order ID is ${order._id}. We will process your order and keep you updated on its status.`;
+  const smsMessage = `Thank you for placing an order with us. Your order ID is ${order.orderId}. We will process your order and keep you updated on its status.`;
   try {
     // Use the sendSMS function to send the SMS message
     await sendSMS(req.user.phoneNumber, smsMessage);

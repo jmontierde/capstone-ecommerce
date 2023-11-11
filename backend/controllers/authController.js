@@ -1,5 +1,5 @@
 const User = require("../models/user");
-
+const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken");
@@ -38,29 +38,39 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
       .json({ message: "An account with this email already exists." });
   }
 
-  const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
-    folder: "avatars",
-    width: 150,
-    crop: "scale",
-  });
+  try {
+    const counter = await mongoose.connection.db
+      .collection("counters")
+      .findOneAndUpdate(
+        { _id: "userId" },
+        { $inc: { sequence_value: 1 } },
+        { returnOriginal: false }
+      );
 
-  const validId = await cloudinary.v2.uploader.upload(req.body.validId, {
-    folder: "validId",
-    width: 150,
-    crop: "scale",
-  });
+    // Extract the next user ID
+    const userId = counter.value.sequence_value;
+    const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
 
-  const withBirthdayId = await cloudinary.v2.uploader.upload(
-    req.body.withBirthdayId,
-    {
+    const validId = await cloudinary.v2.uploader.upload(req.body.validId, {
       folder: "validId",
       width: 150,
       crop: "scale",
-    }
-  );
+    });
 
-  try {
+    const withBirthdayId = await cloudinary.v2.uploader.upload(
+      req.body.withBirthdayId,
+      {
+        folder: "validId",
+        width: 150,
+        crop: "scale",
+      }
+    );
     const user = await User.create({
+      userId,
       firstName,
       lastName,
       email,
@@ -236,7 +246,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 //Get currently logged in user details => /api/v1/me
 exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id);
-
+  console.log("user", req.user.userId);
   res.status(200).json({
     success: true,
     user,
@@ -407,6 +417,7 @@ exports.verifyUser = catchAsyncErrors(async (req, res, next) => {
   const userId = req.params.userId;
   const verificationStatus = req.body.verificationStatus; // "Verified" or "Rejected"
 
+  console.log("userId", userId);
   try {
     if (verificationStatus === "Rejected") {
       // If the verificationStatus is "Rejected," delete the user
@@ -422,7 +433,7 @@ exports.verifyUser = catchAsyncErrors(async (req, res, next) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    console.log("USER VERIFY", user);
+    console.log("USER VERIFY", userId);
 
     res
       .status(200)

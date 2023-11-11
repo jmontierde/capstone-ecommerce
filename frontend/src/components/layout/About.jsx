@@ -32,7 +32,7 @@ const About = () => {
 
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
   return (
-    <div className="bg-[#212524]">
+    <div className="bg-[#1B201F]">
       <div className=" relative">
         <img src={image1} className="h-screen" alt="" />
         <div className="absolute w-5/6 top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2">

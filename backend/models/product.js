@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
+  productId: {
+    type: Number,
+    required: true,
+  },
   name: {
     type: String,
     required: [true, "Please enter product name"], // Second array will print when has an error

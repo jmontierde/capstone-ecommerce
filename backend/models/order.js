@@ -2,6 +2,10 @@ const { default: mongoose } = require("mongoose");
 const moongose = require("mongoose");
 
 const orderSchema = mongoose.Schema({
+  orderId: {
+    type: Number,
+    required: true,
+  },
   shippingInfo: {
     address: {
       type: String,
