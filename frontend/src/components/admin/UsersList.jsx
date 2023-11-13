@@ -221,7 +221,7 @@ const UsersList = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {user._id}
+                            {user.userId}
                           </Typography>
                         </div>
                       </td>

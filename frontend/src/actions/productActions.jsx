@@ -66,7 +66,7 @@ export const getRelatedProducts = (id) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `${url}/api/v1/products/related?id=${id}`,
+      `${url}/api/v1/products/related?productId=${id}`,
       config
     );
     dispatch({
@@ -211,41 +211,11 @@ export const updateProduct = (id, productData) => async (dispatch) => {
   }
 };
 
-export const newReview = (reviewData) => async (dispatch) => {
-  try {
-    dispatch({ type: NEW_REVIEW_REQUEST });
-    const token = localStorage.getItem("token");
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const { data } = await axios.put(
-      `${url}/api/v1/review`,
-      reviewData,
-      config
-    );
-
-    dispatch({
-      type: NEW_REVIEW_SUCCESS,
-      payload: data.success,
-    });
-  } catch (error) {
-    dispatch({
-      type: NEW_REVIEW_FAIL,
-      payload: error.response.data.message,
-    });
-  }
-};
-
-export const getProductDetails = (id) => async (dispatch) => {
+export const getProductDetails = (productId) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`${url}/api/v1/product/${id}`);
+    const { data } = await axios.get(`${url}/api/v1/product/${productId}`);
 
     dispatch({
       type: PRODUCT_DETAILS_SUCCESS,
@@ -284,8 +254,38 @@ export const getAdminProducts = () => async (dispatch) => {
   }
 };
 
+export const newReview = (reviewData) => async (dispatch) => {
+  try {
+    dispatch({ type: NEW_REVIEW_REQUEST });
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `${url}/api/v1/review`,
+      reviewData,
+      config
+    );
+
+    dispatch({
+      type: NEW_REVIEW_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: NEW_REVIEW_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 // Get product reviews
-export const getProductReviews = (id) => async (dispatch) => {
+export const getProductReviews = (productId) => async (dispatch) => {
   try {
     dispatch({ type: GET_REVIEWS_REQUEST });
     const token = localStorage.getItem("token");
@@ -296,7 +296,10 @@ export const getProductReviews = (id) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(`${url}/api/v1/reviews?id=${id}`, config);
+    const { data } = await axios.get(
+      `${url}/api/v1/reviews?productId=${productId}`,
+      config
+    );
 
     dispatch({
       type: GET_REVIEWS_SUCCESS,
@@ -310,47 +313,8 @@ export const getProductReviews = (id) => async (dispatch) => {
   }
 };
 
-// export const getProductReviews = (id) => async (dispatch) => {
-//   try {
-//     dispatch({ type: GET_REVIEWS_REQUEST });
-//     const token = localStorage.getItem("token");
-
-//     const config = {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     };
-
-//     const response = await axios.get(`${url}/api/v1/reviews?id=${id}`, config);
-
-//     if (response.data.success) {
-//       if (response.data.reviews.length === 0) {
-//         dispatch({
-//           type: GET_REVIEWS_FAIL,
-//           payload: "No reviews found for this product.",
-//         });
-//       } else {
-//         dispatch({
-//           type: GET_REVIEWS_SUCCESS,
-//           payload: response.data.reviews,
-//         });
-//       }
-//     } else {
-//       dispatch({
-//         type: GET_REVIEWS_FAIL,
-//         payload: "Failed to fetch reviews for this product.",
-//       });
-//     }
-//   } catch (error) {
-//     dispatch({
-//       type: GET_REVIEWS_FAIL,
-//       payload: error.response ? error.response.data.message : "Network error",
-//     });
-//   }
-// };
-
 // Delete product review
-export const deleteReview = (id, productId) => async (dispatch) => {
+export const deleteReview = (productId, reviewId) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_REVIEW_REQUEST });
     const token = localStorage.getItem("token");
@@ -361,7 +325,7 @@ export const deleteReview = (id, productId) => async (dispatch) => {
       },
     };
     const { data } = await axios.delete(
-      `${url}/api/v1/reviews?id=${id}&productId=${productId}`,
+      `${url}/api/v1/reviews?productId=${productId}&reviewId=${reviewId}`,
       config
     );
 

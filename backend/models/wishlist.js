@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 
 const wishlistSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference to the User model
+    type: mongoose.Schema.Types.ObjectId, // Change the type to ObjectId
+    ref: "User",
   },
   products: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product", // Reference to the Product model
+      type: Number, // Change the type to Number if productId is a Number
+      ref: "Product",
     },
   ],
 });

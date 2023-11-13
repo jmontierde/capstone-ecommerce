@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 // Price and stock doesn't have validation
+const mongoose = require("mongoose");
 
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
@@ -12,20 +13,14 @@ const Wishlist = require("../models/wishlist");
 const Order = require("../models/order");
 // Wishlist
 
+// Update the newWishlist controller
 exports.newWishlist = catchAsyncErrors(async (req, res, next) => {
   try {
-    const userId = req.user.id; // Assuming user ID is stored in req.user after authentication
+    const userId = req.user.id;
     const productId = req.params.productId;
 
     // Check if the product is already in the user's wishlist
     const wishlist = await Wishlist.findOne({ user: userId });
-    if (wishlist && wishlist.products.includes(productId)) {
-      return res.status(400).json({
-        message: "Product is already in the wishlist",
-        success: false,
-      });
-      // Include success: false for failed cases
-    }
 
     // If wishlist doesn't exist, create a new one
     if (!wishlist) {
@@ -35,12 +30,20 @@ exports.newWishlist = catchAsyncErrors(async (req, res, next) => {
       });
       await newWishlist.save();
     } else {
-      // Add the product to the existing wishlist
-      wishlist.products.push(productId);
+      // If wishlist exists, check and add the product
+      if (!wishlist.products) {
+        // If products array doesn't exist, create it
+        wishlist.products = [productId];
+      } else if (wishlist.products.includes(productId)) {
+        return res.status(400).json({
+          message: "Product is already in the wishlist",
+          success: false,
+        });
+      } else {
+        wishlist.products.push(productId);
+      }
       await wishlist.save();
     }
-
-    // Return success: true for successful case
 
     res.status(201).json({
       success: true,
@@ -48,24 +51,27 @@ exports.newWishlist = catchAsyncErrors(async (req, res, next) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error", success: false });
-    // Include success: false for error cases
   }
 });
 
+// Get user's wishlist with product details
 exports.getWishlist = catchAsyncErrors(async (req, res, next) => {
   try {
-    const userId = req.user.id; // Assuming user ID is stored in req.user after authentication
+    const userId = req.user.id;
 
     // Find the user's wishlist
-    const wishlist = await Wishlist.findOne({ user: userId }).populate(
-      "products"
-    );
+    const wishlist = await Wishlist.findOne({ user: userId });
 
-    // if (!wishlist) {
-    //   return res.status(404).json({ message: "Wishlist not found" });
-    // }
+    if (!wishlist) {
+      return res.status(404).json({ message: "Wishlist not found" });
+    }
 
-    res.status(200).json({ products: wishlist.products });
+    // Fetch product details based on productIds
+    const productDetails = await Product.find({
+      productId: { $in: wishlist.products },
+    });
+
+    res.status(200).json({ products: productDetails });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -75,14 +81,29 @@ exports.getWishlist = catchAsyncErrors(async (req, res, next) => {
 // Delete a category
 exports.deleteWishlist = catchAsyncErrors(async (req, res, next) => {
   try {
-    const userId = req.user.id; // Assuming user ID is stored in req.user after authentication
+    const userId = req.user.id;
     const productId = req.params.productId;
 
-    // Remove the product from the user's wishlist
-    await Wishlist.findOneAndUpdate(
-      { user: userId },
-      { $pull: { products: productId } }
+    // Find the user's wishlist
+    const wishlist = await Wishlist.findOne({ user: userId });
+
+    if (!wishlist) {
+      return res.status(404).json({ message: "Wishlist not found" });
+    }
+
+    // Check if the product exists in the wishlist
+    if (!wishlist.products || !wishlist.products.includes(productId)) {
+      return res
+        .status(404)
+        .json({ message: "Product not found in the wishlist" });
+    }
+
+    // Remove the product from the wishlist
+    wishlist.products = wishlist.products.filter(
+      (id) => id.toString() !== productId.toString()
     );
+
+    await wishlist.save();
 
     res.status(200).json({ message: "Product removed from the wishlist" });
   } catch (error) {
@@ -215,6 +236,19 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
 
     // Set the correct category ObjectId
     req.body.category = category._id;
+    // Set the product ID
+    const counter = await mongoose.connection.db
+      .collection("counters")
+      .findOneAndUpdate(
+        { _id: "productId" },
+        { $inc: { sequence_value: 1 } },
+        { returnOriginal: false }
+      );
+    const productId = counter.value.sequence_value;
+    req.body.productId = productId;
+
+    // Set the product ID
+    req.body.productId = productId;
 
     const product = await Product.create(req.body);
 
@@ -299,11 +333,10 @@ exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-//Get single product details => /api/v1/product/:id
+//Get single product details => /api/v1/product/:productId
 
 exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
-
+  const product = await Product.findOne({ productId: req.params.productId });
   if (!product) {
     res.status(404).json({ message: "Invalid Email or Password" });
   }
@@ -317,7 +350,7 @@ exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
 //Update Product => /api/v1/admin/product/:id
 //Update Product => /api/v1/admin/product/:id
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
-  let product = await Product.findById(req.params.id);
+  let product = await Product.findOne({ productId: req.params.productId });
 
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
@@ -354,33 +387,45 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     req.body.images = imagesLinks;
   }
 
-  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-    useFindAndMody: false,
-  });
+  product = await Product.findOneAndUpdate(
+    { productId: req.params.productId },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
 
   res.status(200).json({
     success: true,
     product,
   });
 });
+
 //Delete Product => /api/v1/admin/product/:id
 exports.relatedProduct = catchAsyncErrors(async (req, res, next) => {
   try {
-    const productId = req.query.id; // ID of the current product
-    const currentProduct = await Product.findById(productId);
+    const productId = req.query.productId;
+
+    const currentProduct = await Product.findOne({ productId });
+    // console.log("req", req);
+    // console.log("productId", productId);
 
     if (!currentProduct) {
       return res.status(404).json({ error: "Product not found" });
     }
 
+    console.log("Current Product:", currentProduct);
+
     const relatedProducts = await Product.find({
-      category: currentProduct.category, // Fetch products with the same category
-      _id: { $ne: productId }, // Exclude the current product
+      category: currentProduct.category,
+      productId: { $ne: productId },
     })
-      .sort({ ratings: -1 }) // Sort by ratings in descending order (highest ratings first)
-      .limit(4); // Limit the number of related products
+      .sort({ ratings: -1 })
+      .limit(4);
+
+    console.log("Related Products:", relatedProducts);
 
     res.json({ relatedProducts });
   } catch (error) {
@@ -391,7 +436,7 @@ exports.relatedProduct = catchAsyncErrors(async (req, res, next) => {
 
 //Delete Product => /api/v1/admin/product/:id
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findOne({ productId: req.params.productId });
 
   if (!product) {
     res.status(401).json({ message: "Product not found" });

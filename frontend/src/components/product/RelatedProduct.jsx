@@ -11,6 +11,8 @@ const RelatedProducts = ({ productId }) => {
     (state) => state.relatedProducts
   );
 
+  console.log("relatedProducts", relatedProducts);
+  console.log("productIdd", productId);
   useEffect(() => {
     // Fetch related products when the component mounts
     dispatch(getRelatedProducts(productId));

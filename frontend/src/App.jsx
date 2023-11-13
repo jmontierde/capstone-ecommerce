@@ -87,7 +87,7 @@ function App() {
         };
 
         const { data } = await axios.get(
-          "http://localhost:7000/api/v1/stripeapi",
+          "https://vapingsidewalk-server.onrender.com/api/v1/stripeapi",
           config
         );
 

@@ -89,7 +89,7 @@ const OrderDetails = () => {
     <div className="flex bg-[#121212] py-6 text-[#efefef]">
       <div className="container mx-auto px-6 space-x-6 w-10/12 mt-20">
         <div className="flex flex-col justify-center h-full">
-          <h1 className="text-4xl font-bold my-5">Order # {order._id}</h1>
+          <h1 className="text-4xl font-bold my-5">Order # {order.orderId}</h1>
 
           <h4 className="text-lg">Shipping Info</h4>
           <div className="pl-6 py-6">

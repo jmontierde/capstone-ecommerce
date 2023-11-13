@@ -47,6 +47,7 @@ const UpdateProduct = () => {
   } = useSelector((state) => state.product);
 
   const productId = id;
+  console.log("productIdproductId", productId);
   useEffect(() => {
     dispatch(getProductDetails(productId));
   }, [dispatch, productId]);
@@ -96,7 +97,7 @@ const UpdateProduct = () => {
     });
 
     try {
-      const response = dispatch(updateProduct(product._id, formData));
+      const response = dispatch(updateProduct(product.productId, formData));
 
       if (response && response.data.success) {
         toast.success("Product updated successfully");
@@ -250,8 +251,8 @@ const UpdateProduct = () => {
                   <button
                     id="login_button"
                     type="submit"
-                    className="bg-[#003171] w-1/4 py-3 text-white rounded my-6"
-                    disabled={loading ? true : false}
+                    className="bg-[#003171] hover:bg-opacity-80 w-1/4 py-3 text-white rounded my-6 cursor-pointer"
+                    // disabled={loading ? true : false}
                   >
                     Update Product
                   </button>

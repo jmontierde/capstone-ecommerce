@@ -103,6 +103,12 @@ const Refund = () => {
     }
   };
 
+  const setOrderIdHandler = (e) => {
+    const input = e.target.value;
+    const numericInput = input.replace(/\D/g, ""); // Remove non-numeric characters
+    setOrderId(Number(numericInput));
+  };
+
   return (
     <>
       <div className="container mx-auto">
@@ -116,7 +122,7 @@ const Refund = () => {
                 id="orderId"
                 name="orderId"
                 value={orderId}
-                onChange={(e) => setOrderId(e.target.value)}
+                onChange={setOrderIdHandler}
                 className="border border-[#000] w-96 rounded py-1"
               />
 

@@ -239,7 +239,7 @@ const ProductsList = () => {
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {product._id}
+                                {product.productId}
                               </Typography>
                             </div>
                           </td>
@@ -273,7 +273,7 @@ const ProductsList = () => {
                           <td
                             className={`${classes} flex items-center space-x-6`}
                           >
-                            <Link to={`/admin/product/${product._id}`}>
+                            <Link to={`/admin/product/${product.productId}`}>
                               <Tooltip
                                 content="Edit product"
                                 className="bg-[#000]"

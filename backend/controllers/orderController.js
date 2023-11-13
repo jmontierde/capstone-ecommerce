@@ -196,7 +196,7 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
   const { orderId, reasons, otherReason } = req.body;
 
   // Attempt to find the order by its ID
-  const order = await Order.findById(orderId);
+  const order = await Order.findOne({ orderId });
 
   if (!order) {
     // Order not found, return an error response
@@ -213,7 +213,7 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
 
   try {
     const refund = await Refund.create({
-      orderId,
+      orderId: order.orderId, // Use order.orderId to match the type
       reasons, // Store the array of reasons
       otherReason,
       imageReason: {
@@ -221,8 +221,10 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
         url: result.secure_url,
       },
     });
-    const smsMessage = `Hello, we have received your refund request for order ID ${order._id}. We will review your request and keep you updated on its status. Thank you for your patience.`;
+
+    const smsMessage = `Hello, we have received your refund request for order ID ${order.orderId}. We will review your request and keep you updated on its status. Thank you for your patience.`;
     await sendSMS(order.user.phoneNumber, smsMessage);
+
     res.status(200).json({
       success: true,
       refund,

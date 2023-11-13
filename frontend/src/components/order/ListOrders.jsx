@@ -224,7 +224,7 @@ const ListOrders = () => {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {order._id}
+                              {order.orderId}
                             </Typography>
                           </div>
                         </td>

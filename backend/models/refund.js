@@ -8,7 +8,7 @@ const refundSchema = new mongoose.Schema({
     url: String,
   },
   orderId: {
-    type: String, // Array of reasons
+    type: Number, // Use Number type
     required: true,
   },
   reasons: {

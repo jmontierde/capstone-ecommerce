@@ -46,7 +46,7 @@ const Wishlist = () => {
         {wishlist && wishlist.products && wishlist.products.length > 0 ? (
           wishlist.products.map((product) => (
             <div
-              key={product._id}
+              key={product.productId}
               className="bg-[#1E1E1E] hover:opacity-80  p-6"
             >
               <svg
@@ -56,7 +56,7 @@ const Wishlist = () => {
                 strokeWidth={1.5}
                 stroke="currentColor"
                 className="w-6 h-6 ml-auto cursor-pointer"
-                onClick={() => dispatch(removeFromWishlist(product._id))}
+                onClick={() => dispatch(removeFromWishlist(product.productId))}
               >
                 <path
                   strokeLinecap="round"
@@ -65,7 +65,7 @@ const Wishlist = () => {
                 />
               </svg>
               <Link
-                to={`/product/${product._id}`}
+                to={`/product/${product.productId}`}
                 className="hover:text-[#e6e355]"
               >
                 {product.images && product.images.length > 0 && (

@@ -21,7 +21,7 @@ const Product = ({ product }) => {
   // };
 
   return (
-    <Link to={`/product/${product._id}`}>
+    <Link to={`/product/${product.productId}`}>
       <>
         <div className="w-full h-full  ">
           <div className="space-y-1 lg:px-0 hover:opacity-80 hover:text-[#e6e355] ">

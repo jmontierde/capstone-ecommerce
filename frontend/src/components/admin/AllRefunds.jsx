@@ -49,6 +49,8 @@ const AllRefunds = () => {
 
   const { isDeleted, isUpdated } = useSelector((state) => state.refund);
 
+  console.log("refunds", refunds);
+
   useEffect(() => {
     dispatch(allRefund());
 

@@ -35,6 +35,8 @@ const ProductDetails = () => {
     (state) => state.productDetails
   );
 
+  console.log("IDD", id);
+
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
