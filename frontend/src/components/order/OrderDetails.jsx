@@ -130,7 +130,7 @@ const OrderDetails = () => {
 
             {order.paymentMethod === "CARD" ? (
               <>
-                <h4 className="my-4 font-bold">Stripe ID</h4>
+                <h4 className="my-4 font-bold">Reference ID</h4>
                 <p className="font-semibold">{paymentInfo && paymentInfo.id}</p>
               </>
             ) : (

@@ -117,6 +117,11 @@ const orderSchema = mongoose.Schema({
     enum: ["Paid", "Not Paid"], // Add more options if needed
     default: "Not Paid", // Default status for COD orders
   },
+  adminVerificationStatus: {
+    type: String,
+    enum: ["Pending", "Accepted", "Rejected"],
+    default: "Pending",
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

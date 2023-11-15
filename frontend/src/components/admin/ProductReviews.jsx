@@ -50,6 +50,8 @@ const ProductReviews = () => {
     (state) => state.review
   );
 
+  console.log("reviewsreviews", reviews);
+
   useEffect(() => {
     if (error) {
       alert.error(error);
@@ -77,8 +79,10 @@ const ProductReviews = () => {
     }
   }, [dispatch, alert, error, productId, isDeleted, deleteError]);
 
-  const deleteReviewHandler = (id) => {
-    dispatch(deleteReview(id, productId));
+  console.log("PRODUCT REVIEW ID ", productId);
+
+  const deleteReviewHandler = (reviewId) => {
+    dispatch(deleteReview(productId, reviewId));
   };
 
   const submitHandler = (e) => {
@@ -290,7 +294,7 @@ const ProductReviews = () => {
                                   color="blue-gray"
                                   className="font-normal"
                                 >
-                                  {review._id}
+                                  {review.reviewId}
                                 </Typography>
                               </div>
                             </td>

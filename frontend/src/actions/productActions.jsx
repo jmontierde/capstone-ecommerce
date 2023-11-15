@@ -314,6 +314,7 @@ export const getProductReviews = (productId) => async (dispatch) => {
 };
 
 // Delete product review
+// Delete product review
 export const deleteReview = (productId, reviewId) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_REVIEW_REQUEST });
@@ -324,8 +325,9 @@ export const deleteReview = (productId, reviewId) => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     };
+
     const { data } = await axios.delete(
-      `${url}/api/v1/reviews?productId=${productId}&reviewId=${reviewId}`,
+      `${url}/api/v1/reviews?productId=${productId}&id=${reviewId}`,
       config
     );
 
@@ -334,11 +336,9 @@ export const deleteReview = (productId, reviewId) => async (dispatch) => {
       payload: data.success,
     });
   } catch (error) {
-    console.log(error);
-
     dispatch({
       type: DELETE_REVIEW_FAIL,
-      payload: error.message, // Use error.message instead of error.response.data.message
+      payload: error.message,
     });
   }
 };

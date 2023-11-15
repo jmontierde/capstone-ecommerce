@@ -34,6 +34,10 @@ import {
   UPDATE_REFUND_RESET,
   DELETE_REFUND_RESET,
   UPDATE_REFUND_SUCCESS,
+  VERIFY_ORDER_REQUEST,
+  VERIFY_ORDER_SUCCESS,
+  VERIFY_ORDER_FAIL,
+  VERIFY_ORDER_RESET,
 } from "../constants/orderConstants";
 import { CLEAR_ERRORS_REDUCER } from "../constants/userConstant";
 
@@ -196,6 +200,33 @@ export const orderReducer = (state = {}, action) => {
       return {
         ...state,
         isDeleted: false,
+      };
+
+    case VERIFY_ORDER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case VERIFY_ORDER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+      };
+
+    case VERIFY_ORDER_RESET:
+      return {
+        ...state,
+        success: false,
+        error: null,
+      };
+
+    case VERIFY_ORDER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
 
     case CLEAR_ERRORS:

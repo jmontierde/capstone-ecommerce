@@ -60,6 +60,7 @@ import TankMod from "./components/product/TankMod";
 import PenStyle from "./components/product/PenStyle";
 import ReportCard from "./components/admin/ReportCard";
 import About from "./components/layout/About";
+import Customization from "./components/customization/Customization";
 
 function App() {
   // const dispatch = useDispatch()
@@ -118,6 +119,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/product" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/customization" element={<Customization />} />
 
             <Route path="/pod" element={<Pod />} />
             <Route path="/pod-mod" element={<PodMod />} />

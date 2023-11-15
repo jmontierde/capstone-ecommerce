@@ -142,9 +142,9 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
     }
   } else {
     // Order status is not "Delivered," allow updating order status
-    order.orderItems.forEach(async (item) => {
-      await updateStock(item.product, item.quantity);
-    });
+    // for (const item of order.orderItems) {
+    //   await updateStock(item.product, item.quantity);
+    // }
 
     order.orderStatus = req.body.orderStatus; // Update order status
 
@@ -170,8 +170,61 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-async function updateStock(id, quantity) {
-  const product = await Product.findById(id);
+// Admin accepts or rejects an order by ID => /api/v1/admin/order/verify/:id
+exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ message: "Order not found with this ID" });
+  }
+
+  // Check if the order is already verified
+  if (order.adminVerificationStatus !== "Pending") {
+    return res
+      .status(400)
+      .json({ message: "Admin has already processed this order" });
+  }
+
+  if (!req.body.adminVerificationStatus) {
+    return res.status(400).json({ message: "Verification status is required" });
+  }
+
+  if (!["Accepted", "Rejected"].includes(req.body.adminVerificationStatus)) {
+    return res
+      .status(400)
+      .json({ message: "Invalid verification status update" });
+  }
+
+  order.adminVerificationStatus = req.body.adminVerificationStatus;
+
+  if (req.body.adminVerificationStatus === "Accepted") {
+    // If Admin accepts the order, deduct product stock and proceed
+    for (const item of order.orderItems) {
+      await updateStock(item.product, item.quantity);
+    }
+  } else if (req.body.adminVerificationStatus === "Rejected") {
+    // If Admin rejects the order, delete the order
+    await order.remove();
+    return res
+      .status(200)
+      .json({ success: true, message: "Order has been rejected" });
+  }
+
+  await order.save();
+
+  res.status(200).json({ success: true, message: "Order has been verified" });
+});
+
+async function updateStock(productId, quantity) {
+  // Assuming productId is a number directly representing the product
+  // Instead of finding the product by ID, use the productId directly
+  // You can adjust this logic based on how the productId is managed
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    console.error(`Product with productId ${productId} not found`);
+    return;
+  }
 
   product.stock = product.stock - quantity;
   await product.save({ validateBeforeSave: false });

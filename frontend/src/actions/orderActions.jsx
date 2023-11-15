@@ -32,6 +32,9 @@ import {
   UPDATE_REFUND_REQUEST,
   UPDATE_REFUND_SUCCESS,
   UPDATE_REFUND_FAIL,
+  VERIFY_ORDER_REQUEST,
+  VERIFY_ORDER_SUCCESS,
+  VERIFY_ORDER_FAIL,
 } from "../constants/orderConstants";
 import { DELETE_REVIEW_FAIL } from "../constants/productConstants";
 import { CLEAR_ERRORS_REDUCER } from "../constants/userConstant";
@@ -61,6 +64,38 @@ export const createOrder = (order) => async (dispatch, getState) => {
       payload: error.response
         ? error.response.data.message
         : "An error occurred while creating the order.",
+    });
+  }
+};
+
+export const verifyOrder = (orderId, status) => async (dispatch) => {
+  try {
+    dispatch({ type: VERIFY_ORDER_REQUEST });
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      `${url}/api/v1/order/verify/${orderId}`,
+      { adminVerificationStatus: status },
+      config
+    );
+
+    console.log("data Verify Order", data);
+
+    dispatch({
+      type: VERIFY_ORDER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: VERIFY_ORDER_FAIL,
+      payload: error.response.data.message,
     });
   }
 };

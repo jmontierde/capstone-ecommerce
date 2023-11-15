@@ -12,9 +12,13 @@ import {
   clearErrors,
 } from "../../actions/orderActions";
 import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
-
+import {
+  VERIFY_ORDER_SUCCESS,
+  VERIFY_ORDER_FAIL,
+  VERIFY_ORDER_RESET,
+} from "../../constants/orderConstants";
 import { useNavigate } from "react-router-dom";
-
+import { verifyOrder } from "../../actions/orderActions";
 import {
   MagnifyingGlassIcon,
   ChevronUpDownIcon,
@@ -43,7 +47,7 @@ const OrderList = () => {
   const dispatch = useDispatch();
 
   const { loading, error, orders } = useSelector((state) => state.allOrders);
-  const { isDeleted } = useSelector((state) => state.order);
+  const { isDeleted, success } = useSelector((state) => state.order);
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [masterCheckboxChecked, setMasterCheckboxChecked] = useState(false);
 
@@ -56,7 +60,10 @@ const OrderList = () => {
 
   useEffect(() => {
     dispatch(allOrders());
-
+    if (success) {
+      alert.success("Order verified successfully");
+      dispatch({ type: VERIFY_ORDER_RESET });
+    }
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -67,7 +74,7 @@ const OrderList = () => {
       navigate("/admin/orders");
       dispatch({ type: DELETE_ORDER_RESET });
     }
-  }, [dispatch, alert, error, isDeleted]);
+  }, [dispatch, alert, error, isDeleted, success]);
 
   const deleteOrderHandler = (id) => {
     dispatch(deleteOrder(id));
@@ -84,12 +91,24 @@ const OrderList = () => {
     }
   };
 
+  const verifyOrderHandler = (id, status) => {
+    if (status === "Rejected") {
+      // If the order is rejected, remove it from the list
+      dispatch(verifyOrder(id, status));
+      const updatedOrders = orders.filter((order) => order._id !== id);
+      dispatch({ type: ALL_ORDERS_SUCCESS, payload: updatedOrders });
+    } else {
+      dispatch(verifyOrder(id, status));
+    }
+  };
+
   const TABLE_HEAD = [
     "No.",
     "Order Id",
     "Num of Items",
     "Amount",
     "Status",
+    "Verify",
     "Actions",
   ];
 
@@ -268,6 +287,122 @@ const OrderList = () => {
                               {order.orderStatus}
                             </span>
                           </Typography>
+                        </td>
+                        <td className={`${classes}`}>
+                          {/* Verify */}
+                          <div className="flex">
+                            {order.adminVerificationStatus === "Pending" && (
+                              <>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="green"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={1.5}
+                                  stroke="white"
+                                  className="w-12 h-12 cursor-pointer"
+                                  onClick={() =>
+                                    verifyOrderHandler(order._id, "Accepted")
+                                  }
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                                  />
+                                  {/* ... (your SVG path for Accept) */}
+                                </svg>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="red"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={1.5}
+                                  stroke="white"
+                                  className="w-12 h-12 cursor-pointer"
+                                  onClick={() =>
+                                    verifyOrderHandler(order._id, "Rejected")
+                                  }
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                  {/* ... (your SVG path for Reject) */}
+                                </svg>
+                              </>
+                            )}
+
+                            {order.adminVerificationStatus === "Accepted" && (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="green"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="white"
+                                className="w-12 h-12 cursor-pointer"
+                                onClick={() =>
+                                  verifyOrderHandler(order._id, "Accepted")
+                                }
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                                />
+                                {/* ... (your SVG path for Accept) */}
+                              </svg>
+                            )}
+                            {/* <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="green"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="white"
+                              className="w-12 h-12 cursor-pointer"
+                              onClick={() =>
+                                verifyOrderHandler(order._id, "Accepted")
+                              }
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                              />
+                            </svg>
+
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="red"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="white"
+                              className="w-12 h-12 cursor-pointer"
+                              onClick={() =>
+                                verifyOrderHandler(order._id, "Rejected")
+                              }
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg> */}
+                          </div>
+
+                          {/* <button
+                            onClick={() =>
+                              verifyOrderHandler(order._id, "Accepted")
+                            }
+                          >
+                            Verify Order
+                          </button> */}
+                          {/* <button
+                            onClick={() =>
+                              verifyOrderHandler(order._id, "Rejected")
+                            }
+                          >
+                            Reject Order
+                          </button> */}
                         </td>
                         <td
                           className={`${classes} flex items-center space-x-6`}

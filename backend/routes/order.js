@@ -14,6 +14,7 @@ const {
   deleteRefund,
   updateRefund,
   createOrderFromCOD,
+  verifyOrder,
 } = require("../controllers/orderController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
@@ -24,6 +25,7 @@ router.route("/order/refund/:id").get(isAuthenticatedUser, getSingleRefund);
 
 router.route("/order/:id").get(isAuthenticatedUser, getSingleOrder);
 router.route("/orders/me").get(isAuthenticatedUser, myOrders);
+router.route("/order/verify/:id").post(isAuthenticatedUser, verifyOrder);
 
 router
   .route("/admin/order/refunds")

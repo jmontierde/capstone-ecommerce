@@ -98,13 +98,20 @@ const Header = (keyword) => {
                 Product
               </Link>
             </li>
-
+            <li className="flex-none">
+              <Link
+                to="/customization"
+                className="block py-2 px-4 rounded-lg hover:text-[#e6e355]  "
+              >
+                Customization
+              </Link>
+            </li>
             <li className="flex-none">
               <Link
                 to="/three"
                 className="block py-2 px-4 rounded-lg hover:text-[#e6e355]  "
               >
-                Customization
+                Customization 3D
               </Link>
             </li>
           </ul>
