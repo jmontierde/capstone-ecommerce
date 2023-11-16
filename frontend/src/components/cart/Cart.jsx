@@ -19,7 +19,7 @@ const Cart = () => {
     dispatch(removeItemFromCart(id));
   };
 
-  console.log("CART ITEM", cartItems);
+  console.log("CART ITEM id", cartItems);
 
   const handleQuantityChange = (id, newQuantity, stock) => {
     if (newQuantity <= 0 || newQuantity > stock) {

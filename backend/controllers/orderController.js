@@ -178,7 +178,6 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
     return res.status(404).json({ message: "Order not found with this ID" });
   }
 
-  // Check if the order is already verified
   if (order.adminVerificationStatus !== "Pending") {
     return res
       .status(400)
@@ -195,10 +194,25 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
       .json({ message: "Invalid verification status update" });
   }
 
-  order.adminVerificationStatus = req.body.adminVerificationStatus;
-
   if (req.body.adminVerificationStatus === "Accepted") {
-    // If Admin accepts the order, deduct product stock and proceed
+    // Verify if all products in the order have sufficient stock
+    const insufficientStockProducts = [];
+    for (const item of order.orderItems) {
+      const product = await Product.findById(item.product);
+      if (!product || product.stock < item.quantity) {
+        insufficientStockProducts.push(item.product);
+      }
+    }
+
+    if (insufficientStockProducts.length > 0) {
+      return res.status(400).json({
+        message: `Products with ID: ${insufficientStockProducts.join(
+          ", "
+        )} are out of stock or insufficient quantity.`,
+      });
+    }
+
+    // If all products have sufficient stock, deduct product stock and proceed
     for (const item of order.orderItems) {
       await updateStock(item.product, item.quantity);
     }
@@ -210,15 +224,14 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
       .json({ success: true, message: "Order has been rejected" });
   }
 
+  order.adminVerificationStatus = req.body.adminVerificationStatus;
+
   await order.save();
 
   res.status(200).json({ success: true, message: "Order has been verified" });
 });
 
 async function updateStock(productId, quantity) {
-  // Assuming productId is a number directly representing the product
-  // Instead of finding the product by ID, use the productId directly
-  // You can adjust this logic based on how the productId is managed
   const product = await Product.findById(productId);
 
   if (!product) {

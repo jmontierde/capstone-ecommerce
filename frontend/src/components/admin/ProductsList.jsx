@@ -286,7 +286,9 @@ const ProductsList = () => {
                               src="/images/deleteHover.png"
                               alt="View product"
                               className="w-6 h-6 cursor-pointer"
-                              onClick={() => deleteProductHandler(product._id)}
+                              onClick={() =>
+                                deleteProductHandler(product.productId)
+                              }
                             />
                           </td>
                         </tr>
