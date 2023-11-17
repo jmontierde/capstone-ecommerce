@@ -25,7 +25,15 @@ const Customization = () => {
 
   // Function to handle quantity change for a specific product
   const handleQuantityChange = (productId, event) => {
-    const newQuantity = parseInt(event.target.value);
+    const input = event.target.value;
+    const newQuantity =
+      input === "" || isNaN(input) || parseInt(input) <= 0
+        ? 1
+        : Math.min(
+            parseInt(input),
+            products.find((product) => product.productId === productId).stock
+          );
+
     setProductQuantities({
       ...productQuantities,
       [productId]: newQuantity,
@@ -33,7 +41,12 @@ const Customization = () => {
   };
 
   const handleAddQuantity = (productId) => {
-    const newQuantity = (productQuantities[productId] || 0) + 1;
+    const currentQuantity = productQuantities[productId] || 0;
+    const newQuantity = Math.min(
+      currentQuantity + 1,
+      products.find((product) => product.productId === productId).stock
+    );
+
     setProductQuantities({
       ...productQuantities,
       [productId]: newQuantity,
@@ -41,8 +54,9 @@ const Customization = () => {
   };
 
   const handleMinusQuantity = (productId) => {
-    if (productQuantities[productId] > 1) {
-      const newQuantity = productQuantities[productId] - 1;
+    const currentQuantity = productQuantities[productId] || 0;
+    if (currentQuantity > 1) {
+      const newQuantity = currentQuantity - 1;
       setProductQuantities({
         ...productQuantities,
         [productId]: newQuantity,
@@ -50,68 +64,88 @@ const Customization = () => {
     }
   };
 
-  const isProductInCart = cartItems.some(
-    (item) => item.product === selectedTanksId
-  );
-
-  const handleAddToCart = (productId, quantity) => {
+  const handleAddTankToCart = (productId, quantity) => {
     const isProductInCart = cartItems.some(
       (item) => item.product === productId
     );
 
+    // Check if the quantity is not set and the product is not in the cart
+    if (!quantity && !isProductInCart) {
+      quantity = 1; // Set quantity to 1 by default
+    }
+
     if (!isProductInCart) {
       dispatch(addItemToCart(productId, quantity));
-      toast.success("Item Added to Cart");
+      toast.success("Tank Added to Cart");
     } else {
-      toast.error("Product is already in the cart");
+      toast.error("Tank is already in the cart");
+    }
+  };
+
+  // Function to handle adding mods to the cart
+  const handleAddModToCart = (productId, quantity) => {
+    const isProductInCart = cartItems.some(
+      (item) => item.product === productId
+    );
+
+    // Check if the quantity is not set and the product is not in the cart
+    if (!quantity && !isProductInCart) {
+      quantity = 1; // Set quantity to 1 by default
+    }
+
+    if (!isProductInCart) {
+      dispatch(addItemToCart(productId, quantity));
+      toast.success("Mod Added to Cart");
+    } else {
+      toast.error("Mod is already in the cart");
     }
   };
 
   // Function to handle the click on a product image in the second container
   const handleImageTanks = (tanksUrl) => {
-    console.log("tanksUrl", tanksUrl.productId);
     setselectedTanks(tanksUrl.images[0].url);
     setselectedTanksId(tanksUrl.productId);
   };
 
   const handleImageMods = (modsUrl) => {
-    setselectedMods(modsUrl);
+    console.log("modsUrl", modsUrl);
+    setselectedMods(modsUrl.images[0].url);
+    setselectedModsId(modsUrl.productId);
   };
 
-  console.log("productQuantities", productQuantities);
+  console.log("selectedMods", selectedMods);
+  console.log("selectedModsId", selectedModsId);
 
   return (
     <>
       <div className="flex  mt-16 min-h-screen">
-        <div className="w-8/12 flex flex-col items-center justify-center relative">
-          <div>
-            {selectedTanks ? (
-              <div className="flex items-center justify-center absolute top-28 mt-1 ml-16 ">
-                <img
-                  src={selectedTanks}
-                  alt="Selected Image"
-                  className="w-44 z-30"
-                />
-              </div>
-            ) : (
-              <div className="flex items-center justify-center ">
-                <h4>Choose to DESIGN</h4>
-              </div>
-            )}
-            {selectedMods ? (
-              <div className="flex items-center justify-center  ">
-                <img
-                  src={selectedMods}
-                  alt="Selected Image"
-                  className="w-72 h-72 z-50"
-                />
-              </div>
-            ) : (
-              <div className="flex items-center justify-center h-full">
-                <h4>Choose to DESIGN</h4>
-              </div>
-            )}
-          </div>
+        <div className="w-8/12 flex flex-col  items-center justify-center relative">
+          {selectedTanks ? (
+            <div className="flex items-center  justify-center absolute top-40 mt-4 ml-6 ">
+              <img
+                src={selectedTanks}
+                alt="Selected Image"
+                className="w-44 z-30"
+              />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center ">
+              <h4>Choose to DESIGN</h4>
+            </div>
+          )}
+          {selectedMods ? (
+            <div className="flex items-center justify-center  ">
+              <img
+                src={selectedMods}
+                alt="Selected Image"
+                className="w-72 h-72 z-50"
+              />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <h4>Choose to DESIGN</h4>
+            </div>
+          )}
           {/* <button className="bg-[#49ae78] px-8 py-3 rounded text-white">
             View 3d
           </button> */}
@@ -147,10 +181,9 @@ const Customization = () => {
                           <br />₱{product.price}
                         </p>
                         <div
-                          className=" text-center hover:text-[#e6e355]"
+                          className=" flex py-3 text-center hover:text-[#e6e355] border border-[#000]"
                           // key={product.productId}
                         >
-                          {/* ... (existing code remains the same) */}
                           <button
                             className="px-3 py-1"
                             onClick={() =>
@@ -186,14 +219,15 @@ const Customization = () => {
                 <button
                   className="bg-[#4F46E5] hover:bg-[#4540a6] w-full text-white rounded py-3 px-6 my-6 cursor-pointer"
                   onClick={() =>
-                    handleAddToCart(
+                    handleAddTankToCart(
                       selectedTanksId,
                       productQuantities[selectedTanksId]
                     )
                   }
                 >
-                  {isProductInCart
-                    ? "Product is already in the cart"
+                  {/* Re-enable isProductInCart */}
+                  {cartItems.some((item) => item.product === selectedTanksId)
+                    ? "Tank is already in the cart"
                     : "Add to Cart"}
                 </button>
               </div>
@@ -209,29 +243,91 @@ const Customization = () => {
               <h4 className="text-white pl-8">Choose Mods</h4>
             </div>
             {openMods ? (
-              <div className="py-6 overflow-x-auto ">
-                <div className="flex space-x-3 scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-700">
+              <div className="py-6 px-3 overflow-x-auto ">
+                <div className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3 scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-700">
                   {products
                     .filter(
                       (category) =>
                         category.category === "64cc682e182d28d94bdfc27b"
                     )
-                    .map((product) => (
-                      <div className=" text-center hover:text-[#e6e355]">
-                        <img
-                          key={product.productId}
-                          src={product.images[0].url}
-                          alt={product.name}
-                          className="w-32 h-32 cursor-pointer" // Add cursor-pointer class to make it clear it's clickable
-                          onClick={() => handleImageMods(product.images[0].url)} // Call the handleProductClick function on click
-                        />
-                        <p className="text-xs">
-                          <span className="font-semibold">{product.name}</span>{" "}
-                          <br />₱{product.price}
-                        </p>
-                      </div>
-                    ))}
+                    .map(
+                      (product) => (
+                        console.log("selectedTanksId", selectedTanksId),
+                        console.log(
+                          "  productQuantities[selectedTanksId]",
+                          productQuantities[selectedTanksId]
+                        ),
+                        (
+                          <div className="grid text-center hover:text-[#e6e355]">
+                            <img
+                              key={product.productId}
+                              src={product.images[0].url}
+                              alt={product.name}
+                              className="w-32 h-32 cursor-pointer" // Add cursor-pointer class to make it clear it's clickable
+                              onClick={() => handleImageMods(product)} // Call the handleProductClick function on click
+                            />
+                            <p className="text-xs">
+                              <span className="font-semibold">
+                                {product.name}
+                              </span>{" "}
+                              <br />₱{product.price}
+                            </p>
+                            <div
+                              className=" flex py-3 text-center hover:text-[#e6e355] border border-[#000]"
+                              // key={product.productId}
+                            >
+                              <button
+                                className="px-3 py-1"
+                                onClick={() =>
+                                  handleMinusQuantity(product.productId)
+                                }
+                              >
+                                -
+                              </button>
+                              <input
+                                className="w-16 text-center bg-transparent outline-none appearance-none"
+                                type="number"
+                                value={
+                                  productQuantities[product.productId] || 1
+                                }
+                                onChange={(event) =>
+                                  handleQuantityChange(product.productId, event)
+                                }
+                                min="1"
+                                style={{
+                                  WebkitAppearance: "none",
+                                  MozAppearance: "textfield",
+                                  appearance: "textfield",
+                                }}
+                              />
+                              <button
+                                className="px-3 py-1"
+                                onClick={() =>
+                                  handleAddQuantity(product.productId)
+                                }
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        )
+                      )
+                    )}
                 </div>
+                <button
+                  className="bg-[#4F46E5] hover:bg-[#4540a6] w-full text-white rounded py-3 px-6 my-6 cursor-pointer"
+                  onClick={() =>
+                    handleAddModToCart(
+                      selectedModsId,
+                      productQuantities[selectedModsId]
+                    )
+                  }
+                >
+                  {/* Re-enable isProductInCart */}
+                  {cartItems.some((item) => item.product === selectedModsId)
+                    ? "Mod is already in the cart"
+                    : "Add to Cart"}
+                </button>
               </div>
             ) : (
               <p></p>

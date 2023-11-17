@@ -46,7 +46,7 @@ const RelatedProducts = ({ productId }) => {
       <div className="flex items-center justify-center gap-3 lg:gap-6 mt-6  ">
         {relatedProducts.map((product) => (
           <div key={product._id} className=" w-full text-center">
-            <Link to={`/product/${product._id}`}>
+            <Link to={`/product/${product.productId}`}>
               <img
                 src={product.images[0].url}
                 alt={product.name}

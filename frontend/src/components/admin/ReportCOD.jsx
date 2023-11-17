@@ -217,7 +217,7 @@ const ReportCOD = () => {
                           : "p-4 border-b border-blue-gray-50";
 
                         return (
-                          <tr key={order._id}>
+                          <tr key={order.orderId}>
                             <td className={classes}>
                               <Typography
                                 variant="small"
@@ -233,7 +233,7 @@ const ReportCOD = () => {
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {order._id}
+                                {order.orderId}
                               </Typography>
                             </td>
                             <td className={classes}>

@@ -35,8 +35,6 @@ const ProductDetails = () => {
     (state) => state.productDetails
   );
 
-  console.log("IDD", id);
-
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
@@ -46,7 +44,12 @@ const ProductDetails = () => {
     (state) => state.newReview
   );
 
-  const isProductInCart = cartItems.some((item) => item.product === id);
+  const isProductInCart = cartItems.some(
+    (item) => String(item.product) === String(id)
+  );
+
+  console.log("isProductInCart", isProductInCart);
+  console.log("cartItems", cartItems);
 
   const { success: wishlistSuccess } = useSelector(
     (state) => state.newWishlist
@@ -79,7 +82,16 @@ const ProductDetails = () => {
       toast.success("Added to wishlist successfully");
       dispatch({ type: ADD_TO_WISHLIST_RESET });
     }
-  }, [dispatch, toast, error, reviewError, id, reviewSuccess, wishlistSuccess]);
+  }, [
+    dispatch,
+    toast,
+    error,
+    reviewError,
+    id,
+    reviewSuccess,
+    wishlistSuccess,
+    cartItems,
+  ]);
   // Add the following code to reset wishlistSuccess
   // useEffect(() => {
   //   if (wishlistSuccess) {

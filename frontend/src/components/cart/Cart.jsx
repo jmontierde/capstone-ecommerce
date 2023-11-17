@@ -37,6 +37,7 @@ const Cart = () => {
   };
 
   const handleMinusQuantity = (id, quantity) => {
+    console.log("id minus");
     const newQuantity = quantity - 1;
     if (newQuantity >= 1) {
       dispatch(addItemToCart(id, newQuantity));
