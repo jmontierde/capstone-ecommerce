@@ -119,38 +119,38 @@ const Customization = () => {
   return (
     <>
       <div className="flex  mt-16 min-h-screen">
-        <div className="w-8/12 flex flex-col  items-center justify-center relative">
-          {selectedTanks ? (
-            <div className="flex items-center  justify-center absolute top-40 mt-4 ml-6 ">
-              <img
-                src={selectedTanks}
-                alt="Selected Image"
-                className="w-44 z-30"
-              />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center ">
-              <h4>Choose to DESIGN</h4>
-            </div>
-          )}
-          {selectedMods ? (
-            <div className="flex items-center justify-center  ">
-              <img
-                src={selectedMods}
-                alt="Selected Image"
-                className="w-72 h-72 z-50"
-              />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-full">
-              <h4>Choose to DESIGN</h4>
-            </div>
-          )}
-          {/* <button className="bg-[#49ae78] px-8 py-3 rounded text-white">
-            View 3d
-          </button> */}
+        <div className="w-8/12 fixed  right-0 flex items-center justify-center h-screen ">
+          <div className=" flex flex-col">
+            {selectedTanks ? (
+              <div className="flex items-center justify-center absolute  top-28 ml-16 mt-2 ">
+                <img
+                  src={selectedTanks}
+                  alt="Selected Image"
+                  className="w-44 z-30 "
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center ">
+                <h4></h4>
+              </div>
+            )}
+            {selectedMods ? (
+              <div className="flex items-center    justify-center ">
+                <img
+                  src={selectedMods}
+                  alt="Selected Image"
+                  className="w-72 h-72 z-50"
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <h4></h4>
+              </div>
+            )}
+          </div>
         </div>
-        <div className=" border-x-black  border w-4/12">
+
+        <div className=" border-x-black  border  w-4/12">
           <>
             <div
               className="bg-[#000] py-6 rounded-t-lg cursor-pointer"
@@ -160,8 +160,8 @@ const Customization = () => {
             </div>
 
             {openTanks ? (
-              <div className="p-3  overflow-x-auto ">
-                <div className="flex  space-x-1  scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-700">
+              <div className="m-3  overflow-x-auto ">
+                <div className="flex flex-col lg:flex-row  space-x-1  scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-700">
                   {products
                     .filter(
                       (category) =>
@@ -243,8 +243,8 @@ const Customization = () => {
               <h4 className="text-white pl-8">Choose Mods</h4>
             </div>
             {openMods ? (
-              <div className="py-6 px-3 overflow-x-auto ">
-                <div className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3 scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-700">
+              <div className=" py-6 px-3 overflow-x-auto ">
+                <div className="flex flex-col lg:flex-row  space-x-1  scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-700">
                   {products
                     .filter(
                       (category) =>
