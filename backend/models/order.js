@@ -55,9 +55,9 @@ const orderSchema = mongoose.Schema({
         required: true,
       },
       product: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Number,
         required: true,
-        ref: "Product",
+        unique: true,
       },
     },
   ],
