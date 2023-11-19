@@ -171,76 +171,80 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Admin accepts or rejects an order by ID => /api/v1/admin/order/verify/:id
+// Admin accepts or rejects an order by ID => /api/v1/admin/order/verify/:id
 exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req.params.id);
+  const orderId = req.params.id;
 
-  if (!order) {
-    return res.status(404).json({ message: "Order not found with this ID" });
-  }
+  try {
+    const order = await Order.findById(orderId);
 
-  if (order.adminVerificationStatus !== "Pending") {
-    return res
-      .status(400)
-      .json({ message: "Admin has already processed this order" });
-  }
+    if (!order) {
+      return res.status(404).json({ message: "Order not found with this ID" });
+    }
 
-  if (!req.body.adminVerificationStatus) {
-    return res.status(400).json({ message: "Verification status is required" });
-  }
+    if (order.adminVerificationStatus !== "Pending") {
+      return res
+        .status(400)
+        .json({ message: "Admin has already processed this order" });
+    }
 
-  if (!["Accepted", "Rejected"].includes(req.body.adminVerificationStatus)) {
-    return res
-      .status(400)
-      .json({ message: "Invalid verification status update" });
-  }
+    if (
+      !req.body.adminVerificationStatus ||
+      !["Accepted", "Rejected"].includes(req.body.adminVerificationStatus)
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Invalid verification status update" });
+    }
 
-  if (req.body.adminVerificationStatus === "Accepted") {
-    // Verify if all products in the order have sufficient stock
-    const insufficientStockProducts = [];
-    for (const item of order.orderItems) {
-      const product = await Product.findById(item.product);
-      if (!product || product.stock < item.quantity) {
-        insufficientStockProducts.push(item.product);
+    if (req.body.adminVerificationStatus === "Accepted") {
+      for (const item of order.orderItems) {
+        console.log("Order Item:", item.productId);
+        await updateStock(item.productId, item.quantity);
       }
+    } else if (req.body.adminVerificationStatus === "Rejected") {
+      await order.remove();
+      return res
+        .status(200)
+        .json({ success: true, message: "Order has been rejected" });
     }
 
-    if (insufficientStockProducts.length > 0) {
-      return res.status(400).json({
-        message: `Products with ID: ${insufficientStockProducts.join(
-          ", "
-        )} are out of stock or insufficient quantity.`,
-      });
-    }
+    order.adminVerificationStatus = req.body.adminVerificationStatus;
+    await order.save();
 
-    // If all products have sufficient stock, deduct product stock and proceed
-    for (const item of order.orderItems) {
-      await updateStock(item.product, item.quantity);
-    }
-  } else if (req.body.adminVerificationStatus === "Rejected") {
-    // If Admin rejects the order, delete the order
-    await order.remove();
-    return res
-      .status(200)
-      .json({ success: true, message: "Order has been rejected" });
+    console.log(
+      `Order successfully verified with status: ${req.body.adminVerificationStatus}`
+    );
+    res.status(200).json({ success: true, message: "Order has been verified" });
+  } catch (error) {
+    console.error("Error verifying order:", error);
+    res
+      .status(500)
+      .json({ message: "Error verifying order. Please try again." });
   }
-
-  order.adminVerificationStatus = req.body.adminVerificationStatus;
-
-  await order.save();
-
-  res.status(200).json({ success: true, message: "Order has been verified" });
 });
 
 async function updateStock(productId, quantity) {
-  const product = await Product.findById(productId);
+  try {
+    const product = await Product.findOne({ productId });
 
-  if (!product) {
-    console.error(`Product with productId ${productId} not found`);
-    return;
+    console.log("updateStock product", product);
+
+    if (!product) {
+      console.error(`Product with productId ${productId} not found`);
+      return;
+    }
+
+    product.stock -= quantity;
+    await product.save({ validateBeforeSave: false });
+
+    console.log(`Stock updated for product with productId ${productId}`);
+  } catch (error) {
+    console.error(
+      `Error updating stock for product with productId ${productId}:`,
+      error
+    );
   }
-
-  product.stock = product.stock - quantity;
-  await product.save({ validateBeforeSave: false });
 }
 
 // Delete order => /api/v1/admin/order/:id

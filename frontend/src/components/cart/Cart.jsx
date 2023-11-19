@@ -15,6 +15,7 @@ const Cart = () => {
   //   setQuantity(parseInt(event.target.value));
   // };
 
+  console.log("cartItems", cartItems);
   const removeCartItemHandler = (id) => {
     dispatch(removeItemFromCart(id));
   };
