@@ -412,7 +412,7 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
 };
 
 export const clearErrorsReducer = (state = {}, action) => {
-  console.log("state", state);
+  console.log("state reducer", state);
 
   switch (action.type) {
     case CLEAR_ERRORS_REDUCER:

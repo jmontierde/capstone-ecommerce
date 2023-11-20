@@ -172,6 +172,7 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
 
 // Admin accepts or rejects an order by ID => /api/v1/admin/order/verify/:id
 // Admin accepts or rejects an order by ID => /api/v1/admin/order/verify/:id
+// Admin accepts or rejects an order by ID => /api/v1/admin/order/verify/:id
 exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
   const orderId = req.params.id;
 
@@ -200,6 +201,14 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
     if (req.body.adminVerificationStatus === "Accepted") {
       for (const item of order.orderItems) {
         console.log("Order Item:", item.productId);
+        const product = await Product.findOne({ productId: item.productId });
+
+        if (!product || product.stock < item.quantity) {
+          return res.status(400).json({
+            message: `Product with productId ${item.productId} is out of stock`,
+          });
+        }
+
         await updateStock(item.productId, item.quantity);
       }
     } else if (req.body.adminVerificationStatus === "Rejected") {

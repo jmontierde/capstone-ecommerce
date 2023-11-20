@@ -61,7 +61,7 @@ export const newOrderReducer = (state = {}, action) => {
         error: action.payload,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -90,7 +90,7 @@ export const myOrdersReducer = (state = { orders: [] }, action) => {
         loading: false,
         error: action.payload,
       };
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -119,7 +119,7 @@ export const orderDetailsReducer = (state = { order: {} }, action) => {
         loading: false,
         error: action.payload,
       };
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -149,7 +149,7 @@ export const allOrdersReducer = (state = { orders: [] }, action) => {
         loading: false,
         error: action.payload,
       };
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -229,7 +229,7 @@ export const orderReducer = (state = {}, action) => {
         error: action.payload,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -299,7 +299,7 @@ export const allRefundReducer = (state = { refunds: [] }, action) => {
         loading: false,
         error: action.payload,
       };
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -352,7 +352,7 @@ export const refundReducer = (state = {}, action) => {
         isDeleted: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,

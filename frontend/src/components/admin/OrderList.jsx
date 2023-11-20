@@ -46,10 +46,12 @@ const OrderList = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { loading, error, orders } = useSelector((state) => state.allOrders);
-  const { isDeleted, success } = useSelector((state) => state.order);
+  const { loading, orders } = useSelector((state) => state.allOrders);
+  const { isDeleted, success, error } = useSelector((state) => state.order);
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [masterCheckboxChecked, setMasterCheckboxChecked] = useState(false);
+
+  console.log("Aerror", error);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,6 +67,7 @@ const OrderList = () => {
       dispatch({ type: VERIFY_ORDER_RESET });
     }
     if (error) {
+      console.log("Verify", error);
       alert.error(error);
       dispatch(clearErrors());
     }

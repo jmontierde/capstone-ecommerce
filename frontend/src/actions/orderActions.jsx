@@ -93,6 +93,7 @@ export const verifyOrder = (orderId, status) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
+    console.log("error verify", error.response.data.message);
     dispatch({
       type: VERIFY_ORDER_FAIL,
       payload: error.response.data.message,
