@@ -454,24 +454,41 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 });
 
 //Create new review => /api/v1/review
-//Create new review => /api/v1/review
 exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   try {
     const { rating, comment, productId } = req.body;
+    const userId = req.user._id;
 
-    const user = await User.findById(req.user._id);
+    // Check if the user has placed an order for the given product
+    const order = await Order.findOne({
+      user: userId,
+      "orderItems.productId": productId,
+      orderStatus: "Delivered",
+      paymentStatus: "Paid",
+    });
 
-    const review = {
-      reviewId: 0, // Update this with your logic to generate a unique reviewId
-      user: req.user._id,
-      firstName: req.user.firstName,
-      lastName: req.user.lastName,
-      avatar: req.user.avatar,
-      rating: Number(rating),
-      comment,
-    };
+    if (!order) {
+      return res.status(400).json({
+        success: false,
+        message: "You can only review products from delivered and paid orders.",
+      });
+    }
 
-    // Use findOne to find the product based on the productId
+    // Check if the product has already been reviewed by the user in this order
+    const orderItem = order.orderItems.find(
+      (item) =>
+        item.productId.toString() === productId &&
+        item.reviewStatus === "Reviewed"
+    );
+
+    if (orderItem) {
+      return res.status(400).json({
+        success: false,
+        message: "You've already reviewed this product in this order.",
+      });
+    }
+
+    // Find the product to review
     const product = await Product.findOne({ productId: Number(productId) });
 
     if (!product) {
@@ -481,37 +498,45 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
       });
     }
 
-    const isReviewed = product.reviews.find(
-      (r) => r.user.toString() === req.user._id.toString()
-    );
+    // Create the review
+    const review = {
+      reviewId: 0,
+      user: userId,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+      avatar: req.user.avatar,
+      rating: Number(rating),
+      comment,
+    };
+    const counter = await mongoose.connection.db
+      .collection("counters")
+      .findOneAndUpdate(
+        { _id: "reviewId" },
+        { $inc: { sequence_value: 1 } },
+        { returnOriginal: false }
+      );
+    const reviewId = counter.value.sequence_value;
+    review.reviewId = reviewId;
+    // Add the review to the product's reviews
+    product.reviews.push(review);
+    product.numOfReviews = product.reviews.length;
 
-    if (isReviewed) {
-      product.reviews.forEach((existingReview) => {
-        if (existingReview.user.toString() === req.user._id.toString()) {
-          existingReview.comment = comment;
-          existingReview.rating = rating;
-        }
-      });
-    } else {
-      const counter = await mongoose.connection.db
-        .collection("counters")
-        .findOneAndUpdate(
-          { _id: "reviewId" },
-          { $inc: { sequence_value: 1 } },
-          { returnOriginal: false }
-        );
-      const reviewId = counter.value.sequence_value;
-      review.reviewId = reviewId;
-
-      product.reviews.push(review);
-      product.numOfReviews = product.reviews.length;
-    }
-
+    // Recalculate product ratings
     product.ratings =
       product.reviews.reduce((acc, item) => item.rating + acc, 0) /
       product.reviews.length;
 
     await product.save({ validateBeforeSave: false });
+
+    // Update the order item to mark the product as reviewed
+    const reviewedItemIndex = order.orderItems.findIndex(
+      (item) => item.productId.toString() === productId.toString()
+    );
+
+    if (reviewedItemIndex !== -1) {
+      order.orderItems[reviewedItemIndex].reviewStatus = "Reviewed";
+      await order.save();
+    }
 
     res.status(200).json({
       success: true,

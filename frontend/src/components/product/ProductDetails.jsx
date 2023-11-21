@@ -40,7 +40,7 @@ const ProductDetails = () => {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
 
-  const { reviewError, success: reviewSuccess } = useSelector(
+  const { error: reviewError, success: reviewSuccess } = useSelector(
     (state) => state.newReview
   );
 

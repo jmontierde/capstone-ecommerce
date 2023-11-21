@@ -16,6 +16,10 @@ const sendSMS = async (to, body) => {
       from: process.env.TWILIO_FROM_NUMBER,
       to: to, // The 'to' parameter should be passed as an argument
     });
+    console.log("TWILIO_ACCOUNT_SID:", process.env.TWILIO_ACCOUNT_SID);
+    console.log("TWILIO_AUTH_TOKEN:", process.env.TWILIO_AUTH_TOKEN);
+    console.log("TWILIO_FROM_NUMBER:", process.env.TWILIO_FROM_NUMBER);
+
     console.log("SMS sent successfully. Message SID:", message.sid);
     console.log("to", to);
   } catch (error) {

@@ -47,7 +47,7 @@ router
   .route("/admin/product/new")
   .post(isAuthenticatedUser, authorizeRoles("admin", "staff"), newProduct);
 
-router.route("/review").put(isAuthenticatedUser, createProductReview);
+router.route("/review").post(isAuthenticatedUser, createProductReview);
 router.route("/reviews").get(isAuthenticatedUser, getProductReviews);
 router.route("/reviews").delete(isAuthenticatedUser, deleteReview);
 

@@ -266,7 +266,7 @@ export const newReview = (reviewData) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.put(
+    const { data } = await axios.post(
       `${url}/api/v1/review`,
       reviewData,
       config

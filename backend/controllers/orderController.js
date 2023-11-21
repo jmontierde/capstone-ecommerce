@@ -61,7 +61,7 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   try {
     // Use the sendSMS function to send the SMS message
     await sendSMS(req.user.phoneNumber, smsMessage);
-
+    console.log("req.user.phoneNumber", req.user.phoneNumber);
     res.status(200).json({
       success: true,
       order,

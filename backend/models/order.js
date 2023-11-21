@@ -58,6 +58,24 @@ const orderSchema = mongoose.Schema({
         type: Number, // Store productId as a Number in Order model
         required: true,
       },
+      reviewStatus: {
+        type: String,
+        enum: ["Not Reviewed", "Reviewed"],
+        default: "Not Reviewed",
+      },
+    },
+  ],
+  reviews: [
+    {
+      productId: {
+        type: Number,
+        required: true,
+      },
+      reviewedBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: true,
+      },
     },
   ],
   paymentInfo: {

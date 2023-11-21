@@ -49,7 +49,6 @@ import {
   DELETE_REVIEW_SUCCESS,
   DELETE_REVIEW_RESET,
   DELETE_REVIEW_FAIL,
-  CLEAR_ERRORS,
   GET_RELATED_PRODUCTS_REQUEST,
   GET_RELATED_PRODUCTS_SUCCESS,
   GET_RELATED_PRODUCTS_FAIL,
@@ -102,7 +101,7 @@ export const productsReducer = (state = { products: [] }, action) => {
         error: action.payload,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -135,7 +134,7 @@ export const categoriesReducer = (state = { categories: [] }, action) => {
         loading: false,
         error: action.payload,
       };
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -188,7 +187,7 @@ export const categoryReducer = (state = {}, action) => {
         isUpdated: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -227,7 +226,7 @@ export const newCategoryReducer = (state = { category: {} }, action) => {
         success: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -259,7 +258,7 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
         error: action.payload,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -296,7 +295,7 @@ export const relatedProductsReducer = (
         error: action.payload,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -334,7 +333,7 @@ export const newProductReducer = (state = { product: {} }, action) => {
         success: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -424,7 +423,7 @@ export const newReviewReducer = (state = {}, action) => {
         success: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -455,7 +454,7 @@ export const productReviewsReducer = (state = { review: [] }, action) => {
         error: action.payload,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -493,7 +492,7 @@ export const reviewReducer = (state = {}, action) => {
         isDeleted: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -531,7 +530,7 @@ export const newWishlistReducer = (state = { wishlist: {} }, action) => {
         success: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -563,7 +562,7 @@ export const wishlistReducer = (state = { wishlist: [] }, action) => {
         loading: false,
         error: action.payload,
       };
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
@@ -601,7 +600,7 @@ export const deleteWishlistReducer = (state = {}, action) => {
         isDeleted: false,
       };
 
-    case CLEAR_ERRORS:
+    case CLEAR_ERRORS_REDUCER:
       return {
         ...state,
         error: null,
