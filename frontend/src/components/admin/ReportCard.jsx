@@ -226,7 +226,7 @@ const ReportCard = () => {
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {order._id}
+                                {order.orderId}
                               </Typography>
                             </td>
                             <td className={classes}>

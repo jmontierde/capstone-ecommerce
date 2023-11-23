@@ -22,8 +22,6 @@ const ProcessOrder = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const TABLE_HEAD = ["Products", "Price", "Quantity"];
-
   const { loading, order = {} } = useSelector((state) => state.orderDetails);
   const {
     shippingInfo,
@@ -35,9 +33,18 @@ const ProcessOrder = () => {
   } = order;
   const { error, isUpdated } = useSelector((state) => state.order);
 
-  const orderId = useParams().id;
+  const TABLE_HEAD = [
+    "Product",
+    "Quantity",
+    "Price",
+    ...(orderItems &&
+    orderItems.length > 0 &&
+    orderItems.some((item) => item.stickerPosition && item.stickerSize)
+      ? ["Sticker Position", "Sticker Size"]
+      : []),
+  ];
 
-  console.log("orderId", orderId);
+  const orderId = useParams().id;
 
   useEffect(() => {
     dispatch(getOrderDetails(orderId));
@@ -213,6 +220,28 @@ const ProcessOrder = () => {
                             {item.quantity}
                           </Typography>
                         </td>
+                        {item.stickerPosition && item.stickerSize && (
+                          <>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {item.stickerPosition}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {item.stickerSize}
+                              </Typography>
+                            </td>
+                          </>
+                        )}
                       </tr>
                     );
                   })}

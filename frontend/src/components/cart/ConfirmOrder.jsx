@@ -15,7 +15,9 @@ const ConfirmOrder = () => {
   console.log("PORDUCUTS", products);
 
   const hasStickerItems = cartItems.some(
-    (cart) => cart.category === "655dfb180fcf137bcb9e7586"
+    (cart) =>
+      cart.stickerPosition && // Check if 'stickerPosition' exists
+      cart.stickerSize // Check if 'stickerSize' exists
   );
 
   const TABLE_HEAD = [
@@ -91,7 +93,8 @@ const ConfirmOrder = () => {
                     : "p-4 border-b border-blue-gray-50";
                   const isStickerCategory =
                     cart.category === "655dfb180fcf137bcb9e7586";
-
+                  console.log("isStickerCategory", isStickerCategory);
+                  console.log("cartcart", cart);
                   return (
                     <tr key={cart.name}>
                       <td
@@ -115,7 +118,7 @@ const ConfirmOrder = () => {
                           {cart.quantity}
                         </Typography>
                       </td>
-                      {isStickerCategory && (
+                      {cart.stickerPosition && cart.stickerSize && (
                         <>
                           <td className={classes}>
                             <Typography

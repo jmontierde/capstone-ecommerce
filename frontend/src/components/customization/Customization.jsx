@@ -180,7 +180,7 @@ const Customization = () => {
             )}
             {/* <div className="bg-[#000] relative"> */}
             {selectedMods ? (
-              <div className="flex items-center    justify-center  bg-blue-gray-700">
+              <div className="flex items-center    justify-center  ">
                 <img
                   src={selectedMods}
                   alt="Selected Image"

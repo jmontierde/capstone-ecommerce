@@ -21,8 +21,6 @@ const OrderDetails = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const TABLE_HEAD = ["Products", "Price", "Quantity"];
-
   const { loading, order = {} } = useSelector((state) => state.orderDetails);
   const {
     shippingInfo,
@@ -33,6 +31,19 @@ const OrderDetails = () => {
     orderStatus,
   } = order;
   const { error, isUpdated } = useSelector((state) => state.order);
+
+  console.log("orderItemsorderItemsorderItemsorderItems", orderItems);
+
+  const TABLE_HEAD = [
+    "Product",
+    "Quantity",
+    "Price",
+    ...(orderItems &&
+    orderItems.length > 0 &&
+    orderItems.some((item) => item.stickerPosition && item.stickerSize)
+      ? ["Sticker Position", "Sticker Size"]
+      : []),
+  ];
 
   const orderId = useParams().id;
 
@@ -180,7 +191,7 @@ const OrderDetails = () => {
                     const classes = isLast
                       ? "p-4"
                       : "p-4 border-b border-blue-gray-50";
-
+                    console.log("orderItemsorderItems", orderItems);
                     return (
                       <tr key={item.product}>
                         <td className={`${classes}  flex flex-col space-y-3`}>
@@ -193,6 +204,7 @@ const OrderDetails = () => {
                             {item.name}
                           </Link>
                         </td>
+
                         <td className={classes}>
                           <Typography
                             variant="small"
@@ -211,6 +223,28 @@ const OrderDetails = () => {
                             {item.quantity}
                           </Typography>
                         </td>
+                        {item.stickerPosition && item.stickerSize && (
+                          <>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {item.stickerPosition}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {item.stickerSize}
+                              </Typography>
+                            </td>
+                          </>
+                        )}
                       </tr>
                     );
                   })}
