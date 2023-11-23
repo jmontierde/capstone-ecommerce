@@ -54,6 +54,8 @@ export const PaymentForm = ({ stripePromise }) => {
     shippingInfo,
   };
 
+  console.log("ORDER", order);
+
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
   if (orderInfo) {
     order.itemsPrice = orderInfo.itemsPrice;
@@ -159,8 +161,9 @@ export const PaymentForm = ({ stripePromise }) => {
           order,
           config
         );
+        dispatch(createOrder(order));
 
-        console.log("data", data);
+        console.log("data", dispatch(createOrder(order)));
 
         dispatch(clearCart());
 
