@@ -6,6 +6,12 @@ const productSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  stickerSize: {
+    type: String,
+  },
+  stickerPosition: {
+    type: String,
+  },
   name: {
     type: String,
     required: [true, "Please enter product name"], // Second array will print when has an error

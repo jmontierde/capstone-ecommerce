@@ -62,7 +62,7 @@ export const PaymentForm = ({ stripePromise }) => {
     order.totalPrice = orderInfo.totalPrice;
   }
 
-  console.log("ORDER", order);
+  console.log("cartItemscartItemscartItems", cartItems);
 
   const paymentData = {
     amount: Math.round(orderInfo.totalPrice * 100),
@@ -153,11 +153,14 @@ export const PaymentForm = ({ stripePromise }) => {
         };
         order.paymentMethod = "COD";
 
+        console.log("COD ORDER", order);
         const { data } = await axios.post(
           `${url}/api/v1/order/new`,
           order,
           config
         );
+
+        console.log("data", data);
 
         dispatch(clearCart());
 

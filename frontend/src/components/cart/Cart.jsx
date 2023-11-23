@@ -16,11 +16,12 @@ const Cart = () => {
   // };
 
   console.log("cartItems", cartItems);
+
   const removeCartItemHandler = (id) => {
     dispatch(removeItemFromCart(id));
   };
 
-  console.log("CART ITEM id", cartItems);
+  console.log("CART ITEM", cartItems);
 
   const handleQuantityChange = (id, newQuantity, stock) => {
     if (newQuantity <= 0 || newQuantity > stock) {
@@ -38,7 +39,6 @@ const Cart = () => {
   };
 
   const handleMinusQuantity = (id, quantity) => {
-    console.log("id minus");
     const newQuantity = quantity - 1;
     if (newQuantity >= 1) {
       dispatch(addItemToCart(id, newQuantity));
