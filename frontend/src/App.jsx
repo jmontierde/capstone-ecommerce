@@ -61,6 +61,7 @@ import PenStyle from "./components/product/PenStyle";
 import ReportCard from "./components/admin/ReportCard";
 import About from "./components/layout/About";
 import Customization from "./components/customization/Customization";
+import DragAndDrop from "./components/customization/DragAndDrop";
 
 function App() {
   // const dispatch = useDispatch()
@@ -120,6 +121,7 @@ function App() {
             <Route path="/product" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/customization" element={<Customization />} />
+            <Route path="/drag-and-drop" element={<DragAndDrop />} />
 
             <Route path="/pod" element={<Pod />} />
             <Route path="/pod-mod" element={<PodMod />} />

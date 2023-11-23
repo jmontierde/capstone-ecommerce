@@ -8,9 +8,22 @@ import { Card, Typography } from "@material-tailwind/react";
 const ConfirmOrder = () => {
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
+  const { products } = useSelector((state) => state.products);
+
   const navigate = useNavigate();
 
-  const TABLE_HEAD = ["Product", "Quantity", "Price"];
+  console.log("PORDUCUTS", products);
+
+  const hasStickerItems = cartItems.some(
+    (cart) => cart.category === "655dfb180fcf137bcb9e7586"
+  );
+
+  const TABLE_HEAD = [
+    "Product",
+    "Quantity",
+    ...(hasStickerItems ? ["Sticker Position", "Sticker Size"] : []),
+    "Price",
+  ];
   // Calculate Order Prices
   const itemsPrice = cartItems.reduce(
     (acc, cart) => acc + cart.price * cart.quantity,
@@ -76,7 +89,9 @@ const ConfirmOrder = () => {
                   const classes = isLast
                     ? "p-4"
                     : "p-4 border-b border-blue-gray-50";
-                  console.log("CONFIRM", cart);
+                  const isStickerCategory =
+                    cart.category === "655dfb180fcf137bcb9e7586";
+
                   return (
                     <tr key={cart.name}>
                       <td
@@ -100,6 +115,28 @@ const ConfirmOrder = () => {
                           {cart.quantity}
                         </Typography>
                       </td>
+                      {isStickerCategory && (
+                        <>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {cart.stickerPosition}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {cart.stickerSize}
+                            </Typography>
+                          </td>
+                        </>
+                      )}
                       <td className={classes}>
                         <Typography
                           variant="small"

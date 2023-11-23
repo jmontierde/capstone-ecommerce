@@ -43,6 +43,16 @@ const productSchema = new mongoose.Schema({
     ref: "Category", // Name of the Category model
     required: [true, "Please select category for this product"],
   },
+  sticker: {
+    size: {
+      type: String, // You can define your own data type or use predefined values for sizes
+      enum: ["2x2", "4x4", "8x8"], // Example predefined sticker sizes
+    },
+    position: {
+      type: String,
+      enum: ["top-left", "top-right", "center", "bottom-left", "bottom-right"], // Example predefined positions
+    },
+  },
   seller: {
     type: String,
     required: [true, "Please enter product seller"],

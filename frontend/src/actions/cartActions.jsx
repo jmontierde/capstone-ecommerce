@@ -9,29 +9,40 @@ import {
 
 const url = "http://localhost:7000";
 
-export const addItemToCart = (id, quantity) => async (dispatch, getState) => {
-  //   const token = localStorage.getItem("token");
-  //   const config = {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   };
-  const { data } = await axios.get(`${url}/api/v1/product/${id}`);
+export const addItemToCart =
+  (id, quantity, stickerSize, stickerPosition) =>
+  async (dispatch, getState) => {
+    const { data } = await axios.get(`${url}/api/v1/product/${id}`);
 
-  dispatch({
-    type: ADD_TO_CART,
-    payload: {
+    let payload = {
       productId: data.product.productId,
+      category: data.product.category,
       name: data.product.name,
       price: data.product.price,
       image: data.product.images[0].url,
       stock: data.product.stock,
       quantity,
-    },
-  });
+    };
 
-  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
-};
+    // Check if the product being added is a sticker
+    if (data.product.category === "655dfb180fcf137bcb9e7586") {
+      payload = {
+        ...payload,
+        stickerSize,
+        stickerPosition,
+      };
+    }
+
+    dispatch({
+      type: ADD_TO_CART,
+      payload,
+    });
+
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(getState().cart.cartItems)
+    );
+  };
 
 export const getCheckout = (id, quantity) => async (dispatch, getState) => {
   const token = localStorage.getItem("token");
