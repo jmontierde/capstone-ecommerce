@@ -15,7 +15,7 @@ export const addItemToCart =
     const { data } = await axios.get(`${url}/api/v1/product/${id}`);
 
     let payload = {
-      productId: data.product.productId,
+      product: data.product.productId,
       name: data.product.name,
       price: data.product.price,
       image: data.product.images[0].url,

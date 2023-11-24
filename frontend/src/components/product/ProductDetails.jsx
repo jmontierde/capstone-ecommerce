@@ -48,6 +48,8 @@ const ProductDetails = () => {
     (item) => String(item.product) === String(id)
   );
 
+  console.log();
+
   console.log("isProductInCart", isProductInCart);
   console.log("cartItems", cartItems);
 

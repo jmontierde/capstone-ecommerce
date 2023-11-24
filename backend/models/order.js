@@ -60,7 +60,7 @@ const orderSchema = mongoose.Schema({
         type: Number,
         required: true,
       },
-      productId: {
+      product: {
         type: Number, // Store productId as a Number in Order model
         required: true,
       },

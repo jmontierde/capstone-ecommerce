@@ -30,11 +30,18 @@ const Cart = () => {
     dispatch(addItemToCart(id, newQuantity));
   };
 
-  const handleAddQuantity = (id, quantity, stock) => {
+  const handleAddQuantity = async (id, quantity, stock) => {
     const newQuantity = quantity + 1;
+    console.log("newQuantity", id);
 
     if (newQuantity <= stock) {
-      dispatch(addItemToCart(id, newQuantity));
+      try {
+        // Dispatch the ADD_TO_CART action with the new quantity
+        await dispatch(addItemToCart(id, newQuantity));
+        console.log("Quantity added successfully");
+      } catch (error) {
+        console.error("Error adding quantity:", error);
+      }
     }
   };
 
