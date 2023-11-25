@@ -7,6 +7,8 @@ const Product = require("../models/product");
 const Refund = require("../models/refund");
 const cloudinary = require("cloudinary");
 const sendSMS = require("../utils/sendSMS");
+const sendEmail = require("../utils/sendEmail");
+
 const NodeGeocoder = require("node-geocoder");
 // Create a new order => /api/v1/order/new
 const geocoder = NodeGeocoder({
@@ -60,7 +62,10 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   const smsMessage = `Thank you for placing an order with us. Your order ID is ${order.orderId}. We will process your order and keep you updated on its status.`;
   try {
     // Use the sendSMS function to send the SMS message
-    await sendSMS(req.user.phoneNumber, smsMessage);
+    console.log("req.user.email", req.user.email);
+    // await sendSMS(req.user.phoneNumber, smsMessage);
+    await sendEmail(req.user.email, "Order Notification", smsMessage);
+
     console.log("req.user.phoneNumber", req.user.phoneNumber);
     res.status(200).json({
       success: true,
@@ -77,9 +82,10 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
 exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate({
     path: "user",
-    select: "firstName lastName email",
+    select: "firstName lastName email phoneNumber", // Adjust the fields you want to retrieve
   });
 
+  console.log("getSingleOrder", order);
   if (!order) {
     res.status(404).json({ message: "Order not found with this ID" });
   }
@@ -119,7 +125,12 @@ exports.allOrders = catchAsyncErrors(async (req, res, next) => {
 
 // Update / Process order - ADMIN  =>   /api/v1/admin/order/:id
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate("user");
+  const userEmail = order.user.email;
+  const userPhoneNumber = order.user.phoneNumber;
+
+  console.log("userEmailupdateOrder", userEmail);
+  console.log("userPhoneNumber", userPhoneNumber);
 
   // Check if the order status is "Delivered"
   if (order.orderStatus === "Delivered") {
@@ -162,6 +173,21 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
       }
     }
   }
+  try {
+    // Send email notification for order update to the user
+    const userEmail = order.user.email; // Assuming user's email is stored in order.user.email
+    const subject = "Order Update";
+    const message = `Dear User, Your order with ID ${order.orderId} has been updated. Order status: ${order.orderStatus}. Payment status: ${order.paymentStatus}.`; // Customize the message as needed
+
+    await sendEmail(userEmail, subject, message);
+
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ message: "Error sending email notification" });
+  }
 
   await order.save();
 
@@ -203,13 +229,24 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
         console.log("Order Item:", item.productId);
         const product = await Product.findOne({ productId: item.productId });
 
+        console.log("product", product);
+
         if (!product || product.stock < item.quantity) {
           return res.status(400).json({
-            message: `Product with productId ${item.productId} is out of stock`,
+            message: `Product with productId ${item.product} is out of stock`,
           });
         }
 
         await updateStock(item.productId, item.quantity);
+        const userEmail = order.user.email;
+        const emailSubject = "Order Verification";
+        const emailMessage = "Your order has been verified successfully.";
+        await sendEmail(userEmail, emailSubject, emailMessage);
+
+        // Return success response
+        return res
+          .status(200)
+          .json({ success: true, message: "Order has been verified" });
       }
     } else if (req.body.adminVerificationStatus === "Rejected") {
       await order.remove();

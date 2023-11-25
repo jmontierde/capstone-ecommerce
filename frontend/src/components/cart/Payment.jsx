@@ -161,9 +161,8 @@ export const PaymentForm = ({ stripePromise }) => {
           order,
           config
         );
-        dispatch(createOrder(order));
 
-        console.log("data", dispatch(createOrder(order)));
+        console.log("data", data);
 
         dispatch(clearCart());
 

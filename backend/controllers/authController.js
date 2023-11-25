@@ -157,8 +157,6 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
     email: req.body.email,
   });
 
-  console.log("User Object:", user);
-
   if (!user) {
     return next(new ErrorHandler("User not found with this email", 404));
   }
@@ -194,8 +192,10 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   `;
 
   try {
+    console.log("user.email", user.email);
+
     await sendEmail(user.email, "Password Recovery Notification", message);
-    await sendSMS(user.phoneNumber, message);
+    // await sendSMS(user.phoneNumber, message);
     res.status(200).json({
       success: true,
       message: `Email sent to: ${user.email}`,

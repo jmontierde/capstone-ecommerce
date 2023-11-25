@@ -118,7 +118,7 @@ const OrderList = () => {
   // Filter orders based on searchQuery
   const filteredOrders = orders
     ? orders.filter((order) =>
-        order._id.toLowerCase().includes(searchQuery.toLowerCase())
+        order.orderId.toString().includes(searchQuery.toLowerCase())
       )
     : [];
 
