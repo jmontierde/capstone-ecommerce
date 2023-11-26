@@ -413,6 +413,7 @@ exports.updateUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Verify or reject a user's registration => approve/:userId
+// Verify or reject a user's registration => approve/:userId
 exports.verifyUser = catchAsyncErrors(async (req, res, next) => {
   const userId = req.params.userId;
   const verificationStatus = req.body.verificationStatus; // "Verified" or "Rejected"
@@ -431,6 +432,21 @@ exports.verifyUser = catchAsyncErrors(async (req, res, next) => {
 
     if (!user) {
       return res.status(404).json({ message: "User not found." });
+    }
+
+    // Sending a message to the user based on verification status
+    if (verificationStatus === "Verified") {
+      // Send a message notifying the user that they are verified
+      const verificationMessage = `Congratulations! Your account has been verified.`;
+      await sendSMS(user.phoneNumber, verificationMessage);
+      // or sendEmail(user.email, "Account Verified", verificationEmailContent);
+      // You can define the verification email content as needed
+    } else {
+      // Send a message notifying the user that their verification was rejected
+      const rejectionMessage = `We regret to inform you that your account verification has been rejected.`;
+      await sendSMS(user.phoneNumber, rejectionMessage);
+      // or sendEmail(user.email, "Account Verification Rejected", rejectionEmailContent);
+      // You can define the rejection email content as needed
     }
 
     console.log("USER VERIFY", userId);
@@ -460,7 +476,7 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     await sendEmail(user.email, "Account Deletion Notification", message);
     await user.remove();
 
-    await sendSMS(user.phoneNumber, message);
+    // await sendSMS(user.phoneNumber, message);
     res.status(200).json({
       success: true,
       message: `Email sent to: ${user.email}`,

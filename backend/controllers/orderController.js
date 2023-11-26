@@ -62,11 +62,9 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   const smsMessage = `Thank you for placing an order with us. Your order ID is ${order.orderId}. We will process your order and keep you updated on its status.`;
   try {
     // Use the sendSMS function to send the SMS message
-    console.log("req.user.email", req.user.email);
     // await sendSMS(req.user.phoneNumber, smsMessage);
     await sendEmail(req.user.email, "Order Notification", smsMessage);
 
-    console.log("req.user.phoneNumber", req.user.phoneNumber);
     res.status(200).json({
       success: true,
       order,
@@ -85,7 +83,6 @@ exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
     select: "firstName lastName email phoneNumber", // Adjust the fields you want to retrieve
   });
 
-  console.log("getSingleOrder", order);
   if (!order) {
     res.status(404).json({ message: "Order not found with this ID" });
   }
@@ -128,9 +125,6 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate("user");
   const userEmail = order.user.email;
   const userPhoneNumber = order.user.phoneNumber;
-
-  console.log("userEmailupdateOrder", userEmail);
-  console.log("userPhoneNumber", userPhoneNumber);
 
   // Check if the order status is "Delivered"
   if (order.orderStatus === "Delivered") {
@@ -197,13 +191,12 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Admin accepts or rejects an order by ID => /api/v1/admin/order/verify/:id
-// Admin accepts or rejects an order by ID => /api/v1/admin/order/verify/:id
-// Admin accepts or rejects an order by ID => /api/v1/admin/order/verify/:id
 exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
   const orderId = req.params.id;
 
   try {
-    const order = await Order.findById(orderId);
+    // const order = await Order.findById(orderId);
+    const order = await Order.findById(orderId).populate("user");
 
     if (!order) {
       return res.status(404).json({ message: "Order not found with this ID" });
@@ -226,10 +219,7 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
 
     if (req.body.adminVerificationStatus === "Accepted") {
       for (const item of order.orderItems) {
-        console.log("Order Item:", item.productId);
         const product = await Product.findOne({ productId: item.productId });
-
-        console.log("product", product);
 
         if (!product || product.stock < item.quantity) {
           return res.status(400).json({
@@ -240,7 +230,7 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
         await updateStock(item.productId, item.quantity);
         const userEmail = order.user.email;
         const emailSubject = "Order Verification";
-        const emailMessage = "Your order has been verified successfully.";
+        const emailMessage = `Your order #${order.orderId} has been verified successfully.`;
         await sendEmail(userEmail, emailSubject, emailMessage);
 
         // Return success response
@@ -249,6 +239,11 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
           .json({ success: true, message: "Order has been verified" });
       }
     } else if (req.body.adminVerificationStatus === "Rejected") {
+      const userEmail = order.user.email;
+      const emailSubject = "Order Verification";
+      const emailMessage = `Your order #${order.orderId} has been rejected.`;
+      await sendEmail(userEmail, emailSubject, emailMessage);
+
       await order.remove();
       return res
         .status(200)
@@ -295,11 +290,32 @@ async function updateStock(productId, quantity) {
 
 // Delete order => /api/v1/admin/order/:id
 exports.deleteOrder = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate("user");
 
   if (!order) {
     res.status(404).json({ message: "Order not found with this ID" });
   }
+
+  const userEmail = order.user.email; // Assuming user's email is stored in order.user.email
+  const subject = "Order Deletion";
+  const message = `
+    
+    Dear ${order.user.firstName} ${order.user.lastName},
+
+We regret to inform you that your recent order with order ID ${order.orderId} has been deleted by the admin.
+
+Unfortunately, due to unforeseen circumstances, it was necessary to cancel this order. We apologize for any inconvenience this may cause.
+
+If you have any concerns or queries regarding this cancellation, please feel free to reach out to our customer support team at ${process.env.SMTP_FROM_EMAIL}.
+
+Thank you for your understanding.
+
+Best regards,
+${process.env.COMPANY_NAME}
+    
+    `; // Customize the message as needed
+
+  await sendEmail(userEmail, subject, message);
 
   await order.remove();
 
@@ -312,7 +328,7 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
   const { orderId, reasons, otherReason } = req.body;
 
   // Attempt to find the order by its ID
-  const order = await Order.findOne({ orderId });
+  const order = await Order.findOne({ orderId }).populate("user");
 
   if (!order) {
     // Order not found, return an error response
@@ -321,6 +337,15 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
       .json({ message: "Incorrect orderId. No order found." });
   }
 
+  // Check if paymentStatus is 'Paid' and orderStatus is 'Delivered' before allowing a refund
+  if (order.paymentStatus !== "Paid" || order.orderStatus !== "Delivered") {
+    return res.status(400).json({
+      message:
+        "Refund is only allowed for orders with paymentStatus as 'Paid' and orderStatus as 'Delivered'.",
+    });
+  }
+
+  // Additional code for refund creation remains unchanged
   const result = await cloudinary.v2.uploader.upload(req.body.imageReason, {
     folder: "reason-refund",
     width: 150,
@@ -329,17 +354,14 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
 
   try {
     const refund = await Refund.create({
-      orderId: order.orderId, // Use order.orderId to match the type
-      reasons, // Store the array of reasons
+      orderId: order.orderId,
+      reasons,
       otherReason,
       imageReason: {
         public_id: result.public_id,
         url: result.secure_url,
       },
     });
-
-    const smsMessage = `Hello, we have received your refund request for order ID ${order.orderId}. We will review your request and keep you updated on its status. Thank you for your patience.`;
-    await sendSMS(order.user.phoneNumber, smsMessage);
 
     res.status(200).json({
       success: true,
@@ -374,24 +396,43 @@ exports.allRefunds = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Update refund => /api/v1/admin/refund/:id
+// Update refund => /api/v1/admin/refund/:id
+// Update refund => /api/v1/admin/refund/:id
 exports.updateRefund = catchAsyncErrors(async (req, res, next) => {
   const { status } = req.body;
 
-  const refund = await Refund.findById(req.params.id);
+  try {
+    // Fetch the refund data and populate the 'user' field
+    const refund = await Refund.findById(req.params.id).populate("user");
 
-  if (!refund) {
-    res.status(404).json({ message: "Refund not found" });
+    if (!refund) {
+      return res.status(404).json({ message: "Refund not found" });
+    }
+
+    // Access user details if the 'user' field is populated
+    if (refund.user) {
+      const userEmail = refund.user.email;
+      const userPhoneNumber = refund.user.phoneNumber;
+
+      // Create an email message for refund status update
+      const subject = "Refund Status Update";
+      const message = `Dear User,\n\nYour refund request for order ID ${refund.orderId} has been updated. The new status is: ${status}.\n\nIf you have any further questions, please feel free to contact us.\n\nBest regards,\nThe Support Team`;
+
+      // Send email notification for the refund update to the user
+      await sendEmail(userEmail, subject, message);
+    }
+
+    // Update the refund status
+    refund.status = status;
+    await refund.save();
+
+    res.status(200).json({
+      success: true,
+      refund,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
   }
-
-  // Update the refund status based on the value passed in the request body
-  refund.status = status;
-
-  await refund.save();
-
-  res.status(200).json({
-    success: true,
-    refund,
-  });
 });
 
 // Delete refund => /api/v1/admin/refund/:id

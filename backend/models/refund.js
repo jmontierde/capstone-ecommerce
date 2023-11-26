@@ -3,6 +3,10 @@
 const mongoose = require("mongoose");
 
 const refundSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", // Reference to the User model
+  },
   imageReason: {
     public_id: String,
     url: String,

@@ -46,10 +46,10 @@ const AllRefunds = () => {
   const [masterCheckboxChecked, setMasterCheckboxChecked] = useState(false);
   const [enlargedImageUrl, setEnlargedImageUrl] = useState(null);
   const [status, setStatus] = useState(""); // Added status state
-
+  const [refundStatus, setRefundStatus] = useState({});
   const { isDeleted, isUpdated } = useSelector((state) => state.refund);
 
-  console.log("refunds", refunds);
+  console.log("refundStatus", refundStatus);
 
   useEffect(() => {
     dispatch(allRefund());
@@ -89,13 +89,13 @@ const AllRefunds = () => {
       });
       setSelectedRefunds([]);
     } else {
-      alert("Please select refunds to delete.");
+      alert.error("Please select refunds to delete.");
     }
   };
 
-  const handleStatusUpdate = (refundId) => {
-    if (status.trim() === "") {
-      alert("Please select a status.");
+  const handleStatusUpdate = (refundId, currentStatus) => {
+    if (!currentStatus || currentStatus.trim() === "") {
+      alert.error("Please select a status.");
       return;
     }
 
@@ -103,8 +103,14 @@ const AllRefunds = () => {
       alert.success("Refund status updated successfully");
       dispatch({ type: UPDATE_REFUND_RESET });
     }
-
-    dispatch(updateRefund(refundId, { status }));
+    console.log("refundStatus[refundId]", refundStatus[refundId]);
+    // Update the refund status only if it's different from the current status
+    // Update the refund status only if it's different from the current status
+    dispatch(updateRefund(refundId, { status: currentStatus }));
+    setRefundStatus({
+      ...refundStatus,
+      [refundId]: currentStatus,
+    });
   };
 
   const TABLE_HEAD = [
@@ -333,8 +339,13 @@ const AllRefunds = () => {
                             <select
                               className="border border-[#000] py-2 my-1 w-32 px-1 bg-[#fff]"
                               name="status"
-                              value={status}
-                              onChange={(e) => setStatus(e.target.value)}
+                              value={refundStatus[refund._id] || ""}
+                              onChange={(e) =>
+                                setRefundStatus({
+                                  ...refundStatus,
+                                  [refund._id]: e.target.value,
+                                })
+                              }
                             >
                               <option value="">Select Status</option>
                               <option value="accepted">Accepted</option>
@@ -342,7 +353,12 @@ const AllRefunds = () => {
                             </select>
                             <button
                               className="bg-[#2e69a8] rounded py-2 my-3 w-32 text-white px-6"
-                              onClick={() => handleStatusUpdate(refund._id)}
+                              onClick={() =>
+                                handleStatusUpdate(
+                                  refund._id,
+                                  refundStatus[refund._id]
+                                )
+                              }
                             >
                               Update
                             </button>
