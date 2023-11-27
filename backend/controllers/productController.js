@@ -462,7 +462,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     // Check if the user has placed an order for the given product
     const order = await Order.findOne({
       user: userId,
-      "orderItems.productId": productId,
+      "orderItems.product": productId,
       orderStatus: "Delivered",
       paymentStatus: "Paid",
     });
@@ -476,10 +476,15 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
 
     // Check if the product has already been reviewed by the user in this order
     const orderItem = order.orderItems.find(
-      (item) =>
-        item.productId.toString() === productId &&
-        item.reviewStatus === "Reviewed"
+      (item) => item.product === productId && item.reviewStatus === "Reviewed"
     );
+
+    if (!productId) {
+      return res.status(400).json({
+        success: false,
+        message: "Product ID is missing in the request.",
+      });
+    }
 
     if (orderItem) {
       return res.status(400).json({
@@ -530,7 +535,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
 
     // Update the order item to mark the product as reviewed
     const reviewedItemIndex = order.orderItems.findIndex(
-      (item) => item.productId.toString() === productId.toString()
+      (item) => item.productId === productId
     );
 
     if (reviewedItemIndex !== -1) {

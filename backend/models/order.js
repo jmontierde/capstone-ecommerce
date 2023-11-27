@@ -36,7 +36,6 @@ const orderSchema = mongoose.Schema({
     ref: "User", // Reference to the User model
     required: true,
   },
-
   orderItems: [
     {
       name: {

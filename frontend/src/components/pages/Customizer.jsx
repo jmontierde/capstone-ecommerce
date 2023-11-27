@@ -47,7 +47,7 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
 
   const handleCart = () => {
     if (selectedProduct) {
-      dispatch(addItemToCart(selectedProduct._id, 1)); // Assuming you want to add 1 quantity
+      dispatch(addItemToCart(selectedProduct.productId, 1)); // Assuming you want to add 1 quantity
       toast.success("Item Added to Cart");
     } else {
       toast.error("Please select a product first.");
@@ -195,7 +195,7 @@ const Customizer = ({ setSelectedTexture, selectedTexture }) => {
                   .map((product) => (
                     <>
                       <img
-                        key={product._id}
+                        key={product.productId}
                         src={product.images[0].url}
                         alt={product.name}
                         className="w-12 h-12 cursor-pointer rounded-full" // Add cursor-pointer class to make it clear it's clickable

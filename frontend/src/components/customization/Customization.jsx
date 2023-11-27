@@ -489,6 +489,48 @@ const Customization = () => {
                       }
                     />
                   </div>
+                  <div>
+                    <h4 className="px-3">Position</h4>
+                    <div className="flex  flex-wrap  col-span-3 items-center justify-start gap-3">
+                      {/* <Radio name="type" label="top-left" defaultChecked /> */}
+                      <Radio
+                        name="sticker-position"
+                        label="top-left"
+                        checked={selectedStickerPosition === "top-left"}
+                        onChange={() => handleStickerPositionChange("top-left")}
+                      />
+                      <Radio
+                        name="sticker-position"
+                        label="top-right"
+                        checked={selectedStickerPosition === "top-right"}
+                        onChange={() =>
+                          handleStickerPositionChange("top-right")
+                        }
+                      />
+                      <Radio
+                        name="sticker-position"
+                        label="center"
+                        checked={selectedStickerPosition === "center"}
+                        onChange={() => handleStickerPositionChange("center")}
+                      />
+                      <Radio
+                        name="sticker-position"
+                        label="bottom-left"
+                        checked={selectedStickerPosition === "bottom-left"}
+                        onChange={() =>
+                          handleStickerPositionChange("bottom-left")
+                        }
+                      />
+                      <Radio
+                        name="sticker-position"
+                        label="bottom-right"
+                        checked={selectedStickerPosition === "bottom-right"}
+                        onChange={() =>
+                          handleStickerPositionChange("bottom-right")
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex flex-col lg:flex-row  space-x-1  scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-700">

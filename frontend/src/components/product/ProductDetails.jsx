@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-
+import { Radio } from "@material-tailwind/react";
 import Loader from "../layout/Loader";
 import MetaData from "../layout/MetaData";
 import { Link } from "react-router-dom";
@@ -48,10 +48,20 @@ const ProductDetails = () => {
     (item) => String(item.product) === String(id)
   );
 
-  console.log();
+  const [selectedStickerSize, setSelectedStickerSize] = useState("2x2");
+  const [selectedStickerPosition, setSelectedStickerPosition] =
+    useState("top-left");
 
-  console.log("isProductInCart", isProductInCart);
-  console.log("cartItems", cartItems);
+  console.log("selectedStickerSize", selectedStickerSize);
+  console.log("selectedStickerPosition", selectedStickerPosition);
+
+  const handleStickerSizeChange = (size) => {
+    setSelectedStickerSize(size);
+  };
+
+  const handleStickerPositionChange = (position) => {
+    setSelectedStickerPosition(position);
+  };
 
   const { success: wishlistSuccess } = useSelector(
     (state) => state.newWishlist
@@ -157,6 +167,15 @@ const ProductDetails = () => {
     toast.success("Item Added to Cart");
   };
 
+  const handleAddStickerToCart = (
+    id,
+    quantity,
+    stickerSize,
+    stickerPosition
+  ) => {
+    dispatch(addItemToCart(id, quantity, stickerSize, stickerPosition));
+  };
+
   const reviewHandler = () => {
     const formData = new FormData();
 
@@ -247,16 +266,113 @@ const ProductDetails = () => {
               +
             </button>
           </div>
+          {/* Sticker */}
+          {product.category === "655dfb180fcf137bcb9e7586" && (
+            <div key={product.productId} className="grid  ">
+              {/* ...other product details */}
+              <div className="flex py-3  ">
+                {/* Display sticker size options */}
+                <div className="text-white">
+                  <h4 className="px-3">Size</h4>
+
+                  <div className="flex py-3 text-white hover:text-[#e6e355]  ">
+                    <Radio
+                      name="sticker-size"
+                      label="2x2"
+                      color="blue"
+                      checked={selectedStickerSize === "2x2"}
+                      onChange={() => handleStickerSizeChange("2x2")}
+                    />
+                    <Radio
+                      name="sticker-size"
+                      label="4x4"
+                      color="blue"
+                      checked={selectedStickerSize === "4x4"}
+                      onChange={() => handleStickerSizeChange("4x4")}
+                    />
+                    <Radio
+                      name="sticker-size"
+                      label="8x8"
+                      color="blue"
+                      checked={selectedStickerSize === "8x8"}
+                      onChange={() => handleStickerSizeChange("8x8")}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 className="px-3">Position</h4>
+                <div className="flex  flex-wrap  col-span-3 items-center justify-start gap-3">
+                  {/* <Radio name="type" label="top-left" defaultChecked /> */}
+                  <Radio
+                    name="sticker-position"
+                    label="top-left"
+                    color="blue"
+                    checked={selectedStickerPosition === "top-left"}
+                    onChange={() => handleStickerPositionChange("top-left")}
+                  />
+                  <Radio
+                    name="sticker-position"
+                    label="top-right"
+                    color="blue"
+                    checked={selectedStickerPosition === "top-right"}
+                    onChange={() => handleStickerPositionChange("top-right")}
+                  />
+                  <Radio
+                    name="sticker-position"
+                    label="center"
+                    color="blue"
+                    checked={selectedStickerPosition === "center"}
+                    onChange={() => handleStickerPositionChange("center")}
+                  />
+                  <Radio
+                    name="sticker-position"
+                    label="bottom-left"
+                    color="blue"
+                    checked={selectedStickerPosition === "bottom-left"}
+                    onChange={() => handleStickerPositionChange("bottom-left")}
+                  />
+                  <Radio
+                    name="sticker-position"
+                    label="bottom-right"
+                    color="blue"
+                    checked={selectedStickerPosition === "bottom-right"}
+                    onChange={() => handleStickerPositionChange("bottom-right")}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          {/* Add to cart */}
           <div className="flex items-center space-x-6">
-            <button
-              className="bg-[#4F46E5] hover:bg-[#4540a6] w-72 text-white rounded py-3 px-6 my-6 cursor-pointer"
-              onClick={handleCart}
-              disabled={product.stock === 0 || isProductInCart} // Disable if out of stock or in cart
-            >
-              {isProductInCart
-                ? "Product is already in the cart"
-                : "Add to Cart"}
-            </button>
+            {product.category !== "655dfb180fcf137bcb9e7586" ? (
+              <button
+                className="bg-[#4F46E5] hover:bg-[#4540a6] w-72 text-white rounded py-3 px-6 my-6 cursor-pointer"
+                onClick={handleCart}
+                disabled={product.stock === 0 || isProductInCart} // Disable if out of stock or in cart
+              >
+                {isProductInCart
+                  ? "Product is already in the cart"
+                  : "Add to Cart"}
+              </button>
+            ) : (
+              <button
+                className="bg-[#4F46E5] hover:bg-[#4540a6] w-full text-white rounded py-3 px-6  cursor-pointer"
+                onClick={() =>
+                  handleAddStickerToCart(
+                    id,
+                    quantity,
+                    selectedStickerSize,
+                    selectedStickerPosition
+                  )
+                }
+              >
+                {/* Re-enable isProductInCart */}
+                {isProductInCart
+                  ? "Product is already in the cart"
+                  : "Sticker Add to Cart"}
+              </button>
+            )}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

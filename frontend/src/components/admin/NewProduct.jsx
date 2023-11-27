@@ -19,6 +19,9 @@ const NewProduct = () => {
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
+  const [stickerSize, setStickerSize] = useState("");
+  const [stickerPosition, setStickerPosition] = useState("");
+
   const { categories } = useSelector((state) => state.categories);
 
   const alert = useAlert();

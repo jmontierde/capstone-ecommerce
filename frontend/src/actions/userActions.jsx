@@ -84,10 +84,10 @@ export const login = (email, password) => async (dispatch) => {
       payload: data.user,
     });
   } catch (error) {
-    console.log("Error message from sss:", error.response.data.message);
+    console.log("Error message from sss:", error.response.data);
     dispatch({
       type: LOGIN_FAIL,
-      payload: error.response.data.message,
+      payload: error.response.data,
     });
   }
 };
@@ -119,7 +119,7 @@ export const register = (userData) => async (dispatch) => {
       payload: data.user,
     });
   } catch (error) {
-    console.log("ERROR", error);
+    console.log("REGISTER ERROR", error);
     dispatch({
       type: REGISTER_USER_FAIL,
       payload: error.response.data.message,

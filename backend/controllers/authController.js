@@ -96,7 +96,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     });
 
     const smsMessage = "Thank you for signing up!";
-    await sendSMS(user.phoneNumber, smsMessage);
+    // await sendSMS(user.phoneNumber, smsMessage);
 
     sendToken(user, 200, res);
   } catch (error) {

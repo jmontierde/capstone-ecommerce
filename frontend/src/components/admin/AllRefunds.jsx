@@ -130,10 +130,15 @@ const AllRefunds = () => {
   // Filter refunds based on searchQuery
   const filteredOrders = refunds
     ? refunds.filter((refund) =>
-        refund._id.toLowerCase().includes(searchQuery.toLowerCase())
+        refund.orderId.toString().includes(searchQuery.toLowerCase())
       )
     : [];
 
+  // const filteredOrders = orders
+  //   ? orders.filter((order) =>
+  //       order.orderId.toString().includes(searchQuery.toLowerCase())
+  //     )
+  //   : [];
   // Calculate pagination values
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;

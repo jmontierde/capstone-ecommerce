@@ -337,15 +337,18 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
       .json({ message: "Incorrect orderId. No order found." });
   }
 
-  // Check if paymentStatus is 'Paid' and orderStatus is 'Delivered' before allowing a refund
-  if (order.paymentStatus !== "Paid" || order.orderStatus !== "Delivered") {
+  console.log("refundOrder", order);
+
+  // Check if the order status is Delivered and payment status is Paid
+  if (order.orderStatus !== "Delivered" || order.paymentStatus !== "Paid") {
     return res.status(400).json({
       message:
-        "Refund is only allowed for orders with paymentStatus as 'Paid' and orderStatus as 'Delivered'.",
+        "Order is not eligible for refund. Order must be Delivered and Paid.",
     });
   }
 
-  // Additional code for refund creation remains unchanged
+  // Proceed with refund process
+
   const result = await cloudinary.v2.uploader.upload(req.body.imageReason, {
     folder: "reason-refund",
     width: 150,
@@ -361,6 +364,7 @@ exports.refundOrder = catchAsyncErrors(async (req, res, next) => {
         public_id: result.public_id,
         url: result.secure_url,
       },
+      user: order.user._id, // Associate the refund with the user
     });
 
     res.status(200).json({
@@ -395,8 +399,6 @@ exports.allRefunds = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Update refund => /api/v1/admin/refund/:id
-// Update refund => /api/v1/admin/refund/:id
 // Update refund => /api/v1/admin/refund/:id
 exports.updateRefund = catchAsyncErrors(async (req, res, next) => {
   const { status } = req.body;
