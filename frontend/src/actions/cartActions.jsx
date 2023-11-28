@@ -10,7 +10,7 @@ import {
 const url = "http://localhost:7000";
 
 export const addItemToCart =
-  (id, quantity, stickerSize, stickerPosition) =>
+  (id, quantity, stickerSize, stickerPosition, suggestion) =>
   async (dispatch, getState) => {
     const { data } = await axios.get(`${url}/api/v1/product/${id}`);
 
@@ -29,6 +29,7 @@ export const addItemToCart =
         ...payload,
         stickerSize,
         stickerPosition,
+        suggestion,
       };
     }
 

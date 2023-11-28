@@ -48,6 +48,9 @@ const orderSchema = mongoose.Schema({
       stickerPosition: {
         type: String,
       },
+      suggestion: {
+        type: String,
+      },
       quantity: {
         type: Number,
         required: true,

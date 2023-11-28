@@ -292,7 +292,6 @@ const OrderList = () => {
                           </Typography>
                         </td>
                         <td className={`${classes}`}>
-                          {/* Verify */}
                           <div className="flex">
                             {order.adminVerificationStatus === "Pending" && (
                               <>
@@ -312,7 +311,6 @@ const OrderList = () => {
                                     strokeLinejoin="round"
                                     d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
                                   />
-                                  {/* ... (your SVG path for Accept) */}
                                 </svg>
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -330,7 +328,6 @@ const OrderList = () => {
                                     strokeLinejoin="round"
                                     d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                                   />
-                                  {/* ... (your SVG path for Reject) */}
                                 </svg>
                               </>
                             )}
@@ -352,76 +349,28 @@ const OrderList = () => {
                                   strokeLinejoin="round"
                                   d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
                                 />
-                                {/* ... (your SVG path for Accept) */}
                               </svg>
                             )}
-                            {/* <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="green"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="white"
-                              className="w-12 h-12 cursor-pointer"
-                              onClick={() =>
-                                verifyOrderHandler(order._id, "Accepted")
-                              }
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-                              />
-                            </svg>
-
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="red"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="white"
-                              className="w-12 h-12 cursor-pointer"
-                              onClick={() =>
-                                verifyOrderHandler(order._id, "Rejected")
-                              }
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg> */}
                           </div>
-
-                          {/* <button
-                            onClick={() =>
-                              verifyOrderHandler(order._id, "Accepted")
-                            }
-                          >
-                            Verify Order
-                          </button> */}
-                          {/* <button
-                            onClick={() =>
-                              verifyOrderHandler(order._id, "Rejected")
-                            }
-                          >
-                            Reject Order
-                          </button> */}
                         </td>
-                        <td
-                          className={`${classes} flex items-center space-x-6`}
-                        >
-                          <Link to={`/admin/order/${order._id}`}>
-                            <Tooltip content="Edit order" className="bg-[#000]">
-                              <PencilIcon className="h-4 w-4" />
-                            </Tooltip>
-                          </Link>
+                        <td className={`${classes} `}>
+                          <div className="flex  items-center space-x-6 ">
+                            <Link to={`/admin/order/${order._id}`}>
+                              <Tooltip
+                                content="Edit order"
+                                className="bg-[#000]"
+                              >
+                                <PencilIcon className="h-4 w-4" />
+                              </Tooltip>
+                            </Link>
 
-                          <img
-                            src="/images/deleteHover.png"
-                            alt="View order"
-                            className="w-6 h-6 cursor-pointer"
-                            onClick={() => deleteOrderHandler(order._id)}
-                          />
+                            <img
+                              src="/images/deleteHover.png"
+                              alt="View order"
+                              className="w-6 h-6 cursor-pointer"
+                              onClick={() => deleteOrderHandler(order._id)}
+                            />
+                          </div>
                         </td>
                       </tr>
                     );

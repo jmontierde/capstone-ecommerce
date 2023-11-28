@@ -41,7 +41,7 @@ const OrderDetails = () => {
     ...(orderItems &&
     orderItems.length > 0 &&
     orderItems.some((item) => item.stickerPosition && item.stickerSize)
-      ? ["Sticker Position", "Sticker Size"]
+      ? ["Sticker Position", "Sticker Size", "Suggestion"]
       : []),
   ];
 
@@ -241,6 +241,15 @@ const OrderDetails = () => {
                                 className="font-normal"
                               >
                                 {item.stickerSize}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {item.suggestion}
                               </Typography>
                             </td>
                           </>

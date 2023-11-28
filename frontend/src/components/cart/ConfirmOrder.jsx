@@ -17,13 +17,16 @@ const ConfirmOrder = () => {
   const hasStickerItems = cartItems.some(
     (cart) =>
       cart.stickerPosition && // Check if 'stickerPosition' exists
-      cart.stickerSize // Check if 'stickerSize' exists
+      cart.stickerSize,
+    cart.suggestion // Check if 'stickerSize' exists
   );
 
   const TABLE_HEAD = [
     "Product",
     "Quantity",
-    ...(hasStickerItems ? ["Sticker Position", "Sticker Size"] : []),
+    ...(hasStickerItems
+      ? ["Sticker Position", "Sticker Size", "Suggestion"]
+      : []),
     "Price",
   ];
   // Calculate Order Prices
@@ -136,6 +139,15 @@ const ConfirmOrder = () => {
                               className="font-normal"
                             >
                               {cart.stickerSize}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {cart.suggestion}
                             </Typography>
                           </td>
                         </>

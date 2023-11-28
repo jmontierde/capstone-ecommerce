@@ -12,6 +12,9 @@ const productSchema = new mongoose.Schema({
   stickerPosition: {
     type: String,
   },
+  suggestion: {
+    type: String,
+  },
   name: {
     type: String,
     required: [true, "Please enter product name"], // Second array will print when has an error

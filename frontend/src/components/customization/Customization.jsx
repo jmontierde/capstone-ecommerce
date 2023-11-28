@@ -23,6 +23,7 @@ const Customization = () => {
   const [selectedMods, setselectedMods] = useState(null);
   const [selectedSticker, setselectedSticker] = useState(null);
   const [selectedStickerId, setselectedStickerId] = useState(null);
+  const [suggestion, setSuggestion] = useState(null);
 
   const [selectedStickerSize, setSelectedStickerSize] = useState("2x2");
   const [selectedStickerPosition, setSelectedStickerPosition] =
@@ -110,11 +111,14 @@ const Customization = () => {
     }
   };
 
+  console.log("suggestion", suggestion);
+
   const handleAddStickerToCart = (
     productId,
     quantity,
     stickerSize,
-    stickerPosition
+    stickerPosition,
+    suggestion
   ) => {
     const isProductInCart = cartItems.some(
       (item) => item.product === productId
@@ -127,7 +131,13 @@ const Customization = () => {
 
     if (!isProductInCart) {
       dispatch(
-        addItemToCart(productId, quantity, stickerSize, stickerPosition)
+        addItemToCart(
+          productId,
+          quantity,
+          stickerSize,
+          stickerPosition,
+          suggestion
+        )
       );
       toast.success("Sticker Added to Cart");
     } else {
@@ -166,7 +176,7 @@ const Customization = () => {
         <div className="w-8/12 fixed  right-0 flex items-center justify-center h-screen ">
           <div className=" flex flex-col">
             {selectedTanks ? (
-              <div className="flex items-center justify-center absolute  top-28 ml-16 mt-2 ">
+              <div className="flex items-center justify-center  absolute top-48 mt-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2  ">
                 <img
                   src={selectedTanks}
                   alt="Selected Image"
@@ -583,7 +593,10 @@ const Customization = () => {
                 </div>
                 <div className="w-full">
                   <h2 className="py-1">Suggestion:</h2>
-                  <Textarea label="Message" />
+                  <Textarea
+                    label="Message"
+                    onChange={(e) => setSuggestion(e.target.value)}
+                  />
                 </div>
                 <button
                   className="bg-[#4F46E5] hover:bg-[#4540a6] w-full text-white rounded py-3 px-6  cursor-pointer"
@@ -592,13 +605,14 @@ const Customization = () => {
                       selectedStickerId,
                       productQuantities[selectedStickerId],
                       selectedStickerSize,
-                      selectedStickerPosition
+                      selectedStickerPosition,
+                      suggestion
                     )
                   }
                 >
                   {/* Re-enable isProductInCart */}
                   {cartItems.some((item) => item.product === selectedStickerId)
-                    ? "Mod is already in the cart"
+                    ? "Tank is already in the cart"
                     : "Add to Cart"}
                 </button>
               </div>
