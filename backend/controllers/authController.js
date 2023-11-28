@@ -195,7 +195,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
     console.log("user.email", user.email);
 
     await sendEmail(user.email, "Password Recovery Notification", message);
-    // await sendSMS(user.phoneNumber, message);
+    await sendSMS(user.phoneNumber, message);
     res.status(200).json({
       success: true,
       message: `Email sent to: ${user.email}`,
@@ -476,7 +476,7 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     await sendEmail(user.email, "Account Deletion Notification", message);
     await user.remove();
 
-    // await sendSMS(user.phoneNumber, message);
+    await sendSMS(user.phoneNumber, message);
     res.status(200).json({
       success: true,
       message: `Email sent to: ${user.email}`,

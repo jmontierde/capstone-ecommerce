@@ -62,7 +62,7 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   const smsMessage = `Thank you for placing an order with us. Your order ID is ${order.orderId}. We will process your order and keep you updated on its status.`;
   try {
     // Use the sendSMS function to send the SMS message
-    // await sendSMS(req.user.phoneNumber, smsMessage);
+    await sendSMS(req.user.phoneNumber, smsMessage);
     await sendEmail(req.user.email, "Order Notification", smsMessage);
 
     res.status(200).json({
@@ -195,7 +195,6 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
   const orderId = req.params.id;
 
   try {
-    // const order = await Order.findById(orderId);
     const order = await Order.findById(orderId).populate("user");
 
     if (!order) {
@@ -219,7 +218,7 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
 
     if (req.body.adminVerificationStatus === "Accepted") {
       for (const item of order.orderItems) {
-        const product = await Product.findOne({ productId: item.productId });
+        const product = await Product.findOne({ productId: item.product });
 
         if (!product || product.stock < item.quantity) {
           return res.status(400).json({
@@ -227,17 +226,21 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
           });
         }
 
-        await updateStock(item.productId, item.quantity);
-        const userEmail = order.user.email;
-        const emailSubject = "Order Verification";
-        const emailMessage = `Your order #${order.orderId} has been verified successfully.`;
-        await sendEmail(userEmail, emailSubject, emailMessage);
-
-        // Return success response
-        return res
-          .status(200)
-          .json({ success: true, message: "Order has been verified" });
+        await updateStock(item.product, item.quantity);
       }
+
+      // Update adminVerificationStatus and send email after processing all items
+      order.adminVerificationStatus = req.body.adminVerificationStatus;
+      await order.save();
+
+      const userEmail = order.user.email;
+      const emailSubject = "Order Verification";
+      const emailMessage = `Your order #${order.orderId} has been verified successfully.`;
+      await sendEmail(userEmail, emailSubject, emailMessage);
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Order has been verified" });
     } else if (req.body.adminVerificationStatus === "Rejected") {
       const userEmail = order.user.email;
       const emailSubject = "Order Verification";
@@ -249,14 +252,6 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
         .status(200)
         .json({ success: true, message: "Order has been rejected" });
     }
-
-    order.adminVerificationStatus = req.body.adminVerificationStatus;
-    await order.save();
-
-    console.log(
-      `Order successfully verified with status: ${req.body.adminVerificationStatus}`
-    );
-    res.status(200).json({ success: true, message: "Order has been verified" });
   } catch (error) {
     console.error("Error verifying order:", error);
     res

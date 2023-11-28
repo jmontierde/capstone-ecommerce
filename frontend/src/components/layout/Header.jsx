@@ -106,22 +106,15 @@ const Header = (keyword) => {
                 Customization
               </Link>
             </li>
-            <li className="flex-none">
-              <Link
-                to="/drag-and-drop"
-                className="block py-2 px-4 rounded-lg hover:text-[#e6e355]  "
-              >
-                Drag and Drop
-              </Link>
-            </li>
-            <li className="flex-none">
+
+            {/* <li className="flex-none">
               <Link
                 to="/three"
                 className="block py-2 px-4 rounded-lg hover:text-[#e6e355]  "
               >
                 Customization 3D
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
 

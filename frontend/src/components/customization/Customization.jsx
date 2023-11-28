@@ -7,7 +7,7 @@ import { Button } from "@material-tailwind/react";
 import { addItemToCart, getCheckout } from "../../actions/cartActions";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Radio } from "@material-tailwind/react";
+import { Radio, Textarea } from "@material-tailwind/react";
 const Customization = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
@@ -489,48 +489,6 @@ const Customization = () => {
                       }
                     />
                   </div>
-                  <div>
-                    <h4 className="px-3">Position</h4>
-                    <div className="flex  flex-wrap  col-span-3 items-center justify-start gap-3">
-                      {/* <Radio name="type" label="top-left" defaultChecked /> */}
-                      <Radio
-                        name="sticker-position"
-                        label="top-left"
-                        checked={selectedStickerPosition === "top-left"}
-                        onChange={() => handleStickerPositionChange("top-left")}
-                      />
-                      <Radio
-                        name="sticker-position"
-                        label="top-right"
-                        checked={selectedStickerPosition === "top-right"}
-                        onChange={() =>
-                          handleStickerPositionChange("top-right")
-                        }
-                      />
-                      <Radio
-                        name="sticker-position"
-                        label="center"
-                        checked={selectedStickerPosition === "center"}
-                        onChange={() => handleStickerPositionChange("center")}
-                      />
-                      <Radio
-                        name="sticker-position"
-                        label="bottom-left"
-                        checked={selectedStickerPosition === "bottom-left"}
-                        onChange={() =>
-                          handleStickerPositionChange("bottom-left")
-                        }
-                      />
-                      <Radio
-                        name="sticker-position"
-                        label="bottom-right"
-                        checked={selectedStickerPosition === "bottom-right"}
-                        onChange={() =>
-                          handleStickerPositionChange("bottom-right")
-                        }
-                      />
-                    </div>
-                  </div>
                 </div>
 
                 <div className="flex flex-col lg:flex-row  space-x-1  scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-700">
@@ -623,6 +581,10 @@ const Customization = () => {
                     />
                   </div>
                 </div>
+                <div className="w-full">
+                  <h2 className="py-1">Suggestion:</h2>
+                  <Textarea label="Message" />
+                </div>
                 <button
                   className="bg-[#4F46E5] hover:bg-[#4540a6] w-full text-white rounded py-3 px-6  cursor-pointer"
                   onClick={() =>
@@ -644,6 +606,7 @@ const Customization = () => {
               <p></p>
             )}
           </>
+          <div></div>
         </div>
       </div>
     </>
