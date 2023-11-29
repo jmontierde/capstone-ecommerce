@@ -373,7 +373,7 @@ const Register = () => {
                             className="block mb-2 text-sm font-medium text-gray-900  cursor-pointer"
                             htmlFor="withBirthdayId"
                           >
-                            Submit (1) valid id (include birthdate)
+                            Submit selfie with valid id
                           </label>
                           <div className="flex items-center justify-center w-full">
                             <label

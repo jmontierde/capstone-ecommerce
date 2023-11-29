@@ -12,13 +12,12 @@ const ConfirmOrder = () => {
 
   const navigate = useNavigate();
 
-  console.log("PORDUCUTS", products);
+  console.log("PORDUCUTS", cartItems);
 
   const hasStickerItems = cartItems.some(
     (cart) =>
       cart.stickerPosition && // Check if 'stickerPosition' exists
-      cart.stickerSize,
-    cart.suggestion // Check if 'stickerSize' exists
+      cart.stickerSize
   );
 
   const TABLE_HEAD = [
@@ -90,6 +89,7 @@ const ConfirmOrder = () => {
               </thead>
               <tbody>
                 {cartItems.map((cart, index) => {
+                  console.log("cartitems cart", cart);
                   const isLast = index === cartItems.length - 1;
                   const classes = isLast
                     ? "p-4"

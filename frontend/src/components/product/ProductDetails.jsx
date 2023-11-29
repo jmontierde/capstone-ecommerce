@@ -196,7 +196,7 @@ const ProductDetails = () => {
             <div className="w-full mx-auto bg-[#1E1E1E]">
               {product.images && product.images.length > 0 && (
                 <img
-                  className="mx-auto w-96 h-full object-cover "
+                  className="mx-auto w-96 h-full object-contain  "
                   src={product.images[0].url}
                   alt={product.title}
                 />
