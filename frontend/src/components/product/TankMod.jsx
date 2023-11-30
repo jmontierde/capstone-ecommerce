@@ -36,7 +36,7 @@ const TankMod = () => {
           {products
             .filter((prod) => prod.category === "653cbe795c09dc4ba0134fc2")
             .map((product) => (
-              <Link to={`/product/${product._id}`}>
+              <Link to={`/product/${product.productId}`}>
                 <div className=" space-y-3">
                   {product.images && product.images.length > 0 && (
                     <img

@@ -34,7 +34,7 @@ const PodMod = () => {
           {products
             .filter((prod) => prod.category === "653cbe735c09dc4ba0134fbd")
             .map((product) => (
-              <Link to={`/product/${product._id}`}>
+              <Link to={`/product/${product.productId}`}>
                 <div className=" space-y-3">
                   {product.images && product.images.length > 0 && (
                     <img
