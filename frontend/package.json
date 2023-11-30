@@ -33,8 +33,6 @@
     "moment": "^2.29.4",
     "rc-slider": "^10.2.1",
     "react": "^18.2.0",
-    "react-alert": "^7.0.3",
-    "react-alert-template-basic": "^1.0.2",
     "react-beautiful-dnd": "^13.1.1",
     "react-chartjs-2": "^5.2.0",
     "react-color": "^2.19.3",
@@ -69,6 +67,10 @@
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7",
     "vite": "^4.2.1"
+  },
+  "overrides": {
+    "react-alert": "^7.0.3",
+    "react-alert-template-basic": "^1.0.2"
   },
   "proxy": "http://127.0.0.1:7000"
 }
