@@ -51,7 +51,7 @@ import { CLEAR_ERRORS_REDUCER } from "../constants/userConstant";
 
 //Related Product
 
-const url = "http://localhost:7000";
+const url = "https://vapingsidewalk-server.onrender.com";
 
 export const getRelatedProducts = (id) => async (dispatch) => {
   try {

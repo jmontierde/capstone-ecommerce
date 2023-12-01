@@ -80,7 +80,7 @@ export const PaymentForm = ({ stripePromise }) => {
       },
     },
   };
-  const url = "http://localhost:7000";
+  const url = "https://vapingsidewalk-server.onrender.com";
 
   const submitHandler = async (e) => {
     e.preventDefault();

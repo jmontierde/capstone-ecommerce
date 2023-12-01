@@ -58,7 +58,7 @@ import {
 } from "../constants/userConstant";
 
 //Login
-const url = "http://localhost:7000";
+const url = "https://vapingsidewalk-server.onrender.com";
 
 export const login = (email, password) => async (dispatch) => {
   try {
