@@ -12,6 +12,10 @@ export default defineConfig({
 
         // Add react-alert as an external dependency
         "react-alert",
+        "react-alert-template-basic",
+        "react-input-emoji",
+        "react-messenger-customer-chat",
+        "use-react-countries",
       ],
     },
     chunkSizeWarningLimit: 100000000,
