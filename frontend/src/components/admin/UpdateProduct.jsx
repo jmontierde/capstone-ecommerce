@@ -176,7 +176,13 @@ const UpdateProduct = () => {
                       label="Stock"
                       className="py-6 "
                       value={stock}
-                      onChange={(e) => setStock(e.target.value)}
+                      onChange={(e) => {
+                        const inputStock = parseInt(e.target.value, 10);
+                        if (inputStock > 0) {
+                          setStock(inputStock);
+                        }
+                      }}
+                      min={1} // Set the minimum value to 1 (positive number)
                     />
                   </div>
                 </div>

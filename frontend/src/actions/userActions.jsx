@@ -130,6 +130,7 @@ export const register = (userData) => async (dispatch) => {
 // Verify User
 export const verifyUser = (userId, verificationStatus) => async (dispatch) => {
   try {
+    console.log("Verifying user:", userId, "with status:", verificationStatus);
     dispatch({ type: VERIFY_USER_REQUEST });
     const token = localStorage.getItem("token");
     const config = {
@@ -144,7 +145,11 @@ export const verifyUser = (userId, verificationStatus) => async (dispatch) => {
       { verificationStatus },
       config
     );
+
+    console.log("VERIFCATION STATUS USER ID ", userId);
+
     console.log("VERIFCATION STATUS", verificationStatus);
+    console.log("VERIFCATION DATA", data);
 
     dispatch({
       type: VERIFY_USER_SUCCESS,

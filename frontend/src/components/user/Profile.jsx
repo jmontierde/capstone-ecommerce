@@ -7,12 +7,12 @@ import {
   clearErrors,
   clearErrorsReducer,
 } from "../../actions/userActions";
+import { useAlert } from "react-alert";
 import {
   UPDATE_PROFILE_RESET,
   UPDATE_PASSWORD_RESET,
 } from "../../constants/userConstant";
 import { useNavigate } from "react-router-dom";
-import { useAlert } from "react-alert";
 
 import Loader from "../layout/Loader";
 import { allUsers } from "../../actions/userActions";
@@ -21,8 +21,8 @@ import PhoneInput from "react-phone-number-input";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const alert = useAlert();
   const dispatch = useDispatch();
+  const alert = useAlert();
 
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const { error, isUpdated, loading } = useSelector((state) => state.user);

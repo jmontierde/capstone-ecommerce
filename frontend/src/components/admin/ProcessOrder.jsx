@@ -208,7 +208,7 @@ const ProcessOrder = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            <p>{item.price}</p>
+                            {item.quantity}
                           </Typography>
                         </td>
                         <td className={classes}>
@@ -217,7 +217,7 @@ const ProcessOrder = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {item.quantity}
+                            <p>{item.price}</p>
                           </Typography>
                         </td>
                         {item.stickerPosition &&

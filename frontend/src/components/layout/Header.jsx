@@ -3,7 +3,6 @@ import Search from "./Search";
 import { BsPerson, BsCart3 } from "react-icons/bs";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
 import { logout } from "../../actions/userActions";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,7 +11,6 @@ import { Badge, Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { getWishlist } from "../../actions/wishlistAction";
 const Header = (keyword) => {
-  const alert = useAlert();
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector((state) => state.auth);

@@ -84,12 +84,16 @@ exports.deleteWishlist = catchAsyncErrors(async (req, res, next) => {
     const userId = req.user.id;
     const productId = req.params.productId;
 
+    console.log("Wishlist userId", userId);
+
     // Find the user's wishlist
     const wishlist = await Wishlist.findOne({ user: userId });
 
-    if (!wishlist) {
-      return res.status(404).json({ message: "Wishlist not found" });
-    }
+    console.log("wishlist", wishlist);
+
+    // if (!wishlist) {
+    //   return res.status(404).json({ message: "Wishlist not found" });
+    // }
 
     // Check if the product exists in the wishlist
     if (!wishlist.products || !wishlist.products.includes(productId)) {

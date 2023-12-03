@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader";
 import { ToastContainer, toast } from "react-toastify";
@@ -36,7 +35,6 @@ import {
 } from "@material-tailwind/react";
 
 const ProductsList = () => {
-  const alert = useAlert();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

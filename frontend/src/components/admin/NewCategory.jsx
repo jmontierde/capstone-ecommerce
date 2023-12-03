@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../layout/Loader";
 import Sidebar from "./Sidebar";
-import { useAlert } from "react-alert";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -44,7 +44,7 @@ import {
 } from "../../constants/productConstants";
 
 const NewCategory = () => {
-  const alert = useAlert();
+  // const alert = useAlert();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

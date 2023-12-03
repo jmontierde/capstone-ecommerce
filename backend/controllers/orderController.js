@@ -123,6 +123,8 @@ exports.allOrders = catchAsyncErrors(async (req, res, next) => {
 // Update / Process order - ADMIN  =>   /api/v1/admin/order/:id
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate("user");
+  console.log("update orderr", order);
+
   const userEmail = order.user.email;
   const userPhoneNumber = order.user.phoneNumber;
 
@@ -173,7 +175,10 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
     const subject = "Order Update";
     const message = `Dear User, Your order with ID ${order.orderId} has been updated. Order status: ${order.orderStatus}. Payment status: ${order.paymentStatus}.`; // Customize the message as needed
 
+    console.log("ORDER PHONENUMBER", order.user.phoneNumber);
+
     await sendEmail(userEmail, subject, message);
+    await sendSMS(order.user.phoneNumber, message);
 
     res.status(200).json({
       success: true,
@@ -233,10 +238,13 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
       order.adminVerificationStatus = req.body.adminVerificationStatus;
       await order.save();
 
+      console.log("ORDER VERIFY ", order);
+
       const userEmail = order.user.email;
       const emailSubject = "Order Verification";
       const emailMessage = `Your order #${order.orderId} has been verified successfully.`;
       await sendEmail(userEmail, emailSubject, emailMessage);
+      await sendSMS(order.user.phoneNumber, emailMessage);
 
       return res
         .status(200)
@@ -246,6 +254,7 @@ exports.verifyOrder = catchAsyncErrors(async (req, res, next) => {
       const emailSubject = "Order Verification";
       const emailMessage = `Your order #${order.orderId} has been rejected.`;
       await sendEmail(userEmail, emailSubject, emailMessage);
+      await sendSMS(order.user.phoneNumber, emailMessage);
 
       await order.remove();
       return res

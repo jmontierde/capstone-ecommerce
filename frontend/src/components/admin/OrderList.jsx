@@ -1,10 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import { useAlert } from "react-alert";
 import Loader from "../layout/Loader";
 import Sidebar from "./Sidebar";
-
-import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import {
   allOrders,

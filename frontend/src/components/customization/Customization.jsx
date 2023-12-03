@@ -33,6 +33,10 @@ const Customization = () => {
 
   const [productQuantities, setProductQuantities] = useState({});
 
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
   // Function to handle quantity change for a specific product
   const handleQuantityChange = (productId, event) => {
     const input = event.target.value;

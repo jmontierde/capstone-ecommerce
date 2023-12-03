@@ -52,7 +52,7 @@ router.route("/me/update").put(isAuthenticatedUser, updateProfile);
 // Admin
 router
   .route("/admin/verify/:userId")
-  .put(isAuthenticatedUser, authorizeRoles("admin"), verifyUser);
+  .put(isAuthenticatedUser, authorizeRoles("admin", "staff"), verifyUser);
 
 router
   .route("/admin/term")

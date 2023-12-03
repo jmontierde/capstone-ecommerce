@@ -191,7 +191,7 @@ const OrderDetails = () => {
                     const classes = isLast
                       ? "p-4"
                       : "p-4 border-b border-blue-gray-50";
-                    console.log("orderItemsorderItems", orderItems);
+                    console.log("orderItemsorderItems", item);
                     return (
                       <tr key={item.product}>
                         <td className={`${classes}  flex flex-col space-y-3`}>
@@ -211,7 +211,7 @@ const OrderDetails = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            <p>{item.price}</p>
+                            {item.quantity}
                           </Typography>
                         </td>
                         <td className={classes}>
@@ -220,7 +220,7 @@ const OrderDetails = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {item.quantity}
+                            <p>{item.price}</p>
                           </Typography>
                         </td>
                         {item.stickerPosition && item.stickerSize && (

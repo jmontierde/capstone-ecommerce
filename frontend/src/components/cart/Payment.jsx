@@ -38,7 +38,9 @@ export const PaymentForm = ({ stripePromise }) => {
   const stripe = useStripe();
   const { user } = useSelector((state) => state.auth);
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
-  const { error } = useSelector((state) => state.newOrder);
+  const { error, loading } = useSelector((state) => state.newOrder);
+
+  console.log("loading", loading);
 
   const [paymentMethod, setPaymentMethod] = useState("card");
 
@@ -181,133 +183,139 @@ export const PaymentForm = ({ stripePromise }) => {
   //
 
   return (
-    <div className=" flex flex-col  min-h-screen pt-28  px-12 pb-8">
-      <CheckoutSteps />
-      <div className="flex flex-col justify-center items-center">
-        <h1 className="font-semibold my-3 text-xl"> Payment Method</h1>
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className=" flex flex-col  min-h-screen pt-28  px-12 pb-8">
+          <CheckoutSteps />
+          <div className="flex flex-col justify-center items-center">
+            <h1 className="font-semibold my-3 text-xl"> Payment Method</h1>
 
-        <Card className="w-full max-w-[24rem] ">
-          <List className="flex-row">
-            <ListItem className="p-0">
-              <label
-                htmlFor="horizontal-list-react"
-                className="flex w-full cursor-pointer items-center px-3 py-2"
+            <Card className="w-full max-w-[24rem] ">
+              <List className="flex-row">
+                <ListItem className="p-0">
+                  <label
+                    htmlFor="horizontal-list-react"
+                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                  >
+                    <ListItemPrefix className="mr-3">
+                      <Radio
+                        name="horizontal-list"
+                        id="horizontal-list-react"
+                        ripple={false}
+                        className="hover:before:opacity-0"
+                        value="card"
+                        checked={paymentMethod === "card"}
+                        onChange={() => setPaymentMethod("card")}
+                        containerProps={{
+                          className: "p-0",
+                        }}
+                      />
+                    </ListItemPrefix>
+                    <Typography color="blue-gray" className="font-medium">
+                      Credit/Debit Card
+                    </Typography>
+                  </label>
+                </ListItem>
+                <ListItem className="p-0">
+                  <label
+                    htmlFor="horizontal-list-vue"
+                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                  >
+                    <ListItemPrefix className="mr-3">
+                      <Radio
+                        name="horizontal-list"
+                        id="horizontal-list-vue"
+                        ripple={false}
+                        value="cash"
+                        checked={paymentMethod === "cash"}
+                        onChange={() => setPaymentMethod("cash")}
+                        className="hover:before:opacity-0"
+                        containerProps={{
+                          className: "p-0",
+                        }}
+                      />
+                    </ListItemPrefix>
+                    <Typography color="blue-gray" className="font-medium">
+                      Cash on Delivery
+                    </Typography>
+                  </label>
+                </ListItem>
+              </List>
+            </Card>
+            {/* ONLINE PAYMENT */}
+            {paymentMethod === "card" ? (
+              <form
+                onSubmit={submitHandler}
+                className="w-full lg:w-1/3 py-12 lg:px-8 my-6 bg-[#fff] rounded"
               >
-                <ListItemPrefix className="mr-3">
-                  <Radio
-                    name="horizontal-list"
-                    id="horizontal-list-react"
-                    ripple={false}
-                    className="hover:before:opacity-0"
-                    value="card"
-                    checked={paymentMethod === "card"}
-                    onChange={() => setPaymentMethod("card")}
-                    containerProps={{
-                      className: "p-0",
-                    }}
+                <h1 className="mb-4 font-bold text-xl">Card Details</h1>
+                <div className="w-full space-y-3">
+                  <label htmlFor="card_num_field">Card Number</label>
+                  <CardNumberElement
+                    id="card_num_field"
+                    options={options}
+                    className="w-full border border-[#000] p-3"
                   />
-                </ListItemPrefix>
-                <Typography color="blue-gray" className="font-medium">
-                  Credit/Debit Card
-                </Typography>
-              </label>
-            </ListItem>
-            <ListItem className="p-0">
-              <label
-                htmlFor="horizontal-list-vue"
-                className="flex w-full cursor-pointer items-center px-3 py-2"
-              >
-                <ListItemPrefix className="mr-3">
-                  <Radio
-                    name="horizontal-list"
-                    id="horizontal-list-vue"
-                    ripple={false}
-                    value="cash"
-                    checked={paymentMethod === "cash"}
-                    onChange={() => setPaymentMethod("cash")}
-                    className="hover:before:opacity-0"
-                    containerProps={{
-                      className: "p-0",
-                    }}
+                </div>
+
+                <div className="w-full space-y-3 my-3">
+                  <label htmlFor="card_exp_field" className="my-3">
+                    Card Expiry
+                  </label>
+                  <CardExpiryElement
+                    id="card_exp_field"
+                    options={options}
+                    className="w-full border border-[#000] p-3"
                   />
-                </ListItemPrefix>
-                <Typography color="blue-gray" className="font-medium">
-                  Cash on Delivery
-                </Typography>
-              </label>
-            </ListItem>
-          </List>
-        </Card>
-        {/* ONLINE PAYMENT */}
-        {paymentMethod === "card" ? (
-          <form
-            onSubmit={submitHandler}
-            className="w-full lg:w-1/3 py-12 lg:px-8 my-6 bg-[#fff] rounded"
-          >
-            <h1 className="mb-4 font-bold text-xl">Card Details</h1>
-            <div className="w-full space-y-3">
-              <label htmlFor="card_num_field">Card Number</label>
-              <CardNumberElement
-                id="card_num_field"
-                options={options}
-                className="w-full border border-[#000] p-3"
-              />
-            </div>
+                </div>
 
-            <div className="w-full space-y-3 my-3">
-              <label htmlFor="card_exp_field" className="my-3">
-                Card Expiry
-              </label>
-              <CardExpiryElement
-                id="card_exp_field"
-                options={options}
-                className="w-full border border-[#000] p-3"
-              />
-            </div>
+                <div className="w-full space-y-3 my-3">
+                  <label htmlFor="card_cvc_field">Card CVC</label>
+                  <CardCvcElement
+                    id="card_cvc_field"
+                    options={options}
+                    className="w-full border border-[#000] p-3"
+                  />
+                </div>
 
-            <div className="w-full space-y-3 my-3">
-              <label htmlFor="card_cvc_field">Card CVC</label>
-              <CardCvcElement
-                id="card_cvc_field"
-                options={options}
-                className="w-full border border-[#000] p-3"
-              />
-            </div>
-
-            {/* <button
+                {/* <button
               id="pay_btn"
               type="submit"
               className="w-full bg-[#1b6d3d] py-3 my-3 text-white text-xl"
             >
               Pay {` - ₱${orderInfo && orderInfo.totalPrice}`}
             </button> */}
-            <Button size="lg" className=" w-full my-3" type="submit">
-              Pay Now
-            </Button>
-            <Typography
-              variant="lg"
-              type="submit"
-              color="gray"
-              className="mt-2 flex items-center justify-center gap-2 font-normal opacity-60"
-            >
-              <LockClosedIcon className="-mt-0.5 h-4 w-4 " /> Payments are
-              secure and encrypted
-            </Typography>
-          </form>
-        ) : (
-          <span className="my-6">
-            <Button
-              ripple={true}
-              // size="lg"
-              className="px-12 py-3"
-              onClick={submitHandler}
-            >
-              Order
-            </Button>
-          </span>
-        )}
-      </div>
-    </div>
+                <Button size="lg" className=" w-full my-3" type="submit">
+                  Pay Now
+                </Button>
+                <Typography
+                  variant="lg"
+                  type="submit"
+                  color="gray"
+                  className="mt-2 flex items-center justify-center gap-2 font-normal opacity-60"
+                >
+                  <LockClosedIcon className="-mt-0.5 h-4 w-4 " /> Payments are
+                  secure and encrypted
+                </Typography>
+              </form>
+            ) : (
+              <span className="my-6">
+                <Button
+                  ripple={true}
+                  // size="lg"
+                  className="px-12 py-3"
+                  onClick={submitHandler}
+                >
+                  Order
+                </Button>
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

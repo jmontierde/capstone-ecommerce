@@ -34,6 +34,9 @@ const VerifyUser = () => {
   const { users, loading, isUpdated, error } = useSelector(
     (state) => state.allUsers
   );
+
+  console.log("verify users", users);
+
   const { isDeleted } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -60,12 +63,16 @@ const VerifyUser = () => {
 
   const handleVerify = (userId, verificationStatus) => {
     dispatch(verifyUser(userId, verificationStatus));
-    if (verificationStatus === "Verified") {
-      toast.success("User verified successfully");
-      dispatch({ type: VERIFY_USER_RESET });
-    }
-    console.log("VERIFY", verificationStatus);
+    toast.success("User verified successfully");
+    dispatch({ type: VERIFY_USER_RESET });
+    console.log("VERIFYYYYY", userId, verificationStatus);
   };
+
+  const filteredVerifyUser = users.filter(
+    (user) => user.verificationStatus === "Pending"
+  );
+
+  console.log("filteredVerifyUser", filteredVerifyUser);
 
   const deleteUserHandler = (id) => {
     dispatch(deleteUser(id));
@@ -87,16 +94,16 @@ const VerifyUser = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items to display per page
 
-  const filteredVerifyUser = users.filter((user) => {
-    const fullName = `${user.firstName} ${user.lastName}`;
-    return (
-      ((user.name &&
-        user.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (fullName &&
-          fullName.toLowerCase().includes(searchQuery.toLowerCase()))) &&
-      user.verificationStatus === "Pending"
-    ); // Filter by "Pending" verification status
-  });
+  // const filteredVerifyUser = users.filter((user) => {
+  //   const fullName = `${user.firstName} ${user.lastName}`;
+  //   return (
+  //     ((user.name &&
+  //       user.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+  //       (fullName &&
+  //         fullName.toLowerCase().includes(searchQuery.toLowerCase()))) &&
+  //     user.verificationStatus === "Pending"
+  //   ); // Filter by "Pending" verification status
+  // });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
