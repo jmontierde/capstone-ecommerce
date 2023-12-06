@@ -29,11 +29,27 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   } = req.body;
 
   let paymentStatus = "Not Paid"; // Default status for all orders
-
+  console.log("Received Payment Method:", paymentMethod);
   if (paymentMethod === "COD") {
     // If it's a COD order, set the paymentStatus to "Not Paid"
     paymentStatus = "Not Paid";
   }
+  let adminVerificationStatus = "Pending"; // Default admin verification status
+
+  if (paymentMethod === "CARD") {
+    // If it's a CARD order, set adminVerificationStatus to "Accepted"
+    adminVerificationStatus = "Accepted";
+
+    // Deduct stock only if payment is made (status is "succeeded")
+    if (paymentInfo.status === "succeeded") {
+      for (const item of orderItems) {
+        await updateStock(item.product, item.quantity);
+      }
+    }
+  }
+
+  console.log("Admin Verification Status:", adminVerificationStatus);
+
   const orderCounter = await mongoose.connection.db
     .collection("counters")
     .findOneAndUpdate(
@@ -58,6 +74,7 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     user: req.user._id,
     paymentMethod,
     paymentStatus,
+    adminVerificationStatus,
   });
   const smsMessage = `Thank you for placing an order with us. Your order ID is ${order.orderId}. We will process your order and keep you updated on its status.`;
   try {

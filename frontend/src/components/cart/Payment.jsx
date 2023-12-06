@@ -135,6 +135,7 @@ export const PaymentForm = ({ stripePromise }) => {
               totalPrice: orderInfo.totalPrice,
             };
             order.paymentMethod = "CARD";
+            order.adminVerificationStatus = "Accepted";
             console.log("PAYMENT INFO", order);
             dispatch(createOrder(order));
 
