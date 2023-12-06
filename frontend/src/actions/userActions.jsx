@@ -119,10 +119,10 @@ export const register = (userData) => async (dispatch) => {
       payload: data.user,
     });
   } catch (error) {
-    console.log("REGISTER ERROR", error);
+    console.log("REGISTER ERRORaa", error.response.data.message.message);
     dispatch({
       type: REGISTER_USER_FAIL,
-      payload: error.response.data.message,
+      payload: error.response.data.message.message,
     });
   }
 };
