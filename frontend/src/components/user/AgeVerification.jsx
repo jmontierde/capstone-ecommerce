@@ -16,10 +16,10 @@ const AgeVerification = ({ onVerification }) => {
   };
 
   return (
-    <div className="bg-[#121212]  h-screen py-6  mt-16">
+    <div className="bg-[#121212] px-6  h-screen py-6  mt-16">
       <div
         className=" bg-white-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg text-white  bg-opacity-70 border border-gray-100
-        w-1/4 mx-auto space-y-6 p-6"
+        lg:w-1/4 w-full  mx-auto space-y-6 p-6"
       >
         <img
           src="/images/Vside.jpg"
