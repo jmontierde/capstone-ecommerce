@@ -62,9 +62,9 @@ exports.getWishlist = catchAsyncErrors(async (req, res, next) => {
     // Find the user's wishlist
     const wishlist = await Wishlist.findOne({ user: userId });
 
-    if (!wishlist) {
-      return res.status(404).json({ message: "Wishlist not found" });
-    }
+    // if (!wishlist) {
+    //   return res.status(404).json({ message: "Wishlist not found" });
+    // }
 
     // Fetch product details based on productIds
     const productDetails = await Product.find({
