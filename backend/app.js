@@ -33,19 +33,19 @@ if (process.env.NODE_ENV === "PRODUCTION") {
   });
 }
 
-app.use(
-  cors({
-    origin: "http://127.0.0.1:5173/",
-    credentials: true,
-  })
-);
-
 // app.use(
 //   cors({
-//     origin: "https://vapingsidewalk-client.onrender.com",
+//     origin: "http://127.0.0.1:5173/",
 //     credentials: true,
 //   })
 // );
+
+app.use(
+  cors({
+    origin: "https://vapingsidewalk-client.onrender.com",
+    credentials: true,
+  })
+);
 app.use(morgan("dev"));
 
 // Import all routes
