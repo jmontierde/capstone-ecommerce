@@ -186,6 +186,11 @@ const ProductDetails = () => {
     dispatch(newReview(formData));
   };
 
+  console.log("PRODUCT STOCK", product.stock);
+  const stock = product.stock === 0 ? "Out of Stock" : "Add To Cart";
+
+  console.log("stockkk", stock);
+
   return (
     <div className="bg-[#121212] pt-28 min-h-screen text-white">
       <ToastContainer />
@@ -349,7 +354,7 @@ const ProductDetails = () => {
               <button
                 className="bg-[#4F46E5] hover:bg-[#4540a6] w-72 text-white rounded py-3 px-6 my-6 cursor-pointer"
                 onClick={handleCart}
-                disabled={product.stock === 0 || isProductInCart} // Disable if out of stock or in cart
+                disabled={product.stock === 0 || isProductInCart}
               >
                 {isProductInCart
                   ? "Product is already in the cart"
@@ -358,6 +363,7 @@ const ProductDetails = () => {
             ) : (
               <button
                 className="bg-[#4F46E5] hover:bg-[#4540a6] w-full text-white rounded py-3 px-6  cursor-pointer"
+                disabled={product.stock === 0 || isProductInCart}
                 onClick={() =>
                   handleAddStickerToCart(
                     id,
@@ -370,7 +376,7 @@ const ProductDetails = () => {
                 {/* Re-enable isProductInCart */}
                 {isProductInCart
                   ? "Product is already in the cart"
-                  : "Sticker Add to Cart"}
+                  : "Add to Cart"}
               </button>
             )}
             <svg

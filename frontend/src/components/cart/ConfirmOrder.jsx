@@ -33,6 +33,7 @@ const ConfirmOrder = () => {
     (acc, cart) => acc + cart.price * cart.quantity,
     0
   );
+
   // const shippingPrice = itemsPrice > 200 ? 0 : 25;
   // Maybe add later
   // const taxPrice = Number((0.05 * itemsPrice).toFixed(2));
@@ -44,7 +45,11 @@ const ConfirmOrder = () => {
   } else {
     shippingPrice = 120;
   }
-  const totalPrice = (itemsPrice + shippingPrice).toFixed(2);
+  const totalPriceBeforeTax = itemsPrice + shippingPrice;
+  const taxPercentage = 0.12; // 12% tax
+  const taxPrice = totalPriceBeforeTax * taxPercentage;
+
+  const totalPrice = (totalPriceBeforeTax + taxPrice).toFixed(2);
 
   console.log("totalPrice", totalPrice);
 
@@ -52,7 +57,7 @@ const ConfirmOrder = () => {
     const data = {
       itemsPrice: itemsPrice.toFixed(2),
       shippingPrice,
-      // taxPrice,
+      taxPrice,
       totalPrice,
     };
 
@@ -198,6 +203,10 @@ const ConfirmOrder = () => {
                   <div className="flex justify-between text-[#fff]">
                     <p>Subtotal</p>
                     <p>₱{itemsPrice.toFixed(2)}</p>
+                  </div>
+                  <div className="flex justify-between text-[#fff]">
+                    <p>TAX 12%:</p>
+                    <p>₱{taxPrice.toFixed(2)}</p>
                   </div>
                   <div className="flex justify-between text-[#fff]">
                     <p>Shipping fee</p>

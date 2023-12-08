@@ -76,7 +76,49 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     paymentStatus,
     adminVerificationStatus,
   });
-  const smsMessage = `Thank you for placing an order with us. Your order ID is ${order.orderId}. We will process your order and keep you updated on its status.`;
+  const smsMessage = `
+  Subject: Your Order Receipt 
+  
+  Dear ${req.user.firstName} ${req.user.lastName},
+  
+  Thank you for shopping with ${
+    process.env.COMPANY_NAME
+  }! We're thrilled to confirm that your order has been successfully processed and delivered. Here are the details of your purchase:
+  
+  Order Number: ${order.orderId}
+  Date of Purchase: ${new Date().toDateString()}
+  Shipping Address: ${shippingInfo.address}, ${shippingInfo.city}, ${
+    shippingInfo.postalCode
+  }, ${shippingInfo.state} ${shippingInfo.country}
+  
+  Product(s) Ordered:
+  ${orderItems
+    .map(
+      (item) => `
+  - ${item.name} - Quantity: ${item.quantity}, Price: ${item.price} each
+  `
+    )
+    .join("")}
+  
+  Subtotal: ${itemsPrice}
+  Shipping Fee: ${shippingPrice}
+  Total Amount: ${totalPrice}
+  Tax Price: ${taxPrice}
+  Payment Method: ${paymentMethod}
+  
+  We hope you enjoy your new products! Should you have any questions or concerns regarding your order, feel free to reach out to our customer support team at ${
+    process.env.SMTP_FROM_EMAIL
+  }.
+  
+  Thank you for choosing ${
+    process.env.COMPANY_NAME
+  }. We value your patronage and look forward to serving you again soon!
+  
+  Best regards,
+  ${process.env.COMPANY_NAME}
+  [Contact Information: ${process.env.SMTP_FROM_EMAIL}]
+  `;
+
   try {
     // Use the sendSMS function to send the SMS message
     await sendSMS(req.user.phoneNumber, smsMessage);
