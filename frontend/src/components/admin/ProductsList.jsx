@@ -256,7 +256,14 @@ const ProductsList = () => {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {product.price}
+                              {/* {product.price.toLocaleString()} */}
+                              {parseFloat(product.price).toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }
+                              )}
                             </Typography>
                           </td>
                           <td className={classes}>

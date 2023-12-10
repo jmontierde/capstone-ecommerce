@@ -8,6 +8,11 @@ const Product = ({ product }) => {
 
   console.log("Ratings", rating);
 
+  const formatPrice = (price) => {
+    // Format price with comma separator for thousands
+    return `₱${price.toLocaleString()}`;
+  };
+
   // const handleClick = (newRating) => {
   //   setRating(newRating);
   // };
@@ -51,7 +56,11 @@ const Product = ({ product }) => {
             <p className="pl-1">({product.numOfReviews})</p>
           </div> */}
             <h5 className="text-sm text-left md:px-12 lg:px-0 ">
-              ₱{product.price}
+              {/* {formatPrice(product.price)} */}
+              {parseFloat(product.price).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </h5>
           </div>
         </div>

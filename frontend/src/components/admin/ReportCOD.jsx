@@ -24,6 +24,8 @@ const ReportCOD = () => {
     "Total",
   ];
 
+  console.log("COD ORDERS", orders);
+
   const filterOrdersByMonth = () => {
     return orders.filter((order) => {
       const orderDate = new Date(order.createdAt);
@@ -277,7 +279,13 @@ const ReportCOD = () => {
                                 color="blue-gray"
                                 className="font-medium"
                               >
-                                ₱{order.totalPrice.toLocaleString()}
+                                {parseFloat(order.totalPrice).toLocaleString(
+                                  undefined,
+                                  {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  }
+                                )}
                               </Typography>
                             </td>
                             <td className={classes}>
@@ -288,7 +296,13 @@ const ReportCOD = () => {
                                 color="blue-gray"
                                 className="font-medium"
                               >
-                                ₱{order.totalPrice.toLocaleString()}
+                                {parseFloat(order.totalPrice).toLocaleString(
+                                  undefined,
+                                  {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  }
+                                )}
                               </Typography>
                             </td>
                           </tr>
@@ -297,7 +311,11 @@ const ReportCOD = () => {
                     <tr>
                       <td className="border px-4 py-2" colSpan="6"></td>
                       <td className="border px-4 py-2">
-                        Total Price: ₱{totalTotalPrice.toLocaleString()}
+                        Total Price: ₱{" "}
+                        {parseFloat(totalTotalPrice).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                       </td>
                     </tr>
                   </tbody>

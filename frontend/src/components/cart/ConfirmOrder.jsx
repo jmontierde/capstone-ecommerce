@@ -49,7 +49,7 @@ const ConfirmOrder = () => {
   const taxPercentage = 0.12; // 12% tax
   const taxPrice = totalPriceBeforeTax * taxPercentage;
 
-  const totalPrice = (totalPriceBeforeTax + taxPrice).toFixed(2);
+  const totalPrice = (totalPriceBeforeTax + taxPrice).toLocaleString();
 
   console.log("totalPrice", totalPrice);
 
@@ -163,7 +163,7 @@ const ConfirmOrder = () => {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {cart.price}
+                          {cart.price.toLocaleString()}
                         </Typography>
                       </td>
                     </tr>
@@ -202,15 +202,15 @@ const ConfirmOrder = () => {
                 <div>
                   <div className="flex justify-between text-[#fff]">
                     <p>Subtotal</p>
-                    <p>₱{itemsPrice.toFixed(2)}</p>
+                    <p>₱{itemsPrice.toLocaleString()}</p>
                   </div>
                   <div className="flex justify-between text-[#fff]">
                     <p>TAX 12%:</p>
-                    <p>₱{taxPrice.toFixed(2)}</p>
+                    <p>₱{taxPrice.toLocaleString()}</p>
                   </div>
                   <div className="flex justify-between text-[#fff]">
                     <p>Shipping fee</p>
-                    <p>₱{shippingPrice.toFixed(2)}</p>
+                    <p>₱{shippingPrice.toLocaleString()}</p>
                   </div>
                   <hr className="my-3" />
 

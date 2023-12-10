@@ -269,7 +269,14 @@ const OrderList = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {order.totalPrice}
+                            {/* {order.totalPrice.toLocaleString()} */}
+                            {parseFloat(order.totalPrice).toLocaleString(
+                              undefined,
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }
+                            )}
                           </Typography>
                         </td>
                         <td className={classes}>

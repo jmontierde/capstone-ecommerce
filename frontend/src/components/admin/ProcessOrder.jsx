@@ -113,7 +113,11 @@ const ProcessOrder = () => {
               {shippingDetails}
             </p>
             <p>
-              <b>Amount:</b> {totalPrice}
+              {/* <b>Amount:</b> {totalPrice ? totalPrice.toLocaleString() : "N/A"} */}
+              {parseFloat(totalPrice).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </p>
           </div>
 
@@ -217,7 +221,15 @@ const ProcessOrder = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            <p>{item.price}</p>
+                            <p>
+                              {parseFloat(item.price).toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }
+                              )}
+                            </p>
                           </Typography>
                         </td>
                         {item.stickerPosition &&

@@ -120,7 +120,7 @@ const Cart = () => {
                           />
                           <div className="flex flex-col lg:px-6  w-full lg:w-1/2 lg:justify-between  ">
                             <p>{cart.name}</p>
-                            <h4>₱{cart.price}</h4>
+                            <h4>₱{cart.price.toLocaleString()}</h4>
                           </div>
                         </div>
                         <div className="space-x-1  p-3 flex items-center justify-between  rounded-sm  border border-[#1E1E1E] mx-auto w-44">
@@ -204,7 +204,7 @@ const Cart = () => {
                           (acc, cart) => acc + cart.quantity * cart.price,
                           0
                         )
-                        .toFixed(2)}
+                        .toLocaleString()}
                     </p>
                   </div>
                   <button

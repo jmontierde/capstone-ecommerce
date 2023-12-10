@@ -89,7 +89,12 @@ const Dashboard = () => {
                   <div className="bg-[#E9F167] h-36 text-left rounded-b-lg  p-6">
                     <h5 className="text-lg">Total Amount</h5>
                     <p className="font-bold text-4xl">
-                      ₱{totalAmountOrder && totalAmountOrder.toLocaleString()}
+                      {totalAmountOrder &&
+                        parseFloat(totalAmountOrder).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+
                       {/* ₱57,142.23 */}
                     </p>
                   </div>

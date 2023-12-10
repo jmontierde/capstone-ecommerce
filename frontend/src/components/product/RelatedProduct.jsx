@@ -53,7 +53,13 @@ const RelatedProducts = ({ productId }) => {
                 className="w-48  h-48 mx-auto"
               />
               <h3>{product.name}</h3>
-              <p>₱{product.price}</p>
+              <p>
+                ₱
+                {parseFloat(product.price).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
               <div className="flex justify-center items-center">
                 {renderStarRating(product.ratings)}
               </div>

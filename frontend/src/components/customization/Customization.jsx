@@ -299,7 +299,7 @@ const Customization = () => {
                         />
                         <p className="text-xs">
                           <span className="font-semibold">{product.name}</span>{" "}
-                          <br />₱{product.price}
+                          <br />₱{product.price.toLocaleString()}
                         </p>
                         <div
                           className=" flex py-3 text-center hover:text-[#e6e355] border border-[#000]"
@@ -391,7 +391,7 @@ const Customization = () => {
                               <span className="font-semibold">
                                 {product.name}
                               </span>{" "}
-                              <br />₱{product.price}
+                              <br />₱{product.price.toLocaleString()}
                             </p>
                             <div
                               className=" flex py-3 text-center hover:text-[#e6e355] border border-[#000]"
@@ -527,7 +527,7 @@ const Customization = () => {
                               <span className="font-semibold">
                                 {product.name}
                               </span>{" "}
-                              <br />₱{product.price}
+                              <br />₱{product.price.toLocaleString()}
                             </p>
                             <div
                               className=" flex py-3 text-center hover:text-[#e6e355] border border-[#000]"

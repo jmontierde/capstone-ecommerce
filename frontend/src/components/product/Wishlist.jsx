@@ -76,7 +76,13 @@ const Wishlist = () => {
                   />
                 )}
                 <h5>{product.name}</h5>
-                <p>₱{product.price}</p>
+                <p>
+                  ₱
+                  {parseFloat(product.price).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </p>
               </Link>
               {/* Add other details as needed */}
             </div>
