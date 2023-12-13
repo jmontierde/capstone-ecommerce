@@ -256,7 +256,7 @@ const ProductsList = () => {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {/* {product.price.toLocaleString()} */}
+                              {/* {product.price.toLocaleString()} */}₱
                               {parseFloat(product.price).toLocaleString(
                                 undefined,
                                 {

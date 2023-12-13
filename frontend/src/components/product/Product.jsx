@@ -56,7 +56,7 @@ const Product = ({ product }) => {
             <p className="pl-1">({product.numOfReviews})</p>
           </div> */}
             <h5 className="text-sm text-left md:px-12 lg:px-0 ">
-              {/* {formatPrice(product.price)} */}
+              {/* {formatPrice(product.price)} */}₱
               {parseFloat(product.price).toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

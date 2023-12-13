@@ -115,7 +115,7 @@ const OrderDetails = () => {
               {shippingDetails}
             </p>
             <p>
-              <b>Amount:</b> {totalPrice}
+              <b>Amount:</b> ₱{totalPrice}
             </p>
           </div>
 
@@ -220,7 +220,7 @@ const OrderDetails = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            <p>{item.price}</p>
+                            <p>₱{item.price}</p>
                           </Typography>
                         </td>
                         {item.stickerPosition && item.stickerSize && (

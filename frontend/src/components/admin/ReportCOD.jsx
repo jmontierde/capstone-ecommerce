@@ -279,6 +279,7 @@ const ReportCOD = () => {
                                 color="blue-gray"
                                 className="font-medium"
                               >
+                                ₱
                                 {parseFloat(order.totalPrice).toLocaleString(
                                   undefined,
                                   {
@@ -296,6 +297,7 @@ const ReportCOD = () => {
                                 color="blue-gray"
                                 className="font-medium"
                               >
+                                ₱
                                 {parseFloat(order.totalPrice).toLocaleString(
                                   undefined,
                                   {

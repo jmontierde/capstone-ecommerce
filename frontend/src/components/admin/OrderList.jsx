@@ -269,7 +269,7 @@ const OrderList = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {/* {order.totalPrice.toLocaleString()} */}
+                            {/* {order.totalPrice.toLocaleString()} */}₱
                             {parseFloat(order.totalPrice).toLocaleString(
                               undefined,
                               {

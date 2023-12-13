@@ -243,7 +243,7 @@ const ListOrders = () => {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {order.totalPrice}
+                            ₱{order.totalPrice}
                           </Typography>
                         </td>
                         <td className={classes}>
