@@ -1,6 +1,7 @@
 # An Online Vape Shop Ordering System with Vape Customization
 This was my biggest project I've ever done and I finished this project almost 6 months, I really enjoy this e-commerce website project for our capstone project.
-
+You'll need to wait less than 1 minute in the loading but I will optimize this project soon. 
+You can visit the website https://vapingsidewalk-client.onrender.com/
 ## Features 
 	* Age Verification
  	* Account Registration
