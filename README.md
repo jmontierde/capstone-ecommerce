@@ -26,6 +26,8 @@ You can visit the website https://vapingsidewalk-client.onrender.com/
 	* Terms and Conditions
  	* Order Payment
 	* Wishlist
+ 	* Chatbot
+ 
 ## Screenshots
 ### User
 ![image](https://github.com/jmontierde/capstone-ecommerce/assets/89908999/7e859808-16d0-4960-9cd3-701d840b621e)
